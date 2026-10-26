@@ -150,9 +150,7 @@ jobs:
         run: node tests/privacy/run.mjs
       - name: Cover video lane
         run: node tests/video/run.mjs
-      # The six covers of 1.0 must not move (SSIM 0.995). A cover that moved is saved under tests/mobile-e2e/output for the artifact below.
-      - name: Covers have not changed since 1.0
-        run: node tests/cover-baseline/run.mjs --check --out tests/mobile-e2e/output/cover-baseline
+      # The cover baseline of 1.0 is checked in its own job below, on the platform it was captured on.
       # Browser suites of the visual language (art builders, rendered gates, automatic-plan acceptance, calibration): npm scripts added by the
       # integration beats as the files arrive; nothing runs until a script exists.
       - name: Visual language in the browser
@@ -169,6 +167,38 @@ jobs:
           path: |
             tests/mobile-e2e/output
             tests/video/output
+          if-no-files-found: ignore
+          retention-days: 7
+
+  # The six covers of 1.0 must not move (SSIM 0.995, frame 0 at 0.99). The baseline PNGs were captured on Windows, and Linux smooths
+  # text and fine textures differently, so the covers are compared on Windows at the same thresholds. A cover that moved is kept as an artifact.
+  covers:
+    name: Covers have not changed since 1.0
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Preserve LF on Windows before checkout
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci
+      - name: Install Chromium for the covers
+        run: npx playwright-core install chromium
+      - name: Covers have not changed since 1.0
+        run: node tests/cover-baseline/run.mjs --check --out tests/mobile-e2e/output/cover-baseline
+      - name: Keep the covers that moved
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cover-baseline-output
+          path: tests/mobile-e2e/output/cover-baseline
           if-no-files-found: ignore
           retention-days: 7
 
