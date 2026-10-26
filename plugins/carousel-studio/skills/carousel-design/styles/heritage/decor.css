@@ -73,9 +73,9 @@
 .cs-slide[data-preset="heritage"] .cs-attribution {
   color: var(--cs-ink-muted);
 }
-/* the bridge line can land on the lattice, which lifts the background: it keeps nearly full ink */
+/* the bridge line is small and can sit on the gold arcs and the lattice of the lower corner, which lift the background: it keeps full ink */
 .cs-slide[data-preset="heritage"] .cs-bridge {
-  color: color-mix(in srgb, var(--cs-ink) 88%, var(--cs-bg));
+  color: var(--cs-ink);
 }
 .cs-slide[data-preset="heritage"] .cs-body,
 .cs-slide[data-preset="heritage"] .cs-bullet,
