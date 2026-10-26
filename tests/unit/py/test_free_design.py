@@ -176,6 +176,13 @@ class FreeHtmlRejects(unittest.TestCase):
         self.bad('<div><img src=x onerror=alert(1)', "'<' in the text")
         self.bad("<div><!-- never closed", "comment or a declaration")
 
+    def test_incomplete_tags_cannot_hide_in_the_parser_buffer(self) -> None:
+        for tail in ('<img src=x onerror=alert(1)', '<p', '<p class="f-card', '</div', '<'):
+            with self.subTest(tail=tail):
+                self.bad('<div>safe</div>' + tail, "'<' in the text")
+        self.assertEqual(html_findings('<p>&lt;img src=x onerror=alert(1)&gt;</p>'), [])
+        self.assertEqual(html_findings('<p data-edit="tag">safe</p>'), [])
+
     def test_size_limit_empty_and_control_characters(self) -> None:
         limit = free.contract()["html"]["maxBytes"]
         self.bad("<p>" + "ا" * (limit // 2) + "</p>", "bytes, the limit is %d" % limit)

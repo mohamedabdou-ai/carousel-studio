@@ -70,6 +70,7 @@
     }
     var v=(tokens.art||el.dataset.free)&&el.dataset.type!=="cover"&&CS.visual;
     if(v?.anchorSync?.(el,{frozen:frozenOk&&spec.frozen}))report=core.fit.fitSlide(el,tokens);
+    if(v?.anchorFit?.(el,report,{frozen:frozenOk&&spec.frozen}))report=core.fit.fitSlide(el,tokens);
     if(!frozenOk&&mode==="export"){wrapAllLines(el);core.fit.settleLines(el,tokens,report);}
     v?.settle?.(el,{spec:spec,tokens:tokens,frozen:frozenOk&&spec.frozen});
     return report;

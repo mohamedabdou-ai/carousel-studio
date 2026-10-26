@@ -2406,7 +2406,7 @@ async function measureSlide(S, decile) {
     }
   }
   let painted = null;
-  if (mask && paint && typeof paint.toCanvas === 'function' && S.el.querySelector('.cs-art-label,[data-slot="art"]')) {
+  if (mask && paint && typeof paint.toCanvas === 'function') {
     try { painted = await paint.toCanvas(S.el, { scale: 1 }); } catch (e) {}
   }
   const items = [];
@@ -2419,7 +2419,7 @@ async function measureSlide(S, decile) {
     let kind = "dom";
     if (mask) {
       try {
-        const rs = maskRatios(mask, S, it, fg0, it.el.closest('[data-slot="art"],.cs-art-label') && painted);
+        const rs = maskRatios(mask, S, it, fg0, painted);
         if (rs.length) {
           res = summarizeRatios(rs, decile);
           kind = "pixel";

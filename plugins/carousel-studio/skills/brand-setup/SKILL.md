@@ -40,13 +40,15 @@ of that section and ask for a single confirmation instead of the questions.
 ```
 python brand_io.py new --slug S --name N --dialect D [--kind creator|business|client] [--country EG,AE] [--app-language ar|en|mixed] [--sub-variety V] [--handle @h]
 python brand_io.py save-section --slug S --section identity|audience|voice|visual|strategy|tools --file F [--status done|skipped]
-python brand_io.py resume|get|set|validate|migrate|capsule|snapshot-hash|approve|list|use|import ...
+python brand_io.py <command> ...
 python brand_io.py remember --slug S --json ENTRY     # the creative team's memory (references/storage.md section 7)
 python brand_io.py memory --slug S                    # what the Creative Director reads at the brief
 python fingerprint.py --file captions.txt --separator "---" --dialect D --format json
 python palette.py --seed "#RRGGBB" --mood bold|calm|warm|cool|earthy|playful|luxury --format json
 python import_hooks.py --in bank.md --in bank.csv --brand brand.json --out hooks.ar.json --format json
 ```
+For `python brand_io.py <command>`, command is one of: resume, get, set, validate, migrate, capsule, snapshot-hash, approve, list, use, import.
+
 `--dir ROOT` picks the workspace (default `$CS_WORKSPACE` or `~/CarouselStudio`; in the Claude app use
 a scratch folder). The section file for `save-section` is a partial `brand.json` such as
 `{"identity": {...}, "handle": "@x"}`; each section may write only its own keys. Exit codes: 0 ok,

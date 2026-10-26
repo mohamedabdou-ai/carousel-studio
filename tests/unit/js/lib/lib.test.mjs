@@ -119,6 +119,17 @@ test("hex parsing, upper-case output and OKLCH round trip", () => {
   for (const hex of ["#E3262B", "#133B31", "#4F46E5", "#FFD23F"]) assert.equal(color.fromOklch(color.toOklch(hex)), hex);
 });
 
+test("neutral sRGB has zero chroma and hue without cancellation noise", () => {
+  for (let n = 0; n < 256; n++) {
+    const hex = '#' + n.toString(16).padStart(2, '0').repeat(3);
+    const lch = color.toOklch(hex);
+    assert.equal(lch.C, 0, hex);
+    assert.equal(lch.h, 0, hex);
+    assert.equal(color.fromOklch(lch), hex.toUpperCase());
+  }
+  assert.ok(color.toOklch('#808081').C > 0, 'near-neutral colour retains its chroma');
+});
+
 test("mix is linear-light and ensureContrast moves lightness only", () => {
   assert.equal(color.mix("#000000", "#FFFFFF", 0), "#000000");
   assert.equal(color.mix("#000000", "#FFFFFF", 1), "#FFFFFF");

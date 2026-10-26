@@ -31,6 +31,13 @@ test('untrusted HTML never imports executable nodes, style or URL attributes', (
   assert.throws(() => F.sanitize('أ'.repeat(6001)), { code: 'E_FREE_HTML' });
 });
 
+test('incomplete tag tails are refused instead of silently discarded', () => {
+  for (const tail of ['<img src=x onerror=alert(1)', '<p', '<p class="f-card', '</div']) {
+    assert.throws(() => F.sanitize('<div>safe</div>' + tail), { code: 'E_FREE_HTML' }, tail);
+  }
+  assert.equal(F.sanitize('<p>&lt;img src=x onerror=alert(1)&gt;</p>'), '<p>&lt;img src=x onerror=alert(1)&gt;</p>');
+});
+
 test('CSS scopes every selector, preserves legitimate values and is deterministic', () => {
   const css = '.f-grid, h2:first-child{display:grid;grid-template-columns:1fr 2fr;gap:32px;background:linear-gradient(45deg,var(--cs-bg),var(--cs-surface));font-family:var(--cs-font-heading)}.f-grid::before{content:""}';
   const scoped = F.css(css, 's02');

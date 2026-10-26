@@ -81,3 +81,4 @@
 .cs-slide[data-preset="notebook"][data-tone] .cs-content[data-recipe="center"]>.cs-sub{margin-block-start:24px}
 /* The over recipe already separates the bridge with its flex gap. */
 .cs-slide[data-preset="notebook"][data-tone] .cs-content[data-recipe="over"]>.cs-bridge{margin-block-start:0}
+.cs-slide[data-preset="notebook"][data-type="poster"][data-tone] .cs-sub{color:var(--cs-ink)}

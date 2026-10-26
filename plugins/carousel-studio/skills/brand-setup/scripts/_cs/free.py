@@ -302,6 +302,12 @@ def check_html(html, slide: dict, doc: dict | None = None) -> tuple[list[str], l
         add("free.html contains control characters")
     parser = _Html(doc, slide, add, note)
     parser.feed(html)
+    # feed() buffers an incomplete token. Some CPython patch versions discard it
+    # in close() without a handle_data callback, so validate the tail first.
+    if "<" in parser.rawdata:
+        parser.handle_data(parser.rawdata)
+        if "<!" in parser.rawdata:
+            add("free.html contains a comment or a declaration (<!...)")
     parser.close()
     parser.finish()
     if "<!" in html and not any(("comments" in f or "declarations" in f or "sections" in f) for f in findings):

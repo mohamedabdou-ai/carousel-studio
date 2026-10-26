@@ -134,6 +134,14 @@ class ColorTests(unittest.TestCase):
             want = cs.color.parse(hex_)
             self.assertTrue(all(abs(a - b) <= 1 for a, b in zip(back, want)), (hex_, back, want))
 
+    def test_neutral_oklch_has_no_cancellation_chroma_or_hue(self) -> None:
+        for n in range(256):
+            hex_ = "#" + ("%02X" % n) * 3
+            L, C, h = cs.color.to_oklch(hex_)
+            self.assertEqual((C, h), (0.0, 0.0), hex_)
+            self.assertEqual(cs.color.from_oklch(L, C, h), hex_)
+        self.assertGreater(cs.color.to_oklch("#808081")[1], 0)
+
     def test_mix_midpoint(self) -> None:
         self.assertEqual(cs.color.mix("#000000", "#FFFFFF", 0.0), "#000000")
         self.assertEqual(cs.color.mix("#000000", "#FFFFFF", 1.0), "#FFFFFF")

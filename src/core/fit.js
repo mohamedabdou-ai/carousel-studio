@@ -167,6 +167,9 @@
       var cs = getComputedStyle(m.el), cap = parseFloat(cs.maxHeight);
       if (m.el.classList.contains("cs-art-label") && cap > 0 && mm.lines.length * parseFloat(cs.lineHeight) > cap + EPS) return false;
       var c = ctx.geo.content, sr = box.rect;
+      // Fixed art-label boxes must contain the real font's vertical extents too,
+      // including the changed baseline after export wraps Arabic-Indic digits.
+      if (m.el.classList.contains("cs-art-label") && m.el.style.height && mm.lines.some(function (l) { return (l.t - ctx.top) / ctx.scale < sr.y - EPS || (l.b - ctx.top) / ctx.scale > sr.y + sr.h + EPS; })) return false;
       if (sr.x < c.x - EPS || sr.y < c.y - EPS || sr.x + sr.w > c.x + c.w + EPS || sr.y + sr.h > c.y + c.h + EPS) return false;
       for (var i = 0; i < ctx.geo.keepOuts.length; i++) { if (intersects(sr, ctx.geo.keepOuts[i])) return false; }
     }

@@ -421,6 +421,11 @@
     var bar = buildChrome(cx);
 
     var main = CS.visual?.free?.compose(cx) || cx.archetype.template.content.firstElementChild.cloneNode(true);
+    // bridge is shared spec copy, including on types whose base template has no
+    // bridge slot. Keep the template contract and materialize it when supplied.
+    if (!main.classList.contains("cs-free") && cx.slide.bridge && !main.querySelector('[data-slot="bridge"]')) {
+      main.appendChild(set(el("p", "cs-slot cs-bridge"), { "data-slot": "bridge", "data-field": "bridge", "data-kind": "text", "data-role": "small", "data-max-lines": "2", "data-m": "bridge", "data-optional": "", "data-edit": "text" }));
+    }
     vis("begin",cx);
     var bgMedia = (cx.slide.media && cx.slide.media.slot === "plate") || (cx.variant === "photo" && ["cover", "quote", "poster"].indexOf(cx.type) >= 0);
     if (!main.classList.contains("cs-free")) main.querySelectorAll("[data-slot]").forEach(function (node) {

@@ -66,6 +66,11 @@ jobs:
       PYTHONUTF8: ${{ matrix.utf8_mode }}
       PYTHONIOENCODING: ${{ matrix.encoding }}
     steps:
+      - name: Preserve LF on Windows before checkout
+        if: runner.os == 'Windows'
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:

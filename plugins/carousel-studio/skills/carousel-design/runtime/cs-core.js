@@ -448,6 +448,10 @@ CS.core.format = function format(template, params) {
 
   function toOklch(hex) {
     const o = toOklab(hex);
+    // Neutral sRGB has no hue. Truncated matrix coefficients leave tiny a/b
+    // residuals whose atan2 amplifies platform-dependent cube-root rounding.
+    const rgb = parse(hex);
+    if (rgb.r === rgb.g && rgb.g === rgb.b) return { L: o.L, C: 0, h: 0 };
     let h = Math.atan2(o.b, o.a) * 180 / Math.PI;
     if (h < 0) h += 360;
     const C = Math.sqrt(o.a * o.a + o.b * o.b);
@@ -2682,6 +2686,11 @@ CS.core.format = function format(template, params) {
     var bar = buildChrome(cx);
 
     var main = CS.visual?.free?.compose(cx) || cx.archetype.template.content.firstElementChild.cloneNode(true);
+    // bridge is shared spec copy, including on types whose base template has no
+    // bridge slot. Keep the template contract and materialize it when supplied.
+    if (!main.classList.contains("cs-free") && cx.slide.bridge && !main.querySelector('[data-slot="bridge"]')) {
+      main.appendChild(set(el("p", "cs-slot cs-bridge"), { "data-slot": "bridge", "data-field": "bridge", "data-kind": "text", "data-role": "small", "data-max-lines": "2", "data-m": "bridge", "data-optional": "", "data-edit": "text" }));
+    }
     vis("begin",cx);
     var bgMedia = (cx.slide.media && cx.slide.media.slot === "plate") || (cx.variant === "photo" && ["cover", "quote", "poster"].indexOf(cx.type) >= 0);
     if (!main.classList.contains("cs-free")) main.querySelectorAll("[data-slot]").forEach(function (node) {
@@ -2914,6 +2923,9 @@ CS.core.format = function format(template, params) {
       var cs = getComputedStyle(m.el), cap = parseFloat(cs.maxHeight);
       if (m.el.classList.contains("cs-art-label") && cap > 0 && mm.lines.length * parseFloat(cs.lineHeight) > cap + EPS) return false;
       var c = ctx.geo.content, sr = box.rect;
+      // Fixed art-label boxes must contain the real font's vertical extents too,
+      // including the changed baseline after export wraps Arabic-Indic digits.
+      if (m.el.classList.contains("cs-art-label") && m.el.style.height && mm.lines.some(function (l) { return (l.t - ctx.top) / ctx.scale < sr.y - EPS || (l.b - ctx.top) / ctx.scale > sr.y + sr.h + EPS; })) return false;
       if (sr.x < c.x - EPS || sr.y < c.y - EPS || sr.x + sr.w > c.x + c.w + EPS || sr.y + sr.h > c.y + c.h + EPS) return false;
       for (var i = 0; i < ctx.geo.keepOuts.length; i++) { if (intersects(sr, ctx.geo.keepOuts[i])) return false; }
     }
@@ -3372,6 +3384,7 @@ CS.core.format = function format(template, params) {
     }
     var v=(tokens.art||el.dataset.free)&&el.dataset.type!=="cover"&&CS.visual;
     if(v?.anchorSync?.(el,{frozen:frozenOk&&spec.frozen}))report=core.fit.fitSlide(el,tokens);
+    if(v?.anchorFit?.(el,report,{frozen:frozenOk&&spec.frozen}))report=core.fit.fitSlide(el,tokens);
     if(!frozenOk&&mode==="export"){wrapAllLines(el);core.fit.settleLines(el,tokens,report);}
     v?.settle?.(el,{spec:spec,tokens:tokens,frozen:frozenOk&&spec.frozen});
     return report;

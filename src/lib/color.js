@@ -65,6 +65,10 @@
 
   function toOklch(hex) {
     const o = toOklab(hex);
+    // Neutral sRGB has no hue. Truncated matrix coefficients leave tiny a/b
+    // residuals whose atan2 amplifies platform-dependent cube-root rounding.
+    const rgb = parse(hex);
+    if (rgb.r === rgb.g && rgb.g === rgb.b) return { L: o.L, C: 0, h: 0 };
     let h = Math.atan2(o.b, o.a) * 180 / Math.PI;
     if (h < 0) h += 360;
     const C = Math.sqrt(o.a * o.a + o.b * o.b);

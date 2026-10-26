@@ -81,6 +81,10 @@ def _oklab_to_linear(L: float, a: float, b: float):
 def to_oklch(hex_color: str) -> tuple[float, float, float]:
     """``(L 0-1, C 0-0.4, h 0-360)``."""
     L, a, b = _to_oklab(hex_color)
+    # Exact neutral sRGB has no chroma/hue; do not amplify matrix/cbrt noise.
+    r, g, blue = parse(hex_color)
+    if r == g == blue:
+        return L, 0.0, 0.0
     h = math.degrees(math.atan2(b, a))
     if h < 0:
         h += 360
