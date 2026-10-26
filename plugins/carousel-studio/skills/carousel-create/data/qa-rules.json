@@ -1,0 +1,2876 @@
+{
+  "schemaVersion": 1,
+  "rulesVersion": "1.1.0",
+  "description": "Carousel Studio QA gate registry (CONTRACT section 7.3). Thresholds are {\"$platform\": \"dot.path\"} references into platform-instagram.json; checks read thresholds only from params. 'when' states each condition in one English sentence and is normative for both engines. Needles for gate X1 are stored as code points on purpose. Round 3 additions: sev is the end-state severity and sevs lists every severity a check can emit; a check whose params carry rollout is capped at rollout.stage0Sev while rollout.stage is 0 and its findings carry prospect (the uncapped severity); a BLOCK threshold counts only while its plugin.visual.block switch is enabled; deferred {engines, by} names the engines that do not run a check yet; retired lists checks that no longer run but whose old findings still render; a gate may carry measure, the options of CS.visual.deadSpace.",
+  "order": ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10", "O1", "N1", "B1", "B2", "SRC1", "SEN1", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "D11", "VA1", "VA2", "VA3", "VA4", "VA5", "VA6", "VA7", "VA8", "VA9", "RX1", "T1", "A1", "V1", "X1"],
+  "gates": [
+    {
+      "id": "C1",
+      "title": {"ar": "حدود الغلاف", "en": "Cover limits"},
+      "scope": "text",
+      "engines": ["py", "js"],
+      "appliesTo": {
+        "slideTypes": ["cover", "poster"]
+      },
+      "overridable": true,
+      "checks": [
+        {
+          "id": "C1.hero-words",
+          "sev": "BLOCK",
+          "params": {
+            "max": {"$platform": "plugin.cover.heroMaxWords"}
+          },
+          "autofix": null,
+          "when": "wordCount(stripMarkup(headline)) of a cover or poster slide is greater than params.max.",
+          "msg": {"ar": "عدد كلمات عنوان الغلاف {count} والحد الأقصى {max}.", "en": "The cover headline has {count} words; the limit is {max}."},
+          "fix": {"ar": "اختصر العنوان إلى {max} كلمات أو أقل وابدأ بالكلمة الأهم.", "en": "Cut the headline to {max} words or fewer and lead with the key word."},
+          "vars": ["count", "max", "text"]
+        },
+        {
+          "id": "C1.total-words",
+          "sev": "BLOCK",
+          "params": {
+            "max": {"$platform": "plugin.cover.totalMaxWords"}
+          },
+          "autofix": null,
+          "when": "wordCount of kicker + headline + sub (each markup-stripped) is greater than params.max.",
+          "msg": {"ar": "مجموع كلمات الغلاف {count} والحد الأقصى {max}.", "en": "The cover has {count} words in total; the limit is {max}."},
+          "fix": {"ar": "احذف السطر الفرعي أو الوسم العلوي أو اختصر الجملة.", "en": "Drop the kicker or the sub-line, or shorten the sentence."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "C1.lines",
+          "sev": "FIX",
+          "params": {
+            "max": {"$platform": "plugin.cover.maxLines"}
+          },
+          "autofix": null,
+          "when": "The number of forced line breaks (newline characters) in the headline plus one is greater than params.max.",
+          "msg": {"ar": "العنوان موزّع على {count} أسطر والحد الأقصى {max}.", "en": "The headline is set on {count} lines; the limit is {max}."},
+          "fix": {"ar": "ادمج الأسطر أو اختصر العنوان.", "en": "Merge lines or shorten the headline."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "C1.number-words",
+          "sev": "FIX",
+          "params": {
+            "list": "numberWords"
+          },
+          "autofix": null,
+          "when": "An entry of copy.json lists[params.list] matches the cover text (kicker + headline + sub, markup-stripped).",
+          "msg": {"ar": "الرقم مكتوب بالحروف على الغلاف: «{text}».", "en": "A number is spelled out on the cover: “{text}”."},
+          "fix": {"ar": "اكتبه بالأرقام لأن الرقم يُلتقط أسرع أثناء التمرير.", "en": "Write it as a digit; numerals are picked up faster while scrolling."},
+          "vars": ["text"]
+        },
+        {
+          "id": "C1.meaning-word",
+          "sev": "FIX",
+          "engines": ["model"],
+          "autofix": null,
+          "when": "Model check: the first words of the headline carry the meaning (number, outcome or tension), not filler.",
+          "msg": {"ar": "الكلمة الأهم ليست في بداية العنوان.", "en": "The key word is not at the start of the headline."},
+          "fix": {"ar": "قدّم الرقم أو النتيجة إلى أول العنوان.", "en": "Move the number or the outcome to the start of the headline."}
+        },
+        {
+          "id": "C1.gap-answered",
+          "sev": "BLOCK",
+          "engines": ["model"],
+          "autofix": null,
+          "when": "Model check: the cover leaves one specific gap open and does not answer it.",
+          "msg": {"ar": "الغلاف يجيب عن السؤال الذي فتحه.", "en": "The cover answers the question it opens."},
+          "fix": {"ar": "اترك فجوة واحدة محددة مفتوحة وأجب عنها في السلايد الثاني.", "en": "Leave one specific gap open and pay it off on slide 2."}
+        }
+      ]
+    },
+    {
+      "id": "C2",
+      "title": {"ar": "حدود النص", "en": "Text limits"},
+      "scope": "text",
+      "engines": ["py", "js"],
+      "checks": [
+        {
+          "id": "C2.title-words",
+          "sev": "FIX",
+          "appliesTo": {
+            "slideTypes": ["item", "step", "stat", "compare", "myth-fact", "story-beat", "checklist", "summary", "setup", "proof", "offer", "grid", "timeline"]
+          },
+          "params": {
+            "max": {"$platform": "plugin.text.titleMaxWords"}
+          },
+          "autofix": null,
+          "when": "wordCount(stripMarkup(title)) is greater than params.max on slides of the listed types.",
+          "msg": {"ar": "عدد كلمات عنوان السلايد {count} والحد الأقصى {max}.", "en": "The slide title has {count} words; the limit is {max}."},
+          "fix": {"ar": "اجعل العنوان فكرة واحدة قصيرة.", "en": "Keep the title to one short idea."},
+          "vars": ["count", "max", "text"]
+        },
+        {
+          "id": "C2.body-words",
+          "sev": "FIX",
+          "appliesTo": {
+            "slideTypes": ["item", "step", "stat", "compare", "myth-fact", "quote", "story-beat", "setup", "proof", "testimonial", "grid", "timeline"]
+          },
+          "params": {
+            "max": {"$platform": "plugin.text.bodyMaxWords"},
+            "hardMax": {"$platform": "plugin.text.bodyHardMaxWords"}
+          },
+          "autofix": null,
+          "when": "On slides of the listed types, any body or side text has more words than params.max and at most params.hardMax.",
+          "msg": {"ar": "عدد كلمات النص {count} والحد المناسب {max}.", "en": "The text has {count} words; the comfortable limit is {max}."},
+          "fix": {"ar": "اختصر النص أو قسّمه على سلايدين.", "en": "Shorten the text or split it over two slides."},
+          "vars": ["count", "max", "text"]
+        },
+        {
+          "id": "C2.body-hard",
+          "sev": "BLOCK",
+          "overridable": true,
+          "appliesTo": {
+            "slideTypes": ["item", "step", "stat", "compare", "myth-fact", "quote", "story-beat", "setup", "proof", "testimonial", "grid", "timeline"]
+          },
+          "params": {
+            "max": {"$platform": "plugin.text.bodyHardMaxWords"}
+          },
+          "autofix": null,
+          "when": "On slides of the listed types, any body or side text has more words than params.max.",
+          "msg": {"ar": "النص أطول من اللازم: عدد كلماته {count} والحد الأقصى {max}.", "en": "The text is too long: {count} words; the hard cap is {max}."},
+          "fix": {"ar": "قسّمه على سلايدين أو اختصره قبل التصدير.", "en": "Split it over two slides or cut it before exporting."},
+          "vars": ["count", "max", "text"]
+        },
+        {
+          "id": "C2.bullets",
+          "sev": "FIX",
+          "params": {
+            "max": {"$platform": "plugin.text.bulletsMax"},
+            "denseTypes": {"$platform": "plugin.text.denseTypes"}
+          },
+          "autofix": null,
+          "when": "A slide whose type is not in params.denseTypes has more bullets than params.max.",
+          "msg": {"ar": "عدد النقاط {count} والحد الأقصى {max}.", "en": "The slide has {count} bullets; the limit is {max}."},
+          "fix": {"ar": "أبقِ أهم {max} نقاط وانقل الباقي إلى سلايد آخر.", "en": "Keep the best {max} bullets and move the rest to another slide."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "C2.bullets-dense",
+          "sev": "BLOCK",
+          "params": {
+            "max": {"$platform": "plugin.text.denseBulletsMax"},
+            "denseTypes": {"$platform": "plugin.text.denseTypes"}
+          },
+          "autofix": null,
+          "when": "A checklist or summary slide has more bullets than params.max.",
+          "msg": {"ar": "عدد نقاط القائمة {count} والحد الأقصى {max}.", "en": "The list has {count} items; the limit is {max}."},
+          "fix": {"ar": "قسّم القائمة على سلايدين.", "en": "Split the list over two slides."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "C2.dense-words",
+          "sev": "FIX",
+          "appliesTo": {
+            "slideTypes": ["checklist", "summary", "grid", "timeline"]
+          },
+          "params": {
+            "max": {"$platform": "plugin.text.denseMaxWords"}
+          },
+          "autofix": null,
+          "when": "Words of title + bullets + items + bridge on a checklist, summary, grid or timeline slide are greater than params.max.",
+          "msg": {"ar": "عدد كلمات القائمة أو البطاقات {count} والحد الأقصى {max}.", "en": "The list or card slide has {count} words; the limit is {max}."},
+          "fix": {"ar": "اختصر الصياغة أو قسّم القائمة.", "en": "Tighten the wording or split the list."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "C2.slide-words",
+          "sev": "FIX",
+          "params": {
+            "max": {"$platform": "plugin.text.slideMaxWords"}
+          },
+          "autofix": null,
+          "when": "Words of all visible slide copy (kicker, headline, title, number, sub, body, bullets, sides, attribution, bridge, CTA text, demo lines and caption, items, art labels, track numerals) are greater than params.max.",
+          "msg": {"ar": "عدد كلمات السلايد {count} والسقف {max}.", "en": "The slide has {count} words; the ceiling is {max}."},
+          "fix": {"ar": "انقل الفكرة الثانية إلى سلايد آخر.", "en": "Move the second idea to its own slide."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "C2.bridge-words",
+          "sev": "FIX",
+          "params": {
+            "max": {"$platform": "plugin.text.bridgeMaxWords"}
+          },
+          "autofix": null,
+          "when": "wordCount(stripMarkup(bridge)) is greater than params.max.",
+          "msg": {"ar": "عدد كلمات جملة الربط {count} والحد الأقصى {max}.", "en": "The bridge line has {count} words; the limit is {max}."},
+          "fix": {"ar": "اجعلها جملة تشويق قصيرة تقود إلى السلايد التالي.", "en": "Make it a short teaser that leads to the next slide."},
+          "vars": ["count", "max", "text"]
+        },
+        {
+          "id": "C2.cta-words",
+          "sev": "FIX",
+          "appliesTo": {
+            "slideTypes": ["cta"]
+          },
+          "params": {
+            "max": {"$platform": "plugin.text.ctaMaxWords"}
+          },
+          "autofix": null,
+          "when": "Words of title + body + CTA text on a cta slide are greater than params.max.",
+          "msg": {"ar": "عدد كلمات سلايد الدعوة {count} والحد الأقصى {max}.", "en": "The call-to-action slide has {count} words; the limit is {max}."},
+          "fix": {"ar": "اكتفِ بجملة واحدة وزر واحد.", "en": "Keep one sentence and one button."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "C2.share-words",
+          "sev": "FIX",
+          "appliesTo": {
+            "slideTypes": ["share"]
+          },
+          "params": {
+            "max": {"$platform": "plugin.text.shareMaxWords"}
+          },
+          "autofix": null,
+          "when": "Words of headline + sub on a share slide are greater than params.max.",
+          "msg": {"ar": "عدد كلمات سلايد المشاركة {count} والحد الأقصى {max}.", "en": "The share slide has {count} words; the limit is {max}."},
+          "fix": {"ar": "اكتب جملة واحدة: لمن يُرسَل ولماذا.", "en": "Write one sentence: who to send it to and why."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "C2.body-with-art",
+          "sev": "FIX",
+          "sevs": ["NOTE", "FIX"],
+          "appliesTo": {
+            "slideTypes": ["item", "step", "stat", "compare", "myth-fact", "quote", "story-beat", "setup", "proof", "testimonial", "grid", "timeline"]
+          },
+          "deferred": {"engines": ["py"], "by": "Q6"},
+          "params": {
+            "bodyMax": {"$platform": "plugin.visual.words.bodyWithArt"},
+            "slideMax": {"$platform": "plugin.text.slideMaxWords"},
+            "anchorKinds": ["mock", "chart"]
+          },
+          "autofix": {"kind": "split", "chain": ["split"], "engines": ["js"]},
+          "when": "Text: a mock or labelled-chart slide has a body over params.bodyMax words (NOTE), or its slide copy is over params.slideMax words (FIX).",
+          "msg": {"ar": "نص السلايد طويل بجانب عنصر بصري يحمل كلامًا: {count} كلمة والحد {max}.", "en": "The text is long next to a visual that carries words: {count} words; the limit is {max}."},
+          "fix": {"ar": "اختصر النص أو وزّعه على سلايدين.", "en": "Shorten the text or split it over two slides."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "C2.demo-words",
+          "sev": "FIX",
+          "deferred": {"engines": ["py"], "by": "Q6"},
+          "params": {
+            "demo": {"$platform": "plugin.visual.words.demo"}
+          },
+          "autofix": null,
+          "when": "Text: slide.demo breaks params.demo (lines, words and characters per line, caption words and characters).",
+          "msg": {"ar": "نص المثال في {el} يتجاوز الحد: {count} والحد {max}.", "en": "The demo text at {el} is over the limit: {count}; the limit is {max}."},
+          "fix": {"ar": "اختصر نص المثال إلى {max} أو أقل.", "en": "Cut the demo text to {max} or less."},
+          "vars": ["el", "count", "max"]
+        },
+        {
+          "id": "C2.demo-missing",
+          "sev": "NOTE",
+          "deferred": {"engines": ["py"], "by": "Q6"},
+          "params": {
+            "needsDemo": ["step", "story-beat", "setup", "share", "testimonial", "cta"]
+          },
+          "autofix": null,
+          "when": "Text: a slide of a type in params.needsDemo (cta only when it is a keyword CTA) has no slide.demo, so the planner falls back to a non-mock anchor.",
+          "msg": {"ar": "السلايد من نوع {type} يحتاج سطور مثال ولا يحتوي عليها.", "en": "A {type} slide needs demo lines and has none."},
+          "fix": {"ar": "اكتب سطور المثال، أو اقبل عنصرًا بصريًا بلا محاكاة.", "en": "Write the demo lines, or accept an anchor without a mock."},
+          "vars": ["type"]
+        },
+        {
+          "id": "C2.demo-duplicate",
+          "sev": "NOTE",
+          "deferred": {"engines": ["py"], "by": "Q6"},
+          "params": {
+            "demo": {"$platform": "plugin.visual.words.demo"}
+          },
+          "autofix": null,
+          "when": "Text: a demo line shares more than params.demo.duplicateShare percent of its words with the body.",
+          "msg": {"ar": "سطر المثال في {el} يكرر {pct}% من كلمات النص.", "en": "The demo line at {el} repeats {pct}% of the body words."},
+          "fix": {"ar": "اجعل السطر يقول شيئًا غير موجود في النص.", "en": "Make the line say something the body does not."},
+          "vars": ["el", "pct"]
+        },
+        {
+          "id": "C2.figure-repeat",
+          "sev": "NOTE",
+          "deferred": {"engines": ["py"], "by": "Q6"},
+          "params": {
+            "max": {"$platform": "plugin.visual.words.figureRepeatMax"}
+          },
+          "autofix": null,
+          "when": "Text: one numeric token appears more than params.max times on a slide, art labels included.",
+          "msg": {"ar": "الرقم {text} يتكرر {count} مرات على السلايد والحد {max}.", "en": "The figure {text} appears {count} times on the slide; the limit is {max}."},
+          "fix": {"ar": "اترك الرقم في موضعين على الأكثر.", "en": "Keep the figure in two places at most."},
+          "vars": ["text", "count", "max"]
+        },
+        {
+          "id": "C2.text-dropped",
+          "sev": "BLOCK",
+          "scope": "rendered",
+          "engines": ["js"],
+          "params": {},
+          "autofix": null,
+          "when": "Rendered, JS only: a non-empty text field of the slide in the spec (title, headline, sub, body, bullets, sides, items, demo lines and caption, cta text, attribution, quote, number value and unit) is absent from the rendered text of that slide, art labels included; one finding per missing field; technical, not overridable.",
+          "msg": {"ar": "النص في {el} موجود في المحتوى ولم يظهر على السلايد.", "en": "The text at {el} is in the spec but is not on the slide."},
+          "fix": {"ar": "أعد بناء السلايد حتى يظهر النص كاملًا.", "en": "Rebuild the slide so the whole text shows."},
+          "vars": ["el"]
+        },
+        {
+          "id": "C2.text-duplicated",
+          "sev": "BLOCK",
+          "scope": "rendered",
+          "engines": ["js"],
+          "params": {},
+          "autofix": null,
+          "when": "Rendered, JS only: the same spec text is drawn by two non-decor nodes with different slot keys on one slide (native sides or bullets and art labels); aria-hidden and data-decor copies are not counted.",
+          "msg": {"ar": "النص في {el} مرسوم مرتين على السلايد.", "en": "The text at {el} is drawn twice on the slide."},
+          "fix": {"ar": "احذف النسخة الزائدة من النص.", "en": "Remove the extra copy of the text."},
+          "vars": ["el"]
+        },
+        {
+          "id": "C2.word-echo",
+          "sev": "NOTE",
+          "scope": "spec",
+          "deferred": {"engines": ["py"], "by": "Q6"},
+          "params": {
+            "max": {"$platform": "plugin.visual.wordEcho.max"}
+          },
+          "autofix": null,
+          "when": "Spec: the text of a word anchor (visual.anchor.kind word) shows params.max or more times as a whole word across the title and cta texts of the deck.",
+          "msg": {"ar": "الكلمة الكبيرة {word} تتكرر كثيرًا في العناوين ونص الدعوة.", "en": "The big word {word} repeats too often across the titles and the call to action."},
+          "fix": {"ar": "غيّر كلمة العنصر أو العنوان حتى لا تتكرر.", "en": "Change the anchor word or the title so it does not repeat."},
+          "vars": ["word"]
+        }
+      ]
+    },
+    {
+      "id": "C3",
+      "title": {"ar": "السلايد الثاني", "en": "Slide 2"},
+      "scope": "text",
+      "engines": ["py", "js"],
+      "appliesTo": {
+        "formats": ["carousel"],
+        "slidePositions": [2]
+      },
+      "overridable": true,
+      "checks": [
+        {
+          "id": "C3.words",
+          "sev": "BLOCK",
+          "params": {
+            "max": {"$platform": "plugin.slide2.maxWords"}
+          },
+          "autofix": null,
+          "when": "Words of the slide-2 copy (all visible fields except bridge and CTA text) are greater than params.max.",
+          "msg": {"ar": "عدد كلمات السلايد الثاني {count} والحد الأقصى {max}.", "en": "Slide 2 has {count} words; the limit is {max}."},
+          "fix": {"ar": "السلايد الثاني غلاف بديل: ادخل في الفائدة من أول سطر.", "en": "Slide 2 is a second cover: get to the payoff from the first line."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "C3.intro",
+          "sev": "BLOCK",
+          "params": {
+            "list": "introPhrases"
+          },
+          "autofix": null,
+          "when": "An entry of copy.json lists[params.list] matches the slide-2 copy.",
+          "msg": {"ar": "السلايد الثاني يبدأ بمقدمة: «{text}».", "en": "Slide 2 opens with an intro: “{text}”."},
+          "fix": {"ar": "احذف المقدمة وابدأ بأول فائدة مباشرة.", "en": "Cut the intro and open with the first payoff."},
+          "vars": ["text"]
+        },
+        {
+          "id": "C3.type",
+          "sev": "NOTE",
+          "params": {
+            "allowed": ["rehook", "item", "stat", "proof", "myth-fact"]
+          },
+          "autofix": null,
+          "when": "The type of slide 2 is not in params.allowed.",
+          "msg": {"ar": "نوع السلايد الثاني ({type}) لا يدفع الفائدة فورًا.", "en": "Slide 2 is a {type} slide, which does not pay off at once."},
+          "fix": {"ar": "استخدم سلايدًا يبدأ بأقوى نقطة أو بدليل.", "en": "Use a slide that opens with the strongest point or proof."},
+          "vars": ["type"]
+        }
+      ]
+    },
+    {
+      "id": "C4",
+      "title": {"ar": "دعوة الإجراء", "en": "Call to action"},
+      "scope": "text",
+      "engines": ["py", "js"],
+      "checks": [
+        {
+          "id": "C4.count",
+          "sev": "BLOCK",
+          "appliesTo": {
+            "formats": ["carousel"]
+          },
+          "autofix": null,
+          "when": "Carousel with slides in which no slide carries a cta object.",
+          "msg": {"ar": "لا توجد دعوة لإجراء في الكاروسيل.", "en": "The carousel has no call to action."},
+          "fix": {"ar": "أضف دعوة واحدة في آخر سلايد: حفظ أو إرسال أو سؤال.", "en": "Add one call to action on the last slide: save, send or a question."}
+        },
+        {
+          "id": "C4.multiple",
+          "sev": "BLOCK",
+          "appliesTo": {
+            "formats": ["carousel"]
+          },
+          "autofix": null,
+          "when": "Carousel in which the cta objects use more than one distinct kind (the same kind repeated, for example on an offer slide and the closing slide, counts as one ask).",
+          "msg": {"ar": "عدد أنواع الدعوة في الكاروسيل {count} والمطلوب نوع واحد.", "en": "The carousel asks for {count} different actions; it should ask for one."},
+          "fix": {"ar": "اترك دعوة واحدة فقط تناسب هدف البوست.", "en": "Keep a single call to action that matches the post goal."},
+          "vars": ["count"]
+        },
+        {
+          "id": "C4.position",
+          "sev": "FIX",
+          "appliesTo": {
+            "formats": ["carousel"]
+          },
+          "autofix": null,
+          "when": "A cta slide is neither the last slide nor the one before it.",
+          "msg": {"ar": "الدعوة ليست في آخر سلايدين.", "en": "The call to action is not on the last two slides."},
+          "fix": {"ar": "انقلها إلى آخر الكاروسيل بعد الفائدة مباشرة.", "en": "Move it to the end, right after the payoff."}
+        },
+        {
+          "id": "C4.intent",
+          "sev": "FIX",
+          "params": {
+            "allowedByIntent": {"$platform": "plugin.cta.allowedByIntent"}
+          },
+          "autofix": null,
+          "when": "spec.intent is set and a cta kind is not in params.allowedByIntent[intent].",
+          "msg": {"ar": "نوع الدعوة ({kindAr}) لا يناسب هدف البوست ({intentAr}).", "en": "A “{kindEn}” call to action does not fit a {intentEn} post."},
+          "fix": {"ar": "اختر دعوة تناسب الهدف: {allowedAr}.", "en": "Pick one that fits the goal: {allowedEn}."},
+          "vars": ["kindAr", "kindEn", "intentAr", "intentEn", "allowedAr", "allowedEn"]
+        },
+        {
+          "id": "C4.bait",
+          "sev": "BLOCK",
+          "params": {
+            "list": "commentBait"
+          },
+          "autofix": null,
+          "when": "An entry of copy.json lists[params.list] matches a slide cta text or captionPack.cta.",
+          "msg": {"ar": "الدعوة تطلب تعليقًا بكلمة أو رمز: «{text}».", "en": "The call to action begs for a comment word or emoji: “{text}”."},
+          "fix": {"ar": "استبدلها بدعوة حفظ أو إرسال مع سبب واضح.", "en": "Replace it with a save or send call that gives a reason."},
+          "vars": ["text"]
+        },
+        {
+          "id": "C4.keyword-asset",
+          "sev": "BLOCK",
+          "params": {
+            "requireInstant": {"$platform": "plugin.cta.keywordDmRequiresInstantAsset"}
+          },
+          "autofix": null,
+          "when": "A cta has kind keyword-dm and captionPack.asset is missing or its delivery is not instant.",
+          "msg": {"ar": "دعوة الكلمة المفتاحية بلا ملف جاهز للإرسال الفوري.", "en": "A keyword-to-DM call needs an asset that is delivered instantly."},
+          "fix": {"ar": "أضف الملف وتأكد من الإرسال الفوري أو غيّر نوع الدعوة.", "en": "Attach the asset and make delivery instant, or change the call."}
+        },
+        {
+          "id": "C4.early",
+          "sev": "BLOCK",
+          "appliesTo": {
+            "formats": ["carousel"]
+          },
+          "autofix": null,
+          "when": "In a carousel, a cta (on any slide that is not an offer slide) sits in the first half of the deck: its position is at most floor(slideCount / 2).",
+          "msg": {"ar": "الدعوة ظهرت قبل الفائدة (السلايد {n}).", "en": "The call to action appears before the payoff (slide {n})."},
+          "fix": {"ar": "انقلها إلى ما بعد آخر نقطة.", "en": "Move it after the last point."},
+          "vars": ["n"]
+        }
+      ]
+    },
+    {
+      "id": "C5",
+      "title": {"ar": "بنية الكاروسيل", "en": "Structure"},
+      "scope": "text",
+      "engines": ["py", "js"],
+      "appliesTo": {
+        "formats": ["carousel"]
+      },
+      "checks": [
+        {
+          "id": "C5.slide-count",
+          "sev": "BLOCK",
+          "params": {
+            "min": {"$platform": "plugin.slides.hardMin"},
+            "max": {"$platform": "plugin.slides.hardMax"}
+          },
+          "autofix": null,
+          "when": "The carousel has at least one slide and fewer than params.min or more than params.max slides.",
+          "msg": {"ar": "عدد السلايدات {count} والمسموح من {min} إلى {max}.", "en": "The carousel has {count} slides; the allowed range is {min} to {max}."},
+          "fix": {"ar": "اجعل العدد بين {min} و{max}.", "en": "Bring the count to between {min} and {max}."},
+          "vars": ["count", "min", "max"]
+        },
+        {
+          "id": "C5.slide-count-low",
+          "sev": "FIX",
+          "params": {
+            "hardMin": {"$platform": "plugin.slides.hardMin"},
+            "min": {"$platform": "plugin.slides.warnBelow"},
+            "recMin": {"$platform": "plugin.slides.recommendedMin"},
+            "recMax": {"$platform": "plugin.slides.recommendedMax"}
+          },
+          "autofix": null,
+          "when": "The slide count is at least params.hardMin and below params.min.",
+          "msg": {"ar": "عدد السلايدات {count} أقل من {min}.", "en": "{count} slides is fewer than {min}."},
+          "fix": {"ar": "أضف سلايدات تدفع فائدة جديدة؛ الأفضل من {recMin} إلى {recMax}.", "en": "Add slides that each pay off; {recMin} to {recMax} works best."},
+          "vars": ["count", "min", "recMin", "recMax"]
+        },
+        {
+          "id": "C5.slide-count-range",
+          "sev": "NOTE",
+          "params": {
+            "warnBelow": {"$platform": "plugin.slides.warnBelow"},
+            "hardMax": {"$platform": "plugin.slides.hardMax"},
+            "min": {"$platform": "plugin.slides.recommendedMin"},
+            "max": {"$platform": "plugin.slides.recommendedMax"}
+          },
+          "autofix": null,
+          "when": "The slide count is from params.warnBelow up to params.hardMax but outside params.min to params.max.",
+          "msg": {"ar": "عدد السلايدات {count} خارج المدى الأفضل من {min} إلى {max}.", "en": "{count} slides is outside the sweet spot of {min} to {max}."},
+          "fix": {"ar": "اجعل كل سلايد يدفع فائدة؛ الأفضل من {min} إلى {max}.", "en": "Make every slide pay off; {min} to {max} works best."},
+          "vars": ["count", "min", "max"]
+        },
+        {
+          "id": "C5.skeleton",
+          "sev": "FIX",
+          "params": {
+            "first": ["cover"],
+            "last": ["cta", "offer"]
+          },
+          "autofix": null,
+          "when": "The first slide is not of type cover, or the last slide is not of type cta or offer.",
+          "msg": {"ar": "بنية الكاروسيل ناقصة: يجب أن يبدأ بغلاف وينتهي بدعوة أو عرض.", "en": "The structure is off: it must open with a cover and end with a call-to-action or offer slide."},
+          "fix": {"ar": "ابدأ بسلايد غلاف وانهِ بسلايد دعوة.", "en": "Open with a cover slide and close with a call-to-action slide."}
+        },
+        {
+          "id": "C5.bridge",
+          "sev": "FIX",
+          "params": {
+            "types": ["rehook", "item", "step", "stat", "compare", "myth-fact", "proof", "setup", "story-beat", "grid", "timeline"]
+          },
+          "autofix": null,
+          "when": "A slide of one of params.types, that is not the last slide, has no bridge text.",
+          "msg": {"ar": "لا توجد جملة ربط في هذا السلايد.", "en": "This slide has no bridge line."},
+          "fix": {"ar": "أنهِ السلايد بجملة تشويق تقود إلى التالي.", "en": "End the slide with a teaser line that leads to the next one."}
+        },
+        {
+          "id": "C5.voice-drift",
+          "sev": "FIX",
+          "engines": ["py"],
+          "params": {
+            "iqr": {"$platform": "plugin.voice.driftIqr"}
+          },
+          "autofix": null,
+          "when": "Python only (voice_check.py): a style metric of the copy lies more than params.iqr times the interquartile range outside the brand fingerprint.",
+          "msg": {"ar": "نبرة النص تبتعد عن بصمة صوت البراند.", "en": "The copy drifts from the brand's voice fingerprint."},
+          "fix": {"ar": "أعد الصياغة بما يقارب جمل البراند وعباراته المعتادة.", "en": "Rewrite closer to the brand's usual sentences and phrases."}
+        }
+      ]
+    },
+    {
+      "id": "C6",
+      "title": {"ar": "عدّاد القائمة", "en": "List count"},
+      "scope": "text",
+      "engines": ["py", "js"],
+      "appliesTo": {
+        "formats": ["carousel"]
+      },
+      "checks": [
+        {
+          "id": "C6.list-count",
+          "sev": "BLOCK",
+          "params": {
+            "architectures": ["listicle", "steps"],
+            "slideTypes": ["item", "step"],
+            "min": 2,
+            "max": 99
+          },
+          "autofix": null,
+          "when": "Architecture is listicle or steps, the cover text names counted integers (2 to 99) in front of a noun, none of them equals the number of item and step slides, and that number is not zero.",
+          "msg": {"ar": "الغلاف يَعِد بـ{count} لكن عدد سلايدات العناصر {n}.", "en": "The cover promises {count} but there are {n} item slides."},
+          "fix": {"ar": "طابق الرقم على الغلاف مع عدد السلايدات، أو أضف عناصر أو احذفها.", "en": "Make the cover number match the item slides, or add or remove items."},
+          "vars": ["count", "n"]
+        },
+        {
+          "id": "C6.slide2-promise",
+          "sev": "FIX",
+          "params": {
+            "architectures": ["listicle", "steps", "framework"],
+            "itemTypes": ["item", "step"],
+            "min": 2,
+            "max": 99
+          },
+          "autofix": null,
+          "when": "Architecture is listicle, steps or framework, the cover text names a counted integer (2 to 99) in front of a noun, slide 2 is not itself an item or step slide, and slide 2 contains neither one of those integers nor the title of the first item or step slide that follows it.",
+          "msg": {"ar": "الغلاف يَعِد بـ{count} والسلايد الثاني لا يذكر الرقم ولا أول عنصر، فمن يصل إليه من هناك لا يرى الوعد.", "en": "The cover promises {count} but slide 2 names neither the number nor the first item, so a viewer who starts there never sees the promise."},
+          "fix": {"ar": "اذكر الرقم {count} في السلايد الثاني ولمّح لأول عنصر، فالسلايد الثاني غلاف ثانٍ.", "en": "Put {count} on slide 2 and tease the first item; slide 2 is a second cover."},
+          "vars": ["count"]
+        }
+      ]
+    },
+    {
+      "id": "C7",
+      "title": {"ar": "التكرار", "en": "Repetition"},
+      "scope": "text",
+      "engines": ["py", "js"],
+      "checks": [
+        {
+          "id": "C7.cta-repeat",
+          "sev": "FIX",
+          "params": {
+            "window": {"$platform": "plugin.history.ctaRepeatWindow"}
+          },
+          "autofix": null,
+          "when": "The cta kind of this post equals the cta of one of the last params.window posts in history.",
+          "msg": {"ar": "نوع الدعوة «{kindAr}» مكرر من البوستات الأخيرة.", "en": "The “{kindEn}” call to action repeats a recent post."},
+          "fix": {"ar": "بدّل نوع الدعوة: حفظ أو إرسال أو سؤال.", "en": "Rotate the call: save, send or a question."},
+          "vars": ["kindAr", "kindEn"]
+        },
+        {
+          "id": "C7.family-repeat",
+          "sev": "FIX",
+          "params": {
+            "window": {"$platform": "plugin.history.familyRepeatWindow"}
+          },
+          "autofix": null,
+          "when": "spec.hook.family equals the family of one of the last params.window posts in history.",
+          "msg": {"ar": "عائلة الهوك {family} مكررة من البوستات الأخيرة.", "en": "Hook family {family} repeats a recent post."},
+          "fix": {"ar": "اختر هوكًا من عائلة مختلفة.", "en": "Pick a hook from a different family."},
+          "vars": ["family"]
+        },
+        {
+          "id": "C7.hook-similar",
+          "sev": "FIX",
+          "params": {
+            "max": {"$platform": "plugin.similarity.hookReuseMax"}
+          },
+          "autofix": null,
+          "when": "similarity(hook cover, cover or text of a history entry) is at least params.max.",
+          "msg": {"ar": "الهوك يشبه هوكًا سابقًا بنسبة {score}%.", "en": "The hook is {score}% similar to one you used before."},
+          "fix": {"ar": "اكتب صياغة جديدة بزاوية مختلفة.", "en": "Write a fresh phrasing from a different angle."},
+          "vars": ["score"]
+        },
+        {
+          "id": "C7.max-use",
+          "sev": "FIX",
+          "autofix": null,
+          "when": "The caller passed familyLimits for spec.hook.family and the family appears in history more often than allowed within the last limit.posts posts.",
+          "msg": {"ar": "عائلة الهوك {family} تجاوزت حد التكرار المسموح.", "en": "Hook family {family} exceeded its allowed repeat limit."},
+          "fix": {"ar": "اترك بضعة بوستات قبل إعادة استخدامها.", "en": "Leave a few posts before using it again."},
+          "vars": ["family"],
+          "note": "Needs familyLimits (from hooks/families.json maxUsePer); skipped when the caller has none."
+        }
+      ]
+    },
+    {
+      "id": "C8",
+      "title": {"ar": "لغة الكتابة", "en": "Voice"},
+      "scope": "text",
+      "engines": ["py", "js"],
+      "checks": [
+        {
+          "id": "C8.ai-words",
+          "sev": "FIX",
+          "params": {
+            "list": "aiWords"
+          },
+          "autofix": null,
+          "when": "An entry of copy.json lists[params.list] matches slide or caption copy.",
+          "msg": {"ar": "كلمة تبدو مولّدة آليًا: «{text}».", "en": "Reads like AI filler: “{text}”."},
+          "fix": {"ar": "استبدلها بكلمة بسيطة ومحددة.", "en": "Swap it for a plain, specific word."},
+          "vars": ["text"]
+        },
+        {
+          "id": "C8.stock-opener",
+          "sev": "FIX",
+          "params": {
+            "list": "stockOpeners"
+          },
+          "autofix": null,
+          "when": "An entry of lists[params.list] matches at the start of the cover headline, the slide-2 headline or caption.firstLine.",
+          "msg": {"ar": "افتتاحية مستهلكة: «{text}».", "en": "Stock opener: “{text}”."},
+          "fix": {"ar": "ابدأ بالفكرة نفسها مباشرة.", "en": "Start with the idea itself."},
+          "vars": ["text"]
+        },
+        {
+          "id": "C8.translationese",
+          "sev": "FIX",
+          "params": {
+            "list": "translationese"
+          },
+          "autofix": null,
+          "when": "An entry of lists[params.list] matches slide or caption copy.",
+          "msg": {"ar": "تركيب مترجَم حرفيًا: «{text}».", "en": "Literal-translation phrasing: “{text}”."},
+          "fix": {"ar": "أعد صياغته كما تقوله بلهجتك.", "en": "Say it the way you would in your dialect."},
+          "vars": ["text"]
+        },
+        {
+          "id": "C8.stiff-msa",
+          "sev": "FIX",
+          "appliesTo": {
+            "dialects": ["eg", "gulf", "levant"]
+          },
+          "params": {
+            "list": "stiffMsa"
+          },
+          "autofix": null,
+          "when": "Dialect posts only (eg, gulf, levant): an entry of lists[params.list] matches slide or caption copy.",
+          "msg": {"ar": "عبارة رسمية جامدة: «{text}».", "en": "Stiff formal phrasing: “{text}”."},
+          "fix": {"ar": "استبدلها بعبارة أخف وأقرب إلى أسلوبك.", "en": "Use a lighter phrase closer to your voice."},
+          "vars": ["text"]
+        },
+        {
+          "id": "C8.hype",
+          "sev": "FIX",
+          "params": {
+            "list": "hypeWords"
+          },
+          "autofix": null,
+          "when": "An entry of lists[params.list] matches slide or caption copy.",
+          "msg": {"ar": "عبارة مبالغ فيها: «{text}».", "en": "Hype phrase: “{text}”."},
+          "fix": {"ar": "اذكر النتيجة الفعلية بدل المبالغة.", "en": "State the actual result instead."},
+          "vars": ["text"]
+        },
+        {
+          "id": "C8.abstract",
+          "sev": "NOTE",
+          "params": {
+            "list": "abstractWords"
+          },
+          "autofix": null,
+          "when": "An entry of lists[params.list] matches slide or caption copy.",
+          "msg": {"ar": "كلمة مجرّدة: «{text}».", "en": "Abstract word: “{text}”."},
+          "fix": {"ar": "استبدلها بمثال أو رقم محدد.", "en": "Replace it with a concrete example or number."},
+          "vars": ["text"]
+        }
+      ]
+    },
+    {
+      "id": "C9",
+      "title": {"ar": "الكابشن", "en": "Caption pack"},
+      "scope": "text",
+      "engines": ["py", "js"],
+      "checks": [
+        {
+          "id": "C9.length",
+          "sev": "FIX",
+          "params": {
+            "range": {"$platform": "plugin.caption.defaultChars"},
+            "fastRange": {"$platform": "plugin.caption.fastChars"}
+          },
+          "autofix": null,
+          "when": "Characters (code points, NFC) of the assembled caption lie outside params.range (guided mode) or outside both params.range and params.fastRange (fast mode).",
+          "msg": {"ar": "طول الكابشن {count} حرفًا والمدى المعتاد من {min} إلى {max}.", "en": "The caption is {count} characters; the usual band is {min} to {max}."},
+          "fix": {"ar": "اجعله بين {min} و{max} حرفًا.", "en": "Bring it to between {min} and {max} characters."},
+          "vars": ["count", "min", "max"]
+        },
+        {
+          "id": "C9.short-caption",
+          "sev": "NOTE",
+          "appliesTo": {
+            "modes": ["fast"]
+          },
+          "params": {
+            "range": {"$platform": "plugin.caption.defaultChars"},
+            "fastRange": {"$platform": "plugin.caption.fastChars"}
+          },
+          "autofix": null,
+          "when": "Fast mode: the caption is shorter than params.range[0] but inside params.fastRange.",
+          "msg": {"ar": "كابشن قصير ({count} حرفًا)؛ مناسب للوضع السريع فقط.", "en": "Short caption ({count} characters); fine in fast mode only."},
+          "fix": {"ar": "أضف ملخصًا مرقّمًا ودعوة لتصل إلى {min} حرفًا.", "en": "Add a numbered summary and a call to reach {min} characters."},
+          "vars": ["count", "min"]
+        },
+        {
+          "id": "C9.length-hard",
+          "sev": "BLOCK",
+          "params": {
+            "max": {"$platform": "platform.caption.maxChars"}
+          },
+          "autofix": null,
+          "when": "UTF-16 length of the assembled caption (NFC) is greater than params.max.",
+          "msg": {"ar": "الكابشن {count} حرفًا وهو أطول من حد Instagram ({max}).", "en": "The caption is {count} characters, over Instagram's cap of {max}."},
+          "fix": {"ar": "اختصر الكابشن إلى أقل من {max} حرفًا.", "en": "Cut the caption to under {max} characters."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "C9.first-line",
+          "sev": "FIX",
+          "params": {
+            "max": {"$platform": "plugin.caption.firstLineMaxChars"}
+          },
+          "autofix": null,
+          "when": "Characters of captionPack.firstLine are greater than params.max.",
+          "msg": {"ar": "السطر الأول {count} حرفًا والظاهر قبل «المزيد» نحو {max}.", "en": "Line 1 is {count} characters; about {max} show before “more”."},
+          "fix": {"ar": "اجعل أول سطر جملة قصيرة تفتح سببًا جديدًا للسحب.", "en": "Make line 1 a short sentence that opens a fresh reason to swipe."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "C9.first-line-similarity",
+          "sev": "FIX",
+          "params": {
+            "max": {"$platform": "plugin.caption.firstLineMaxSimilarityToCover"}
+          },
+          "autofix": null,
+          "when": "similarity(firstLine, cover text) is at least params.max.",
+          "msg": {"ar": "السطر الأول يكرر الغلاف (تشابه {score}%).", "en": "Line 1 repeats the cover ({score}% similar)."},
+          "fix": {"ar": "اكتب سببًا جديدًا للسحب بدل تكرار العنوان.", "en": "Give a new reason to swipe instead of repeating the headline."},
+          "vars": ["score"]
+        },
+        {
+          "id": "C9.keyword-line",
+          "sev": "FIX",
+          "autofix": null,
+          "when": "captionPack.keywordLine is empty.",
+          "msg": {"ar": "الجملة الثانية في الكابشن فارغة؛ مكانها الكلمة المفتاحية.", "en": "Caption sentence 2 is empty; it should hold the keyword."},
+          "fix": {"ar": "اكتب المصطلح العربي واسم الأداة معًا.", "en": "Write the Arabic term together with the tool name."}
+        },
+        {
+          "id": "C9.hashtags",
+          "sev": "BLOCK",
+          "params": {
+            "max": {"$platform": "plugin.hashtags.max"}
+          },
+          "autofix": null,
+          "when": "The number of hashtags (captionPack.hashtags plus #tags written inside the caption text) is greater than params.max.",
+          "msg": {"ar": "عدد الوسوم {count} والحد الأقصى {max}.", "en": "The caption has {count} hashtags; the limit is {max}."},
+          "fix": {"ar": "أبقِ أهم {max} وسوم محددة.", "en": "Keep the best {max} specific hashtags."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "C9.hashtags-form",
+          "sev": "FIX",
+          "autofix": null,
+          "when": "A hashtag is duplicated (case-insensitive after NFC) or does not match # followed by non-space characters.",
+          "msg": {"ar": "وسم مكرر أو غير صالح: «{text}».", "en": "Duplicate or malformed hashtag: “{text}”."},
+          "fix": {"ar": "احذف المكرر وتأكد أن الوسم كلمة واحدة بعد #.", "en": "Remove duplicates; a hashtag is one word after #."},
+          "vars": ["text"]
+        },
+        {
+          "id": "C9.per-slide",
+          "sev": "BLOCK",
+          "params": {
+            "required": {"$platform": "plugin.perSlideCaption.required"}
+          },
+          "autofix": null,
+          "when": "captionPack.perSlide is missing, shorter than the slide list, or an entry is empty.",
+          "msg": {"ar": "لا يوجد كابشن للسلايد {n}.", "en": "Slide {n} has no per-slide caption."},
+          "fix": {"ar": "أنشئ كابشنًا قصيرًا لكل سلايد (استخدامه اختياري).", "en": "Generate a short caption for every slide (using it is optional)."},
+          "vars": ["n"]
+        },
+        {
+          "id": "C9.per-slide-length",
+          "sev": "FIX",
+          "params": {
+            "max": {"$platform": "plugin.perSlideCaption.maxChars"}
+          },
+          "autofix": null,
+          "when": "Characters of a perSlide entry are greater than params.max.",
+          "msg": {"ar": "وصف السلايد {n} طوله {count} حرفًا والحد {max}.", "en": "Slide {n}'s caption is {count} characters; the cap is {max}."},
+          "fix": {"ar": "اختصره.", "en": "Shorten it."},
+          "vars": ["n", "count", "max"]
+        },
+        {
+          "id": "C9.alt-missing",
+          "sev": "BLOCK",
+          "params": {
+            "required": {"$platform": "plugin.alt.required"}
+          },
+          "autofix": null,
+          "when": "captionPack.alt is missing, shorter than the slide list, or an entry is empty.",
+          "msg": {"ar": "لا يوجد نص بديل للسلايد {n}.", "en": "Slide {n} has no alt text."},
+          "fix": {"ar": "اكتب نصًا بديلًا بالعربية يصف السلايد.", "en": "Write Arabic alt text that describes the slide."},
+          "vars": ["n"]
+        },
+        {
+          "id": "C9.alt-length",
+          "sev": "NOTE",
+          "params": {
+            "max": {"$platform": "plugin.alt.targetMaxChars"},
+            "hardMax": {"$platform": "plugin.alt.hardMaxChars"}
+          },
+          "autofix": null,
+          "when": "Characters of an alt entry are greater than params.max and at most params.hardMax.",
+          "msg": {"ar": "النص البديل للسلايد {n} طوله {count} حرفًا والمستهدف {max}.", "en": "The alt text of slide {n} is {count} characters; the target is {max}."},
+          "fix": {"ar": "اختصره ليبقى وصفًا مركّزًا.", "en": "Tighten it into a focused description."},
+          "vars": ["n", "count", "max"]
+        },
+        {
+          "id": "C9.alt-length-hard",
+          "sev": "BLOCK",
+          "params": {
+            "max": {"$platform": "plugin.alt.hardMaxChars"}
+          },
+          "autofix": null,
+          "when": "Characters of an alt entry are greater than params.max.",
+          "msg": {"ar": "النص البديل للسلايد {n} أطول من الحد ({max}).", "en": "The alt text of slide {n} is over the limit of {max}."},
+          "fix": {"ar": "اختصره إلى أقل من {max} حرفًا.", "en": "Cut it to under {max} characters."},
+          "vars": ["n", "count", "max"]
+        }
+      ]
+    },
+    {
+      "id": "C10",
+      "title": {"ar": "الأصالة", "en": "Originality"},
+      "scope": "text",
+      "engines": ["py", "js"],
+      "overridable": true,
+      "checks": [
+        {
+          "id": "C10.overlap-block",
+          "sev": "BLOCK",
+          "params": {
+            "ngram": 5,
+            "minGrams": 3,
+            "blockAt": 0.5,
+            "fixAt": 0.25
+          },
+          "autofix": null,
+          "when": "Share of the word 5-grams of a slide's copy or of the caption that also occur in the excerpts of url and file sources is at least params.blockAt.",
+          "msg": {"ar": "النص في {el} يتطابق مع المصدر بنسبة {pct}%.", "en": "The text in {el} matches the source by {pct}%."},
+          "fix": {"ar": "أعد الصياغة بكلماتك وأضف رأيك أو مثالك.", "en": "Rewrite it in your own words and add your view or example."},
+          "vars": ["el", "pct"],
+          "note": "Additive gate: 00-decisions requires transformed, not reposted, source material; CONTRACT 7.2 has no C10."
+        },
+        {
+          "id": "C10.overlap",
+          "sev": "FIX",
+          "params": {
+            "ngram": 5,
+            "minGrams": 3,
+            "blockAt": 0.5,
+            "fixAt": 0.25
+          },
+          "autofix": null,
+          "when": "Same measure, at least params.fixAt but below params.blockAt.",
+          "msg": {"ar": "النص في {el} قريب من المصدر ({pct}%).", "en": "The text in {el} is close to the source ({pct}%)."},
+          "fix": {"ar": "أعد الصياغة بكلماتك وأضف رأيك أو مثالك.", "en": "Rewrite it in your own words and add your view or example."},
+          "vars": ["el", "pct"]
+        },
+        {
+          "id": "C10.third-party",
+          "sev": "FIX",
+          "engines": ["model"],
+          "autofix": null,
+          "when": "Model check: a slide shows a screenshot, logo or watermark that belongs to someone else.",
+          "msg": {"ar": "لقطة أو شعار أو علامة مائية تخص جهة أخرى.", "en": "A screenshot, logo or watermark belongs to someone else."},
+          "fix": {"ar": "استبدلها بمحتواك أو احصل على إذن واضح.", "en": "Replace it with your own material or get clear permission."}
+        }
+      ]
+    },
+    {
+      "id": "O1",
+      "title": {"ar": "الإملاء واللهجة", "en": "Orthography and dialect"},
+      "scope": "text+model",
+      "engines": ["py", "js", "model"],
+      "overridable": true,
+      "dynamicRules": true,
+      "checks": [
+        {
+          "id": "O1.ortho",
+          "sev": "FIX",
+          "autofix": {"kind": "ortho", "engines": ["py", "js"]},
+          "when": "Template for every rule of ortho.json (the finding id is O1.<rule id in lower case>); severity, message and autofix come from the rule. Rules owned by N1 and B1 are skipped.",
+          "msg": {"ar": "قد تكون الكتابة الصحيحة «{fix}» بدل «{original}».", "en": "“{original}” is probably “{fix}”."},
+          "fix": {"ar": "اكتبها «{fix}».", "en": "Write “{fix}”."},
+          "vars": ["original", "fix"]
+        },
+        {
+          "id": "O1.deny-marker",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "A deny entry of dialects/<dialect>.json matches slide or caption copy and the word is not in brand.voice.allow.",
+          "msg": {"ar": "كلمة لا تناسب لهجة البوست: «{text}»{suggest}.", "en": "A word that does not fit this post's dialect: “{text}”{suggest}."},
+          "fix": {"ar": "استبدلها بما يقابلها في اللهجة المختارة، أو اعتمدها بزر التجاوز مع ذكر السبب.", "en": "Swap it for the chosen dialect's word, or approve it with the override button and a reason."},
+          "vars": ["text", "suggest"]
+        },
+        {
+          "id": "O1.warn-marker",
+          "sev": "FIX",
+          "autofix": null,
+          "when": "A warn entry of dialects/<dialect>.json matches slide or caption copy and the word is not in brand.voice.allow.",
+          "msg": {"ar": "قد لا تناسب لهجة البوست: «{text}»{suggest}.", "en": "May not fit this post's dialect: “{text}”{suggest}."},
+          "fix": {"ar": "راجع الكلمة أو اعتمدها بزر التجاوز مع ذكر السبب.", "en": "Review the word or approve it with the override button and a reason."},
+          "vars": ["text", "suggest"]
+        },
+        {
+          "id": "O1.proofreader-veto",
+          "sev": "BLOCK",
+          "engines": ["model"],
+          "autofix": null,
+          "when": "Model check: the proofreader vetoes the copy (agreement, register, spelling it cannot fix deterministically).",
+          "msg": {"ar": "اعترض المدقق على النص.", "en": "The proofreader vetoed the copy."},
+          "fix": {"ar": "راجع ملاحظات المدقق وأعد الصياغة.", "en": "Read the proofreader's notes and rewrite."}
+        },
+        {
+          "id": "O1.dialect-purity",
+          "sev": "FIX",
+          "engines": ["model"],
+          "autofix": null,
+          "when": "Model check: the copy mixes two dialects beyond the deny markers.",
+          "msg": {"ar": "النص يخلط بين لهجتين.", "en": "The copy mixes two dialects."},
+          "fix": {"ar": "التزم بلهجة واحدة في البوست كله.", "en": "Keep one dialect across the whole post."}
+        }
+      ]
+    },
+    {
+      "id": "N1",
+      "title": {"ar": "الأرقام", "en": "Digits"},
+      "scope": "text",
+      "engines": ["py", "js"],
+      "checks": [
+        {
+          "id": "N1.mixed",
+          "sev": "BLOCK",
+          "autofix": {"kind": "digits", "engines": ["py", "js"]},
+          "when": "A field holds both Western and Arabic-Indic digits, ignoring handles, tags, URLs, e-mails, phones and tokens that carry a Latin letter (a field with Persian digits is reported by N1.persian instead). Slides, caption and alt text are all scanned.",
+          "msg": {"ar": "النص يخلط بين نظامي أرقام.", "en": "This text mixes two digit systems."},
+          "fix": {"ar": "وحّد الأرقام على نظام واحد.", "en": "Use one digit system."}
+        },
+        {
+          "id": "N1.persian",
+          "sev": "BLOCK",
+          "autofix": {"kind": "digits", "engines": ["py", "js"]},
+          "when": "A field contains a Persian digit (U+06F0 to U+06F9) outside the excluded tokens.",
+          "msg": {"ar": "النص فيه أرقام فارسية.", "en": "The text contains Persian digits."},
+          "fix": {"ar": "حوّلها إلى نظام أرقام البوست.", "en": "Convert them to the post's digit system."}
+        },
+        {
+          "id": "N1.system",
+          "sev": "BLOCK",
+          "autofix": {"kind": "digits", "engines": ["py", "js"]},
+          "when": "A field uses exactly one digit system (Western or Arabic-Indic) and it differs from spec.locale.digits.",
+          "msg": {"ar": "الأرقام لا تتبع نظام البوست، والمطلوب: {systemAr}.", "en": "Digits do not follow the post setting; expected {systemEn}."},
+          "fix": {"ar": "حوّلها إلى {systemAr}.", "en": "Convert them to {systemEn}."},
+          "vars": ["systemAr", "systemEn"]
+        },
+        {
+          "id": "N1.percent",
+          "sev": "BLOCK",
+          "autofix": {"kind": "digits", "engines": ["py", "js"]},
+          "when": "A percent sign next to a digit (one optional space) does not match the digit system: % belongs to Western digits and ٪ to Arabic-Indic digits.",
+          "msg": {"ar": "علامة النسبة لا تطابق نظام الأرقام.", "en": "The percent sign does not match the digit system."},
+          "fix": {"ar": "استخدم % مع الأرقام الغربية و٪ مع الهندية.", "en": "Use % with Western digits and ٪ with Arabic-Indic digits."}
+        }
+      ]
+    },
+    {
+      "id": "B1",
+      "title": {"ar": "اتجاه النص", "en": "Bidi"},
+      "scope": "text+rendered",
+      "engines": ["py", "js"],
+      "checks": [
+        {
+          "id": "B1.stranded-lam",
+          "sev": "BLOCK",
+          "appliesTo": {
+            "dialects": ["eg", "gulf", "levant", "msa-white"]
+          },
+          "autofix": {"kind": "bind", "engines": ["py", "js"]},
+          "when": "A one-letter or short clitic (لـ بـ كـ الـ بالـ وبـ …) ends in tatweel and is followed by whitespace and a Latin word, digit or currency sign.",
+          "msg": {"ar": "حرف الجر مفصول عن الكلمة اللاتينية: «{text}».", "en": "A prefix is stranded from its Latin word: “{text}”."},
+          "fix": {"ar": "احذف المسافة بعد حرف الوصل ليلتصق بالكلمة.", "en": "Remove the space after the connector so the prefix attaches."},
+          "vars": ["text"]
+        },
+        {
+          "id": "B1.unbound-pair",
+          "sev": "FIX",
+          "appliesTo": {
+            "dialects": ["eg", "gulf", "levant", "msa-white"]
+          },
+          "autofix": {"kind": "bind", "engines": ["py", "js"]},
+          "when": "Slide text only (captions are posted as plain text): a number token and the Arabic word after it (or a bindLabels word and the number after it) are separated by an ordinary space instead of U+00A0. One finding per element.",
+          "msg": {"ar": "الرقم والكلمة بعده غير مربوطين وقد ينفصلان في سطرين.", "en": "A number and its noun are not bound and may split across two lines."},
+          "fix": {"ar": "اربطهما بمسافة غير منقسمة (تلقائيًا).", "en": "Bind them with a no-break space (automatic)."}
+        },
+        {
+          "id": "B1.isolation",
+          "sev": "BLOCK",
+          "engines": ["js"],
+          "autofix": {"kind": "refit", "engines": ["js"]},
+          "when": "Rendered: a .cs-ltr run is laid out on more than one line, or two words joined by U+00A0 sit on different lines.",
+          "msg": {"ar": "عنصر لاتيني أو رقم انقسم على سطرين: «{text}».", "en": "A Latin run or a bound number was split across lines: “{text}”."},
+          "fix": {"ar": "أعد ضبط الأسطر أو اختصر النص ليبقى العنصر في سطر واحد.", "en": "Refit the lines or shorten the text so the run stays on one line."},
+          "vars": ["text"]
+        },
+        {
+          "id": "B1.raw-ltr",
+          "sev": "BLOCK",
+          "engines": ["js"],
+          "autofix": null,
+          "when": "Rendered: Latin letters sit in a text node that is not inside a .cs-ltr isolate.",
+          "msg": {"ar": "نص لاتيني غير معزول عن اتجاه الكتابة: «{text}»؛ هذا خلل في المحرك.", "en": "Latin text is not isolated from the RTL flow: “{text}”; this is an engine fault."},
+          "fix": {"ar": "أعد التصيير، وإن تكرر فأبلغ عن المشكلة.", "en": "Re-render; if it repeats, report the problem."},
+          "vars": ["text"]
+        }
+      ]
+    },
+    {
+      "id": "B2",
+      "title": {"ar": "عناصر الرأس الجاهزة", "en": "Placeholder chrome"},
+      "scope": "text",
+      "engines": ["py", "js"],
+      "checks": [
+        {
+          "id": "B2.placeholder-chrome",
+          "sev": "BLOCK",
+          "params": {
+            "handles": ["yourbrand", "yourbrandname", "yourbrandhere", "yourhandle", "yourname", "yourusername", "yourcompany", "yourbusiness", "yourpage", "brandhandle", "brandname", "handle", "username", "userhandle", "example", "exampleuser", "exampleaccount", "examplebrand", "sample", "samplebrand", "placeholder", "test", "testbrand", "testaccount", "demo", "demobrand", "brand", "account", "accountname", "companyname", "mybrand", "myhandle", "myname", "myaccount", "instagram", "name", "todo", "tbd", "xxx"],
+            "contains": ["yourbrand", "yourhandle", "yourusername", "brandhandle", "placeholder", "lorem"],
+            "names": ["your brand", "your brand name", "brand name", "your name", "company name", "business name", "your business", "demo brand", "example brand", "sample brand", "test brand", "براند تجريبي", "اسم البراند", "اسم الحساب", "اسم العلامة", "اسم العلامة التجارية", "اسم الشركة", "اسمك"],
+            "labels": ["meta label", "metalabel", "series label", "series name", "label", "text", "title", "اسم السلسلة", "عنوان السلسلة", "todo", "tbd", "xxx"],
+            "templateTokens": ["<", ">", "{{", "}}", "[", "]"]
+          },
+          "autofix": null,
+          "when": "The brand handle, the brand name or spec.style.metaLabel (the strings printed in the header of every slide, the MP4 and the PDF) is a stock example: a template token (angle or curly brackets, square brackets), a value of params (compared after NFC, lower case, folding marks and punctuation; handles also without spaces), contains one of params.contains, or has no letter or digit at all. Only the strings that are present are judged; an empty handle is fine (the slot is left out).",
+          "msg": {"ar": "{fieldAr} في رأس السلايدات نص مثال جاهز («{text}») وليس بيانات البراند الحقيقية.", "en": "The {fieldEn} in the slide header (“{text}”) is a stock example, not the brand's real one."},
+          "fix": {"ar": "اكتب القيمة الحقيقية في هوية البراند، أو اتركها فارغة لتختفي من الرأس، ثم أعد تصدير كل المقاسات والفيديو وملف الـPDF.", "en": "Set the real value in the Brand Book, or leave it empty so the slot is left out, then re-export every size, the MP4 and the PDF."},
+          "vars": ["fieldAr", "fieldEn", "text"]
+        }
+      ]
+    },
+    {
+      "id": "SRC1",
+      "title": {"ar": "المصادر", "en": "Sources"},
+      "scope": "text",
+      "engines": ["py", "js"],
+      "checks": [
+        {
+          "id": "SRC1.missing",
+          "sev": "BLOCK",
+          "params": {
+            "units": {
+              "percent": ["%", "٪", "بالمئة", "بالمية", "في المئة", "في المية", "percent"],
+              "currency": ["دولار", "دولارات", "جنيه", "جنيهات", "ريال", "ريالات", "درهم", "دراهم", "دينار", "دنانير", "يورو", "استرليني", "usd", "egp", "sar", "aed", "eur", "gbp", "dollar", "dollars", "euro", "euros", "pound", "pounds", "riyal", "dirham"],
+              "time": ["ثانية", "ثانيه", "ثواني", "ثوان", "دقيقة", "دقيقه", "دقايق", "دقائق", "ساعة", "ساعه", "ساعات", "ساعتين", "ساعتان", "يوم", "أيام", "ايام", "يومين", "أسبوع", "اسبوع", "أسابيع", "اسابيع", "اسبوعين", "شهر", "شهور", "أشهر", "اشهر", "شهرين", "سنة", "سنه", "سنين", "سنوات", "عام", "أعوام", "اعوام", "second", "seconds", "minute", "minutes", "hour", "hours", "day", "days", "week", "weeks", "month", "months", "year", "years"],
+              "magnitude": ["ألف", "الف", "آلاف", "مليون", "ملايين", "مليار", "مليارات", "k", "m", "b", "thousand", "million", "billion"],
+              "metric": ["مشاهدة", "مشاهدات", "حفظ", "متابع", "متابعين", "لايك", "إعجاب", "اعجاب", "تعليق", "تعليقات", "مشاركة", "مشاركات", "عميل", "عملاء", "زبون", "زبائن", "مبيعات", "views", "saves", "followers", "likes", "comments", "shares", "clients", "customers", "sales"],
+              "multiplier": ["مرة", "مرات", "ضعف", "أضعاف", "اضعاف", "x", "×"],
+              "measure": ["كيلو", "كيلوجرام", "جرام", "غرام", "متر", "كيلومتر", "سم", "لتر", "كجم", "كم", "سعرة", "سعرات", "كالوري", "kg", "km", "cm", "gb", "mb", "tb", "kb", "calories"]
+            },
+            "labelsList": "bindLabels",
+            "magnitudeMinValue": 10,
+            "yearMin": 1900,
+            "yearMax": 2100
+          },
+          "autofix": null,
+          "when": "A claimed number has no source: a number block (stat, proof, testimonial, offer) or a number in front of a unit word, percent or currency sign. Counts of items, dates, years, ordinals, step labels, counters, handles and phones are exempt. A slide's claim needs slide.sourceIds (or number.sourceId) that resolve in spec.sources, else any source whose excerpt, ref, location or formula holds the same number. A caption number needs any matching source or a sourced slide claim.",
+          "msg": {"ar": "الرقم «{text}» بلا مصدر.", "en": "The number “{text}” has no source."},
+          "fix": {"ar": "أضف مصدرًا للرقم، أو سجّله بيانًا منك بالزر الظاهر تحت هذه الملاحظة.", "en": "Add a source, or record the number as your own statement with the button under this note."},
+          "vars": ["text"]
+        },
+        {
+          "id": "SRC1.mismatch",
+          "sev": "FIX",
+          "autofix": null,
+          "when": "A slide's linked sources hold readable text (excerpt, ref, location, formula; calc sources are skipped), and none of it contains the claimed number after digit normalisation.",
+          "msg": {"ar": "المصدر المرتبط لا يحتوي الرقم «{text}».", "en": "The linked source does not contain the number “{text}”."},
+          "fix": {"ar": "صحّح الرقم أو اربط المصدر الصحيح.", "en": "Fix the number or link the right source."},
+          "vars": ["text"]
+        },
+        {
+          "id": "SRC1.unverified",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "A source linked from a slide has verified set to false.",
+          "msg": {"ar": "الرقم «{text}» يستند إلى مصدر غير موثّق.", "en": "The number “{text}” rests on an unverified source."},
+          "fix": {"ar": "تحقق من المصدر وعلّمه موثّقًا أو احذف الرقم.", "en": "Verify the source and mark it verified, or remove the number."},
+          "vars": ["text"]
+        }
+      ]
+    },
+    {
+      "id": "SEN1",
+      "title": {"ar": "الحساسيات", "en": "Sensitivities"},
+      "scope": "text+model",
+      "engines": ["py", "js", "model"],
+      "checks": [
+        {
+          "id": "SEN1.gulf-name",
+          "sev": "BLOCK",
+          "params": {
+            "terms": ["الخليج الفارسي", "خليج فارس", "persian gulf", "gulf of persia"],
+            "countries": ["SA", "AE", "KW", "QA", "BH", "OM"]
+          },
+          "autofix": null,
+          "when": "GCC audience (dialect gulf, or a GCC country in brand.locale.countries): copy names the Gulf with a term from params.terms.",
+          "msg": {"ar": "التسمية «{text}» غير مناسبة لجمهور الخليج؛ المعتمد «الخليج العربي».", "en": "“{text}” is not acceptable for a Gulf audience; use «الخليج العربي»."},
+          "fix": {"ar": "استخدم «الخليج العربي».", "en": "Use «الخليج العربي»."},
+          "vars": ["text"]
+        },
+        {
+          "id": "SEN1.conspiracy",
+          "sev": "BLOCK",
+          "params": {
+            "list": "conspiracy"
+          },
+          "autofix": null,
+          "when": "An entry of copy.json lists[params.list] matches slide or caption copy.",
+          "msg": {"ar": "عبارة تنتمي إلى نظريات المؤامرة: «{text}».", "en": "Conspiracy-style phrasing: “{text}”."},
+          "fix": {"ar": "احذفها أو اذكر مصدرًا موثوقًا.", "en": "Remove it or cite a reliable source."},
+          "vars": ["text"]
+        },
+        {
+          "id": "SEN1.fear-stacking",
+          "sev": "BLOCK",
+          "params": {
+            "list": "fearWords",
+            "minDistinct": 3
+          },
+          "autofix": null,
+          "when": "At least params.minDistinct different entries of lists[params.list] match inside one slide, or inside the caption.",
+          "msg": {"ar": "ألفاظ التخويف متراكمة في {el}.", "en": "Fear words are piled up in {el}."},
+          "fix": {"ar": "أبقِ لفظًا واحدًا واذكر طريق الخروج.", "en": "Keep one and show the way out."},
+          "vars": ["el", "count"]
+        },
+        {
+          "id": "SEN1.religious-promo",
+          "sev": "BLOCK",
+          "params": {
+            "patterns": ["[\\uFD3E\\uFD3F]", "لا[ \\t\\u00A0]+[إا]له[ \\t\\u00A0]+[إا]لا[ \\t\\u00A0]+الله"]
+          },
+          "autofix": null,
+          "when": "Promotional post (contentType soft-sell or intent sell): copy holds Quran brackets (U+FD3E, U+FD3F) or the Shahada.",
+          "msg": {"ar": "نص ديني (آية أو شهادة) في محتوى ترويجي.", "en": "A Quran verse or the Shahada appears in promotional content."},
+          "fix": {"ar": "احذف النص الديني من المحتوى الترويجي.", "en": "Remove religious text from promotional content."}
+        },
+        {
+          "id": "SEN1.religious-imagery",
+          "sev": "BLOCK",
+          "engines": ["model"],
+          "autofix": null,
+          "when": "Model check: selling content uses Kaaba or mosque imagery.",
+          "msg": {"ar": "صور دينية (الكعبة أو مسجد) في محتوى للبيع.", "en": "Religious imagery (Kaaba or mosque) in selling content."},
+          "fix": {"ar": "استبدلها بصورة محايدة.", "en": "Replace it with a neutral image."}
+        },
+        {
+          "id": "SEN1.disputed-map",
+          "sev": "BLOCK",
+          "engines": ["model"],
+          "autofix": null,
+          "when": "Model check: a map shows disputed borders or names.",
+          "msg": {"ar": "خريطة قد تكون محل خلاف.", "en": "A map may be disputed."},
+          "fix": {"ar": "استخدم صورة بلا خريطة أو خريطة محايدة.", "en": "Use an image without a map, or a neutral map."}
+        }
+      ]
+    },
+    {
+      "id": "D1",
+      "title": {"ar": "صيغة التصدير", "en": "Export format"},
+      "scope": "rendered",
+      "engines": ["js"],
+      "checks": [
+        {
+          "id": "D1.render-size",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Rendered: a .cs-slide root is not laid out at spec.canvas.w by spec.canvas.h.",
+          "msg": {"ar": "حجم السلايد {w}×{h} والمطلوب {ew}×{eh}.", "en": "The slide is {w}×{h}; expected {ew}×{eh}."},
+          "fix": {"ar": "أعد التصيير بالحجم الصحيح.", "en": "Re-render at the right size."},
+          "vars": ["w", "h", "ew", "eh"]
+        },
+        {
+          "id": "D1.png-size",
+          "sev": "BLOCK",
+          "params": {
+            "w": {"$platform": "plugin.export.png.w"},
+            "h": {"$platform": "plugin.export.png.h"}
+          },
+          "autofix": null,
+          "when": "Export: a PNG is not params.w by params.h.",
+          "msg": {"ar": "الصورة {path} حجمها {w}×{h} والمطلوب {ew}×{eh}.", "en": "{path} is {w}×{h}; expected {ew}×{eh}."},
+          "fix": {"ar": "أعد التصدير بالحجم الصحيح.", "en": "Export again at the right size."},
+          "vars": ["path", "w", "h", "ew", "eh"]
+        },
+        {
+          "id": "D1.jpeg-size",
+          "sev": "BLOCK",
+          "params": {
+            "w": {"$platform": "plugin.export.jpeg4x5.w"},
+            "h": {"$platform": "plugin.export.jpeg4x5.h"}
+          },
+          "autofix": null,
+          "when": "Export: a JPEG is not params.w by params.h.",
+          "msg": {"ar": "الصورة {path} حجمها {w}×{h} والمطلوب {ew}×{eh}.", "en": "{path} is {w}×{h}; expected {ew}×{eh}."},
+          "fix": {"ar": "أعد التصدير بالحجم الصحيح.", "en": "Export again at the right size."},
+          "vars": ["path", "w", "h", "ew", "eh"]
+        },
+        {
+          "id": "D1.ratio",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Export: the PNG files (or the JPEG files) do not all share one pixel size.",
+          "msg": {"ar": "ملفات الكاروسيل ليست بنسبة أبعاد واحدة.", "en": "The carousel files do not share one aspect ratio."},
+          "fix": {"ar": "صدّر كل الملفات بنفس الحجم.", "en": "Export every file at the same size."}
+        },
+        {
+          "id": "D1.alpha",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Export: a PNG header declares an alpha channel (colour type 4 or 6, or a tRNS chunk).",
+          "msg": {"ar": "الصورة {path} فيها قناة شفافية.", "en": "{path} has an alpha channel."},
+          "fix": {"ar": "أعد التصدير على خلفية صلبة بلا شفافية.", "en": "Export again on a solid background without transparency."},
+          "vars": ["path"]
+        },
+        {
+          "id": "D1.srgb",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Export: an embedded colour profile is present and is not sRGB, or a JPEG is not 3-component.",
+          "msg": {"ar": "الصورة {path} ليست بفضاء الألوان sRGB.", "en": "{path} is not in the sRGB colour space."},
+          "fix": {"ar": "أعد التصدير بفضاء sRGB.", "en": "Export again in sRGB."},
+          "vars": ["path"]
+        },
+        {
+          "id": "D1.jpeg-bytes",
+          "sev": "BLOCK",
+          "params": {
+            "max": {"$platform": "plugin.export.jpeg4x5.maxBytes"}
+          },
+          "autofix": null,
+          "when": "Export: a JPEG is larger than params.max bytes.",
+          "msg": {"ar": "الصورة {path} حجمها {count} بايت وهو أكبر من {max}.", "en": "{path} is {count} bytes, over the limit of {max}."},
+          "fix": {"ar": "أعد الحفظ بجودة أقل.", "en": "Save again at a lower quality."},
+          "vars": ["path", "count", "max"]
+        },
+        {
+          "id": "D1.decode",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Export: a .png or .jpg file has no readable header.",
+          "msg": {"ar": "تعذّرت قراءة الملف {path} كصورة.", "en": "{path} could not be read as an image."},
+          "fix": {"ar": "أعد التصدير.", "en": "Export again."},
+          "vars": ["path"]
+        }
+      ]
+    },
+    {
+      "id": "D2",
+      "title": {"ar": "التخطيط", "en": "Layout"},
+      "scope": "rendered",
+      "engines": ["js"],
+      "checks": [
+        {
+          "id": "D2.overflow",
+          "sev": "BLOCK",
+          "params": {
+            "tolerancePx": 2
+          },
+          "autofix": {"kind": "refit", "engines": ["js"]},
+          "when": "Rendered: the fit report says overflow for a slot, the text of a slot runs outside the slot's own box by more than params.tolerancePx, or text lies outside the slide. Text rectangles are line boxes: a font content area taller than the line height is trimmed to it.",
+          "msg": {"ar": "النص يفيض عن مكانه في {el}.", "en": "Text overflows its box at {el}."},
+          "fix": {"ar": "اختصر النص أو دع المحرك يعيد الضبط.", "en": "Shorten the text or let the engine refit."},
+          "vars": ["el"]
+        },
+        {
+          "id": "D2.outside-content",
+          "sev": "BLOCK",
+          "params": {
+            "box": {"$platform": "geometry.contentBox"},
+            "tolerancePx": 1,
+            "chromeBox": {"$platform": "geometry.safeBox"}
+          },
+          "autofix": null,
+          "when": "Rendered: a text rectangle leaves params.box (the content box) by more than params.tolerancePx; header and footer chrome is judged against params.chromeBox instead, because the inner footer band sits below the content box (S-1). Text under aria-hidden is ignored.",
+          "msg": {"ar": "نص خارج منطقة المحتوى في {el}.", "en": "Text leaves the content box at {el}."},
+          "fix": {"ar": "أعد النص داخل الهوامش.", "en": "Bring the text back inside the margins."},
+          "vars": ["el"]
+        },
+        {
+          "id": "D2.keep-out",
+          "sev": "BLOCK",
+          "params": {
+            "zones": {"$platform": "geometry.keepOuts"},
+            "tolerancePx": 1
+          },
+          "autofix": null,
+          "when": "Rendered: a text rectangle overlaps one of params.zones by more than params.tolerancePx.",
+          "msg": {"ar": "نص يدخل منطقة تغطيها واجهة Instagram ({zoneAr}) في {el}.", "en": "Text enters an Instagram overlay zone ({zoneEn}) at {el}."},
+          "fix": {"ar": "حرّك النص بعيدًا عن الزاوية.", "en": "Move the text away from the corner."},
+          "vars": ["el", "zoneAr", "zoneEn"]
+        },
+        {
+          "id": "D2.chrome-band",
+          "sev": "BLOCK",
+          "params": {
+            "header": {"$platform": "geometry.bands.header"},
+            "footer": {"$platform": "geometry.bands.footer"},
+            "tolerancePx": 1,
+            "innerFooter": {"$platform": "geometry.inner.bands.footer"},
+            "coverTypes": {"$platform": "plugin.visual.classes.cover"}
+          },
+          "autofix": null,
+          "when": "Rendered: header chrome is not inside params.header, footer chrome is not inside params.footer (params.innerFooter on a slide whose type is not in params.coverTypes, S-1), or a footer item is taller than that band's itemMaxHeightPx.",
+          "msg": {"ar": "عنصر الهيدر أو الفوتر ({el}) خارج شريطه.", "en": "Header or footer item {el} is outside its band."},
+          "fix": {"ar": "أعد المحاذاة داخل الشريط المخصص.", "en": "Realign it inside its band."},
+          "vars": ["el"]
+        },
+        {
+          "id": "D2.chrome-drift",
+          "sev": "BLOCK",
+          "params": {
+            "maxPx": {"$platform": "plugin.visual.continuity.chromeDrift.maxPx"},
+            "header": {"$platform": "geometry.bands.header"},
+            "footer": {"$platform": "geometry.bands.footer"},
+            "innerFooter": {"$platform": "geometry.inner.bands.footer"},
+            "coverTypes": {"$platform": "plugin.visual.classes.cover"}
+          },
+          "autofix": null,
+          "when": "Rendered: a chrome element (handle, meta, counter, swipe, save pill) sits at a different place inside its band on one slide than on another. Each position is taken relative to the band of its own slide (S-1): params.header for header chrome, params.footer for footer chrome on a slide whose type is in params.coverTypes, params.innerFooter on every other slide. The offsets are the distance from the band's start edge, from its end edge and from its centre on one axis; the check fires when the spread of those offsets over the slides exceeds params.maxPx on all three anchors of an axis. The bands differ by design, so absolute positions are never compared; a footer left in the cover band on an inner slide counts as drift.",
+          "msg": {"ar": "موضع {el} يتغير بين السلايدات بأكثر من {max} بكسل.", "en": "{el} moves more than {max}px between slides."},
+          "fix": {"ar": "ثبّت عناصر الإطار في مكان واحد على كل السلايدات.", "en": "Keep the chrome in one place on every slide."},
+          "vars": ["el", "max"]
+        },
+        {
+          "id": "D2.accent-count",
+          "sev": "FIX",
+          "params": {
+            "max": 2,
+            "minChroma": 0.05
+          },
+          "autofix": null,
+          "when": "Rendered: a slide uses more than params.max distinct chromatic colours for text, highlight fills or underlines outside the palette roles (ink, inkMuted, bg, surface, line, onAccent).",
+          "msg": {"ar": "عدد ألوان التمييز على السلايد {count} والحد الأقصى {max}.", "en": "The slide uses {count} accent colours; the limit is {max}."},
+          "fix": {"ar": "اكتفِ بلون تمييز واحد وثانٍ عند الحاجة.", "en": "Stay with one accent, plus one more only when needed."},
+          "vars": ["count", "max"]
+        }
+      ]
+    },
+    {
+      "id": "D3",
+      "title": {"ar": "الأحجام", "en": "Sizes"},
+      "scope": "rendered",
+      "engines": ["js"],
+      "checks": [
+        {
+          "id": "D3.body-floor",
+          "sev": "BLOCK",
+          "params": {
+            "min": {"$platform": "plugin.type.bodyFloorPx"}
+          },
+          "autofix": {"kind": "split", "engines": ["js"]},
+          "when": "Rendered: a text element with role body is set smaller than params.min px (the resolved tokens' floors.body wins when present).",
+          "msg": {"ar": "حجم النص في {el} هو {px} بكسل والحد الأدنى {min}.", "en": "Text at {el} is {px}px; the floor is {min}px."},
+          "fix": {"ar": "اختصر النص أو قسّمه على سلايدين ليكبر الخط.", "en": "Shorten the text or split the slide so the type can grow."},
+          "vars": ["el", "px", "min"]
+        },
+        {
+          "id": "D3.meta-floor",
+          "sev": "BLOCK",
+          "params": {
+            "min": {"$platform": "plugin.type.metaFloorPx"}
+          },
+          "autofix": {"kind": "split", "engines": ["js"]},
+          "when": "Rendered: a small or micro text element, or a chrome item, is set smaller than params.min px (floors.meta of the resolved tokens wins when present).",
+          "msg": {"ar": "حجم النص الصغير في {el} هو {px} بكسل والحد الأدنى {min}.", "en": "Small text at {el} is {px}px; the floor is {min}px."},
+          "fix": {"ar": "كبّر النص أو احذفه.", "en": "Enlarge the text or remove it."},
+          "vars": ["el", "px", "min"]
+        },
+        {
+          "id": "D3.hero-floor",
+          "sev": "BLOCK",
+          "params": {
+            "min": {"$platform": "plugin.cover.heroPx.floor"}
+          },
+          "autofix": null,
+          "when": "Rendered: the hero text of a cover or poster is set smaller than params.min px (floors.hero of the resolved tokens wins when present).",
+          "msg": {"ar": "عنوان الغلاف {px} بكسل والحد الأدنى {min}.", "en": "The cover headline is {px}px; the floor is {min}px."},
+          "fix": {"ar": "اختصر العنوان ليكبر الخط.", "en": "Shorten the headline so the type can grow."},
+          "vars": ["el", "px", "min"]
+        }
+      ]
+    },
+    {
+      "id": "D4",
+      "title": {"ar": "التباين", "en": "Contrast"},
+      "scope": "rendered",
+      "engines": ["js"],
+      "checks": [
+        {
+          "id": "D4.contrast",
+          "sev": "FIX",
+          "params": {
+            "body": {"$platform": "plugin.contrast.body"},
+            "large": {"$platform": "plugin.contrast.large"},
+            "largeMinPx": {"$platform": "plugin.contrast.largeMinPx"},
+            "largeBoldMinPx": {"$platform": "plugin.contrast.largeBoldMinPx"},
+            "hardBlockBelow": {"$platform": "plugin.contrast.hardBlockBelow"},
+            "decile": 0.1
+          },
+          "autofix": {"kind": "scrim", "engines": ["js"]},
+          "when": "Rendered: the contrast of a text element on the worst decile of its background is below params.body (params.large for text of at least params.largeMinPx px, or params.largeBoldMinPx px in bold) but not below params.hardBlockBelow.",
+          "msg": {"ar": "تباين {el} هو {ratio}:1 والمطلوب {need}:1.", "en": "Contrast at {el} is {ratio}:1; {need}:1 is needed."},
+          "fix": {"ar": "غيّر لون النص أو أضف طبقة تظليل خلفه.", "en": "Change the text colour or add a scrim behind it."},
+          "vars": ["el", "ratio", "need"]
+        },
+        {
+          "id": "D4.hard",
+          "sev": "BLOCK",
+          "params": {
+            "hardBlockBelow": {"$platform": "plugin.contrast.hardBlockBelow"}
+          },
+          "autofix": {"kind": "oklch", "engines": ["js"]},
+          "when": "Rendered: the same measure is below params.hardBlockBelow.",
+          "msg": {"ar": "تباين {el} ضعيف جدًا ({ratio}:1).", "en": "Contrast at {el} is far too low ({ratio}:1)."},
+          "fix": {"ar": "غيّر لون النص أو الخلفية.", "en": "Change the text or the background colour."},
+          "vars": ["el", "ratio", "need"]
+        },
+        {
+          "id": "D4.unmeasured",
+          "sev": "NOTE",
+          "autofix": null,
+          "when": "Rendered: the background under the text is a photo and no pixel mask (CS.paint.textMask) is available.",
+          "msg": {"ar": "لم يُقَس التباين فوق الصورة في {el}.", "en": "Contrast over the photo at {el} was not measured."},
+          "fix": {"ar": "راجع القراءة بالعين أو أضف تظليلًا.", "en": "Check legibility by eye or add a scrim."},
+          "vars": ["el"]
+        }
+      ]
+    },
+    {
+      "id": "D5",
+      "title": {"ar": "قواعد الحروف العربية", "en": "Arabic rules"},
+      "scope": "rendered",
+      "engines": ["js"],
+      "checks": [
+        {
+          "id": "D5.letter-spacing",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Rendered: computed letter-spacing of Arabic text is not 0 or normal.",
+          "msg": {"ar": "تباعد حروف على نص عربي في {el}.", "en": "Letter-spacing on Arabic text at {el}."},
+          "fix": {"ar": "الحروف العربية لا تُباعَد؛ أزل التباعد.", "en": "Arabic is never letter-spaced; remove it."},
+          "vars": ["el"]
+        },
+        {
+          "id": "D5.justify",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Rendered: computed text-align or text-align-last of Arabic text is justify.",
+          "msg": {"ar": "ضبط النص بالتوزيع (justify) على نص عربي في {el}.", "en": "Justified Arabic text at {el}."},
+          "fix": {"ar": "استخدم المحاذاة إلى البداية.", "en": "Align to the start."},
+          "vars": ["el"]
+        },
+        {
+          "id": "D5.italic",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Rendered: computed font-style of Arabic text is italic or oblique.",
+          "msg": {"ar": "خط مائل على نص عربي في {el}.", "en": "Italic Arabic text at {el}."},
+          "fix": {"ar": "أزل الميل؛ الخط العربي لا يُمال.", "en": "Remove the slant; Arabic is never italic."},
+          "vars": ["el"]
+        },
+        {
+          "id": "D5.font-synthesis",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Rendered: the browser would fake a bold face for Arabic text (font-synthesis allows weight, the requested weight is 600 or more and no loaded face of the family covers it).",
+          "msg": {"ar": "الخط الغامق مزيّف اصطناعيًا في {el}.", "en": "A faux bold is synthesised at {el}."},
+          "fix": {"ar": "استخدم وزنًا موجودًا في الخط.", "en": "Use a weight the font really has."},
+          "vars": ["el"]
+        },
+        {
+          "id": "D5.text-opacity",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Rendered: Arabic text has a colour alpha below 1, or an ancestor with opacity below 1 that is neither a data-m-group=opacity wrapper nor aria-hidden.",
+          "msg": {"ar": "شفافية على نص عربي في {el}.", "en": "Transparency on Arabic text at {el}."},
+          "fix": {"ar": "امزج اللون مع الخلفية بدل الشفافية.", "en": "Mix the colour into the background instead of using transparency."},
+          "vars": ["el"]
+        },
+        {
+          "id": "D5.kashida-count",
+          "sev": "BLOCK",
+          "params": {
+            "max": 1
+          },
+          "autofix": null,
+          "when": "Rendered: the post has more than params.max words containing tatweel (U+0640). A tatweel after a clitic letter (ل ب ك, as in «الـAgent» or «بـClaude») that is followed by a Latin letter, a digit or a mark is the documented connector (ORTHO-BIDI-001) and is not counted.",
+          "msg": {"ar": "عدد الكلمات الممدودة بكشيدة {count} والحد الأقصى {max}.", "en": "{count} words are stretched with kashida; the limit is {max}."},
+          "fix": {"ar": "اترك كلمة واحدة فقط في العنوان.", "en": "Keep one headline word only."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "D5.kashida-preset",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Rendered: a tatweel is present although tokens.decor.kashida.allowed is false. A tatweel after a clitic letter (ل ب ك, as in «الـAgent» or «بـClaude») that is followed by a Latin letter, a digit or a mark is the documented connector (ORTHO-BIDI-001) and is not counted.",
+          "msg": {"ar": "الستايل الحالي لا يسمح بالكشيدة.", "en": "The current style does not allow kashida."},
+          "fix": {"ar": "أزل الكشيدة أو بدّل الستايل إلى ستايل يسمح بها.", "en": "Remove the kashida or pick a style that allows it."},
+          "vars": ["el"]
+        },
+        {
+          "id": "D5.kashida-body",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Rendered: a tatweel sits outside the headline of a cover or poster. A tatweel after a clitic letter (ل ب ك, as in «الـAgent» or «بـClaude») that is followed by a Latin letter, a digit or a mark is the documented connector (ORTHO-BIDI-001) and is not counted.",
+          "msg": {"ar": "كشيدة خارج عنوان الغلاف في {el}.", "en": "Kashida outside the cover headline at {el}."},
+          "fix": {"ar": "الكشيدة للعنوان فقط وليست للنص.", "en": "Kashida is for the headline only, never body text."},
+          "vars": ["el"]
+        },
+        {
+          "id": "D5.kashida-joining",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Rendered: a tatweel does not sit between a dual-joining letter and a dual- or right-joining letter. A tatweel after a clitic letter (ل ب ك, as in «الـAgent» or «بـClaude») that is followed by a Latin letter, a digit or a mark is the documented connector (ORTHO-BIDI-001) and is not counted.",
+          "msg": {"ar": "كشيدة في موضع غير صالح في {el}.", "en": "Kashida in an invalid position at {el}."},
+          "fix": {"ar": "ضعها بين حرفين متصلين فقط.", "en": "Place it between two joining letters only."},
+          "vars": ["el"]
+        },
+        {
+          "id": "D5.glyph-missing",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Rendered: CS.core.registry.missingGlyphs(font, text) is not empty for a text element (invisible formatting characters are ignored).",
+          "msg": {"ar": "الخط لا يحتوي بعض الرموز في {el}: {text}.", "en": "The font lacks some characters at {el}: {text}."},
+          "fix": {"ar": "بدّل الخط أو احذف الرموز.", "en": "Change the font or remove the characters."},
+          "vars": ["el", "text"]
+        },
+        {
+          "id": "D5.fallback-font",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Rendered: the first font family of an Arabic text element is one the engine resolved (tokens.fonts) or a face that failed to load, and no loaded @font-face backs it, so the browser substitutes a fallback.",
+          "msg": {"ar": "ظهر خط بديل بدل «{font}» في {el}.", "en": "A fallback font replaced “{font}” at {el}."},
+          "fix": {"ar": "تأكد من تحميل الخط قبل التصدير.", "en": "Make sure the font is loaded before exporting."},
+          "vars": ["el", "font"]
+        },
+        {
+          "id": "D5.tashkeel",
+          "sev": "FIX",
+          "params": {
+            "ratio": 0.4,
+            "minLetters": 8
+          },
+          "autofix": null,
+          "when": "Rendered: the Arabic text of one slot has diacritics on at least params.ratio of its letters (and at least params.minLetters letters).",
+          "msg": {"ar": "تشكيل كامل في {el}.", "en": "Full diacritics at {el}."},
+          "fix": {"ar": "أبقِ التشكيل حيث يرفع اللبس فقط.", "en": "Keep diacritics only where they remove ambiguity."},
+          "vars": ["el"]
+        }
+      ]
+    },
+    {
+      "id": "D6",
+      "title": {"ar": "التكوين", "en": "Composition"},
+      "scope": "rendered",
+      "engines": ["js"],
+      "checks": [
+        {
+          "id": "D6.headline-width",
+          "sev": "FIX",
+          "params": {
+            "tolerance": 0.05,
+            "contentWidth": {"$platform": "geometry.contentBox.w"}
+          },
+          "autofix": null,
+          "when": "Rendered: on a cover or poster, the widest hero line is narrower than tokens.layout.headlineWidth[0] or wider than headlineWidth[1] of the content width, each with params.tolerance slack.",
+          "msg": {"ar": "عرض العنوان {pct}% من عرض المحتوى والمدى المناسب من {min}% إلى {max}%.", "en": "The headline is {pct}% of the content width; the right range is {min}% to {max}%."},
+          "fix": {"ar": "عدّل عدد الكلمات أو حجم العنوان.", "en": "Adjust the word count or the headline size."},
+          "vars": ["pct", "min", "max"]
+        },
+        {
+          "id": "D6.lone-word",
+          "sev": "FIX",
+          "params": {
+            "minShare": 0.35
+          },
+          "autofix": null,
+          "when": "Rendered: the last line of a text with two or more lines holds one word narrower than 35% of the widest line.",
+          "msg": {"ar": "كلمة وحيدة في آخر سطر في {el}.", "en": "A lone word on the last line at {el}."},
+          "fix": {"ar": "اختصر أو أعد الصياغة لتتوازن الأسطر.", "en": "Shorten or reword so the lines balance."},
+          "vars": ["el"]
+        },
+        {
+          "id": "D6.lines",
+          "sev": "FIX",
+          "params": {
+            "limits": {
+              "cover": {"$platform": "plugin.cover.maxLines"},
+              "poster": {"$platform": "plugin.cover.maxLines"},
+              "rehook": {"$platform": "plugin.slide2.maxLines"},
+              "cta": 3,
+              "checklist": 8,
+              "summary": 8,
+              "default": 6
+            }
+          },
+          "autofix": null,
+          "when": "Rendered: the main text of a slide runs over more visual lines than params.limits allows for its type (cover and poster: headline; rehook: headline and sub; cta: title and body; checklist and summary: title and bullets; every other type: body).",
+          "msg": {"ar": "النص موزّع على {count} أسطر والحد الأقصى لهذا النوع {max}.", "en": "The text runs over {count} lines; the limit for this slide type is {max}."},
+          "fix": {"ar": "اختصر النص أو قسّمه على سلايدين.", "en": "Shorten the text or split it over two slides."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "D6.rows",
+          "sev": "FIX",
+          "params": {
+            "max": {"$platform": "plugin.cover.maxRows"}
+          },
+          "autofix": null,
+          "when": "Rendered: the cover has more than params.max text rows.",
+          "msg": {"ar": "الغلاف فيه {count} أسطر نصية والحد {max}.", "en": "The cover has {count} text rows; the limit is {max}."},
+          "fix": {"ar": "اختصر نص الغلاف.", "en": "Cut the cover text."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "D6.families",
+          "sev": "FIX",
+          "params": {
+            "max": {"$platform": "plugin.type.maxFamilies"}
+          },
+          "autofix": null,
+          "when": "Rendered: Arabic text uses more than params.max font families across the deck.",
+          "msg": {"ar": "عدد عائلات الخطوط العربية {count} والحد {max}.", "en": "The deck uses {count} Arabic font families; the limit is {max}."},
+          "fix": {"ar": "اكتفِ بعائلتين على الأكثر.", "en": "Use two families at most."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "D6.latin-match",
+          "sev": "FIX",
+          "params": {
+            "weightTolerance": 100
+          },
+          "autofix": null,
+          "when": "Rendered: a Latin run differs from the nearest Arabic word in the same slot by more than params.weightTolerance in weight or in colour (when both are inside or both outside an emphasis mark).",
+          "msg": {"ar": "الكلمة اللاتينية «{text}» تختلف عن جاراتها العربية في الوزن أو اللون.", "en": "The Latin word “{text}” differs from its Arabic neighbours in weight or colour."},
+          "fix": {"ar": "اجعلها بنفس الوزن واللون.", "en": "Match its weight and colour."},
+          "vars": ["text", "el"]
+        }
+      ]
+    },
+    {
+      "id": "D7",
+      "title": {"ar": "الطابع الافتراضي", "en": "Default look"},
+      "scope": "rendered",
+      "engines": ["js"],
+      "checks": [
+        {
+          "id": "D7.no-brand",
+          "sev": "NOTE",
+          "autofix": null,
+          "when": "Rendered: no resolved token comes from the brand layer.",
+          "msg": {"ar": "البوست بلا هوية بصرية خاصة؛ ألوانه وخطوطه من الإعداد الافتراضي.", "en": "The post uses no brand identity; its colours and fonts are defaults."},
+          "fix": {"ar": "اربط ألوان وخطوط البراند.", "en": "Bind the brand's colours and fonts."}
+        },
+        {
+          "id": "D7.default-fonts",
+          "sev": "NOTE",
+          "params": {
+            "families": ["cairo", "rubik", "tajawal"]
+          },
+          "autofix": null,
+          "when": "Rendered: the display or body family is one of params.families and the brand did not choose it.",
+          "msg": {"ar": "الخط {font} شائع جدًا ويعطي طابعًا افتراضيًا.", "en": "The font {font} is very common and reads as a default."},
+          "fix": {"ar": "جرّب أحد الخطوط المقترحة الأخرى.", "en": "Try one of the other suggested fonts."},
+          "vars": ["font"]
+        },
+        {
+          "id": "D7.default-layout",
+          "sev": "NOTE",
+          "params": {
+            "share": 0.6
+          },
+          "autofix": null,
+          "when": "Rendered: more than params.share of the slides use the preset's default variant with no overrides.",
+          "msg": {"ar": "{pct}% من السلايدات بتخطيطها الافتراضي.", "en": "{pct}% of the slides use their default layout."},
+          "fix": {"ar": "غيّر تخطيط بعض السلايدات لكسر الرتابة.", "en": "Change the layout of a few slides to break the rhythm."},
+          "vars": ["pct"]
+        }
+      ]
+    },
+    {
+      "id": "D8",
+      "title": {"ar": "إيقاع السلايدات", "en": "Slide rhythm"},
+      "scope": "text",
+      "engines": ["py", "js"],
+      "appliesTo": {
+        "formats": ["carousel"]
+      },
+      "checks": [
+        {
+          "id": "D8.rhythm",
+          "sev": "FIX",
+          "params": {
+            "max": 3
+          },
+          "autofix": null,
+          "when": "A run of consecutive slides with the same type and the same variant (a slide with no variant counts as one variant of its type) is longer than params.max. One finding per run, on the first slide past the limit.",
+          "msg": {"ar": "عدد السلايدات المتتالية بالشكل نفسه ({type}): {count}، فالإيقاع لا يتغير.", "en": "{count} slides in a row use the same layout ({type}); the rhythm never changes."},
+          "fix": {"ar": "غيّر شكل سلايد أو اثنين وسط المجموعة (نوع أو نمط مختلف، أو سلايد توضيحي) حتى لا تزيد المجموعة عن {max}.", "en": "Change one or two slides in the run (another type or variant, or a demonstration slide) so no run is longer than {max}."},
+          "vars": ["count", "type", "max"]
+        },
+        {
+          "id": "D8.anchor-run",
+          "sev": "FIX",
+          "scope": "spec",
+          "deferred": {"engines": ["py"], "by": "Q6"},
+          "params": {
+            "run": {"$platform": "plugin.visual.rhythm.anchorRun.run"},
+            "altWindow": {"$platform": "plugin.visual.rhythm.anchorRun.altWindow"},
+            "key": ["type", "variant", "recipe", "anchor.kind"],
+            "rollout": {"$platform": "plugin.visual.rollout"}
+          },
+          "autofix": {"kind": "layout", "chain": ["layout"], "engines": ["js"]},
+          "when": "Spec: params.run or more slides in a row share (type, variant, recipe, anchor.kind), or two such keys alternate A-B-A-B over params.altWindow or more slides; one finding per run.",
+          "msg": {"ar": "التخطيط والعنصر البصري يتكرران بلا تغيير في {count} سلايدات: {detail}.", "en": "The same layout and visual repeat over {count} slides: {detail}."},
+          "fix": {"ar": "غيّر موضع العنصر البصري أو نوعه في سلايد من المجموعة.", "en": "Change the placement or kind of the visual on one slide in the run."},
+          "vars": ["count", "detail"]
+        },
+        {
+          "id": "D8.tone-run",
+          "sev": "FIX",
+          "scope": "spec",
+          "deferred": {"engines": ["py"], "by": "Q6"},
+          "params": {
+            "maxRun": {"$platform": "plugin.visual.rhythm.toneRun.maxRun"},
+            "toneBias": {"$platform": "plugin.visual.rhythm.toneRun.toneBias"},
+            "rollout": {"$platform": "plugin.visual.rollout"}
+          },
+          "autofix": null,
+          "when": "Spec: more than params.maxRun slides in a row use a non-base tone, or the non-base slides exceed the params.toneBias share of the world's toneBias.",
+          "msg": {"ar": "السلايدات ذات الخلفية الملونة كثيرة: {count} والحد {max}.", "en": "Too many slides on a coloured ground: {count}; the limit is {max}."},
+          "fix": {"ar": "أعد بعض السلايدات إلى الخلفية العادية.", "en": "Return some slides to the plain ground."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "D8.tone-flat",
+          "sev": "FIX",
+          "sevs": ["NOTE", "FIX"],
+          "scope": "spec",
+          "deferred": {"engines": ["py"], "by": "Q6"},
+          "params": {
+            "minInner": {"$platform": "plugin.visual.tones.minInner"},
+            "min": {"$platform": "plugin.visual.tones.min"},
+            "rollout": {"$platform": "plugin.visual.rollout"}
+          },
+          "autofix": null,
+          "when": "Spec: the deck has params.minInner or more inner slides (all but cover and poster) and fewer than params.min of its slides sit on a non-base tone (invert or field), or it uses neither tone although the preset ships them.",
+          "msg": {"ar": "السلايدات الداخلية بلا تنويع في الخلفية: الملونة منها {count} والمطلوب {min} على الأقل.", "en": "The inner slides have no ground variety: {count} are on a coloured ground; at least {min} are needed."},
+          "fix": {"ar": "انقل {min} سلايدات داخلية على الأقل إلى الخلفية الداكنة أو الملونة.", "en": "Move at least {min} inner slides to the dark or coloured ground."},
+          "vars": ["count", "min"]
+        }
+      ]
+    },
+    {
+      "id": "D9",
+      "title": {"ar": "المساحة الميتة", "en": "Dead space"},
+      "scope": "rendered",
+      "engines": ["js"],
+      "measure": {
+        "grid": {"$platform": "plugin.visual.grid"},
+        "halo": {"$platform": "plugin.visual.halo"},
+        "owner": {"$platform": "plugin.visual.owner"},
+        "zone": {"$platform": "plugin.visual.zone"},
+        "classes": {"$platform": "plugin.visual.classes"}
+      },
+      "checks": [
+        {
+          "id": "D9.band",
+          "sev": "FIX",
+          "sevs": ["NOTE", "FIX"],
+          "params": {
+            "thresholds": {"$platform": "plugin.visual.band"},
+            "block": {"$platform": "plugin.visual.block.band"},
+            "rollout": {"$platform": "plugin.visual.rollout"},
+            "skipPlate": true
+          },
+          "autofix": {"kind": "anchor-size", "chain": ["anchor-size", "layout", "field"], "engines": ["js"]},
+          "when": "Rendered: the dead-space band (a share of the canvas height) reaches params.thresholds[class].note (NOTE) or .fix (FIX), and .block only while params.block.enabled; class per measure.classes; plate slides are skipped.",
+          "msg": {"ar": "شريط فارغ يشغل {pct}% من ارتفاع السلايد (من {from} إلى {to})، والحد {max}%.", "en": "An empty band takes {pct}% of the slide height (y {from} to {to}); the limit is {max}%."},
+          "fix": {"ar": "زد حجم العنصر البصري أو أعد توزيع السلايد ليملأ الشريط.", "en": "Enlarge the visual or re-lay the slide so it fills the band."},
+          "vars": ["pct", "from", "to", "max"]
+        },
+        {
+          "id": "D9.rect",
+          "sev": "FIX",
+          "sevs": ["NOTE", "FIX"],
+          "params": {
+            "thresholds": {"$platform": "plugin.visual.rect"},
+            "block": {"$platform": "plugin.visual.block.rect"},
+            "rollout": {"$platform": "plugin.visual.rollout"},
+            "skipPlate": true
+          },
+          "autofix": {"kind": "anchor-size", "chain": ["anchor-size", "layout", "rows", "field"], "engines": ["js"]},
+          "when": "Rendered: the largest empty rectangle (a share of the body zone) reaches params.thresholds[class].note (NOTE) or .fix (FIX), and .block only while params.block.enabled; plate slides are skipped.",
+          "msg": {"ar": "أكبر مساحة فارغة تشغل {pct}% من منطقة المحتوى، والحد {max}%.", "en": "The largest empty area takes {pct}% of the content zone; the limit is {max}%."},
+          "fix": {"ar": "زد حجم العنصر البصري أو غيّر موضعه، أو حوّل النقاط إلى صفوف بأيقونات.", "en": "Enlarge or move the visual, or turn the bullets into icon rows."},
+          "vars": ["pct", "max"]
+        },
+        {
+          "id": "D9.fill",
+          "sev": "FIX",
+          "sevs": ["NOTE", "FIX"],
+          "params": {
+            "thresholds": {"$platform": "plugin.visual.fill"},
+            "rollout": {"$platform": "plugin.visual.rollout"}
+          },
+          "autofix": {"kind": "anchor-size", "chain": ["anchor-size", "field"], "engines": ["js"]},
+          "when": "Rendered: empty cells over all cells reach params.thresholds[class].note (NOTE) or .fix (FIX); cover and poster slides have no fill threshold.",
+          "msg": {"ar": "المساحة الفارغة {pct}% من منطقة المحتوى، والحد {max}%.", "en": "Empty cells are {pct}% of the content zone; the limit is {max}%."},
+          "fix": {"ar": "زد حجم العنصر البصري أو ضعه على لوحة مملوءة.", "en": "Enlarge the visual or place it on a filled panel."},
+          "vars": ["pct", "max"]
+        },
+        {
+          "id": "D9.container-fill",
+          "sev": "FIX",
+          "sevs": ["NOTE", "FIX"],
+          "params": {
+            "owner": {"$platform": "plugin.visual.owner"},
+            "rollout": {"$platform": "plugin.visual.rollout"}
+          },
+          "autofix": {"kind": "layout", "chain": ["layout"], "engines": ["js"]},
+          "when": "Rendered: an owner whose rows or columns hold content in under params.owner.min percent (params.owner.big above params.owner.bigShare percent of the zone) is a NOTE, and a FIX below params.owner.fixBelow, on the smaller share.",
+          "msg": {"ar": "اللوحة ({el}) مملوءة بالمحتوى بنسبة {pct}% فقط والحد الأدنى {min}%.", "en": "Panel {el} is only {pct}% filled with content; the minimum is {min}%."},
+          "fix": {"ar": "صغّر اللوحة أو أعد تكوينها حول محتواها.", "en": "Shrink the panel or recompose it around its content."},
+          "vars": ["el", "pct", "min"]
+        },
+        {
+          "id": "D9.plate-calm",
+          "sev": "FIX",
+          "deferred": {"engines": ["js"], "by": "Q3b"},
+          "params": {
+            "plate": {"$platform": "plugin.visual.plate"},
+            "rollout": {"$platform": "plugin.visual.rollout"}
+          },
+          "autofix": null,
+          "when": "Rendered: on a photo plate the calm zone exceeds params.plate.bandMax percent of the height or params.plate.rectMax percent of the zone, or the subject is under params.plate.subjectMin percent.",
+          "msg": {"ar": "المساحة الهادئة في صورة السلايد تشغل {pct}% من الارتفاع، والحد {max}%.", "en": "The calm zone of the photo plate takes {pct}% of the height; the limit is {max}%."},
+          "fix": {"ar": "اقصص الصورة أو اختر لقطة أقرب.", "en": "Crop the photo or choose a closer shot."},
+          "vars": ["pct", "max"]
+        }
+      ]
+    },
+    {
+      "id": "D10",
+      "title": {"ar": "نظام الأيقونات والرسوم", "en": "Icon and art system"},
+      "scope": "rendered",
+      "engines": ["js"],
+      "checks": [
+        {
+          "id": "D10.nesting",
+          "sev": "FIX",
+          "params": {
+            "maxDepth": {"$platform": "plugin.visual.craft.nesting.maxDepth"}
+          },
+          "autofix": null,
+          "when": "Rendered: containers nest deeper than params.maxDepth around an anchor.",
+          "msg": {"ar": "حاويات متداخلة بعمق {depth} حول العنصر البصري، والحد {max}.", "en": "Containers nest {depth} deep around the anchor; the limit is {max}."},
+          "fix": {"ar": "أزل إطارًا أو لوحة زائدة حول العنصر.", "en": "Remove an extra frame or panel around the anchor."},
+          "vars": ["depth", "max"]
+        },
+        {
+          "id": "D10.icon-tile-stack",
+          "sev": "FIX",
+          "params": {
+            "minSiblings": {"$platform": "plugin.visual.craft.iconTileStack.minSiblings"}
+          },
+          "autofix": {"kind": "layout", "chain": ["layout", "rows"], "engines": ["js"]},
+          "when": "Rendered: params.minSiblings or more siblings are a small icon tile above a heading.",
+          "msg": {"ar": "{count} بطاقات متشابهة، في كل منها أيقونة صغيرة فوق عنوان.", "en": "{count} similar cards each put a small icon tile above a heading."},
+          "fix": {"ar": "حوّلها إلى صفوف بأيقونات.", "en": "Turn them into icon rows."},
+          "vars": ["count"]
+        },
+        {
+          "id": "D10.side-border",
+          "sev": "FIX",
+          "deferred": {"engines": ["js"], "by": "Q3b"},
+          "params": {
+            "minPx": {"$platform": "plugin.visual.craft.sideBorder.minPx"}
+          },
+          "autofix": null,
+          "when": "Rendered: a rounded card has an accent border of params.minPx px or more on one side only.",
+          "msg": {"ar": "بطاقة بحافة ملونة {px} بكسل في جانب واحد ({el}).", "en": "A card has a {px} px accent border on one side ({el})."},
+          "fix": {"ar": "استخدم إطارًا كاملًا أو احذف الحافة.", "en": "Use a full outline or none."},
+          "vars": ["el", "px"]
+        },
+        {
+          "id": "D10.icon-system",
+          "sev": "FIX",
+          "deferred": {"engines": ["js"], "by": "Q3b"},
+          "params": {
+            "families": {"$platform": "plugin.visual.craft.iconSystem.families"},
+            "sizes": {"$platform": "plugin.visual.craft.iconSystem.sizes"},
+            "glyphContrast": {"$platform": "plugin.contrast.large"}
+          },
+          "autofix": {"kind": "anchor-size", "chain": ["anchor-size"], "engines": ["js"]},
+          "when": "Rendered: icon families are mixed (objects and Lucide in the preset stroke count as one), a size is outside params.sizes, a stroke is off the ladder, a directional icon is not mirrored, or a glyph is under params.glyphContrast.",
+          "msg": {"ar": "نظام الأيقونات غير متسق في {el}: {detail}.", "en": "The icon system is inconsistent at {el}: {detail}."},
+          "fix": {"ar": "اعتمد عائلة أيقونات واحدة وأحجامًا من القائمة المعتمدة.", "en": "Use one icon family and sizes from the approved set."},
+          "vars": ["el", "detail"]
+        },
+        {
+          "id": "D10.stroke-feed",
+          "sev": "NOTE",
+          "params": {"$platform": "plugin.visual.strokeFeed"},
+          "autofix": {"kind": "anchor-size", "chain": ["anchor-size"], "engines": ["js"]},
+          "when": "Rendered: an inner stroke is thinner than params.minFeedPx px at the feed scale params.scale (params.minFullPx px at full size).",
+          "msg": {"ar": "خط رفيع في {el}: {px} بكسل على شاشة الهاتف والحد {min}.", "en": "A stroke at {el} is {px} px on the phone feed; the minimum is {min}."},
+          "fix": {"ar": "زد حجم الأيقونة أو استخدم خطًا أسمك.", "en": "Use a larger icon or a heavier stroke."},
+          "vars": ["el", "px", "min"]
+        },
+        {
+          "id": "D10.art-label",
+          "sev": "FIX",
+          "params": {
+            "floors": {"$platform": "plugin.visual.artLabel"}
+          },
+          "autofix": {"kind": "refit", "chain": ["refit"], "engines": ["js"]},
+          "when": "Rendered: an art label is set under its params.floors entry (arabic, latin, digits, chart, tool, numeral, word).",
+          "msg": {"ar": "نص داخل الرسم ({el}) حجمه {px} والحد الأدنى {min}.", "en": "The art label at {el} is {px} px; the minimum is {min}."},
+          "fix": {"ar": "اختصر نص الرسم أو زد المساحة المخصصة له.", "en": "Shorten the label or give it more room."},
+          "vars": ["el", "px", "min"]
+        },
+        {
+          "id": "D10.glyph-icon",
+          "sev": "FIX",
+          "scope": "text",
+          "params": {
+            "glyphs": [10003, 10004, 10005, 10006, 10007, 10008, 9733, 9734, 8592, 8593, 8594, 8595, 10132, 10140, 10148, 9670, 9671, 10070, 10022, 10023],
+            "emojiClass": "cs-emoji"
+          },
+          "autofix": null,
+          "when": "Text: a typed check, cross, star, arrow or diamond (params.glyphs, code points) stands in for an icon, or a raw emoji sits outside class params.emojiClass.",
+          "msg": {"ar": "رمز مكتوب ({text}) يؤدي دور أيقونة في {el}.", "en": "A typed symbol ({text}) stands in for an icon at {el}."},
+          "fix": {"ar": "استبدله بأيقونة من المكتبة.", "en": "Replace it with an icon from the library."},
+          "vars": ["el", "text"]
+        },
+        {
+          "id": "D10.edge-fragment",
+          "sev": "NOTE",
+          "deferred": {"engines": ["js"], "by": "Q3b"},
+          "params": {
+            "allow": ["data-ornament", "data-seam"]
+          },
+          "autofix": null,
+          "when": "Rendered: a lone shape is cropped by the canvas edge and carries no attribute from params.allow.",
+          "msg": {"ar": "شكل مقصوص عند حافة السلايد بلا وظيفة ({el}).", "en": "A lone shape is cropped at the slide edge with no job ({el})."},
+          "fix": {"ar": "أزله أو سجّله كزخرفة أو وصلة.", "en": "Remove it, or register it as an ornament or a seam."},
+          "vars": ["el"]
+        },
+        {
+          "id": "D10.squint",
+          "sev": "NOTE",
+          "deferred": {"engines": ["js"], "by": "Q3b"},
+          "params": {
+            "mergePx": {"$platform": "plugin.visual.craft.squint.mergePx"},
+            "anchorOverlapPct": {"$platform": "plugin.visual.craft.squint.anchorOverlapPct"},
+            "thirdMaxPct": {"$platform": "plugin.visual.craft.squint.thirdMaxPct"},
+            "weights": {"$platform": "plugin.visual.craft.squint.weights"},
+            "pixel": {"$platform": "plugin.visual.craft.squint.pixel"}
+          },
+          "autofix": null,
+          "when": "Rendered: in the squint ranking (masses merged within params.mergePx px) the heaviest mass overlaps the anchor by under params.anchorOverlapPct percent, the second misses the text block, or the third weighs over params.thirdMaxPct percent of the second.",
+          "msg": {"ar": "عند التصغير لا يظهر مركز واحد واضح ({reason}).", "en": "At a squint there is no single clear focus ({reason})."},
+          "fix": {"ar": "قلل العناصر المتنافسة أو زد حجم العنصر الرئيسي.", "en": "Reduce the competing masses or enlarge the main element."},
+          "vars": ["reason"]
+        }
+      ]
+    },
+    {
+      "id": "D11",
+      "title": {"ar": "استمرارية السلسلة", "en": "Deck continuity"},
+      "scope": "rendered",
+      "engines": ["js"],
+      "appliesTo": {
+        "formats": ["carousel"]
+      },
+      "checks": [
+        {
+          "id": "D11.tokens",
+          "sev": "FIX",
+          "deferred": {"engines": ["js"], "by": "Q3b"},
+          "params": {
+            "minShared": {"$platform": "plugin.visual.continuity.tokens.minShared"},
+            "of": {"$platform": "plugin.visual.continuity.tokens.of"},
+            "tokens": ["ground", "type", "chrome", "accent"]
+          },
+          "autofix": null,
+          "when": "Rendered: an inner slide shares fewer than params.minShared of the cover's params.of continuity tokens (params.tokens), or lacks the deck motif when style.motif is set. The chrome token compares the chrome's style and its offset inside its own band (S-1: the inner footer band differs from the cover's by design), never its canvas position.",
+          "msg": {"ar": "السلايد يشارك {count} من {of} عناصر هوية الغلاف فقط.", "en": "The slide shares only {count} of the cover's {of} identity tokens."},
+          "fix": {"ar": "أعد الخلفية والخطوط وعناصر الهيدر إلى ما يستخدمه الغلاف.", "en": "Bring the ground, type or chrome back in line with the cover."},
+          "vars": ["count", "of"]
+        },
+        {
+          "id": "D11.thread-drift",
+          "sev": "BLOCK",
+          "deferred": {"engines": ["js"], "by": "Q3b"},
+          "params": {
+            "maxPx": {"$platform": "plugin.visual.continuity.threadDrift.maxPx"}
+          },
+          "autofix": {"kind": "refit", "chain": ["refit"], "engines": ["js"]},
+          "when": "Rendered: with style.thread on, thread ends differ between slides by more than params.maxPx px.",
+          "msg": {"ar": "ينحرف خيط الربط بين السلايدات بمقدار {px} بكسل والحد {max}.", "en": "The thread drifts {px} px between slides; the limit is {max}."},
+          "fix": {"ar": "أعد ضبط نهايات الخيط.", "en": "Refit the thread ends."},
+          "vars": ["px", "max"]
+        },
+        {
+          "id": "D11.seam",
+          "sev": "FIX",
+          "deferred": {"engines": ["js"], "by": "Q3b"},
+          "params": {
+            "tolerancePx": {"$platform": "plugin.visual.continuity.seam.tolerancePx"}
+          },
+          "autofix": {"kind": "refit", "chain": ["refit"], "engines": ["js"]},
+          "when": "Rendered: the halves of a registered seam miss by more than params.tolerancePx px, are not adjacent, or disagree with style.panorama.",
+          "msg": {"ar": "نصفا الوصلة لا يلتقيان: الفرق {px} بكسل والحد {max}.", "en": "The two halves of the seam do not meet: {px} px apart; the limit is {max}."},
+          "fix": {"ar": "أعد ضبط موضع الوصلة على السلايدين.", "en": "Refit the seam on both slides."},
+          "vars": ["px", "max"]
+        }
+      ]
+    },
+    {
+      "id": "VA1",
+      "title": {"ar": "وجود العنصر البصري", "en": "Anchor present"},
+      "scope": "spec",
+      "engines": ["py", "js"],
+      "checks": [
+        {
+          "id": "VA1.anchor-present",
+          "sev": "FIX",
+          "sevs": ["NOTE", "FIX"],
+          "appliesTo": {
+            "formats": ["carousel"],
+            "slideTypes": ["rehook", "item", "step", "stat", "compare", "myth-fact", "quote", "story-beat", "checklist", "summary", "setup", "proof", "share", "cta", "offer", "testimonial", "grid", "timeline"]
+          },
+          "deferred": {"engines": ["py"], "by": "Q6"},
+          "params": {
+            "runMin": {"$platform": "plugin.visual.rhythm.anchorPresent.runMin"},
+            "block": {"$platform": "plugin.visual.block.anchorRun"},
+            "unplannedSev": "NOTE",
+            "rollout": {"$platform": "plugin.visual.rollout"}
+          },
+          "autofix": {"kind": "anchor-add", "chain": ["anchor-add"], "engines": ["js"]},
+          "when": "Spec: a non-pause slide has no stored anchor; params.runMin or more such slides in a row is the BLOCK case, only while params.block.enabled; a slide with no visual is unplanned (params.unplannedSev).",
+          "msg": {"ar": "السلايد بلا عنصر بصري رئيسي، وعدد السلايدات المتتالية بلا عنصر: {run}.", "en": "The slide has no visual anchor; slides in a row without one: {run}."},
+          "fix": {"ar": "أضف العنصر البصري الذي يقترحه المخطط.", "en": "Add the anchor the planner suggests."},
+          "vars": ["run"]
+        }
+      ]
+    },
+    {
+      "id": "VA2",
+      "title": {"ar": "حجم العنصر البصري", "en": "Anchor size"},
+      "scope": "rendered",
+      "engines": ["js"],
+      "checks": [
+        {
+          "id": "VA2.anchor-size",
+          "sev": "FIX",
+          "sevs": ["NOTE", "FIX"],
+          "engines": ["js"],
+          "appliesTo": {
+            "slideTypes": ["rehook", "item", "step", "stat", "compare", "myth-fact", "quote", "story-beat", "checklist", "summary", "setup", "proof", "share", "cta", "offer", "testimonial", "grid", "timeline"]
+          },
+          "params": {
+            "anchorShare": {"$platform": "plugin.visual.anchorShare"},
+            "rollout": {"$platform": "plugin.visual.rollout"}
+          },
+          "autofix": {"kind": "anchor-size", "chain": ["anchor-size"], "engines": ["js"]},
+          "when": "Rendered, JS only: the anchor covers less of the zone than params.anchorShare.types[type].min (NOTE) or fixFactor percent of it (FIX); a bare glyph is under minGlyphPx; a mock or chart is under minMockWidth percent of the zone width; a compare side is under compareSideCanvas percent of the canvas.",
+          "msg": {"ar": "العنصر البصري صغير: {value} والمطلوب {need}.", "en": "The visual anchor is too small: {value}; it needs {need}."},
+          "fix": {"ar": "انتقل إلى حجم أكبر للعنصر البصري.", "en": "Move the visual anchor up a size."},
+          "vars": ["value", "need"]
+        }
+      ]
+    },
+    {
+      "id": "VA3",
+      "title": {"ar": "صحة الخطة البصرية", "en": "Visual plan valid"},
+      "scope": "spec",
+      "engines": ["py", "js"],
+      "checks": [
+        {
+          "id": "VA3.valid",
+          "sev": "FIX",
+          "deferred": {"engines": ["py"], "by": "Q6"},
+          "params": {
+            "itemsMax": {"$platform": "plugin.visual.plan.valid.itemsMax"},
+            "itemsByType": {"$platform": "plugin.visual.plan.valid.itemsByType"},
+            "rowIconsMax": {"$platform": "plugin.visual.plan.valid.rowIconsMax"},
+            "chartValues": {"$platform": "plugin.visual.plan.valid.chartValues"},
+            "donutMinGapPct": {"$platform": "plugin.visual.plan.valid.donutMinGapPct"},
+            "pictogramMaxIcons": {"$platform": "plugin.visual.plan.valid.pictogramMaxIcons"},
+            "demo": {"$platform": "plugin.visual.words.demo"}
+          },
+          "autofix": null,
+          "when": "Spec: an unknown icon, kind, recipe or variant (CS.visual.caps()); rowIcons over the bullets; chart values outside params.chartValues[kind]; items outside params.itemsMax or itemsByType; a demo over params.demo; an artefact mock with no artefact; a span not on the adjacent slide.",
+          "msg": {"ar": "قيمة غير صالحة في الخطة البصرية ({el}): {detail}.", "en": "Invalid value in the visual plan ({el}): {detail}."},
+          "fix": {"ar": "اختر أقرب قيمة صالحة من القائمة.", "en": "Pick the nearest valid value."},
+          "vars": ["el", "detail"]
+        }
+      ]
+    },
+    {
+      "id": "VA4",
+      "title": {"ar": "أمانة الرسوم البيانية", "en": "Chart honesty"},
+      "scope": "spec",
+      "engines": ["py", "js"],
+      "checks": [
+        {
+          "id": "VA4.chart-honesty",
+          "sev": "BLOCK",
+          "sevs": ["FIX", "BLOCK"],
+          "deferred": {"engines": ["py"], "by": "Q6"},
+          "params": {
+            "tagMinPx": {"$platform": "plugin.visual.plan.chartHonesty.tagMinPx"},
+            "tagSev": "FIX"
+          },
+          "autofix": null,
+          "when": "Spec: chart values with neither sourceIds nor illustrative (BLOCK), or an illustrative chart without a visible tag of params.tagMinPx px (params.tagSev).",
+          "msg": {"ar": "أرقام الرسم البياني في {el} تحتاج مصدرًا أو وسم «رسم توضيحي» ظاهرًا.", "en": "The chart figures at {el} need a source or a visible “illustrative” tag."},
+          "fix": {"ar": "اربط الأرقام بمصدر من السلايد أو أضف وسم «رسم توضيحي».", "en": "Link the figures to a source on the slide or add the illustrative tag."},
+          "vars": ["el"]
+        }
+      ]
+    },
+    {
+      "id": "VA5",
+      "title": {"ar": "تنوع العناصر البصرية", "en": "Visual variety"},
+      "scope": "spec",
+      "engines": ["py", "js"],
+      "checks": [
+        {
+          "id": "VA5.variety",
+          "sev": "FIX",
+          "appliesTo": {
+            "formats": ["carousel"]
+          },
+          "deferred": {"engines": ["py", "js"], "by": "wave 3"},
+          "params": {
+            "kindRun": {"$platform": "plugin.visual.rhythm.variety.kindRun"},
+            "minKinds": {"$platform": "plugin.visual.rhythm.variety.minKinds"},
+            "minInner": {"$platform": "plugin.visual.rhythm.variety.minInner"},
+            "iconUses": {"$platform": "plugin.visual.rhythm.variety.iconUses"},
+            "smell": {"$platform": "plugin.visual.smell"}
+          },
+          "autofix": {"kind": "anchor-add", "chain": ["anchor-add"], "engines": ["js"]},
+          "when": "Spec: the same anchor kind on params.kindRun slides in a row; fewer than params.minKinds kinds in params.minInner or more inner slides; an icon used more than params.iconUses times.",
+          "msg": {"ar": "العناصر البصرية متشابهة: {detail}.", "en": "The visuals are too similar: {detail}."},
+          "fix": {"ar": "غيّر نوع عنصر بصري أو أكثر ليتنوع الإيقاع.", "en": "Change the kind of one or more anchors to vary the rhythm."},
+          "vars": ["detail"]
+        },
+        {
+          "id": "VA5.relaxed",
+          "sev": "NOTE",
+          "appliesTo": {
+            "formats": ["carousel"]
+          },
+          "deferred": {"engines": ["py", "js"], "by": "wave 3"},
+          "params": {
+            "max": {"$platform": "plugin.visual.rhythm.relaxed.max"}
+          },
+          "autofix": null,
+          "when": "Spec: the stored plan has relax above params.max.",
+          "msg": {"ar": "تساهلت الخطة في {relax} من قيود التنويع لتكتمل.", "en": "The plan relaxed {relax} variety rules to complete."},
+          "fix": {"ar": "أعد التخطيط أو اختر العناصر البصرية يدويًا.", "en": "Re-plan, or pick the anchors by hand."},
+          "vars": ["relax"]
+        },
+        {
+          "id": "VA5.no-bold",
+          "sev": "NOTE",
+          "appliesTo": {
+            "formats": ["carousel"]
+          },
+          "deferred": {"engines": ["py", "js"], "by": "wave 3"},
+          "params": null,
+          "autofix": null,
+          "when": "Spec: no slide of the stored plan uses an anchor that art-direction.json flags as bold.",
+          "msg": {"ar": "لا توجد في الخطة لقطة بصرية جريئة واحدة.", "en": "The plan has no bold visual move."},
+          "fix": {"ar": "اجعل أحد السلايدات لقطة بصرية جريئة.", "en": "Make one slide the bold visual move."},
+          "vars": []
+        }
+      ]
+    },
+    {
+      "id": "VA6",
+      "title": {"ar": "سلايدات الوقفة", "en": "Pause slides"},
+      "scope": "spec",
+      "engines": ["py", "js"],
+      "checks": [
+        {
+          "id": "VA6.pause",
+          "sev": "FIX",
+          "appliesTo": {
+            "formats": ["carousel"]
+          },
+          "deferred": {"engines": ["py"], "by": "Q6"},
+          "params": {
+            "per": {"$platform": "plugin.visual.rhythm.pause.per"},
+            "max": {"$platform": "plugin.visual.rhythm.pause.max"},
+            "adjacent": {"$platform": "plugin.visual.rhythm.pause.adjacent"},
+            "beforeCta": {"$platform": "plugin.visual.rhythm.pause.beforeCta"},
+            "statementWords": {"$platform": "plugin.visual.rhythm.pause.statementWords"}
+          },
+          "autofix": null,
+          "when": "Spec: more than params.max pause per params.per inner slides, two adjacent pauses, a pause right before the cta, or a statement over params.statementWords words.",
+          "msg": {"ar": "ترتيب سلايدات الوقفة يحتاج تعديلًا: {detail}.", "en": "The pause slides need adjusting: {detail}."},
+          "fix": {"ar": "باعد بين سلايدات الوقفة ولا تضعها قبل الدعوة مباشرة.", "en": "Space the pause slides apart and keep them away from the slide just before the CTA."},
+          "vars": ["detail"]
+        }
+      ]
+    },
+    {
+      "id": "VA7",
+      "title": {"ar": "ملاءمة الأيقونة للمعنى", "en": "Icon agreement"},
+      "scope": "spec",
+      "engines": ["py", "js"],
+      "checks": [
+        {
+          "id": "VA7.agreement",
+          "sev": "FIX",
+          "sevs": ["NOTE", "FIX"],
+          "deferred": {"engines": ["py"], "by": "Q6"},
+          "params": {
+            "topN": {"$platform": "plugin.visual.plan.agreement.topN"}
+          },
+          "autofix": null,
+          "when": "Spec: a hand-picked icon outside the top params.topN concepts of the slide (NOTE), or a cheerful icon on a negative slide (FIX).",
+          "msg": {"ar": "الأيقونة {icon} لا تتفق مع معنى السلايد.", "en": "The icon {icon} does not match the slide's meaning."},
+          "fix": {"ar": "استبدلها بأقرب أيقونة مقترحة لمعنى السلايد.", "en": "Swap it for the top suggested icon for the slide's meaning."},
+          "vars": ["icon"]
+        }
+      ]
+    },
+    {
+      "id": "VA8",
+      "title": {"ar": "قيود العلامة البصرية", "en": "Brand art constraints"},
+      "scope": "spec",
+      "engines": ["py", "js"],
+      "checks": [
+        {
+          "id": "VA8.constraints",
+          "sev": "BLOCK",
+          "deferred": {"engines": ["py"], "by": "Q6"},
+          "params": {
+            "categories": ["figures", "animals", "music", "maps"]
+          },
+          "autofix": null,
+          "when": "Spec: an icon, object or scene in a category that brand.visual.art.constraints forbids (params.categories); technical, not overridable.",
+          "msg": {"ar": "العنصر {icon} يخالف قيود العلامة البصرية ({rule}).", "en": "{icon} breaks the brand's art constraints ({rule})."},
+          "fix": {"ar": "استبدله بأقرب أيقونة مسموحة.", "en": "Swap it for the nearest allowed icon."},
+          "vars": ["icon", "rule"]
+        }
+      ]
+    },
+    {
+      "id": "VA9",
+      "title": {"ar": "رسم العنصر البصري", "en": "Anchor drawn"},
+      "scope": "rendered",
+      "engines": ["js"],
+      "checks": [
+        {
+          "id": "VA9.anchor-unbuilt",
+          "sev": "FIX",
+          "sevs": ["NOTE", "FIX"],
+          "engines": ["js"],
+          "appliesTo": {
+            "slideTypes": ["rehook", "item", "step", "stat", "compare", "myth-fact", "quote", "story-beat", "checklist", "summary", "setup", "proof", "share", "cta", "offer", "testimonial", "grid", "timeline"]
+          },
+          "params": {
+            "rollout": {"$platform": "plugin.visual.rollout"}
+          },
+          "autofix": null,
+          "when": "Rendered, JS only: slide.visual.anchor.kind is not none but the rendered slide has no art object and no anchor-flagged node, so the builder returned nothing; capped by params.rollout.",
+          "msg": {"ar": "لم يظهر العنصر البصري المخطط ({kind}) على السلايد.", "en": "The planned visual anchor ({kind}) was not drawn on the slide."},
+          "fix": {"ar": "غيّر نوع العنصر البصري أو أعد بناء السلايد.", "en": "Change the anchor kind or rebuild the slide."},
+          "vars": ["kind"]
+        }
+      ]
+    },
+    {
+      "id": "RX1",
+      "title": {"ar": "ابتعاد إعادة التصميم", "en": "Remix distance"},
+      "scope": "spec",
+      "engines": ["py", "js"],
+      "checks": [
+        {
+          "id": "RX1.visual-distance",
+          "sev": "NOTE",
+          "deferred": {"engines": ["py", "js"], "by": "wave 3 (V4)"},
+          "params": {
+            "kindShare": {"$platform": "plugin.visual.plan.distance.kindShare"},
+            "recipeShare": {"$platform": "plugin.visual.plan.distance.recipeShare"}
+          },
+          "autofix": null,
+          "when": "Spec: a remix keeps its source's cover, or differs in neither the preset nor at least params.kindShare percent of anchor kinds and params.recipeShare percent of recipes; never blocks.",
+          "msg": {"ar": "إعادة التصميم قريبة من الأصل: {detail}.", "en": "The remix is too close to its source: {detail}."},
+          "fix": {"ar": "اطلب شكلًا آخر من الخيارات.", "en": "Ask for another variant."},
+          "vars": ["detail"]
+        }
+      ]
+    },
+    {
+      "id": "T1",
+      "title": {"ar": "المصغّر", "en": "Thumbnail"},
+      "scope": "rendered",
+      "engines": ["js"],
+      "checks": [
+        {
+          "id": "T1.hero-small",
+          "sev": "FIX",
+          "params": {
+            "pass": {"$platform": "plugin.thumbnail.heroPassPx"},
+            "fixMin": {"$platform": "plugin.thumbnail.heroFixMinPx"},
+            "widthPx": {"$platform": "plugin.thumbnail.widthPx"}
+          },
+          "autofix": null,
+          "when": "Rendered: the cover hero at 130 px wide is smaller than params.pass but not smaller than params.fixMin px (below that D3.hero-floor already blocks).",
+          "msg": {"ar": "عنوان الغلاف {px} بكسل على المصغّر والحد {min}.", "en": "The cover headline is {px}px on the thumbnail; the limit is {min}px."},
+          "fix": {"ar": "كبّر العنوان أو اختصره.", "en": "Enlarge the headline or shorten it."},
+          "vars": ["px", "min"]
+        },
+        {
+          "id": "T1.local-contrast",
+          "sev": "FIX",
+          "params": {
+            "min": {"$platform": "plugin.thumbnail.localContrastMin"}
+          },
+          "autofix": null,
+          "when": "Rendered: the hero's contrast against the average background under it is below params.min.",
+          "msg": {"ar": "تباين العنوان على المصغّر {ratio}:1 والحد {min}:1.", "en": "Headline contrast on the thumbnail is {ratio}:1; the limit is {min}:1."},
+          "fix": {"ar": "غيّر لون العنوان أو أضف تظليلًا.", "en": "Change the headline colour or add a scrim."},
+          "vars": ["ratio", "min"]
+        }
+      ]
+    },
+    {
+      "id": "A1",
+      "title": {"ar": "الصور المولّدة", "en": "AI imagery"},
+      "scope": "after-generation",
+      "engines": ["js", "model"],
+      "checks": [
+        {
+          "id": "A1.flag",
+          "sev": "BLOCK",
+          "engines": ["js"],
+          "autofix": null,
+          "when": "A slide's media has ai true and its asset is missing or lacks aiGenerated true.",
+          "msg": {"ar": "صورة مولّدة بالذكاء الاصطناعي بلا علامة في ملف البوست ({el}).", "en": "An AI image is not flagged in the post file ({el})."},
+          "fix": {"ar": "علّم الأصل على أنه مولَّد.", "en": "Mark the asset as AI-generated."},
+          "vars": ["el"]
+        },
+        {
+          "id": "A1.calm-zone",
+          "sev": "BLOCK",
+          "engines": ["js"],
+          "autofix": null,
+          "when": "A slide with a plate (or any AI image) behind text declares no calm zone (calmZone absent or none).",
+          "msg": {"ar": "خلفية تحت نص بلا منطقة هادئة محددة ({el}).", "en": "A background sits under text with no calm zone declared ({el})."},
+          "fix": {"ar": "حدّد منطقة هادئة للنص أو بدّل الصورة.", "en": "Declare a calm zone for the text or change the image."},
+          "vars": ["el"]
+        },
+        {
+          "id": "A1.text-check",
+          "sev": "BLOCK",
+          "engines": ["js"],
+          "params": {
+            "recordPath": "ext.assetChecks"
+          },
+          "autofix": null,
+          "when": "An AI asset used by a slide has no recorded check in spec.ext.assetChecks[assetId].textChecked.",
+          "msg": {"ar": "لم تؤكد خلو الصورة المولّدة من الحروف والعلامات المائية.", "en": "You have not confirmed that the AI image has no letters or watermark."},
+          "fix": {"ar": "افحص الصورة ثم أكّد خلوّها من الحروف والعلامة المائية بالمفتاح الظاهر في تبويب الصورة.", "en": "Inspect the image, then confirm it has no letters or watermark with the switch on the Image tab."},
+          "vars": ["el", "asset"]
+        },
+        {
+          "id": "A1.ai-text",
+          "sev": "BLOCK",
+          "engines": ["model"],
+          "autofix": null,
+          "when": "Model check: an AI image contains letters, Arabic text or a watermark.",
+          "msg": {"ar": "حروف أو علامة مائية داخل صورة مولّدة.", "en": "Letters or a watermark appear inside an AI image."},
+          "fix": {"ar": "أعد التوليد مع الأمر «بلا حروف».", "en": "Regenerate with a “no text” instruction."}
+        }
+      ]
+    },
+    {
+      "id": "V1",
+      "title": {"ar": "الفيديو", "en": "Video cover"},
+      "scope": "export",
+      "engines": ["js"],
+      "checks": [
+        {
+          "id": "V1.codec",
+          "sev": "BLOCK",
+          "params": {
+            "prefix": "avc1"
+          },
+          "autofix": null,
+          "when": "Export: the cover video codec string does not start with params.prefix.",
+          "msg": {"ar": "ترميز الفيديو ({codec}) ليس H.264.", "en": "The video codec ({codec}) is not H.264."},
+          "fix": {"ar": "أعد التصدير بترميز H.264.", "en": "Export again with H.264."},
+          "vars": ["codec"]
+        },
+        {
+          "id": "V1.profile",
+          "sev": "FIX",
+          "autofix": null,
+          "when": "Export: the H.264 profile is not High (avc1.64…). Instagram accepts the other profiles, so this is advice.",
+          "msg": {"ar": "ملف H.264 ليس High ({codec}).", "en": "The H.264 profile is not High ({codec})."},
+          "fix": {"ar": "إن أمكن فاستخدم ملف High.", "en": "Use the High profile when the device supports it."},
+          "vars": ["codec"]
+        },
+        {
+          "id": "V1.pixfmt",
+          "sev": "BLOCK",
+          "params": {
+            "expected": {"$platform": "plugin.export.mp4.pixelFormat"}
+          },
+          "autofix": null,
+          "when": "Export: the pixel format is not params.expected (8-bit 4:2:0). A full-range yuvj420p file counts as yuv420p here and is judged by V1.range.",
+          "msg": {"ar": "صيغة البكسل {pixfmt} والمطلوب {expected}.", "en": "The pixel format is {pixfmt}; expected {expected}."},
+          "fix": {"ar": "أعد التصدير بصيغة 4:2:0 وعمق 8 بت.", "en": "Export again as 8-bit 4:2:0."},
+          "vars": ["pixfmt", "expected"]
+        },
+        {
+          "id": "V1.range",
+          "sev": "BLOCK",
+          "params": {
+            "expected": {"$platform": "plugin.export.mp4.range"}
+          },
+          "autofix": null,
+          "when": "Export: the video is full range (color_range pc, or a yuvj pixel format) when params.expected (tv, limited) is required.",
+          "msg": {"ar": "مدى الألوان في الفيديو كامل ({range}) والمطلوب مدى محدود ({expected}).", "en": "The video uses full-range colour ({range}); limited range ({expected}) is required."},
+          "fix": {"ar": "أعد التصدير بمدى ألوان محدود.", "en": "Export again in limited range."},
+          "vars": ["range", "expected"]
+        },
+        {
+          "id": "V1.colour",
+          "sev": "FIX",
+          "params": {
+            "expected": {"$platform": "plugin.export.mp4.matrix"}
+          },
+          "autofix": null,
+          "when": "Export: the file names a colour primaries, transfer or matrix other than params.expected (bt709). Untagged files pass.",
+          "msg": {"ar": "وسوم الألوان في الفيديو ({tags}) ليست {expected}.", "en": "The colour tags ({tags}) are not {expected}."},
+          "fix": {"ar": "أعد التصدير بوسوم BT.709.", "en": "Export again tagged BT.709."},
+          "vars": ["tags", "expected"]
+        },
+        {
+          "id": "V1.level",
+          "sev": "FIX",
+          "params": {
+            "max": {"$platform": "plugin.export.mp4.maxLevel"}
+          },
+          "autofix": null,
+          "when": "Export: the H.264 level is higher than params.max (4.1). The Studio and HyperFrames lanes write 4.0; a hardware encoder may write 5.0 and the Studio then lowers it when the stream fits, so this is advice.",
+          "msg": {"ar": "مستوى H.264 هو {level} وهو أعلى من {max}، وقد لا تشغّله بعض الأجهزة القديمة.", "en": "The H.264 level is {level}, above {max}; some older phones may not play it."},
+          "fix": {"ar": "أعد التصدير بمستوى {max} أو أقل.", "en": "Export again at level {max} or lower."},
+          "vars": ["level", "max"]
+        },
+        {
+          "id": "V1.size",
+          "sev": "BLOCK",
+          "params": {
+            "w": {"$platform": "plugin.export.png.w"},
+            "h3x4": {"$platform": "plugin.export.png.h"},
+            "h4x5": {"$platform": "plugin.export.jpeg4x5.h"}
+          },
+          "autofix": null,
+          "when": "Export: the video is not 1080×1440 (or 1080×1350 for the 4:5 variant).",
+          "msg": {"ar": "حجم الفيديو {w}×{h} والمطلوب {ew}×{eh}.", "en": "The video is {w}×{h}; expected {ew}×{eh}."},
+          "fix": {"ar": "أعد التصدير بالحجم الصحيح.", "en": "Export again at the right size."},
+          "vars": ["w", "h", "ew", "eh"]
+        },
+        {
+          "id": "V1.fps",
+          "sev": "BLOCK",
+          "params": {
+            "fps": {"$platform": "plugin.motion.fps"}
+          },
+          "autofix": null,
+          "when": "Export: the frame rate is not params.fps (constant).",
+          "msg": {"ar": "معدل الإطارات {fps} والمطلوب {ef}.", "en": "The frame rate is {fps}; expected {ef}."},
+          "fix": {"ar": "أعد التصدير بمعدل ثابت.", "en": "Export again at a constant rate."},
+          "vars": ["fps", "ef"]
+        },
+        {
+          "id": "V1.frames",
+          "sev": "BLOCK",
+          "params": {
+            "defaultSeconds": {"$platform": "plugin.motion.defaultSeconds"}
+          },
+          "autofix": null,
+          "when": "Export: the frame count differs from round(seconds × fps) by more than one frame.",
+          "msg": {"ar": "عدد الإطارات {count} والمتوقع {n}.", "en": "The video has {count} frames; expected {n}."},
+          "fix": {"ar": "أعد التصدير كاملًا.", "en": "Export the whole cover again."},
+          "vars": ["count", "n"]
+        },
+        {
+          "id": "V1.audio",
+          "sev": "BLOCK",
+          "params": {
+            "expected": {"$platform": "plugin.export.mp4.audio"}
+          },
+          "autofix": null,
+          "when": "Export: the audio track differs from params.expected (none unless SP7 says a silent track is needed).",
+          "msg": {"ar": "مسار الصوت ({audio}) لا يطابق المطلوب ({expected}).", "en": "The audio track ({audio}) does not match what is required ({expected})."},
+          "fix": {"ar": "أعد التصدير دون صوت.", "en": "Export again without audio."},
+          "vars": ["audio", "expected"]
+        },
+        {
+          "id": "V1.faststart",
+          "sev": "BLOCK",
+          "params": {
+            "required": {"$platform": "plugin.export.mp4.faststart"}
+          },
+          "autofix": null,
+          "when": "Export: the moov box does not come before the mdat box.",
+          "msg": {"ar": "بيانات الفيديو غير مهيأة للتشغيل السريع.", "en": "The video is not prepared for fast start."},
+          "fix": {"ar": "أعد التصدير مع faststart.", "en": "Export again with fast start."}
+        },
+        {
+          "id": "V1.keyframe",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Export: the first frame is not a keyframe.",
+          "msg": {"ar": "الإطار الأول في الفيديو ليس إطارًا مفتاحيًا.", "en": "The first video frame is not a keyframe."},
+          "fix": {"ar": "أعد التصدير مع إطار مفتاحي في البداية.", "en": "Export again with a keyframe at the start."}
+        },
+        {
+          "id": "V1.closed-gop",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Export: the encoder reports closedGop false.",
+          "msg": {"ar": "مجموعة الإطارات ليست مغلقة.", "en": "The group of pictures is not closed."},
+          "fix": {"ar": "أعد التصدير مع GOP مغلق.", "en": "Export again with a closed GOP."}
+        },
+        {
+          "id": "V1.loop",
+          "sev": "BLOCK",
+          "params": {
+            "ssim": {"$platform": "plugin.motion.loopSsimMin"},
+            "psnr": {"$platform": "plugin.motion.loopPsnrMinDb"}
+          },
+          "autofix": null,
+          "when": "Export: the SSIM of the last frame against frame 0 (or, in the Studio, of the painted frame 0 against the poster) is below params.ssim, or the PSNR below params.psnr dB. Frame 0 of an encoded MP4 against the lossless poster PNG is held to the lower plugin.motion.posterSsimMin / posterPsnrMinDb instead (0.99 / 32 dB): 4:2:0 H.264 cannot reproduce a PNG at the loop bar.",
+          "msg": {"ar": "الفيديو لا يعود إلى الغلاف بدقة (SSIM {ssim} وPSNR {psnr}).", "en": "The loop does not land on the poster (SSIM {ssim}, PSNR {psnr})."},
+          "fix": {"ar": "أعد التصدير؛ أول إطار وآخر إطار يجب أن يطابقا الغلاف.", "en": "Export again; the first and last frames must match the poster."},
+          "vars": ["ssim", "psnr"]
+        },
+        {
+          "id": "V1.blank",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Export: the video reports blank frames between the hold-in and settle times.",
+          "msg": {"ar": "عدد الإطارات الفارغة في الفيديو {count}.", "en": "The video has {count} blank frames."},
+          "fix": {"ar": "أعد التصدير؛ لا يجوز أن تفرغ الشاشة أثناء الحركة.", "en": "Export again; the screen must never go empty during the motion."},
+          "vars": ["count"]
+        },
+        {
+          "id": "V1.flashes",
+          "sev": "BLOCK",
+          "params": {
+            "max": {"$platform": "plugin.motion.maxFlashesPerSecond"}
+          },
+          "autofix": null,
+          "when": "Export: the video flashes more than params.max times per second.",
+          "msg": {"ar": "عدد مرات الوميض في الثانية {count} والحد الأقصى {max}.", "en": "The video flashes {count} times a second; the limit is {max}."},
+          "fix": {"ar": "خفّف الحركة السريعة.", "en": "Tone down the fast changes."},
+          "vars": ["count", "max"]
+        },
+        {
+          "id": "V1.still-hold",
+          "sev": "NOTE",
+          "params": {
+            "maxShare": {"$platform": "plugin.motion.stillMaxShare"},
+            "delta": {"$platform": "plugin.motion.stillDeltaLuma"}
+          },
+          "autofix": null,
+          "when": "Export: more than params.maxShare of the frames repeat the frame before them (a mean change under params.delta luma levels on a 108x144 grey copy), so the loop is mostly a held picture.",
+          "msg": {"ar": "الغلاف ثابت في {pct}% من مدة الحلقة ({sec} ثانية)، فالحركة قصيرة.", "en": "The cover holds still for {pct}% of the loop ({sec} s); the motion is short."},
+          "fix": {"ar": "أطل نافذة الحركة أو أضف نبضة بعد إعادة التجميع، وأبقِ التثبيت الأخير قرابة ثانيتين.", "en": "Lengthen the motion window or add a beat after the rebuild, and keep the final hold to about two seconds."},
+          "vars": ["pct", "sec"]
+        },
+        {
+          "id": "V1.thin-frames",
+          "sev": "NOTE",
+          "params": {
+            "maxSeconds": {"$platform": "plugin.motion.thinMaxSeconds"},
+            "share": {"$platform": "plugin.motion.thinShare"}
+          },
+          "autofix": null,
+          "when": "Export: between the hold-in and settle times a run of consecutive frames longer than params.maxSeconds holds less than params.share of the content of frame 0, so the viewer sees only the header and footer and a ghost of the hero.",
+          "msg": {"ar": "الغلاف شبه فارغ لمدة {sec} ثانية في الحلقة؛ لا يظهر فيه إلا الرأس والتذييل.", "en": "The cover is nearly empty for {sec} s of the loop; only the header and footer are on screen."},
+          "fix": {"ar": "ابدأ إعادة التجميع أبكر، أو أبقِ عنصرًا من القصة على الشاشة أثناء التفكيك.", "en": "Start the rebuild earlier, or keep one element of the story on screen while the cover is apart."},
+          "vars": ["sec"]
+        },
+        {
+          "id": "V1.static",
+          "sev": "NOTE",
+          "autofix": null,
+          "when": "Export: motion is off (recipe none or compat.mp4 off) or the kit holds no cover video.",
+          "msg": {"ar": "الغلاف ثابت بلا حركة.", "en": "The cover is static; it has no motion."},
+          "fix": {"ar": "فعّل الحركة لزيادة التوقف عند الغلاف.", "en": "Turn motion on to hold the viewer at the cover."}
+        }
+      ]
+    },
+    {
+      "id": "X1",
+      "title": {"ar": "تصدير نظيف", "en": "Clean export"},
+      "scope": "export",
+      "engines": ["js"],
+      "checks": [
+        {
+          "id": "X1.credit",
+          "sev": "BLOCK",
+          "params": {
+            "lines": [
+              {
+                "id": "credit-ar",
+                "cp": [1589, 1606, 1593, 1576, 1608, 1575, 1587, 1591, 1577, 1605, 1581, 1605, 1583, 1593, 1576, 1583, 1607]
+              },
+              {
+                "id": "credit-en",
+                "cp": [109, 97, 100, 101, 98, 121, 109, 111, 104, 97, 109, 101, 100, 97, 98, 100, 111, 117]
+              },
+              {
+                "id": "thanks-ar",
+                "cp": [1603, 1604, 1605, 1577, 1588, 1603, 1585, 1571, 1608, 1584, 1603, 1585]
+              }
+            ],
+            "names": [
+              {
+                "id": "name-ar",
+                "cp": [1605, 1581, 1605, 1583, 1593, 1576, 1583, 1607]
+              },
+              {
+                "id": "name-ar-2",
+                "cp": [1605, 1581, 1605, 1583, 1593, 1576, 1583, 1608]
+              },
+              {
+                "id": "name-en",
+                "cp": [109, 111, 104, 97, 109, 101, 100, 97, 98, 100, 111]
+              },
+              {
+                "id": "name-en-2",
+                "cp": [109, 111, 104, 97, 109, 109, 101, 100, 97, 98, 100, 111]
+              }
+            ],
+            "brands": [
+              {
+                "id": "store",
+                "cp": [112, 121, 114, 97, 97, 105]
+              },
+              {
+                "id": "company",
+                "cp": [112, 121, 114, 97, 109, 101, 100, 105, 97]
+              }
+            ],
+            "encoding": "code-points",
+            "fold": "lower-case letters and digits only"
+          },
+          "autofix": null,
+          "when": "Export: a kit file contains, after folding to lower-case letters and digits, a credit line or a name or brand needle. Credit lines are searched first; then the user's own brand strings (name, handle, slug, home URL) are masked out, and the name and brand needles are searched in what remains. Needles are stored as code points so this file never contains them.",
+          "msg": {"ar": "ملف التصدير {path} يحمل نص الشكر أو اسم صاحب الأداة.", "en": "The export file {path} carries the tool's credit or its owner's name."},
+          "fix": {"ar": "أعد بناء الملف دون شاشة «عن الأداة»؛ لا يظهر الاسم إلا داخل الأداة.", "en": "Rebuild the file without the About screen; the name belongs inside the tool only."},
+          "vars": ["path", "needle"]
+        },
+        {
+          "id": "X1.credit-markup",
+          "sev": "BLOCK",
+          "params": {
+            "markers": ["data-cs-credit"]
+          },
+          "autofix": null,
+          "when": "Export: an HTML file contains a data-cs-credit attribute.",
+          "msg": {"ar": "الملف {path} يحمل عنصر اعتماد داخلي (data-cs-credit).", "en": "{path} carries an internal credit element (data-cs-credit)."},
+          "fix": {"ar": "ابنِ الملف بوضع credit-free.", "en": "Build the file in credit-free mode."},
+          "vars": ["path"]
+        },
+        {
+          "id": "X1.metadata",
+          "sev": "BLOCK",
+          "params": {
+            "producer": "Carousel Studio"
+          },
+          "autofix": null,
+          "when": "Export: a PNG has tEXt, zTXt, iTXt or eXIf chunks; a JPEG has APP1, APP13 or COM segments; a PDF has /Author or a /Producer or /Creator other than params.producer; an MP4 has author-style metadata atoms.",
+          "msg": {"ar": "الملف {path} يحمل بيانات وصفية شخصية ({kind}).", "en": "{path} carries personal metadata ({kind})."},
+          "fix": {"ar": "أعد التصدير بعد إزالة البيانات الوصفية.", "en": "Export again with the metadata stripped."},
+          "vars": ["path", "kind"]
+        },
+        {
+          "id": "X1.complete",
+          "sev": "BLOCK",
+          "autofix": null,
+          "when": "Export: a path of CS.export.kitFiles(spec) (or input.expected) is neither among the files nor listed as skipped.",
+          "msg": {"ar": "الحزمة ناقصة: الملف {path} غير موجود.", "en": "The kit is incomplete: {path} is missing."},
+          "fix": {"ar": "أعد التصدير كاملًا.", "en": "Export the whole kit again."},
+          "vars": ["path"]
+        },
+        {
+          "id": "X1.secrets",
+          "sev": "BLOCK",
+          "params": {
+            "patterns": [
+              {
+                "id": "openai-style-key",
+                "pattern": "(^|[^A-Za-z0-9_-])sk-(?=[A-Za-z_-]{0,40}[0-9])[A-Za-z0-9_-]{20,}"
+              },
+              {
+                "id": "google-key",
+                "pattern": "AIza[0-9A-Za-z_-]{35}"
+              },
+              {
+                "id": "aws-key",
+                "pattern": "AKIA[0-9A-Z]{16}"
+              },
+              {
+                "id": "github-token",
+                "pattern": "gh[pousr]_[A-Za-z0-9]{36,}"
+              },
+              {
+                "id": "slack-token",
+                "pattern": "xox[baprs]-[A-Za-z0-9-]{10,}"
+              },
+              {
+                "id": "private-key",
+                "pattern": "-----BEGIN [A-Z ]*PRIVATE KEY-----"
+              },
+              {
+                "id": "bearer-token",
+                "pattern": "[Bb]earer [A-Za-z0-9._~+/-]{24,}"
+              },
+              {
+                "id": "key-assignment",
+                "pattern": "(api[_-]?key|secret|token|password)[\"']?[ \\t]*[:=][ \\t]*[\"'][A-Za-z0-9_-]{16,}[\"']",
+                "flags": "i"
+              }
+            ]
+          },
+          "autofix": null,
+          "when": "Export: a text file matches a secret pattern (base64 data URIs are removed before the scan).",
+          "msg": {"ar": "الملف {path} يحتوي ما يشبه مفتاحًا سريًا ({kind}).", "en": "{path} contains something that looks like a secret key ({kind})."},
+          "fix": {"ar": "احذف المفتاح فورًا ولا تضعه في الملفات.", "en": "Remove the key at once and never put one in files."},
+          "vars": ["path", "kind"]
+        },
+        {
+          "id": "X1.font-license",
+          "sev": "BLOCK",
+          "params": {
+            "allowedLicenses": ["OFL-1.1", "OFL"]
+          },
+          "autofix": null,
+          "when": "Export: an @font-face family in an exported HTML file is not an OFL family of the font registry, or an exported file is a font file.",
+          "msg": {"ar": "الملف {path} يضم خطًا ليس مفتوح الترخيص ({font}).", "en": "{path} embeds a font that is not openly licensed ({font})."},
+          "fix": {"ar": "استخدم خطوط الأداة المفتوحة أو أعد إرفاق خطك الخاص بنفسك.", "en": "Use the tool's open fonts, or re-attach your own font yourself."},
+          "vars": ["path", "font"]
+        }
+      ]
+    }
+  ],
+  "retired": [
+    {
+      "id": "D9.dead-zone",
+      "gate": "D9",
+      "retiredIn": "1.1.0",
+      "replacedBy": ["D9.band"],
+      "sev": "FIX",
+      "note": "Replaced by D9.band, which covers every slide type; findings of 1.0 reports keep this id and their own messages.",
+      "msg": {"ar": "فراغ بلا محتوى يشغل {pct}% من ارتفاع الغلاف (من {from} إلى {to}).", "en": "An empty band covers {pct}% of the canvas height on the cover (y {from} to {to})."},
+      "fix": {"ar": "اختر نمط الغلاف المتوسط أو الرقم الكبير، أو كبّر العنصر البطل ليملأ الغلاف؛ الحد {max}%.", "en": "Use the center or number cover variant, or scale the hero until it fills the sheet; the limit is {max}%."},
+      "vars": ["pct", "from", "to", "max"]
+    }
+  ]
+}

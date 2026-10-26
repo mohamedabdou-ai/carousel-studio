@@ -1,0 +1,95 @@
+{
+  "id": "F17-REFRAME-relocate",
+  "family": "F17",
+  "variant": "relocate",
+  "name": {
+    "ar": "المشكلة مش في… المشكلة في…",
+    "en": "Reframe: move the problem"
+  },
+  "mechanism": "breaks the assumed cause",
+  "trigger": [
+    "pattern-break",
+    "problem-naming"
+  ],
+  "evidence": [
+    {
+      "tag": "D-own",
+      "metric": "median-saves",
+      "value": 12.5,
+      "baseline": 7,
+      "n": 10
+    }
+  ],
+  "intent": {
+    "primary": "save",
+    "also": [
+      "reach"
+    ]
+  },
+  "awareness": [
+    "problem",
+    "unaware"
+  ],
+  "architectures": [
+    "myth-fact",
+    "framework"
+  ],
+  "contentType": "value",
+  "roles": [
+    "cover",
+    "slide2",
+    "caption-line1"
+  ],
+  "skeleton": {
+    "eg": "مشكلتك مش في {surface}… مشكلتك في {root}",
+    "msa-white": "المشكلة ليست في {surface}… بل في {root}",
+    "gulf": "مشكلتك مو في {surface}… مشكلتك في {root}",
+    "levant": "مشكلتك مش ب{surface}… مشكلتك ب{root}",
+    "en": "Your problem isn't {surface}. It's {root}."
+  },
+  "slots": {
+    "surface": {
+      "type": "noun-phrase",
+      "maxWords": 2,
+      "rule": "what the audience blames"
+    },
+    "root": {
+      "type": "noun-phrase",
+      "maxWords": 3,
+      "rule": "concrete, fixable"
+    }
+  },
+  "needsSource": false,
+  "cover": {
+    "totalMaxWords": 12,
+    "heroMaxWords": 6,
+    "breakAt": "…"
+  },
+  "slide2": "show the root with one proof",
+  "cta": [
+    "save",
+    "send"
+  ],
+  "lints": [
+    "no-answer-on-cover",
+    "one-gap",
+    "digits-on-cover"
+  ],
+  "maxUsePer": {
+    "posts": 5,
+    "count": 1
+  },
+  "styleHint": [
+    "swiss"
+  ],
+  "motionHint": "morph",
+  "examples": [
+    {
+      "text": "مشكلتك مش في الخوارزمية… مشكلتك في أول سطر",
+      "dialect": "eg",
+      "origin": "synthetic",
+      "visibility": "public",
+      "nativeReviewed": true
+    }
+  ]
+}

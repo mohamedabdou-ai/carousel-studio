@@ -1,0 +1,549 @@
+<style id="cs-archetype-css">
+/* ============================================================
+   Carousel Studio · archetype layout · engine cs-1.1.0
+   Archetypes own LAYOUT; presets own LOOK. This sheet therefore contains
+     1. token wiring   - fonts, weights, line heights and base colours read from the --cs-* custom properties
+                         (CONTRACT 6.2). A preset never sets a font family or a font size; it restyles through
+                         decor.css, whose selectors are more specific than everything below.
+     2. layers & chrome - bg, decor, header and footer bands, placed from the preset's slot choices.
+     3. one block per slide type (20) with its variants.
+   Rules of this file: logical properties only (the same CSS mirrors for dir="ltr"); no colour literals, no
+   border radius, no shadows, no filters, masks, blend modes, writing-mode, viewport units or animation;
+   text is never letter-spaced or justified and never loses its natural word breaks.
+   Geometry (CONTRACT 3.4, draft 9.1): canvas 1080 wide; content box x 114-966; header band y 165-245; footer band 1165-1245 (items top-aligned, 49 px high);
+   body area y 261 to the footer band - 16. Inner slides (spec S-1) may sit lower and narrower: the engine says so through --cs-pad-bottom, --cs-body-h and
+   --cs-footer-pad-x (60 px on each side, added to the content inset); this sheet only reads them. Recipes (spec 4.2; staged under over full center): data-recipe
+   on .cs-content and the optional .cs-anchor-slot (hooks: --cs-anchor-min -max -seam, --cs-bullet-indent -h, --cs-rail-w, --cs-table-key).
+   ============================================================ */
+
+/* ---- 1. root and token wiring ---------------------------------------- */
+.cs-slide{
+  position:relative; box-sizing:border-box; overflow:hidden; contain:layout;
+  inline-size:var(--cs-w,1080px); block-size:var(--cs-h,1440px); margin:0; padding:0; isolation:isolate;
+  background-color:var(--cs-bg); color:var(--cs-ink);
+  font-family:var(--cs-font-body); font-weight:var(--cs-wght-body); font-size:var(--cs-fs-body); line-height:var(--cs-lh-body);
+  font-style:normal; font-synthesis:none; font-kerning:normal; font-variant-ligatures:normal; font-feature-settings:normal;
+  letter-spacing:0; word-spacing:0; text-transform:none; text-indent:0; text-decoration:none; text-align:start;
+  -webkit-text-size-adjust:100%; text-size-adjust:100%; -webkit-font-smoothing:antialiased;
+}
+.cs-slide *{ box-sizing:border-box; margin:0; padding:0; letter-spacing:0; word-spacing:0; font-style:normal; font-synthesis:none; }
+.cs-slide > style{ display:none; }
+
+.cs-slide .w{ white-space:nowrap; }
+.cs-slide .cs-ln{ display:block; white-space:nowrap; }
+.cs-slide .cs-em{ background:none; color:inherit; font-weight:inherit; }
+.cs-slide .cs-ltr{ font-family:var(--cs-font-latin); font-weight:var(--cs-wght-latin); }
+.cs-slide[dir="rtl"] .cs-ltr{ white-space:nowrap; }
+.cs-slide .cs-kashida{ white-space:nowrap; }
+
+/* ---- 2. layers ---------------------------------------- */
+.cs-slide .cs-bg,
+.cs-slide .cs-decor{ position:absolute; inset:0; pointer-events:none; }
+.cs-slide .cs-bg{ z-index:0; background-color:var(--cs-bg); background-image:var(--cs-bg-image); background-size:cover; background-position:center; }
+.cs-slide .cs-decor{ z-index:1; }
+.cs-slide .cs-bg > .cs-media-slot{ position:absolute; inset:0; inline-size:100%; block-size:100%; margin:0; }
+.cs-slide .cs-bg > .cs-media-slot > img,
+.cs-slide .cs-bg > .cs-media-slot > video{ display:block; inline-size:100%; block-size:100%; object-fit:cover; object-position:center; }
+
+.cs-slide .cs-header,
+.cs-slide .cs-footer{
+  position:absolute; inset-inline:var(--cs-pad-x); z-index:3;
+  display:grid; grid-template-columns:minmax(max-content,1fr) auto minmax(max-content,1fr); column-gap:var(--cs-gutter);
+  font-family:var(--cs-font-body); font-weight:var(--cs-wght-body); font-size:var(--cs-fs-micro); line-height:1.3; color:var(--cs-ink-muted);
+}
+.cs-slide .cs-header{ inset-block-start:var(--cs-pad-top); block-size:var(--cs-header-h); align-items:center; }
+.cs-slide .cs-footer{ inset-block-end:var(--cs-pad-bottom); inset-inline:calc(var(--cs-pad-x) + var(--cs-footer-pad-x, 0px)); block-size:var(--cs-footer-h); align-items:start; }
+.cs-slide .cs-header > *,
+.cs-slide .cs-footer > *{ min-inline-size:0; white-space:nowrap; grid-row:1; }
+.cs-slide .cs-header > [data-pos="start"],  .cs-slide .cs-footer > [data-pos="start"]{ grid-column:1; justify-self:start; }
+.cs-slide .cs-header > [data-pos="center"], .cs-slide .cs-footer > [data-pos="center"]{ grid-column:2; justify-self:center; }
+.cs-slide .cs-header > [data-pos="end"],    .cs-slide .cs-footer > [data-pos="end"]{ grid-column:3; justify-self:end; }
+/* the swipe cue sits on the edge it points to: an Arabic slide shown to an English-UI audience (and the reverse) swaps the outer columns */
+.cs-slide[dir="rtl"] .cs-footer[data-swipe="arrow-ltr"] > [data-pos="start"],
+.cs-slide[dir="ltr"] .cs-footer[data-swipe="arrow-rtl"] > [data-pos="start"]{ grid-column:3; justify-self:end; }
+.cs-slide[dir="rtl"] .cs-footer[data-swipe="arrow-ltr"] > [data-pos="end"],
+.cs-slide[dir="ltr"] .cs-footer[data-swipe="arrow-rtl"] > [data-pos="end"]{ grid-column:1; justify-self:start; }
+
+.cs-slide .cs-header > *{ display:inline-flex; align-items:center; gap:calc(var(--cs-unit) * 1.5); block-size:calc(var(--cs-unit) * 7); max-inline-size:100%; }
+.cs-slide .cs-footer > *{ display:inline-flex; align-items:center; gap:calc(var(--cs-unit) * 1.25); block-size:var(--cs-footer-item-h); max-block-size:var(--cs-footer-item-h); }
+.cs-slide .cs-handle{ color:var(--cs-ink); }
+.cs-slide .cs-handle > img{ display:block; block-size:calc(var(--cs-unit) * 7); inline-size:auto; max-inline-size:calc(var(--cs-unit) * 25); object-fit:contain; transform:none; }
+.cs-slide .cs-meta{ overflow:hidden; text-overflow:ellipsis; }
+.cs-slide .cs-counter{ font-variant-numeric:tabular-nums; }
+.cs-slide .cs-savepill{ font-size:var(--cs-fs-small); color:var(--cs-ink); }
+/* A hand-designed (free) CTA carries its own ask, so the footer save pill steps aside and the counter keeps its place (D2.chrome-drift). */
+.cs-slide[data-free="1"][data-type="cta"] .cs-savepill{ display:none; }
+.cs-slide .cs-savepill > svg, .cs-slide .cs-swipe > svg{ flex:none; inline-size:1em; block-size:1em; }
+
+/* ---- 3. content stack ---------------------------------------- */
+.cs-slide .cs-content{
+  position:absolute; z-index:2; inset-inline:var(--cs-pad-x); inset-block-start:var(--cs-body-top); block-size:var(--cs-body-h);
+  display:flex; flex-direction:column; justify-content:flex-start; align-items:stretch; gap:calc(var(--cs-unit) * 4);
+  padding-block:calc(var(--cs-unit) * 1); /* the stack never touches the header rule above it or the footer rule below it; fit measures inside this padding */
+  text-align:var(--cs-text-align);
+}
+.cs-slide .cs-slot{ position:relative; z-index:1; min-inline-size:0; max-inline-size:100%; overflow-wrap:normal; word-break:normal; hyphens:manual; }
+.cs-slide .cs-content > *{ flex:0 0 auto; }
+.cs-slide [data-edit]:empty{ min-block-size:1.4em; }
+
+/* typographic roles: family, weight, line height and the starting size (fit lowers the size, never the tracking) */
+.cs-slide [data-role="hero"]{   font-family:var(--cs-font-display); font-weight:var(--cs-wght-display); font-size:var(--cs-fs-hero);  line-height:var(--cs-lh-display); text-wrap:balance; }
+.cs-slide [data-role="h1"]{     font-family:var(--cs-font-display); font-weight:var(--cs-wght-display); font-size:var(--cs-fs-h1);    line-height:var(--cs-lh-display); text-wrap:balance; }
+.cs-slide [data-role="h2"]{     font-family:var(--cs-font-heading); font-weight:var(--cs-wght-heading); font-size:var(--cs-fs-h2);    line-height:var(--cs-lh-heading); text-wrap:balance; }
+.cs-slide [data-role="title"]{  font-family:var(--cs-font-heading); font-weight:var(--cs-wght-heading); font-size:var(--cs-fs-title); line-height:var(--cs-lh-heading); text-wrap:balance; }
+.cs-slide [data-role="body"]{   font-family:var(--cs-font-body);    font-weight:var(--cs-wght-body);    font-size:var(--cs-fs-body);  line-height:var(--cs-lh-body);    text-wrap:pretty; }
+.cs-slide [data-role="small"]{  font-family:var(--cs-font-body);    font-weight:var(--cs-wght-body);    font-size:var(--cs-fs-small); line-height:calc(var(--cs-lh-body) * .9); text-wrap:pretty; color:var(--cs-ink-muted); }
+.cs-slide [data-role="micro"]{  font-family:var(--cs-font-body);    font-weight:var(--cs-wght-body);    font-size:var(--cs-fs-micro); line-height:calc(var(--cs-lh-body) * .9); color:var(--cs-ink-muted); }
+.cs-slide [data-role="number"]{ font-family:var(--cs-font-display); font-weight:var(--cs-wght-display); font-size:calc(var(--cs-fs-hero) * 2); line-height:1; }
+.cs-slide .cs-kicker, .cs-slide .cs-bridge, .cs-slide .cs-attribution{ color:var(--cs-ink-muted); }
+.cs-slide .cs-sub{ color:var(--cs-ink); }
+
+/* number kind: big figure plus unit, never wrapped */
+.cs-slide .cs-number{ display:flex; align-items:baseline; justify-content:flex-start; gap:calc(var(--cs-unit) * 2); white-space:nowrap; }
+.cs-slide[data-align="center"] .cs-number{ justify-content:center; }
+.cs-slide .cs-number > [data-unit-join]{ display:inline-flex; align-items:baseline; gap:calc(var(--cs-unit) * .5); }
+.cs-slide .cs-num{ font-variant-numeric:lining-nums; }
+.cs-slide .cs-unit{ font-family:var(--cs-font-heading); font-weight:var(--cs-wght-heading); font-size:max(.3em, var(--cs-fs-small)); line-height:1; color:var(--cs-ink); }
+
+/* ordinals: small label by default; the ghost look is a layout fact (an oversized numeral in the foot corner, behind the text), its colour is the preset's */
+.cs-slide .cs-ord{ align-self:flex-start; font-variant-numeric:lining-nums; }
+.cs-slide[data-align="center"] .cs-ord{ align-self:center; }
+.cs-slide[data-variant="ghost-number"] .cs-ord{ position:absolute; z-index:0; inset-block-end:calc(var(--cs-unit) * 4); inset-inline-end:0; font-size:calc(var(--cs-fs-hero) * 2.6); line-height:.8; color:var(--cs-line); pointer-events:none; }
+.cs-slide[data-variant="ghost-number"] .cs-content > .cs-slot:not(.cs-ord){ z-index:1; }
+
+/* media slot */
+.cs-slide .cs-media-slot{ display:flex; align-items:center; justify-content:center; overflow:hidden; min-inline-size:0; }
+.cs-slide .cs-media-slot > img,
+.cs-slide .cs-media-slot > video{ display:block; inline-size:100%; block-size:100%; object-fit:cover; }
+.cs-slide .cs-media-slot[data-media-kind="cutout"] > img{ object-fit:contain; object-position:center bottom; }
+.cs-slide .cs-media-slot[data-media-kind="screenshot"] > img,
+.cs-slide .cs-media-slot[data-media-kind="ui"] > img{ object-fit:contain; object-position:center top; }
+.cs-slide .cs-media-slot[data-media-kind="icon"]{ flex:0 0 auto; align-self:flex-start; inline-size:calc(var(--cs-unit) * 18); block-size:calc(var(--cs-unit) * 18); }
+.cs-slide .cs-media-slot[data-media-kind="icon"] > svg,
+.cs-slide .cs-media-slot[data-media-kind="icon"] > img{ inline-size:100%; block-size:100%; object-fit:contain; }
+.cs-slide .cs-media-slot[data-mirror="1"] > svg,
+.cs-slide .cs-media-slot[data-mirror="1"] > img{ transform:scaleX(-1); }
+.cs-slide .cs-content > .cs-media-slot:not([data-media-kind="icon"]){ flex:1 1 0; min-block-size:calc(var(--cs-unit) * 30); }
+
+/* bullets */
+.cs-slide .cs-bullets{ list-style:none; display:flex; flex-direction:column; gap:calc(var(--cs-unit) * 2.5); }
+.cs-slide .cs-bullet{ position:relative; display:block; padding-inline-start:var(--cs-bullet-indent, calc(var(--cs-unit) * 7)); min-block-size:var(--cs-bullet-h, 0px); }
+.cs-slide .cs-bullet > [data-part="icon"]{ position:absolute; inset-inline-start:0; inset-block-start:0; }
+.cs-slide .cs-content > .cs-bullets{ flex:0 1 auto; }
+
+/* sides (compare, myth-fact) */
+.cs-slide .cs-sides{ flex:0 0 auto; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); grid-auto-rows:minmax(0,auto); align-items:stretch; gap:calc(var(--cs-unit) * 3); }
+.cs-slide .cs-side{ display:flex; flex-direction:column; justify-content:flex-start; gap:calc(var(--cs-unit) * 1.5); min-inline-size:0; min-block-size:calc(var(--cs-unit) * 36); padding:calc(var(--cs-unit) * 3); }
+.cs-slide .cs-side-label{ display:block; align-self:flex-start; font-family:var(--cs-font-body); font-weight:var(--cs-wght-body); font-size:var(--cs-fs-small); line-height:1.6; color:var(--cs-ink-muted); }
+.cs-slide .cs-side-text{ display:block; margin:0; }
+.cs-slide[data-variant="stacked"] .cs-sides{ grid-template-columns:minmax(0,1fr); }
+.cs-slide[data-variant="stacked"] .cs-side{ min-block-size:calc(var(--cs-unit) * 20); }
+.cs-slide[data-variant="versus"] .cs-side{ padding-inline:calc(var(--cs-unit) * 7); }
+.cs-slide[data-variant="versus"] .cs-sides{ position:relative; }
+.cs-slide[data-variant="versus"] .cs-sides::after{
+  content:attr(data-vs); position:absolute; z-index:2; inset-block-start:50%; inset-inline-start:50%; transform:translate(-50%,-50%);
+  display:flex; align-items:center; justify-content:center; text-align:center; box-sizing:border-box; min-inline-size:calc(var(--cs-unit) * 12); block-size:calc(var(--cs-unit) * 12);
+  font-family:var(--cs-font-heading); font-weight:var(--cs-wght-heading); font-size:var(--cs-fs-micro); line-height:1.5; padding-inline:calc(var(--cs-unit) * 1.5);
+  background:var(--cs-bg); color:var(--cs-ink);
+}
+.cs-slide[dir="rtl"][data-variant="versus"] .cs-sides::after{ transform:translate(50%,-50%); }
+.cs-slide[data-variant="stamp"] .cs-a-myth-fact .cs-side:first-child .cs-side-label{ transform:rotate(-6deg); transform-origin:center; align-self:flex-start; }
+.cs-slide .cs-a-myth-fact .cs-side:first-child .cs-side-text{ --cs-fit-ratio:.9; }
+
+/* cta */
+.cs-slide .cs-cta{ display:inline-flex; align-items:center; gap:calc(var(--cs-unit) * 2); align-self:flex-start; padding-inline:calc(var(--cs-unit) * 5); padding-block:calc(var(--cs-unit) * 1.5); max-inline-size:100%; }
+.cs-slide[data-align="center"] .cs-content > .cs-cta{ align-self:center; }
+.cs-slide .cs-cta-text{ display:block; min-inline-size:0; }
+.cs-slide .cs-cta-icon{ flex:none; display:inline-block; inline-size:calc(var(--cs-unit) * 5); block-size:calc(var(--cs-unit) * 5); }
+/* the arrow says "this goes somewhere": it belongs to the asks that do (follow, open a DM). A save, a send or a question is asked in place, so its button carries its words alone, symmetric */
+.cs-slide .cs-cta[data-cta="save"] .cs-cta-icon, .cs-slide .cs-cta[data-cta="send"] .cs-cta-icon, .cs-slide .cs-cta[data-cta="question"] .cs-cta-icon{ display:none; }
+.cs-slide[data-preset] .cs-cta[data-cta="save"], .cs-slide[data-preset] .cs-cta[data-cta="send"], .cs-slide[data-preset] .cs-cta[data-cta="question"]{ padding-inline:calc(var(--cs-unit) * 5); }
+.cs-slide[data-variant="keyword"] .cs-a-cta .cs-cta{ align-self:stretch; justify-content:center; padding-block:calc(var(--cs-unit) * 5); }
+
+/* bridge: the small line that pulls the swipe; pinned to the foot of the stack on list-like slides, and on centred slides
+   (the group is centred between two spacers and the bridge, order 2, stays below them) */
+.cs-slide .cs-bridge{ margin-block-start:calc(var(--cs-unit) * 2); order:10; }
+.cs-slide .cs-a-item > .cs-bridge, .cs-slide .cs-a-step > .cs-bridge, .cs-slide .cs-a-story-beat > .cs-bridge,
+.cs-slide .cs-a-checklist > .cs-bridge, .cs-slide .cs-a-setup > .cs-bridge, .cs-slide .cs-a-proof > .cs-bridge, .cs-slide .cs-a-grid > .cs-bridge, .cs-slide .cs-a-timeline > .cs-bridge{ margin-block-start:auto; }
+
+/* ---- 4. archetypes ---------------------------------------- */
+/* 1 cover · 18 poster: hero headline at the preset's width, anchored by variant */
+.cs-slide .cs-a-cover, .cs-slide .cs-a-poster{ gap:calc(var(--cs-unit) * 2); justify-content:var(--cs-cover-justify); }
+.cs-slide[data-variant="top"] .cs-a-cover,    .cs-slide[data-variant="top"] .cs-a-poster,
+.cs-slide[data-variant="split"] .cs-a-cover,  .cs-slide[data-variant="split"] .cs-a-poster{ justify-content:flex-start; }
+.cs-slide[data-variant="center"] .cs-a-cover, .cs-slide[data-variant="center"] .cs-a-poster{ justify-content:center; }
+.cs-slide[data-variant="photo"] .cs-a-cover,  .cs-slide[data-variant="photo"] .cs-a-poster{ justify-content:flex-end; }
+.cs-slide .cs-a-cover > .cs-headline, .cs-slide .cs-a-poster > .cs-headline{ inline-size:var(--cs-headline-w-max); align-self:flex-start; }
+.cs-slide[data-align="center"] .cs-a-cover > .cs-headline, .cs-slide[data-align="center"] .cs-a-poster > .cs-headline{ align-self:center; }
+.cs-slide .cs-a-cover > .cs-sub, .cs-slide .cs-a-poster > .cs-sub{ max-inline-size:calc(var(--cs-headline-w-max) + 10%); }
+.cs-slide[data-align="center"] .cs-a-cover > .cs-sub, .cs-slide[data-align="center"] .cs-a-poster > .cs-sub{ align-self:center; }
+.cs-slide[data-variant="center"] .cs-a-cover > .cs-media-slot:not([data-media-kind="icon"]),
+.cs-slide[data-variant="center"] .cs-a-poster > .cs-media-slot:not([data-media-kind="icon"]){ flex:0 0 calc(var(--cs-unit) * 40); min-block-size:0; }
+.cs-slide[data-variant="split"] .cs-a-cover > .cs-media-slot:not([data-media-kind="icon"]),
+.cs-slide[data-variant="split"] .cs-a-poster > .cs-media-slot:not([data-media-kind="icon"]){ min-block-size:calc(var(--cs-unit) * 48); }
+.cs-slide .cs-a-poster > .cs-bullets{ gap:calc(var(--cs-unit) * 2); }
+/* a leading numeral becomes the visual anchor of the headline (variants "number" and "big-number") */
+.cs-slide[data-variant="number"] .cs-a-cover .cs-headline .w[data-w="0"] > .cs-ltr[data-run="number"],
+.cs-slide[data-variant="number"] .cs-a-cover .cs-headline .cs-ltr[data-run="number"]:has(> .w[data-w="0"]),
+.cs-slide[data-variant="big-number"] .cs-a-rehook .cs-headline .w[data-w="0"] > .cs-ltr[data-run="number"],
+.cs-slide[data-variant="big-number"] .cs-a-rehook .cs-headline .cs-ltr[data-run="number"]:has(> .w[data-w="0"]){ display:block; font-size:1.7em; line-height:.9; }
+/* the numeral is an LTR run set as a block: it aligns like the headline around it (the right edge of an Arabic slide, the left of an English one, or the centre) */
+.cs-slide[dir="rtl"][data-align="start"][data-variant="number"] .cs-a-cover .cs-headline :is(.w[data-w="0"] > .cs-ltr[data-run="number"], .cs-ltr[data-run="number"]:has(> .w[data-w="0"])),
+.cs-slide[dir="rtl"][data-align="start"][data-variant="big-number"] .cs-a-rehook .cs-headline :is(.w[data-w="0"] > .cs-ltr[data-run="number"], .cs-ltr[data-run="number"]:has(> .w[data-w="0"])){ text-align:end; }
+.cs-slide[data-align="center"][data-variant="number"] .cs-a-cover .cs-headline :is(.w[data-w="0"] > .cs-ltr[data-run="number"], .cs-ltr[data-run="number"]:has(> .w[data-w="0"])),
+.cs-slide[data-align="center"][data-variant="big-number"] .cs-a-rehook .cs-headline :is(.w[data-w="0"] > .cs-ltr[data-run="number"], .cs-ltr[data-run="number"]:has(> .w[data-w="0"])){ text-align:center; }
+
+/* centred stacks: a spacer above (order -9) and one below (order 9) the group; the bridge (order 10) stays at the foot */
+.cs-slide .cs-a-rehook::before, .cs-slide .cs-a-rehook::after,
+.cs-slide .cs-a-stat::before, .cs-slide .cs-a-stat::after,
+.cs-slide .cs-a-compare::before, .cs-slide .cs-a-compare::after,
+.cs-slide .cs-a-myth-fact::before, .cs-slide .cs-a-myth-fact::after,
+.cs-slide .cs-a-quote::before, .cs-slide .cs-a-quote::after,
+.cs-slide .cs-a-share::before, .cs-slide .cs-a-share::after,
+.cs-slide .cs-a-cta::before, .cs-slide .cs-a-cta::after,
+.cs-slide .cs-a-offer::before, .cs-slide .cs-a-offer::after,
+.cs-slide .cs-a-testimonial::before, .cs-slide .cs-a-testimonial::after{ content:""; flex:1 1 0; min-block-size:0; margin:0; }
+.cs-slide .cs-a-rehook::after, .cs-slide .cs-a-stat::after, .cs-slide .cs-a-compare::after, .cs-slide .cs-a-myth-fact::after,
+.cs-slide .cs-a-quote::after, .cs-slide .cs-a-share::after, .cs-slide .cs-a-cta::after, .cs-slide .cs-a-offer::after, .cs-slide .cs-a-testimonial::after{ order:9; }
+.cs-slide .cs-a-rehook::before, .cs-slide .cs-a-stat::before, .cs-slide .cs-a-compare::before, .cs-slide .cs-a-myth-fact::before,
+.cs-slide .cs-a-quote::before, .cs-slide .cs-a-share::before, .cs-slide .cs-a-cta::before, .cs-slide .cs-a-offer::before, .cs-slide .cs-a-testimonial::before{ order:-9; }
+
+/* "document" slides (item, step, story-beat and the lists) are centred the same way but sit a little above the middle: short copy no longer
+   leaves half the canvas empty, long copy still fills it, and the bridge stays at the foot */
+.cs-slide .cs-a-item::before, .cs-slide .cs-a-item::after,
+.cs-slide .cs-a-step::before, .cs-slide .cs-a-step::after,
+.cs-slide .cs-a-story-beat::before, .cs-slide .cs-a-story-beat::after,
+.cs-slide .cs-a-checklist::before, .cs-slide .cs-a-checklist::after,
+.cs-slide .cs-a-summary::before, .cs-slide .cs-a-summary::after,
+.cs-slide .cs-a-setup::before, .cs-slide .cs-a-setup::after{ content:""; flex:1 1 0; min-block-size:0; margin:0; }
+.cs-slide .cs-a-item::before, .cs-slide .cs-a-step::before, .cs-slide .cs-a-story-beat::before,
+.cs-slide .cs-a-checklist::before, .cs-slide .cs-a-summary::before, .cs-slide .cs-a-setup::before{ order:-9; }
+.cs-slide .cs-a-item::after, .cs-slide .cs-a-step::after, .cs-slide .cs-a-story-beat::after,
+.cs-slide .cs-a-checklist::after, .cs-slide .cs-a-summary::after, .cs-slide .cs-a-setup::after{ order:9; flex-grow:1.4; }
+
+/* 2 rehook: slide two pays off immediately */
+.cs-slide .cs-a-rehook{ gap:calc(var(--cs-unit) * 3); }
+.cs-slide[data-variant="split"] .cs-a-rehook::before{ flex-grow:0; }
+
+/* 3 item · 4 step · 9 story-beat: one idea per slide */
+.cs-slide .cs-a-item, .cs-slide .cs-a-step, .cs-slide .cs-a-story-beat{ gap:calc(var(--cs-unit) * 3); }
+.cs-slide[data-variant="side-number"] .cs-a-item{ display:grid; grid-template-columns:auto minmax(0,1fr); grid-template-rows:minmax(0,1fr) auto auto auto minmax(0,1.4fr) auto; column-gap:calc(var(--cs-unit) * 3); row-gap:calc(var(--cs-unit) * 3); align-content:start; }
+.cs-slide[data-variant="side-number"] .cs-a-item::before, .cs-slide[data-variant="side-number"] .cs-a-item::after{ display:none; }
+.cs-slide[data-variant="side-number"] .cs-a-item > .cs-ord{ grid-column:1; grid-row:2 / span 2; align-self:start; box-sizing:border-box; min-inline-size:calc(var(--cs-unit) * 12); block-size:calc(var(--cs-unit) * 12); font-size:calc(var(--cs-unit) * 7); line-height:calc(var(--cs-unit) * 12); text-align:center; }
+.cs-slide[data-variant="side-number"] .cs-a-item > .cs-title{ grid-column:2; grid-row:2; }
+.cs-slide[data-variant="side-number"] .cs-a-item > .cs-body{ grid-column:2; grid-row:3; }
+.cs-slide[data-variant="side-number"] .cs-a-item > .cs-media-slot{ grid-column:1 / -1; grid-row:4; min-block-size:calc(var(--cs-unit) * 50); }
+.cs-slide[data-variant="side-number"] .cs-a-item > .cs-media-slot[data-media-kind="icon"]{ grid-column:1; min-block-size:0; }
+.cs-slide[data-variant="side-number"] .cs-a-item > .cs-bridge{ grid-column:1 / -1; grid-row:6; align-self:end; }
+.cs-slide[data-variant="media"] .cs-a-item > .cs-media-slot:not([data-media-kind="icon"]),
+.cs-slide[data-variant="media"] .cs-a-story-beat > .cs-media-slot:not([data-media-kind="icon"]){ order:-1; flex-basis:0; min-block-size:calc(var(--cs-unit) * 50); }
+.cs-slide[data-variant="media"] .cs-a-item > .cs-ord, .cs-slide[data-variant="media"] .cs-a-story-beat > .cs-ord{ order:-2; }
+.cs-slide[data-variant="pill"] .cs-a-step > .cs-ord{ display:block; }
+
+/* 5 stat: one figure carries the slide */
+.cs-slide .cs-a-stat{ gap:calc(var(--cs-unit) * 2.5); }
+
+/* 6 compare · 7 myth-fact */
+.cs-slide .cs-a-compare, .cs-slide .cs-a-myth-fact{ gap:calc(var(--cs-unit) * 3); }
+
+/* 8 quote */
+.cs-slide .cs-a-quote{ gap:calc(var(--cs-unit) * 3); }
+.cs-slide[data-variant="mark"] .cs-a-quote{ padding-block-start:calc(var(--cs-unit) * 8); }
+.cs-slide .cs-a-quote > .cs-attribution{ margin-block-start:calc(var(--cs-unit) * 2); }
+.cs-slide[data-variant="photo"] .cs-a-quote::before{ flex-grow:3; }
+
+/* 10 checklist · 11 summary · 12 setup: lists */
+.cs-slide .cs-a-checklist, .cs-slide .cs-a-summary, .cs-slide .cs-a-setup{ gap:calc(var(--cs-unit) * 4); }
+.cs-slide .cs-a-summary > .cs-bullets, .cs-slide .cs-a-checklist > .cs-bullets{ flex:0 1 auto; justify-content:flex-start; }
+.cs-slide[data-variant="grid"] .cs-a-summary > .cs-bullets{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:calc(var(--cs-unit) * 3); align-content:start; }
+.cs-slide[data-variant="cards"] .cs-a-setup > .cs-bullets{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:calc(var(--cs-unit) * 3); align-content:start; }
+.cs-slide[data-variant="cards"] .cs-a-setup .cs-bullet{ padding:calc(var(--cs-unit) * 3); padding-inline-start:calc(var(--cs-unit) * 3 + var(--cs-bullet-indent, 0px)); }
+/* a card keeps its padding; a row icon sits inside it and --cs-bullet-indent is added to the start padding: one value serves a row and a card */
+.cs-slide[data-variant="cards"] .cs-a-setup .cs-bullet > [data-part="icon"]{ inset-inline-start:calc(var(--cs-unit) * 3); inset-block-start:calc(var(--cs-unit) * 3); }
+/* an odd last card spans the row instead of standing alone in half of it */
+.cs-slide[data-variant="cards"] .cs-a-setup > .cs-bullets > .cs-bullet:last-child:nth-child(odd),
+.cs-slide[data-variant="grid"] .cs-a-summary > .cs-bullets > .cs-bullet:last-child:nth-child(odd){ grid-column:1 / -1; }
+.cs-slide[data-variant="ruled"] .cs-a-checklist .cs-bullet{ padding-block:calc(var(--cs-unit) * 1.5); }
+.cs-slide[data-variant="boxes"] .cs-a-checklist .cs-bullet{ padding-block:calc(var(--cs-unit) * 1); }
+
+/* 13 proof: the evidence comes first when it is a screenshot */
+.cs-slide .cs-a-proof{ gap:calc(var(--cs-unit) * 3); }
+.cs-slide[data-variant="screenshot"] .cs-a-proof > .cs-media-slot:not([data-media-kind="icon"]){ order:-1; min-block-size:calc(var(--cs-unit) * 44); }
+
+/* 14 share · 15 cta · 16 offer · 17 testimonial: closing statements, vertically centred */
+.cs-slide .cs-a-share, .cs-slide .cs-a-cta, .cs-slide .cs-a-offer, .cs-slide .cs-a-testimonial{ gap:calc(var(--cs-unit) * 4); }
+.cs-slide[data-variant="big-word"] .cs-a-share{ gap:calc(var(--cs-unit) * 5); }
+.cs-slide .cs-a-offer > .cs-bullets{ gap:calc(var(--cs-unit) * 2); }
+.cs-slide .cs-a-testimonial > .cs-attribution{ margin-block-start:calc(var(--cs-unit) * 1); }
+.cs-slide .cs-a-testimonial > .cs-number{ order:-1; }
+.cs-slide[data-variant="photo"] .cs-a-testimonial > .cs-media-slot:not([data-media-kind="icon"]){ order:-2; flex:0 0 calc(var(--cs-unit) * 20); inline-size:calc(var(--cs-unit) * 20); align-self:flex-start; min-block-size:0; }
+/* 19 grid · 20 timeline: payoff slides built from `items`; the filler of compose writes <ul class="cs-items"><li class="cs-item" data-index data-hi>
+   with [data-part] icon, title, text, value (IS-6) */
+.cs-slide .cs-a-grid, .cs-slide .cs-a-timeline{ gap:calc(var(--cs-unit) * 3); }
+.cs-slide .cs-items{ list-style:none; }
+.cs-slide .cs-item{ position:relative; min-inline-size:0; min-block-size:0; }
+.cs-slide .cs-item > [data-part]{ display:block; min-inline-size:0; }
+.cs-slide .cs-item > [data-part="icon"]{ flex:none; }
+/* grid:bento: 3-4 cards, 2 columns of 414, 2 rows (280-320 on the 888 zone, taller on the inner one), 24 gaps; icon first, the words at the foot.
+   Three cards: the last spans the row, a key card (data-hi) first stands tall at the start edge. Five and six (tiles) share the rows equally. */
+.cs-slide .cs-a-grid > .cs-items{ flex:1 1 0; min-block-size:584px; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); grid-template-rows:repeat(2,minmax(0,1fr)); grid-auto-rows:minmax(0,1fr); gap:24px; }
+.cs-slide .cs-a-grid .cs-item{ display:flex; flex-direction:column; gap:8px; padding:24px 28px; }
+.cs-slide .cs-a-grid .cs-item > [data-part="icon"]{ inline-size:96px; block-size:96px; }
+.cs-slide .cs-a-grid .cs-items > .cs-item:last-child:nth-child(odd){ grid-column:1 / -1; }
+.cs-slide .cs-a-grid .cs-items > .cs-item[data-hi]:first-child:nth-last-child(3){ grid-column:1; grid-row:1 / span 2; }
+.cs-slide .cs-a-grid .cs-items > .cs-item[data-hi]:first-child:nth-last-child(3) ~ .cs-item:last-child{ grid-column:2; }
+/* timeline:rail: a rail at the start edge (first node first), nodes 140-220 px apart (the key node more), the time label in a column of its own at the end edge */
+.cs-slide .cs-a-timeline > .cs-items{ flex:1 1 0; display:flex; flex-direction:column; }
+.cs-slide .cs-a-timeline .cs-item{ flex:1 1 0; min-block-size:140px; display:grid; grid-template-columns:var(--cs-rail-w, 96px) minmax(160px,max-content) minmax(0,1fr); grid-template-rows:auto auto; align-content:center; column-gap:16px; row-gap:4px; }
+.cs-slide .cs-a-timeline .cs-item > [data-part="icon"]{ grid-column:1; grid-row:1 / span 2; place-self:center; inline-size:64px; block-size:64px; }
+.cs-slide .cs-a-timeline .cs-item > [data-part="title"]{ grid-column:3; grid-row:1; align-self:end; }
+.cs-slide .cs-a-timeline .cs-item > [data-part="text"]{ grid-column:3; grid-row:2; align-self:start; }
+.cs-slide .cs-a-timeline .cs-item > [data-part="value"]{ grid-column:2; grid-row:1 / span 2; align-self:center; text-align:start; white-space:nowrap; }
+.cs-slide .cs-a-timeline .cs-item::before{ content:""; position:absolute; inset-inline-start:calc(var(--cs-rail-w, 96px) / 2 - 2px); inset-block:50% -50%; inline-size:4px; background:var(--cs-ink); }
+.cs-slide .cs-a-timeline .cs-item::after{ content:""; position:absolute; inset-inline-start:calc(var(--cs-rail-w, 96px) / 2 - 10px); inset-block-start:calc(50% - 10px); inline-size:20px; block-size:20px; background:var(--cs-accent); border:4px solid var(--cs-ink); }
+.cs-slide .cs-a-timeline .cs-item > [data-part="icon"]{ grid-row:1 / span 2; z-index:1; background:var(--cs-bg); }
+.cs-slide .cs-a-timeline .cs-item:last-child::before{ display:none; }
+
+/* ---- 5. recipes and the anchor slot (spec 4.2; staged: under over full center) ----
+   data-recipe on .cs-content: the centring spacers go (cause C3) and the anchor slot takes what the text leaves, flex 1 1 0 above a floor, so fit sizes the text
+   first. One rhythm: 24 inside a group, 40 to the anchor (gap + margin). The zone is the body area itself, less the preset's end padding and 4 px: the inner
+   zone ends at y 1259, the bottom keep-outs begin at y 1255. */
+.cs-slide .cs-content[data-recipe]::before, .cs-slide .cs-content[data-recipe]::after{ display:none; }
+.cs-slide .cs-content[data-recipe]{ gap:24px; padding-block-start:0; padding-block-end:4px; }
+.cs-slide .cs-anchor-slot{ flex:1 1 0; display:flex; align-items:center; justify-content:center; overflow:visible; min-block-size:var(--cs-anchor-min, 280px); max-block-size:var(--cs-anchor-max, none); }
+.cs-slide .cs-content[data-recipe] > .cs-anchor-slot{ margin-block:16px; }
+.cs-slide .cs-content[data-recipe] > .cs-anchor-slot:last-child{ margin-block-end:0; }
+/* over: the picture leads, a field keeps the seam below the header (swiss: --cs-anchor-seam 24px). full: 620 px or more under a title of two lines at most.
+   center: a plate of 440-560 centred between the title and the button or caption, the free height split by the auto margins */
+.cs-slide .cs-content[data-recipe="over"] > .cs-anchor-slot{ order:-1; margin-block-start:var(--cs-anchor-seam, 0px); }
+.cs-slide .cs-content[data-recipe="full"] > .cs-anchor-slot{ min-block-size:var(--cs-anchor-min, 620px); }
+.cs-slide:is([data-anchor-kind="field"],[data-anchor-kind="rows"]) .cs-content[data-recipe="full"] > .cs-anchor-slot{ min-block-size:0; }
+.cs-slide .cs-content[data-recipe="center"] > .cs-anchor-slot,
+.cs-slide .cs-content[data-recipe="center"] > .cs-anchor-slot:last-child{ min-block-size:var(--cs-anchor-min, 440px); max-block-size:var(--cs-anchor-max, 560px); align-self:center; inline-size:100%; max-inline-size:560px; margin-block:auto; }
+/* a user asset on the nine types that never had a media slot outweighs the two spacers */
+.cs-slide :is(.cs-a-stat, .cs-a-compare, .cs-a-myth-fact, .cs-a-checklist, .cs-a-summary, .cs-a-setup, .cs-a-share, .cs-a-cta, .cs-a-offer) > .cs-media-slot:not([data-media-kind="icon"]){ flex-grow:6; }
+/* item:side-number with a recipe is the plain flex stack: the pill above the title */
+.cs-slide[data-variant="side-number"] .cs-a-item[data-recipe]{ display:flex; }
+
+/* ---- 6. the staged variants (plan r2 3.1): structure only, the look is the preset's ---- */
+/* statement (rehook, quote): a pause in hero type. compose reads data-role-by-variant (hero) and data-max-lines-by-variant (four lines) on the slot, so font, size range, fit priority
+   and floor are the hero's; a longer statement is flagged by fit as an overflow, never squeezed. The other variants keep their roles and limits (older markup untouched).
+   numeral: the ordinal is a solid numeral in the flow, not a ghost behind the text */
+.cs-slide[data-variant="numeral"] .cs-a-item > .cs-ord{ align-self:flex-start; font-family:var(--cs-font-display); font-weight:var(--cs-wght-display); font-size:calc(var(--cs-fs-hero) * 2.2); line-height:.85; }
+.cs-slide[data-align="center"][data-variant="numeral"] .cs-a-item > .cs-ord{ align-self:center; }
+/* step:track: the ordinal slot is a progress track row above the title (a plain label stays valid) */
+.cs-slide[data-variant="track"] .cs-a-step > .cs-ord{ align-self:stretch; display:flex; align-items:center; gap:.3em; min-block-size:66px; }
+/* stat:chart: the title above, the figure shrunk to a line. before-after: two panels side by side, a badge for the arrow on the seam (the preset draws it) */
+.cs-slide[data-variant="chart"] .cs-a-stat > .cs-title{ order:-2; }
+.cs-slide[data-variant="chart"] .cs-a-stat > .cs-number{ order:-1; --cs-fit-ratio:.3; }
+.cs-slide[data-variant="before-after"] .cs-a-compare > .cs-sides{ position:relative; }
+.cs-slide[data-variant="before-after"] .cs-a-compare > .cs-sides::after{ content:""; position:absolute; z-index:2; inset-block-start:50%; inset-inline-start:50%; transform:translate(-50%,-50%); inline-size:56px; block-size:44px; }
+.cs-slide[dir="rtl"][data-variant="before-after"] .cs-a-compare > .cs-sides::after{ transform:translate(50%,-50%); }
+/* compare:table: a head row (the sides) over up to four criteria rows (items) on one rail: key column, two verdict columns */
+.cs-slide[data-variant="table"] .cs-a-compare{ gap:0; }
+.cs-slide[data-variant="table"] .cs-a-compare > .cs-title{ margin-block-end:24px; }
+.cs-slide[data-variant="table"] .cs-sides{ grid-template-columns:var(--cs-table-key, 36%) minmax(0,1fr) minmax(0,1fr); column-gap:0; }
+.cs-slide[data-variant="table"] .cs-sides::before{ content:""; }
+.cs-slide[data-variant="table"] .cs-side{ min-block-size:0; padding:16px; }
+.cs-slide[data-variant="table"] .cs-items{ flex:1 1 auto; display:flex; flex-direction:column; }
+.cs-slide[data-variant="table"] .cs-item{ flex:1 1 0; min-block-size:96px; display:grid; grid-template-columns:80px calc(var(--cs-table-key, 36%) - 80px) minmax(0,1fr) minmax(0,1fr); align-items:center; }
+.cs-slide[data-variant="table"] .cs-item > [data-part="icon"]{ grid-column:1; justify-self:center; }
+.cs-slide[data-variant="table"] .cs-item > [data-part="title"]{ grid-column:2; }
+.cs-slide[data-variant="table"] .cs-item > [data-part="text"], .cs-slide[data-variant="table"] .cs-item > [data-part="value"]{ padding-inline:16px; }
+.cs-slide[data-variant="table"] .cs-item > [data-part="text"]{ grid-column:3; }
+.cs-slide[data-variant="table"] .cs-item > [data-part="value"]{ grid-column:4; }
+</style>
+
+<template data-archetype="cover" data-version="1" data-default-variant="top"
+          data-variants="top center split photo number" data-chrome="handle meta counter swipe savepill">
+  <main class="cs-content cs-a-cover" data-layer="content">
+    <p   class="cs-slot cs-kicker"   data-slot="kicker"   data-field="kicker"   data-kind="text" data-role="small" data-max-lines="2" data-m="kicker" data-optional data-edit="text"></p>
+    <h1  class="cs-slot cs-headline" data-slot="headline" data-field="headline" data-kind="text" data-role="hero"  data-max-lines="3" data-max-lines-by-variant="number:4" data-fit-widen data-m="headline" data-edit="text"></h1>
+    <p   class="cs-slot cs-sub"      data-slot="sub"      data-field="sub"      data-kind="text" data-role="body"  data-max-lines="3" data-m="sub" data-optional data-edit="text"></p>
+    <div class="cs-slot cs-media-slot" data-slot="media"  data-field="media"    data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+  </main>
+</template>
+
+<template data-archetype="rehook" data-version="1" data-default-variant="base"
+          data-variants="base split big-number statement" data-chrome="handle meta counter swipe">
+  <main class="cs-content cs-a-rehook" data-layer="content">
+    <h2  class="cs-slot cs-headline" data-slot="headline" data-field="headline" data-kind="text" data-role="h1" data-max-lines="3" data-max-lines-by-variant="big-number:4" data-m="headline" data-edit="text"></h2>
+    <p   class="cs-slot cs-sub"      data-slot="sub"      data-field="sub"      data-kind="text" data-role="body"  data-max-lines="4" data-m="sub" data-optional data-edit="text"></p>
+    <div class="cs-slot cs-media-slot" data-slot="media"  data-field="media"    data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+    <p   class="cs-slot cs-bridge"   data-slot="bridge"   data-field="bridge"   data-kind="text" data-role="small" data-max-lines="2" data-m="bridge" data-optional data-edit="text"></p>
+  </main>
+</template>
+
+<template data-archetype="item" data-version="1" data-default-variant="base"
+          data-variants="base ghost-number side-number media numeral" data-chrome="handle meta counter swipe">
+  <main class="cs-content cs-a-item" data-layer="content">
+    <div class="cs-slot cs-ord"    data-slot="ord"    data-field="ord"    data-kind="ord"  data-role="small" data-fit="css" data-m="ord" data-optional></div>
+    <h2  class="cs-slot cs-title"  data-slot="title"  data-field="title"  data-kind="text" data-role="title" data-max-lines="3" data-m="title" data-edit="text"></h2>
+    <p   class="cs-slot cs-body"   data-slot="body"   data-field="body"   data-kind="text" data-role="body"  data-max-lines="6" data-m="body" data-edit="text"></p>
+    <div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+    <p   class="cs-slot cs-bridge" data-slot="bridge" data-field="bridge" data-kind="text" data-role="small" data-max-lines="2" data-m="bridge" data-optional data-edit="text"></p>
+  </main>
+</template>
+
+<template data-archetype="step" data-version="1" data-default-variant="base"
+          data-variants="base ghost-number pill track" data-chrome="handle meta counter swipe">
+  <main class="cs-content cs-a-step" data-layer="content">
+    <div class="cs-slot cs-ord"    data-slot="ord"    data-field="ord"    data-kind="ord"  data-role="small" data-fit="css" data-m="ord" data-optional></div>
+    <h2  class="cs-slot cs-title"  data-slot="title"  data-field="title"  data-kind="text" data-role="title" data-max-lines="3" data-m="title" data-edit="text"></h2>
+    <p   class="cs-slot cs-body"   data-slot="body"   data-field="body"   data-kind="text" data-role="body"  data-max-lines="6" data-m="body" data-optional data-edit="text"></p>
+    <div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+    <p   class="cs-slot cs-bridge" data-slot="bridge" data-field="bridge" data-kind="text" data-role="small" data-max-lines="2" data-m="bridge" data-optional data-edit="text"></p>
+  </main>
+</template>
+
+<template data-archetype="stat" data-version="1" data-default-variant="base"
+          data-variants="base bar icon chart" data-chrome="handle meta counter swipe">
+  <main class="cs-content cs-a-stat" data-layer="content">
+    <div class="cs-slot cs-number" data-slot="number" data-field="number" data-kind="number" data-role="number" data-m="number"></div>
+    <h2  class="cs-slot cs-title"  data-slot="title"  data-field="title"  data-kind="text" data-role="title" data-max-lines="3" data-m="title" data-edit="text"></h2>
+    <p   class="cs-slot cs-body"   data-slot="body"   data-field="body"   data-kind="text" data-role="body"  data-max-lines="5" data-m="body" data-optional data-edit="text"></p><div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+    <p   class="cs-slot cs-bridge" data-slot="bridge" data-field="bridge" data-kind="text" data-role="small" data-max-lines="2" data-m="bridge" data-optional data-edit="text"></p>
+  </main>
+</template>
+
+<template data-archetype="compare" data-version="1" data-default-variant="columns"
+          data-variants="columns stacked versus table before-after" data-chrome="handle meta counter swipe">
+  <main class="cs-content cs-a-compare" data-layer="content">
+    <h2  class="cs-slot cs-title"  data-slot="title"  data-field="title"  data-kind="text"  data-role="title" data-max-lines="3" data-m="title" data-optional data-edit="text"></h2>
+    <div class="cs-slot cs-sides"  data-slot="sides"  data-field="sides"  data-kind="sides" data-role="body"  data-max-lines="5" data-m="sides"></div><ul  class="cs-slot cs-items"  data-slot="items"  data-field="items"  data-kind="items" data-role="body"  data-max-lines="2" data-m="items" data-optional></ul><div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+    <p   class="cs-slot cs-bridge" data-slot="bridge" data-field="bridge" data-kind="text"  data-role="small" data-max-lines="2" data-m="bridge" data-optional data-edit="text"></p>
+  </main>
+</template>
+
+<template data-archetype="myth-fact" data-version="1" data-default-variant="stacked"
+          data-variants="stacked columns stamp" data-chrome="handle meta counter swipe">
+  <main class="cs-content cs-a-myth-fact" data-layer="content">
+    <h2  class="cs-slot cs-title"  data-slot="title"  data-field="title"  data-kind="text"  data-role="title" data-max-lines="3" data-m="title" data-optional data-edit="text"></h2>
+    <div class="cs-slot cs-sides"  data-slot="sides"  data-field="sides"  data-kind="sides" data-role="body"  data-max-lines="5" data-m="sides"></div><div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+    <p   class="cs-slot cs-bridge" data-slot="bridge" data-field="bridge" data-kind="text"  data-role="small" data-max-lines="2" data-m="bridge" data-optional data-edit="text"></p>
+  </main>
+</template>
+
+<template data-archetype="quote" data-version="1" data-default-variant="base"
+          data-variants="base mark photo statement" data-chrome="handle meta counter swipe">
+  <main class="cs-content cs-a-quote" data-layer="content">
+    <blockquote class="cs-slot cs-body" data-slot="body" data-field="body" data-kind="text" data-role="h2" data-max-lines="6" data-m="body" data-edit="text"></blockquote>
+    <p   class="cs-slot cs-attribution" data-slot="attribution" data-field="attribution" data-kind="text" data-role="small" data-max-lines="2" data-optional data-edit="text"></p>
+    <div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+  </main>
+</template>
+
+<template data-archetype="story-beat" data-version="1" data-default-variant="base"
+          data-variants="base panel media" data-chrome="handle meta counter swipe">
+  <main class="cs-content cs-a-story-beat" data-layer="content">
+    <div class="cs-slot cs-ord"    data-slot="ord"    data-field="ord"    data-kind="ord"  data-role="small" data-fit="css" data-m="ord" data-optional></div>
+    <h2  class="cs-slot cs-title"  data-slot="title"  data-field="title"  data-kind="text" data-role="title" data-max-lines="3" data-m="title" data-optional data-edit="text"></h2>
+    <p   class="cs-slot cs-body"   data-slot="body"   data-field="body"   data-kind="text" data-role="body"  data-max-lines="7" data-m="body" data-edit="text"></p>
+    <div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+    <p   class="cs-slot cs-bridge" data-slot="bridge" data-field="bridge" data-kind="text" data-role="small" data-max-lines="2" data-m="bridge" data-optional data-edit="text"></p>
+  </main>
+</template>
+
+<template data-archetype="checklist" data-version="1" data-default-variant="base"
+          data-variants="base boxes ruled" data-chrome="handle meta counter swipe">
+  <main class="cs-content cs-a-checklist" data-layer="content">
+    <h2  class="cs-slot cs-title"   data-slot="title"   data-field="title"   data-kind="text" data-role="title" data-max-lines="3" data-m="title" data-edit="text"></h2>
+    <ul  class="cs-slot cs-bullets" data-slot="bullets" data-field="bullets" data-kind="list" data-role="body"  data-max-lines="2" data-m="bullets"></ul><div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+    <p   class="cs-slot cs-bridge"  data-slot="bridge"  data-field="bridge"  data-kind="text" data-role="small" data-max-lines="2" data-m="bridge" data-optional data-edit="text"></p>
+  </main>
+</template>
+
+<template data-archetype="summary" data-version="1" data-default-variant="list"
+          data-variants="list grid" data-chrome="handle meta counter swipe">
+  <main class="cs-content cs-a-summary" data-layer="content">
+    <h2  class="cs-slot cs-title"   data-slot="title"   data-field="title"   data-kind="text" data-role="title" data-max-lines="3" data-m="title" data-edit="text"></h2>
+    <ul  class="cs-slot cs-bullets" data-slot="bullets" data-field="bullets" data-kind="list" data-role="body"  data-max-lines="2" data-m="bullets"></ul><div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+  </main>
+</template>
+
+<template data-archetype="setup" data-version="1" data-default-variant="base"
+          data-variants="base cards" data-chrome="handle meta counter swipe">
+  <main class="cs-content cs-a-setup" data-layer="content">
+    <h2  class="cs-slot cs-title"   data-slot="title"   data-field="title"   data-kind="text" data-role="title" data-max-lines="3" data-m="title" data-edit="text"></h2>
+    <ul  class="cs-slot cs-bullets" data-slot="bullets" data-field="bullets" data-kind="list" data-role="body"  data-max-lines="3" data-m="bullets"></ul><div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+    <p   class="cs-slot cs-bridge"  data-slot="bridge"  data-field="bridge"  data-kind="text" data-role="small" data-max-lines="2" data-m="bridge" data-optional data-edit="text"></p>
+  </main>
+</template>
+
+<template data-archetype="proof" data-version="1" data-default-variant="screenshot"
+          data-variants="screenshot base" data-chrome="handle meta counter swipe">
+  <main class="cs-content cs-a-proof" data-layer="content">
+    <div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media"></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+    <div class="cs-slot cs-number" data-slot="number" data-field="number" data-kind="number" data-role="number" data-m="number" data-optional></div>
+    <h2  class="cs-slot cs-title"  data-slot="title"  data-field="title"  data-kind="text" data-role="title" data-max-lines="3" data-m="title" data-optional data-edit="text"></h2>
+    <p   class="cs-slot cs-body"   data-slot="body"   data-field="body"   data-kind="text" data-role="body"  data-max-lines="4" data-m="body" data-optional data-edit="text"></p>
+    <p   class="cs-slot cs-bridge" data-slot="bridge" data-field="bridge" data-kind="text" data-role="small" data-max-lines="2" data-m="bridge" data-optional data-edit="text"></p>
+  </main>
+</template>
+
+<template data-archetype="share" data-version="1" data-default-variant="base"
+          data-variants="base big-word" data-chrome="handle meta counter">
+  <main class="cs-content cs-a-share" data-layer="content">
+    <h2  class="cs-slot cs-headline" data-slot="headline" data-field="headline" data-kind="text" data-role="h1" data-role-by-variant="big-word:hero" data-max-lines="3" data-m="headline" data-edit="text"></h2>
+    <p   class="cs-slot cs-sub"      data-slot="sub"      data-field="sub"      data-kind="text" data-role="body" data-max-lines="3" data-m="sub" data-optional data-edit="text"></p><div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+  </main>
+</template>
+
+<template data-archetype="cta" data-version="1" data-default-variant="base"
+          data-variants="base pill keyword action" data-chrome="handle meta counter savepill">
+  <main class="cs-content cs-a-cta" data-layer="content">
+    <h2  class="cs-slot cs-title" data-slot="title" data-field="title" data-kind="text" data-role="h1"   data-max-lines="3" data-m="title" data-edit="text"></h2>
+    <p   class="cs-slot cs-body"  data-slot="body"  data-field="body"  data-kind="text" data-role="body" data-max-lines="4" data-m="body" data-optional data-edit="text"></p><div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+    <div class="cs-slot cs-cta"   data-slot="cta"   data-field="cta"   data-kind="cta"  data-role="body" data-max-lines="3" data-m="cta"></div>
+  </main>
+</template>
+
+<template data-archetype="offer" data-version="1" data-default-variant="base"
+          data-variants="base card" data-chrome="handle meta counter savepill">
+  <main class="cs-content cs-a-offer" data-layer="content">
+    <h2  class="cs-slot cs-title"   data-slot="title"   data-field="title"   data-kind="text"   data-role="h1"   data-max-lines="3" data-m="title" data-edit="text"></h2>
+    <div class="cs-slot cs-number"  data-slot="number"  data-field="number"  data-kind="number" data-role="number" data-m="number" data-optional></div>
+    <ul  class="cs-slot cs-bullets" data-slot="bullets" data-field="bullets" data-kind="list"   data-role="body" data-max-lines="2" data-m="bullets" data-optional></ul><div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+    <div class="cs-slot cs-cta"     data-slot="cta"     data-field="cta"     data-kind="cta"    data-role="body" data-max-lines="3" data-m="cta"></div>
+  </main>
+</template>
+
+<template data-archetype="testimonial" data-version="1" data-default-variant="base"
+          data-variants="base photo card" data-chrome="handle meta counter">
+  <main class="cs-content cs-a-testimonial" data-layer="content">
+    <blockquote class="cs-slot cs-body" data-slot="body" data-field="body" data-kind="text" data-role="h2" data-max-lines="6" data-m="body" data-edit="text"></blockquote>
+    <p   class="cs-slot cs-attribution" data-slot="attribution" data-field="attribution" data-kind="text" data-role="small" data-max-lines="2" data-edit="text"></p>
+    <div class="cs-slot cs-number"  data-slot="number" data-field="number" data-kind="number" data-role="number" data-m="number" data-optional></div>
+    <div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+  </main>
+</template>
+
+<template data-archetype="poster" data-version="1" data-default-variant="top"
+          data-variants="top center split photo" data-chrome="handle meta">
+  <main class="cs-content cs-a-poster" data-layer="content">
+    <p   class="cs-slot cs-kicker"   data-slot="kicker"   data-field="kicker"   data-kind="text" data-role="small" data-max-lines="2" data-m="kicker" data-optional data-edit="text"></p>
+    <h1  class="cs-slot cs-headline" data-slot="headline" data-field="headline" data-kind="text" data-role="hero"  data-max-lines="3" data-fit-widen data-m="headline" data-edit="text"></h1>
+    <p   class="cs-slot cs-sub"      data-slot="sub"      data-field="sub"      data-kind="text" data-role="body"  data-max-lines="3" data-m="sub" data-optional data-edit="text"></p>
+    <ul  class="cs-slot cs-bullets"  data-slot="bullets"  data-field="bullets"  data-kind="list" data-role="body"  data-max-lines="2" data-m="bullets" data-optional></ul>
+    <div class="cs-slot cs-media-slot" data-slot="media"  data-field="media"    data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+    <div class="cs-slot cs-cta"      data-slot="cta"      data-field="cta"      data-kind="cta"  data-role="small" data-max-lines="3" data-m="cta" data-optional></div>
+  </main>
+</template>
+
+<template data-archetype="grid" data-version="1" data-default-variant="bento"
+          data-variants="bento" data-chrome="handle meta counter swipe">
+  <main class="cs-content cs-a-grid" data-layer="content">
+    <h2  class="cs-slot cs-title"  data-slot="title"  data-field="title"  data-kind="text" data-role="title" data-max-lines="3" data-m="title" data-edit="text"></h2>
+    <ul  class="cs-slot cs-items"  data-slot="items"  data-field="items"  data-kind="items" data-role="body"  data-max-lines="2" data-m="items" data-optional></ul><div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+    <p   class="cs-slot cs-bridge" data-slot="bridge" data-field="bridge" data-kind="text" data-role="small" data-max-lines="2" data-m="bridge" data-optional data-edit="text"></p>
+  </main>
+</template>
+
+<template data-archetype="timeline" data-version="1" data-default-variant="rail"
+          data-variants="rail" data-chrome="handle meta counter swipe">
+  <main class="cs-content cs-a-timeline" data-layer="content">
+    <h2  class="cs-slot cs-title"  data-slot="title"  data-field="title"  data-kind="text" data-role="title" data-max-lines="3" data-m="title" data-edit="text"></h2>
+    <ul  class="cs-slot cs-items"  data-slot="items"  data-field="items"  data-kind="items" data-role="body"  data-max-lines="2" data-m="items" data-optional></ul><div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+    <p   class="cs-slot cs-bridge" data-slot="bridge" data-field="bridge" data-kind="text" data-role="small" data-max-lines="2" data-m="bridge" data-optional data-edit="text"></p>
+  </main>
+</template>

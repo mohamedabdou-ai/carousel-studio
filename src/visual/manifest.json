@@ -1,0 +1,9 @@
+{
+  "module": "visual",
+  "chunk": "cs-visual.js",
+  "order": 0,
+  "files": [
+    "root.js", "api.js", "hooks.js", "stem.js", "icons.js", "space.js", "geometry.js",
+    "plan-features.js", "plan-score.js", "plan-emit.js", "plan-api.js", "remix.js", "fix.js", "settle.js", "sketch.js", "free.js"
+  ]
+}

@@ -1,0 +1,2231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:carousel-studio:schema:spec:1",
+  "title": "Carousel Studio post spec",
+  "description": "spec.json: the Studio's only input. Progressively filled by the skills; completeness per checkpoint is checked by validate.py --checkpoint.",
+  "type": "object",
+  "properties": {
+    "specVersion": {
+      "const": 1
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "rev": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Incremented by every writer (Studio save, Claude patch)."
+    },
+    "brand": {
+      "type": "object",
+      "properties": {
+        "slug": {
+          "$ref": "#/$defs/slug"
+        },
+        "snapshotHash": {
+          "$ref": "#/$defs/hash16"
+        }
+      },
+      "required": [
+        "slug"
+      ],
+      "additionalProperties": false
+    },
+    "brief": {
+      "type": "object",
+      "properties": {
+        "topic": {
+          "type": "string",
+          "maxLength": 600
+        },
+        "input": {
+          "type": "string",
+          "enum": [
+            "idea",
+            "notes",
+            "url",
+            "pdf",
+            "transcript"
+          ]
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 600
+        }
+      },
+      "required": [
+        "topic"
+      ],
+      "additionalProperties": false
+    },
+    "format": {
+      "type": "string",
+      "enum": [
+        "carousel",
+        "single"
+      ]
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "guided",
+        "fast"
+      ]
+    },
+    "checkpoint": {
+      "type": "string",
+      "enum": [
+        "angle",
+        "script",
+        "design",
+        "ready",
+        "exported"
+      ]
+    },
+    "canvas": {
+      "$ref": "#/$defs/canvas"
+    },
+    "locale": {
+      "type": "object",
+      "properties": {
+        "dialect": {
+          "$ref": "#/$defs/dialect"
+        },
+        "register": {
+          "$ref": "#/$defs/register"
+        },
+        "digits": {
+          "$ref": "#/$defs/digits"
+        },
+        "appLanguage": {
+          "$ref": "#/$defs/appLanguage"
+        },
+        "swipeCue": {
+          "$ref": "#/$defs/swipeCue"
+        },
+        "uiDialect": {
+          "$ref": "#/$defs/dialect"
+        }
+      },
+      "required": [
+        "dialect",
+        "digits",
+        "appLanguage",
+        "swipeCue"
+      ],
+      "additionalProperties": false
+    },
+    "intent": {
+      "$ref": "#/$defs/intent"
+    },
+    "awareness": {
+      "$ref": "#/$defs/awareness"
+    },
+    "contentType": {
+      "$ref": "#/$defs/contentType"
+    },
+    "architecture": {
+      "$ref": "#/$defs/architecture"
+    },
+    "angle": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/shortId"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "lens": {
+          "$ref": "#/$defs/lens"
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "why": {
+          "type": "string",
+          "maxLength": 300
+        }
+      },
+      "required": [
+        "id",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "hook": {
+      "$ref": "#/$defs/hook"
+    },
+    "style": {
+      "type": "object",
+      "properties": {
+        "presetId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{1,31}@[0-9]+\\.[0-9]+$",
+          "description": "<preset id>@<major.minor>, e.g. swiss@1.0."
+        },
+        "occasionId": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{2,47}$"
+        },
+        "overrides": {
+          "$ref": "#/$defs/overrides"
+        },
+        "resolvedHash": {
+          "$ref": "#/$defs/hash16"
+        },
+        "metaLabel": {
+          "type": "string",
+          "maxLength": 40,
+          "description": "Text of the header meta slot (series or topic label); empty = slot omitted."
+        },
+        "visualMode": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "manual",
+            "off"
+          ]
+        },
+        "planV": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "world": {
+          "$ref": "#/$defs/world"
+        },
+        "motif": {
+          "$ref": "#/$defs/iconName"
+        },
+        "rail": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "quiet",
+            "on",
+            "off"
+          ]
+        },
+        "thread": {
+          "type": "string",
+          "enum": [
+            "off",
+            "on"
+          ]
+        },
+        "panorama": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "dir": {
+              "type": "string",
+              "enum": [
+                "left",
+                "right"
+              ]
+            }
+          },
+          "required": [
+            "enabled"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "presetId"
+      ],
+      "additionalProperties": false
+    },
+    "compat": {
+      "type": "object",
+      "properties": {
+        "paint": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "svg",
+            "replay"
+          ]
+        },
+        "mp4": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "off"
+          ]
+        },
+        "hfRuntime": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "cs-hf",
+            "native-waapi"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "description": "Switches that disable a broken paint or encode path without a runtime release."
+    },
+    "slides": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/slide"
+      },
+      "maxItems": 20,
+      "description": "Empty only at checkpoint 'angle'."
+    },
+    "cover": {
+      "type": "object",
+      "properties": {
+        "motion": {
+          "type": "object",
+          "properties": {
+            "recipe": {
+              "$ref": "#/$defs/recipe"
+            },
+            "feel": {
+              "type": "string",
+              "enum": [
+                "calm",
+                "story"
+              ]
+            },
+            "seconds": {
+              "type": "number",
+              "minimum": 5,
+              "maximum": 6
+            },
+            "fps": {
+              "enum": [
+                30
+              ]
+            },
+            "source": {
+              "type": "string",
+              "enum": [
+                "internal",
+                "external"
+              ]
+            },
+            "plateAssetId": {
+              "$ref": "#/$defs/shortId"
+            }
+          },
+          "required": [
+            "recipe"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "captionPack": {
+      "$ref": "#/$defs/captionPack"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source"
+      },
+      "maxItems": 60
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/asset"
+      },
+      "maxItems": 60
+    },
+    "remix": {
+      "type": "object",
+      "properties": {
+        "of": {
+          "$ref": "#/$defs/hash16"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "same-world",
+            "new-world"
+          ]
+        },
+        "axes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 24,
+            "pattern": "^[a-z][a-z0-9-]{0,23}$"
+          },
+          "maxItems": 8
+        },
+        "coverHash": {
+          "$ref": "#/$defs/hash16"
+        },
+        "bodyHash": {
+          "$ref": "#/$defs/hash16"
+        },
+        "refresh": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "hook",
+              "caption",
+              "cta"
+            ]
+          },
+          "maxItems": 3,
+          "uniqueItems": true
+        },
+        "lineage": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/hash16"
+          },
+          "maxItems": 5
+        }
+      },
+      "required": [
+        "of",
+        "mode"
+      ],
+      "additionalProperties": false
+    },
+    "frozen": {
+      "type": "object",
+      "properties": {
+        "engine": {
+          "type": "string",
+          "pattern": "^cs-[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "tokensHash": {
+          "$ref": "#/$defs/hash16"
+        },
+        "lines": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 400
+            },
+            "minItems": 1,
+            "maxItems": 12
+          },
+          "description": "Element key (s03.title) -> physical lines after fit, in reading order; words separated by one space (U+00A0 bindings kept)."
+        },
+        "sizes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 12,
+            "maximum": 640
+          },
+          "description": "Element key -> fitted font size in px at the approved layout."
+        },
+        "approvedAt": {
+          "$ref": "#/$defs/isoDateTime"
+        },
+        "visual": {
+          "type": "object",
+          "properties": {
+            "marks": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "minProperties": 1
+                },
+                "maxItems": 8
+              },
+              "description": "slide id -> the text-bound marks the settle pass placed (rounded to 0.5 px), reused by every later paint."
+            },
+            "anchors": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "w": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 2160
+                  },
+                  "h": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 2880
+                  }
+                },
+                "required": [
+                  "w",
+                  "h"
+                ],
+                "additionalProperties": false
+              },
+              "description": "slide id -> the anchor box the approved layout was fitted with."
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "engine",
+        "tokensHash",
+        "lines",
+        "sizes",
+        "approvedAt"
+      ],
+      "additionalProperties": false
+    },
+    "qa": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "pass",
+            "fix",
+            "block"
+          ]
+        },
+        "runAt": {
+          "$ref": "#/$defs/isoDateTime"
+        },
+        "engine": {
+          "type": "string",
+          "pattern": "^cs-[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/qaResult"
+          },
+          "maxItems": 400
+        }
+      },
+      "required": [
+        "status",
+        "results"
+      ],
+      "additionalProperties": false
+    },
+    "approvals": {
+      "type": "object",
+      "properties": {
+        "angle": {
+          "$ref": "#/$defs/approval"
+        },
+        "script": {
+          "$ref": "#/$defs/approval"
+        },
+        "design": {
+          "$ref": "#/$defs/approval"
+        }
+      },
+      "additionalProperties": false
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "studioUrl": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "brandHomeUrl": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "createdAt": {
+          "$ref": "#/$defs/isoDateTime"
+        },
+        "updatedAt": {
+          "$ref": "#/$defs/isoDateTime"
+        },
+        "updatedBy": {
+          "type": "string",
+          "enum": [
+            "claude",
+            "studio",
+            "user",
+            "tool"
+          ]
+        },
+        "generator": {
+          "type": "object",
+          "properties": {
+            "skill": {
+              "type": "string",
+              "maxLength": 60
+            },
+            "version": {
+              "type": "string",
+              "maxLength": 20
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "ext": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Reserved extension namespace. Tools may store private data here; engines ignore it."
+    }
+  },
+  "required": [
+    "specVersion",
+    "id",
+    "rev",
+    "brand",
+    "format",
+    "mode",
+    "checkpoint",
+    "canvas",
+    "locale",
+    "style",
+    "slides"
+  ],
+  "additionalProperties": false,
+  "x-sharedDefs": [
+    "appLanguage",
+    "architecture",
+    "awareness",
+    "contentType",
+    "ctaKind",
+    "dialect",
+    "digits",
+    "gateId",
+    "hash16",
+    "hookFamily",
+    "iconName",
+    "id",
+    "intent",
+    "isoDate",
+    "isoDateTime",
+    "lens",
+    "msg",
+    "overrides",
+    "qaResult",
+    "recipe",
+    "register",
+    "ruleId",
+    "severity",
+    "shortId",
+    "slideType",
+    "slug",
+    "swipeCue"
+  ],
+  "$defs": {
+    "anchor": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "none",
+            "icon",
+            "scene",
+            "rows",
+            "numeral",
+            "chart",
+            "mock",
+            "photo",
+            "field",
+            "word",
+            "pattern"
+          ]
+        },
+        "icon": {
+          "$ref": "#/$defs/iconName"
+        },
+        "object": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "icons": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/iconName"
+          },
+          "maxItems": 7
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "dominant",
+              "support",
+              "accent"
+            ]
+          },
+          "maxItems": 7
+        },
+        "template": {
+          "type": "string",
+          "enum": [
+            "solo",
+            "trio",
+            "duo-stack",
+            "orbit",
+            "ground",
+            "staircase",
+            "scatter",
+            "hub",
+            "versus",
+            "layers",
+            "matrix2",
+            "venn",
+            "formula",
+            "cycle",
+            "flow",
+            "iceberg",
+            "pyramid",
+            "sheet",
+            "pile",
+            "cluster",
+            "specimen",
+            "widgets",
+            "niche"
+          ]
+        },
+        "treatment": {
+          "type": "string",
+          "enum": [
+            "bare",
+            "chip",
+            "tile",
+            "ring",
+            "duo",
+            "sticker",
+            "badge",
+            "giant"
+          ]
+        },
+        "size": {
+          "type": "string",
+          "enum": [
+            "sm",
+            "md",
+            "lg",
+            "xl",
+            "hero"
+          ]
+        },
+        "badge": {
+          "type": "string",
+          "enum": [
+            "none",
+            "slash",
+            "cross",
+            "plus",
+            "check",
+            "question",
+            "sparkle"
+          ]
+        },
+        "captions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 24
+          },
+          "maxItems": 7
+        },
+        "value": {
+          "type": "string",
+          "maxLength": 10
+        },
+        "unit": {
+          "type": "string",
+          "maxLength": 16
+        },
+        "companion": {
+          "type": "string",
+          "enum": [
+            "none",
+            "waffle",
+            "pictogram",
+            "ring",
+            "bar",
+            "icon",
+            "delta"
+          ]
+        },
+        "of": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 100
+        },
+        "filled": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "chart": {
+          "$ref": "#/$defs/chart"
+        },
+        "mock": {
+          "$ref": "#/$defs/mock"
+        },
+        "pattern": {
+          "type": "string",
+          "enum": [
+            "icon-wall",
+            "stripes",
+            "bold-dots",
+            "lattice",
+            "grid-paper"
+          ]
+        },
+        "word": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "wordStyle": {
+          "type": "string",
+          "enum": [
+            "solid",
+            "hollow",
+            "sticker",
+            "struck",
+            "lettermark"
+          ]
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "appLanguage": {
+      "type": "string",
+      "enum": [
+        "ar",
+        "en",
+        "mixed"
+      ]
+    },
+    "approval": {
+      "type": "object",
+      "properties": {
+        "at": {
+          "$ref": "#/$defs/isoDateTime"
+        },
+        "rev": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "at"
+      ],
+      "additionalProperties": false
+    },
+    "architecture": {
+      "type": "string",
+      "enum": [
+        "listicle",
+        "steps",
+        "myth-fact",
+        "story",
+        "case-study",
+        "framework",
+        "comparison",
+        "opinion",
+        "news",
+        "offer",
+        "results",
+        "lead-magnet"
+      ]
+    },
+    "asset": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/shortId"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "image",
+            "video",
+            "font",
+            "svg"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "pattern": "^(asset:[A-Za-z0-9_-]{1,64}|data:[a-z]+/[a-z0-9.+-]+;base64,[A-Za-z0-9+/=]+)$",
+          "maxLength": 90000
+        },
+        "mime": {
+          "type": "string",
+          "pattern": "^[a-z]+/[a-z0-9.+-]+$",
+          "maxLength": 60
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16384
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16384
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "aiGenerated": {
+          "type": "boolean"
+        },
+        "tool": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "promptId": {
+          "$ref": "#/$defs/shortId"
+        },
+        "mirror": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "never"
+          ]
+        },
+        "alt": {
+          "type": "string",
+          "maxLength": 300
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "ref",
+        "aiGenerated"
+      ],
+      "additionalProperties": false
+    },
+    "awareness": {
+      "type": "string",
+      "enum": [
+        "unaware",
+        "problem",
+        "solution",
+        "product"
+      ]
+    },
+    "canvas": {
+      "type": "object",
+      "properties": {
+        "preset": {
+          "type": "string",
+          "enum": [
+            "ig-3x4",
+            "ig-4x5"
+          ],
+          "description": "ig-3x4 = 1080x1440 (default). ig-4x5 = 1080x1350, a safety flag only: SP6 passed, so 3:4 stays the canvas of video-first carousels."
+        },
+        "w": {
+          "type": "integer",
+          "minimum": 320,
+          "maximum": 2160
+        },
+        "h": {
+          "type": "integer",
+          "minimum": 320,
+          "maximum": 2880
+        },
+        "safe": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 4,
+          "maxItems": 4,
+          "description": "[x, y, w, h]; for ig-3x4 [34, 45, 1012, 1350]."
+        },
+        "exports": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "3x4",
+              "4x5"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 2,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "preset",
+        "w",
+        "h",
+        "safe",
+        "exports"
+      ],
+      "additionalProperties": false
+    },
+    "captionPack": {
+      "type": "object",
+      "properties": {
+        "firstLine": {
+          "type": "string",
+          "maxLength": 2200
+        },
+        "keywordLine": {
+          "type": "string",
+          "maxLength": 2200
+        },
+        "body": {
+          "type": "string",
+          "maxLength": 2200
+        },
+        "cta": {
+          "type": "string",
+          "maxLength": 600
+        },
+        "hashtags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^#[^ \\t\\n\\r\\u00A0#]{1,60}$"
+          },
+          "maxItems": 5,
+          "uniqueItems": true
+        },
+        "perSlide": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "maxItems": 20
+        },
+        "alt": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "maxItems": 20
+        },
+        "asset": {
+          "type": "object",
+          "properties": {
+            "keyword": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 40
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "delivery": {
+              "type": "string",
+              "enum": [
+                "instant",
+                "manual"
+              ]
+            }
+          },
+          "required": [
+            "keyword",
+            "delivery"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "chart": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "bars-h",
+            "columns",
+            "donut",
+            "ring",
+            "meter",
+            "line",
+            "waffle",
+            "pictogram",
+            "funnel",
+            "compare-bars",
+            "icon-bars",
+            "delta"
+          ]
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string",
+                "maxLength": 24
+              },
+              "value": {
+                "type": "number"
+              },
+              "icon": {
+                "$ref": "#/$defs/iconName"
+              },
+              "hi": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "label",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1,
+          "maxItems": 8
+        },
+        "total": {
+          "type": "number"
+        },
+        "target": {
+          "type": "number"
+        },
+        "unit": {
+          "type": "string",
+          "maxLength": 16
+        },
+        "illustrative": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "kind",
+        "values"
+      ],
+      "additionalProperties": false
+    },
+    "contentType": {
+      "type": "string",
+      "enum": [
+        "value",
+        "soft-sell"
+      ]
+    },
+    "cta": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/ctaKind"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "assetId": {
+          "$ref": "#/$defs/shortId"
+        }
+      },
+      "required": [
+        "kind",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "ctaKind": {
+      "type": "string",
+      "enum": [
+        "save",
+        "send",
+        "question",
+        "keyword-dm",
+        "follow"
+      ]
+    },
+    "demo": {
+      "type": "object",
+      "properties": {
+        "lines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/demoLine"
+          },
+          "minItems": 1,
+          "maxItems": 3
+        },
+        "caption": {
+          "type": "string",
+          "maxLength": 60
+        }
+      },
+      "required": [
+        "lines"
+      ],
+      "additionalProperties": false
+    },
+    "demoLine": {
+      "type": "object",
+      "properties": {
+        "who": {
+          "type": "string",
+          "enum": [
+            "me",
+            "them",
+            "sys"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 90
+        },
+        "hi": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "dialect": {
+      "type": "string",
+      "enum": [
+        "eg",
+        "gulf",
+        "levant",
+        "msa-white",
+        "en"
+      ]
+    },
+    "digits": {
+      "type": "string",
+      "enum": [
+        "western",
+        "arabic-indic"
+      ],
+      "description": "western = 0-9 (default, Q38); arabic-indic = U+0660-0669 (opt-in)."
+    },
+    "gateId": {
+      "type": "string",
+      "pattern": "^[A-Z]{1,3}[0-9]{1,2}$"
+    },
+    "hash16": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{16}$",
+      "description": "FNV-1a 64-bit of canonical JSON, 16 lowercase hex digits (see CONTRACT section 3.2)."
+    },
+    "hook": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{2,63}$"
+        },
+        "family": {
+          "$ref": "#/$defs/hookFamily"
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 400
+        },
+        "cover": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "score": {
+          "$ref": "#/$defs/hookScore"
+        },
+        "slide2": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "alternates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/hookRef"
+          },
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "id",
+        "family",
+        "cover"
+      ],
+      "additionalProperties": false
+    },
+    "hookFamily": {
+      "type": "string",
+      "enum": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5",
+        "P6",
+        "P7",
+        "P8",
+        "P9",
+        "P10",
+        "P11",
+        "P12",
+        "P13",
+        "P14",
+        "P15",
+        "P16",
+        "F17",
+        "F18",
+        "F19",
+        "F20",
+        "F21",
+        "F22",
+        "F23",
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "description": "Family code: P1-P16 playbook, F17-F23 new, S1-S3 soft-sell."
+    },
+    "hookRef": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{2,63}$"
+        },
+        "family": {
+          "$ref": "#/$defs/hookFamily"
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 400,
+          "description": "Long (spoken / full) form."
+        },
+        "cover": {
+          "type": "string",
+          "maxLength": 160,
+          "description": "Compressed cover text actually used on slide 1."
+        },
+        "score": {
+          "$ref": "#/$defs/hookScore"
+        },
+        "slide2": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Planned slide-2 payoff."
+        }
+      },
+      "required": [
+        "id",
+        "family",
+        "cover"
+      ],
+      "additionalProperties": false
+    },
+    "hookScore": {
+      "type": "object",
+      "properties": {
+        "R": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 40
+        },
+        "J": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 40
+        },
+        "P": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "total": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      },
+      "required": [
+        "total"
+      ],
+      "additionalProperties": false
+    },
+    "iconName": {
+      "type": "string",
+      "maxLength": 48,
+      "pattern": "^(tb-|cs-)?[a-z0-9]+(-[a-z0-9]+){0,5}$"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{5,63}$",
+      "description": "Long stable identifier (brand, spec, plan, occasion pack)."
+    },
+    "intent": {
+      "type": "string",
+      "enum": [
+        "reach",
+        "save",
+        "send",
+        "sell"
+      ]
+    },
+    "isoDate": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "isoDateTime": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})$"
+    },
+    "item": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "icon": {
+          "$ref": "#/$defs/iconName"
+        },
+        "value": {
+          "type": "string",
+          "maxLength": 12
+        },
+        "hi": {
+          "type": "boolean"
+        },
+        "mark": {
+          "type": "string",
+          "enum": [
+            "none",
+            "tick",
+            "cross",
+            "circle",
+            "redact"
+          ]
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "lens": {
+      "type": "string",
+      "enum": [
+        "contrarian",
+        "costly-mistake",
+        "free-vs-paid",
+        "tested-ranked",
+        "identity",
+        "before-after",
+        "myth",
+        "story",
+        "framework",
+        "news",
+        "setup",
+        "imagine"
+      ]
+    },
+    "media": {
+      "type": "object",
+      "properties": {
+        "slot": {
+          "type": "string",
+          "enum": [
+            "none",
+            "icon",
+            "photo",
+            "cutout",
+            "plate",
+            "screenshot",
+            "ui"
+          ]
+        },
+        "assetId": {
+          "$ref": "#/$defs/shortId"
+        },
+        "promptId": {
+          "$ref": "#/$defs/shortId"
+        },
+        "ai": {
+          "type": "boolean"
+        },
+        "calmZone": {
+          "type": "string",
+          "enum": [
+            "top",
+            "bottom",
+            "start",
+            "end",
+            "center",
+            "none"
+          ]
+        },
+        "frame": {
+          "type": "string",
+          "enum": [
+            "none",
+            "phone",
+            "browser",
+            "polaroid",
+            "tape",
+            "arch",
+            "disc",
+            "torn"
+          ]
+        },
+        "zoom": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "y": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "w": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "h": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "w",
+            "h"
+          ],
+          "additionalProperties": false
+        },
+        "backdropAssetId": {
+          "$ref": "#/$defs/shortId"
+        }
+      },
+      "required": [
+        "slot"
+      ],
+      "additionalProperties": false
+    },
+    "mock": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "chat",
+            "dm",
+            "browser",
+            "phone",
+            "post",
+            "notification",
+            "search",
+            "notes",
+            "poll",
+            "profile",
+            "card",
+            "receipt",
+            "calendar",
+            "artefact"
+          ]
+        },
+        "artefact": {
+          "type": "string",
+          "enum": [
+            "exam",
+            "ticket",
+            "sign",
+            "ledger",
+            "label",
+            "menu",
+            "generic"
+          ]
+        },
+        "stamp": {
+          "type": "string",
+          "maxLength": 16
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "caption": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "lines": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/demoLine"
+          },
+          "maxItems": 6
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 60
+          },
+          "maxItems": 5
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "before",
+            "after"
+          ]
+        },
+        "highlight": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "msg": {
+      "type": "object",
+      "properties": {
+        "ar": {
+          "type": "string",
+          "maxLength": 600
+        },
+        "en": {
+          "type": "string",
+          "maxLength": 600
+        }
+      },
+      "required": [
+        "ar",
+        "en"
+      ],
+      "additionalProperties": false,
+      "description": "Bilingual message. 'ar' is white (simplified) MSA."
+    },
+    "number": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$",
+          "maxLength": 16,
+          "description": "Western digits, '.' decimal. Converted to locale.digits at render time."
+        },
+        "unit": {
+          "type": "string",
+          "maxLength": 16
+        },
+        "sourceId": {
+          "$ref": "#/$defs/shortId"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "overrides": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "string",
+            "maxLength": 300
+          },
+          {
+            "type": "number"
+          },
+          {
+            "type": "boolean"
+          }
+        ]
+      },
+      "description": "Dotted token path -> value, e.g. {'roles.accent': '#E3262B'}. Applied by CS.core.resolve."
+    },
+    "qaResult": {
+      "type": "object",
+      "properties": {
+        "gate": {
+          "$ref": "#/$defs/gateId"
+        },
+        "rule": {
+          "$ref": "#/$defs/ruleId"
+        },
+        "sev": {
+          "$ref": "#/$defs/severity"
+        },
+        "slide": {
+          "type": "string",
+          "pattern": "^s[0-9]{2}$"
+        },
+        "el": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "Element key, e.g. s03.title or s03.bullets.2 or caption.firstLine."
+        },
+        "msg": {
+          "$ref": "#/$defs/msg"
+        },
+        "fix": {
+          "$ref": "#/$defs/msg"
+        },
+        "autofixed": {
+          "type": "boolean"
+        },
+        "overridden": {
+          "type": "object",
+          "properties": {
+            "reason": {
+              "type": "string",
+              "maxLength": 300
+            },
+            "at": {
+              "$ref": "#/$defs/isoDateTime"
+            }
+          },
+          "required": [
+            "reason",
+            "at"
+          ],
+          "additionalProperties": false
+        },
+        "prospect": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "gate",
+        "sev",
+        "msg"
+      ],
+      "additionalProperties": false,
+      "description": "One QA finding. Identical shape in spec.qa.results and qa-report.results."
+    },
+    "recipe": {
+      "type": "string",
+      "enum": [
+        "calm",
+        "counter",
+        "highlight-sweep",
+        "stamp",
+        "reorder",
+        "story",
+        "morph",
+        "split",
+        "map-dots",
+        "cash-wipe",
+        "drop-clock",
+        "scale",
+        "none"
+      ]
+    },
+    "register": {
+      "type": "string",
+      "enum": [
+        "dialect",
+        "white",
+        "msa"
+      ]
+    },
+    "ruleId": {
+      "type": "string",
+      "pattern": "^[A-Z]{1,3}[0-9]{1,2}(\\.[a-z0-9-]+)?$"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "BLOCK",
+        "FIX",
+        "NOTE"
+      ]
+    },
+    "shortId": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,31}$",
+      "description": "Short local identifier (source, asset, prompt, angle, pillar, slot)."
+    },
+    "side": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 240
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "slide": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^s[0-9]{2}$",
+          "description": "Stable identity, s01..s20. Never reused after delete."
+        },
+        "n": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20,
+          "description": "Current 1-based position; always equals index+1."
+        },
+        "type": {
+          "$ref": "#/$defs/slideType"
+        },
+        "kicker": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "headline": {
+          "type": "string",
+          "maxLength": 240,
+          "description": "Hero text (cover, rehook, share, poster). '==x==' marks the emphasis span; '\\n' is a forced line break."
+        },
+        "sub": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "body": {
+          "type": "string",
+          "maxLength": 400
+        },
+        "bullets": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "maxItems": 8
+        },
+        "sides": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/side"
+          },
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "compare / myth-fact: [first, second] in logical order (myth then fact; A then B)."
+        },
+        "number": {
+          "$ref": "#/$defs/number"
+        },
+        "ord": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 99,
+          "description": "Item / step ordinal. Engine derives it when absent."
+        },
+        "attribution": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "kashidaWord": {
+          "type": "string",
+          "maxLength": 40,
+          "description": "Exact headline word to stretch. At most one per post and only where the preset allows."
+        },
+        "bridge": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "cta": {
+          "$ref": "#/$defs/cta"
+        },
+        "media": {
+          "$ref": "#/$defs/media"
+        },
+        "variant": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,23}$"
+        },
+        "overrides": {
+          "$ref": "#/$defs/overrides"
+        },
+        "sourceIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/shortId"
+          },
+          "maxItems": 8
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Author note, never rendered or exported."
+        },
+        "visual": {
+          "$ref": "#/$defs/visual"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/item"
+          },
+          "maxItems": 6
+        },
+        "demo": {
+          "$ref": "#/$defs/demo"
+        },
+        "free": {
+          "type": "object",
+          "description": "Free design lane (data/free-design.json): HTML and scoped CSS the Art Director writes by hand; any slide type except cover. validate.py checks the content, the cover rule and the byte limits; maxLength here counts code points",
+          "properties": {
+            "html": {
+              "type": "string",
+              "maxLength": 12000
+            },
+            "css": {
+              "type": "string",
+              "maxLength": 6000
+            },
+            "locked": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "html"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "id",
+        "n",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "slideType": {
+      "type": "string",
+      "enum": [
+        "cover",
+        "rehook",
+        "item",
+        "step",
+        "stat",
+        "compare",
+        "myth-fact",
+        "quote",
+        "story-beat",
+        "checklist",
+        "summary",
+        "setup",
+        "proof",
+        "share",
+        "cta",
+        "offer",
+        "testimonial",
+        "poster",
+        "grid",
+        "timeline"
+      ]
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,39}$"
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/shortId"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "url",
+            "file",
+            "user",
+            "ownData",
+            "calc"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "excerpt": {
+          "type": "string",
+          "maxLength": 600
+        },
+        "location": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "accessed": {
+          "$ref": "#/$defs/isoDate"
+        },
+        "formula": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/shortId"
+          },
+          "maxItems": 8
+        },
+        "verified": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "swipeCue": {
+      "type": "string",
+      "enum": [
+        "arrow-rtl",
+        "arrow-ltr",
+        "neutral"
+      ],
+      "description": "arrow-rtl = 'اسحب ←' (Arabic-UI audiences); arrow-ltr = 'اسحب →'; neutral = the counter and a quiet progress rail, no arrow."
+    },
+    "visual": {
+      "type": "object",
+      "properties": {
+        "idea": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "anchor": {
+          "$ref": "#/$defs/anchor"
+        },
+        "recipe": {
+          "type": "string",
+          "enum": [
+            "under",
+            "over",
+            "start",
+            "end",
+            "full",
+            "band",
+            "corner",
+            "center",
+            "half"
+          ]
+        },
+        "field": {
+          "type": "boolean"
+        },
+        "bleed": {
+          "type": "string",
+          "enum": [
+            "none",
+            "start",
+            "end",
+            "top",
+            "bottom",
+            "both"
+          ]
+        },
+        "tone": {
+          "type": "string",
+          "enum": [
+            "base",
+            "invert",
+            "field"
+          ]
+        },
+        "marks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "arrow",
+              "underline",
+              "circle",
+              "strike",
+              "sparkle",
+              "stars",
+              "burst",
+              "squiggle",
+              "tape",
+              "sticker",
+              "kashida"
+            ]
+          },
+          "maxItems": 3,
+          "uniqueItems": true
+        },
+        "rowIcons": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/iconName"
+          },
+          "maxItems": 8
+        },
+        "span": {
+          "type": "object",
+          "properties": {
+            "with": {
+              "type": "string",
+              "pattern": "^s[0-9]{2}$"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "ribbon",
+                "numeral",
+                "arrow",
+                "tape",
+                "disc",
+                "band"
+              ]
+            },
+            "dir": {
+              "type": "string",
+              "enum": [
+                "left",
+                "right"
+              ]
+            }
+          },
+          "required": [
+            "with",
+            "kind"
+          ],
+          "additionalProperties": false
+        },
+        "pause": {
+          "type": "boolean"
+        },
+        "why": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "alt": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "lock": {
+          "type": "boolean"
+        },
+        "relax": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8
+        }
+      },
+      "additionalProperties": false
+    },
+    "world": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "artefact": {
+          "type": "string",
+          "enum": [
+            "exam",
+            "ticket",
+            "sign",
+            "ledger",
+            "label",
+            "menu",
+            "receipt",
+            "notes",
+            "chat",
+            "generic"
+          ]
+        },
+        "mockPrefer": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "chat",
+              "dm",
+              "browser",
+              "phone",
+              "post",
+              "notification",
+              "search",
+              "notes",
+              "poll",
+              "profile",
+              "card",
+              "receipt",
+              "calendar",
+              "artefact"
+            ]
+          },
+          "maxItems": 4
+        },
+        "toneBias": {
+          "type": "string",
+          "enum": [
+            "calm",
+            "balanced",
+            "drenched"
+          ]
+        },
+        "boldMove": {
+          "type": "object",
+          "properties": {
+            "slide": {
+              "type": "string",
+              "maxLength": 8
+            },
+            "kind": {
+              "type": "string",
+              "maxLength": 24
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,315 @@
+{
+  "schemaVersion": 1,
+  "description": "Eighteen hook candidates for the topic «5 أخطاء بتموّت الكاروسيل» (Egyptian brand), shaped like `hook_features.py --batch` input. `expect.gates` lists the deterministic outcome of the stage-A gates (HG1 length, HG2 truth, HG3 one gap, HG4 register, HG5 policy); HG2 and HG3 are judged, the others follow the word limits, the dialect deny lists and the copy.json lists. Five candidates must be discarded; the rest span 11 families, so a top three from three different families always exists. All texts are synthetic.",
+  "topic": "أخطاء الكاروسيل اللي بتخلي الناس تعدّي",
+  "brand": "brand.eg.creator.json",
+  "candidates": [
+    {
+      "id": "P3-MISTAKE-count-cost",
+      "family": "P3",
+      "dialect": "eg",
+      "text": "5 أخطاء بتموّت الكاروسيل قبل ما حد يسحب للسلايد التانية",
+      "cover": "5 أخطاء بتموّت الكاروسيل",
+      "expect": {
+        "gates": {
+          "HG1": "pass",
+          "HG2": "pass",
+          "HG3": "pass",
+          "HG4": "pass",
+          "HG5": "pass"
+        }
+      }
+    },
+    {
+      "id": "P1-LIST-number-outcome",
+      "family": "P1",
+      "dialect": "eg",
+      "text": "5 حاجات صغيرة بتخلي بوستك يتحفظ",
+      "cover": "5 حاجات… بتخلي بوستك يتحفظ",
+      "expect": {
+        "gates": {
+          "HG1": "pass",
+          "HG2": "pass",
+          "HG3": "pass",
+          "HG4": "pass",
+          "HG5": "pass"
+        }
+      }
+    },
+    {
+      "id": "F17-REFRAME-relocate",
+      "family": "F17",
+      "dialect": "eg",
+      "text": "مشكلتك مش في الألوان، مشكلتك في أول جملة",
+      "cover": "مشكلتك مش في الألوان… مشكلتك في أول جملة",
+      "expect": {
+        "gates": {
+          "HG1": "pass",
+          "HG2": "pass",
+          "HG3": "pass",
+          "HG4": "pass",
+          "HG5": "pass"
+        }
+      }
+    },
+    {
+      "id": "P4-FLIP-people-say",
+      "family": "P4",
+      "dialect": "eg",
+      "text": "الناس بتقول الكاروسيل لازم يتصمم حلو والحقيقة العكس",
+      "cover": "الناس بتقول الكاروسيل لازم يتصمم حلو… والحقيقة العكس",
+      "expect": {
+        "gates": {
+          "HG1": "pass",
+          "HG2": "pass",
+          "HG3": "pass",
+          "HG4": "pass",
+          "HG5": "pass"
+        }
+      }
+    },
+    {
+      "id": "P14-WITHOUT-no-designer",
+      "family": "P14",
+      "dialect": "eg",
+      "text": "كاروسيل من غير مصمم وبشكل محترف",
+      "cover": "كاروسيل من غير مصمم… وبشكل محترف",
+      "expect": {
+        "gates": {
+          "HG1": "pass",
+          "HG2": "pass",
+          "HG3": "pass",
+          "HG4": "pass",
+          "HG5": "pass"
+        }
+      }
+    },
+    {
+      "id": "P6-QUESTION-last-post",
+      "family": "P6",
+      "dialect": "eg",
+      "text": "آخر كاروسيل نزّلته، ليه محدش حفظه؟",
+      "cover": "آخر كاروسيل نزّلته… ليه محدش حفظه؟",
+      "expect": {
+        "gates": {
+          "HG1": "pass",
+          "HG2": "pass",
+          "HG3": "pass",
+          "HG4": "pass",
+          "HG5": "pass"
+        }
+      }
+    },
+    {
+      "id": "F18-IRONY-hours",
+      "family": "F18",
+      "dialect": "eg",
+      "text": "بتصمم ساعات ومحدش بيقرا؟",
+      "cover": "بتصمم ساعات… ومحدش بيقرا؟",
+      "expect": {
+        "gates": {
+          "HG1": "pass",
+          "HG2": "pass",
+          "HG3": "pass",
+          "HG4": "pass",
+          "HG5": "pass"
+        }
+      }
+    },
+    {
+      "id": "F19-PRECHECK-before-post",
+      "family": "F19",
+      "dialect": "eg",
+      "text": "قبل ما تنزّل الكاروسيل راجع الغلاف",
+      "cover": "قبل ما تنزّل الكاروسيل… راجع الغلاف",
+      "expect": {
+        "gates": {
+          "HG1": "pass",
+          "HG2": "pass",
+          "HG3": "pass",
+          "HG4": "pass",
+          "HG5": "pass"
+        }
+      }
+    },
+    {
+      "id": "P2-VS-text-amount",
+      "family": "P2",
+      "dialect": "eg",
+      "text": "نص كتير ولا نص قليل؟ جرّبت الاتنين",
+      "cover": "نص كتير ولا قليل؟… جرّبت الاتنين",
+      "expect": {
+        "gates": {
+          "HG1": "pass",
+          "HG2": "pass",
+          "HG3": "pass",
+          "HG4": "pass",
+          "HG5": "pass"
+        }
+      }
+    },
+    {
+      "id": "S2-BENEFIT-saved",
+      "family": "S2",
+      "dialect": "eg",
+      "text": "كاروسيل يتحفظ من أول مرة",
+      "cover": "كاروسيل يتحفظ… من أول مرة",
+      "expect": {
+        "gates": {
+          "HG1": "pass",
+          "HG2": "pass",
+          "HG3": "pass",
+          "HG4": "pass",
+          "HG5": "pass"
+        }
+      }
+    },
+    {
+      "id": "F17-REFRAME-not-x-but-y",
+      "family": "F17",
+      "dialect": "eg",
+      "text": "مش الخط اللي بيبيع، ده الوعد",
+      "cover": "مش الخط اللي بيبيع… ده الوعد",
+      "expect": {
+        "gates": {
+          "HG1": "pass",
+          "HG2": "pass",
+          "HG3": "pass",
+          "HG4": "pass",
+          "HG5": "pass"
+        }
+      }
+    },
+    {
+      "id": "F21-STANCE-long-caption",
+      "family": "F21",
+      "dialect": "eg",
+      "text": "أنا مع الكابشن الطويل بشرط واحد",
+      "cover": "أنا مع الكابشن الطويل… بشرط واحد",
+      "expect": {
+        "gates": {
+          "HG1": "pass",
+          "HG2": "pass",
+          "HG3": "pass",
+          "HG4": "pass",
+          "HG5": "pass"
+        }
+      }
+    },
+    {
+      "id": "P3-MISTAKE-with-emoji",
+      "family": "P3",
+      "dialect": "eg",
+      "text": "5 أخطاء بتموّت الكاروسيل",
+      "cover": "5 أخطاء 🔥 بتموّت الكاروسيل",
+      "expect": {
+        "gates": {
+          "HG1": "pass",
+          "HG2": "pass",
+          "HG3": "pass",
+          "HG4": "pass",
+          "HG5": "pass"
+        },
+        "penalties": [
+          "emoji"
+        ]
+      }
+    },
+    {
+      "id": "P7-PROOF-unsourced-percent",
+      "family": "P7",
+      "dialect": "eg",
+      "text": "كاروسيل جاب 90% حفظ أكتر",
+      "cover": "كاروسيل جاب 90% حفظ أكتر",
+      "expect": {
+        "gates": {
+          "HG1": "pass",
+          "HG2": "fail",
+          "HG3": "pass",
+          "HG4": "pass",
+          "HG5": "pass"
+        }
+      }
+    },
+    {
+      "id": "P5-SECRET-empty-hype",
+      "family": "P5",
+      "dialect": "eg",
+      "text": "الحقيقة الصادمة عن الكاروسيل",
+      "cover": "الحقيقة الصادمة عن الكاروسيل",
+      "expect": {
+        "gates": {
+          "HG1": "pass",
+          "HG2": "pass",
+          "HG3": "pass",
+          "HG4": "pass",
+          "HG5": "fail"
+        }
+      }
+    },
+    {
+      "id": "P3-MISTAKE-too-long",
+      "family": "P3",
+      "dialect": "eg",
+      "text": "الخطأ القاتل اللي بيعمله كل صانع محتوى مبتدئ على إنستجرام وبيخلي بوستاته مش بتتحفظ",
+      "cover": "الخطأ القاتل اللي بيعمله كل صانع محتوى مبتدئ على إنستجرام وبيخلي بوستاته مش بتتحفظ",
+      "expect": {
+        "gates": {
+          "HG1": "fail",
+          "HG2": "pass",
+          "HG3": "pass",
+          "HG4": "pass",
+          "HG5": "pass"
+        }
+      }
+    },
+    {
+      "id": "P6-QUESTION-gulf-leak",
+      "family": "P6",
+      "dialect": "eg",
+      "text": "ابغى اعرف ليش الكاروسيل ما ينحفظ",
+      "cover": "ابغى اعرف ليش الكاروسيل ما ينحفظ",
+      "expect": {
+        "gates": {
+          "HG1": "pass",
+          "HG2": "pass",
+          "HG3": "pass",
+          "HG4": "fail",
+          "HG5": "pass"
+        }
+      }
+    },
+    {
+      "id": "P13-IMAGINE-comment-bait",
+      "family": "P13",
+      "dialect": "eg",
+      "text": "اكتب نعم لو عايز الجزء التاني",
+      "cover": "اكتب نعم لو عايز الجزء التاني",
+      "expect": {
+        "gates": {
+          "HG1": "pass",
+          "HG2": "pass",
+          "HG3": "pass",
+          "HG4": "pass",
+          "HG5": "fail"
+        }
+      }
+    }
+  ],
+  "expect": {
+    "mustDiscard": [
+      "P7-PROOF-unsourced-percent",
+      "P5-SECRET-empty-hype",
+      "P3-MISTAKE-too-long",
+      "P6-QUESTION-gulf-leak",
+      "P13-IMAGINE-comment-bait"
+    ],
+    "minCandidates": 12,
+    "minFamilies": 4,
+    "top3": {
+      "count": 3,
+      "distinctFamilies": 3,
+      "fromSurvivorsOnly": true
+    }
+  }
+}

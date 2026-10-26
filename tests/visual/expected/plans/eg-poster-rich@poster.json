@@ -1,0 +1,158 @@
+{
+  "slides": [
+    {
+      "id": "s02",
+      "visual": {
+        "anchor": {
+          "kind": "numeral",
+          "value": "5",
+          "unit": "سلايدات"
+        },
+        "recipe": "over",
+        "tone": "base",
+        "field": true,
+        "bleed": "both",
+        "why": "الرقم 5 هو الفكرة، فكبرناه",
+        "alt": "الرقم 5 سلايدات"
+      }
+    },
+    {
+      "id": "s03",
+      "visual": {
+        "anchor": {
+          "kind": "chart",
+          "chart": {
+            "kind": "bars-h",
+            "values": [
+              {
+                "label": "شعار",
+                "value": 1500
+              },
+              {
+                "label": "هوية كاملة",
+                "value": 8000,
+                "hi": true
+              },
+              {
+                "label": "قالب سوشيال",
+                "value": 3000
+              }
+            ]
+          }
+        },
+        "recipe": "full",
+        "tone": "field",
+        "why": "الأرقام هي الفكرة، فرسمناها على شكل أعمدة أفقية",
+        "alt": "رسم أعمدة أفقية: سعر التصميم حسب الخدمة"
+      }
+    },
+    {
+      "id": "s04",
+      "visual": {
+        "anchor": {
+          "kind": "mock",
+          "mock": {
+            "kind": "notes",
+            "caption": "الإجمالي 8500"
+          }
+        },
+        "recipe": "under",
+        "tone": "base",
+        "why": "حطينا كلام السلايد نفسه جوه ملاحظات",
+        "alt": "ملاحظات: تصميم: 8000"
+      }
+    },
+    {
+      "id": "s05",
+      "visual": {
+        "anchor": {
+          "kind": "none"
+        },
+        "recipe": "full",
+        "tone": "base",
+        "rowIcons": [
+          "circle",
+          "circle",
+          "pencil"
+        ],
+        "why": "حطينا أيقونة جنب كل نقطة عشان تتقرا بسرعة"
+      },
+      "variant": "rail"
+    },
+    {
+      "id": "s06",
+      "visual": {
+        "anchor": {
+          "kind": "none"
+        },
+        "recipe": "full",
+        "tone": "invert",
+        "rowIcons": [
+          "badge",
+          "palette",
+          "type",
+          "layout-template"
+        ],
+        "why": "حطينا أيقونة جنب كل نقطة عشان تتقرا بسرعة"
+      },
+      "variant": "bento"
+    },
+    {
+      "id": "s08",
+      "visual": {
+        "anchor": {
+          "kind": "rows"
+        },
+        "recipe": "full",
+        "tone": "field",
+        "rowIcons": [
+          "badge",
+          "swatch-book",
+          "layout-template"
+        ],
+        "why": "حطينا أيقونة جنب كل نقطة عشان تتقرا بسرعة",
+        "alt": "قايمة فيها 3 نقاط، لكل نقطة أيقونة"
+      }
+    },
+    {
+      "id": "s09",
+      "visual": {
+        "anchor": {
+          "kind": "field",
+          "icon": "tag"
+        },
+        "recipe": "under",
+        "tone": "base",
+        "field": true,
+        "why": "اخترنا وسم لأن الكلام عن سعر",
+        "alt": "أيقونة وسم"
+      }
+    },
+    {
+      "id": "s10",
+      "visual": {
+        "anchor": {
+          "kind": "word",
+          "word": "التصميم",
+          "wordStyle": "sticker"
+        },
+        "recipe": "center",
+        "tone": "base",
+        "field": true,
+        "why": "مفيش صورة تقول الكلام ده بصدق، فخلينا الكلمة هي الصورة",
+        "alt": "الكلمة «التصميم» بحجم كبير"
+      },
+      "variant": "action"
+    }
+  ],
+  "style": {
+    "planV": "1.1.0+e7d18307+5a1ce000",
+    "motif": "price-tag"
+  },
+  "notes": [
+    {
+      "slide": "s07",
+      "code": "plan.media"
+    }
+  ]
+}

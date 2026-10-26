@@ -1,0 +1,328 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "1.0.0",
+  "dialect": "en",
+  "label": {
+    "ar": "English",
+    "en": "English"
+  },
+  "status": "stable",
+  "nativeReviewed": false,
+  "markers": [],
+  "deny": [],
+  "warn": [
+    {
+      "id": "WM-EN-001",
+      "text": "game-changer",
+      "match": "phrase",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «a concrete result».",
+        "en": "Stock phrase typical of AI-written copy: prefer “a concrete result”."
+      },
+      "suggest": "a concrete result"
+    },
+    {
+      "id": "WM-EN-002",
+      "text": "game changer",
+      "match": "phrase",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «a concrete result».",
+        "en": "Stock phrase typical of AI-written copy: prefer “a concrete result”."
+      },
+      "suggest": "a concrete result"
+    },
+    {
+      "id": "WM-EN-003",
+      "text": "unlock",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «use / get».",
+        "en": "Stock phrase typical of AI-written copy: prefer “use / get”."
+      },
+      "suggest": "use / get"
+    },
+    {
+      "id": "WM-EN-004",
+      "text": "unleash",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «use».",
+        "en": "Stock phrase typical of AI-written copy: prefer “use”."
+      },
+      "suggest": "use"
+    },
+    {
+      "id": "WM-EN-005",
+      "text": "delve",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «look at».",
+        "en": "Stock phrase typical of AI-written copy: prefer “look at”."
+      },
+      "suggest": "look at"
+    },
+    {
+      "id": "WM-EN-006",
+      "text": "supercharge",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «speed up».",
+        "en": "Stock phrase typical of AI-written copy: prefer “speed up”."
+      },
+      "suggest": "speed up"
+    },
+    {
+      "id": "WM-EN-007",
+      "text": "revolutionize",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «change».",
+        "en": "Stock phrase typical of AI-written copy: prefer “change”."
+      },
+      "suggest": "change"
+    },
+    {
+      "id": "WM-EN-008",
+      "text": "elevate",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «improve».",
+        "en": "Stock phrase typical of AI-written copy: prefer “improve”."
+      },
+      "suggest": "improve"
+    },
+    {
+      "id": "WM-EN-009",
+      "text": "leverage",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «use».",
+        "en": "Stock phrase typical of AI-written copy: prefer “use”."
+      },
+      "suggest": "use"
+    },
+    {
+      "id": "WM-EN-010",
+      "text": "seamless",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «smooth».",
+        "en": "Stock phrase typical of AI-written copy: prefer “smooth”."
+      },
+      "suggest": "smooth"
+    },
+    {
+      "id": "WM-EN-011",
+      "text": "cutting-edge",
+      "match": "phrase",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «new».",
+        "en": "Stock phrase typical of AI-written copy: prefer “new”."
+      },
+      "suggest": "new"
+    },
+    {
+      "id": "WM-EN-012",
+      "text": "next level",
+      "match": "phrase",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «a concrete gain».",
+        "en": "Stock phrase typical of AI-written copy: prefer “a concrete gain”."
+      },
+      "suggest": "a concrete gain"
+    },
+    {
+      "id": "WM-EN-013",
+      "text": "take it to the next level",
+      "match": "phrase",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «a concrete gain».",
+        "en": "Stock phrase typical of AI-written copy: prefer “a concrete gain”."
+      },
+      "suggest": "a concrete gain"
+    },
+    {
+      "id": "WM-EN-014",
+      "text": "in today's fast-paced world",
+      "match": "phrase",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «start with the point».",
+        "en": "Stock phrase typical of AI-written copy: prefer “start with the point”."
+      },
+      "suggest": "start with the point"
+    },
+    {
+      "id": "WM-EN-015",
+      "text": "in today's digital age",
+      "match": "phrase",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «start with the point».",
+        "en": "Stock phrase typical of AI-written copy: prefer “start with the point”."
+      },
+      "suggest": "start with the point"
+    },
+    {
+      "id": "WM-EN-016",
+      "text": "dive into",
+      "match": "phrase",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «look at».",
+        "en": "Stock phrase typical of AI-written copy: prefer “look at”."
+      },
+      "suggest": "look at"
+    },
+    {
+      "id": "WM-EN-017",
+      "text": "harness the power",
+      "match": "phrase",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «use».",
+        "en": "Stock phrase typical of AI-written copy: prefer “use”."
+      },
+      "suggest": "use"
+    },
+    {
+      "id": "WM-EN-018",
+      "text": "it's important to note",
+      "match": "phrase",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «just say it».",
+        "en": "Stock phrase typical of AI-written copy: prefer “just say it”."
+      },
+      "suggest": "just say it"
+    },
+    {
+      "id": "WM-EN-019",
+      "text": "a testament to",
+      "match": "phrase",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «shows».",
+        "en": "Stock phrase typical of AI-written copy: prefer “shows”."
+      },
+      "suggest": "shows"
+    },
+    {
+      "id": "WM-EN-020",
+      "text": "secret sauce",
+      "match": "phrase",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «name the actual thing».",
+        "en": "Stock phrase typical of AI-written copy: prefer “name the actual thing”."
+      },
+      "suggest": "name the actual thing"
+    },
+    {
+      "id": "WM-EN-021",
+      "text": "you won't believe",
+      "match": "phrase",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «say what happened».",
+        "en": "Stock phrase typical of AI-written copy: prefer “say what happened”."
+      },
+      "suggest": "say what happened"
+    },
+    {
+      "id": "WM-EN-022",
+      "text": "life-changing",
+      "match": "phrase",
+      "sev": "NOTE",
+      "note": {
+        "ar": "عبارة إنجليزية مستهلكة (تظهر في كتابة الذكاء الاصطناعي): الأفضل «say what changes».",
+        "en": "Stock phrase typical of AI-written copy: prefer “say what changes”."
+      },
+      "suggest": "say what changes"
+    }
+  ],
+  "lexicon": {
+    "not": [
+      "not",
+      "isn't"
+    ],
+    "will": [
+      "will"
+    ],
+    "want": [
+      "want"
+    ],
+    "think-that": [
+      "think that"
+    ],
+    "thing": [
+      "thing",
+      "things"
+    ],
+    "how": [
+      "how"
+    ],
+    "why": [
+      "why"
+    ],
+    "now": [
+      "now"
+    ],
+    "a-lot": [
+      "a lot"
+    ],
+    "do": [
+      "do",
+      "make"
+    ],
+    "before": [
+      "before"
+    ],
+    "free": [
+      "free"
+    ],
+    "this": [
+      "this"
+    ]
+  },
+  "cta": {
+    "save": [
+      "Save this for when you need it",
+      "Save it and come back when you start",
+      "Save this for next time"
+    ],
+    "send": [
+      "Send this to {who}",
+      "Send this to {who} {reason}",
+      "Share it with {who}"
+    ],
+    "question": [
+      "{question} Answer in one line",
+      "{question} Tell us in the comments"
+    ],
+    "keyword-dm": [
+      "Comment “{keyword}” and {asset} lands in your DMs right away"
+    ],
+    "follow": [
+      "Follow so {series} reaches you",
+      "{series} is back {day}"
+    ]
+  },
+  "registerNotes": {
+    "ar": "إنجليزي: اتجاه LTR ولغة en للمنشور كله، والأسماء العربية تبقى بحروفها. أرقام 123 وعلامات ترقيم لاتينية.",
+    "en": "English copy: LTR with lang=en for the whole post; Arabic names keep their script. Western digits and Latin punctuation."
+  }
+}

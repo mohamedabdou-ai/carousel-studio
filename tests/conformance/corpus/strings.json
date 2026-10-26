@@ -1,0 +1,158 @@
+{
+ "schemaVersion": 1,
+ "description": "Extra strings for the JavaScript/Python conformance run (tests/conformance/run_js.mjs and run_py.py). Every string is fed to the text model (tokens, counts, digits, similarity skeleton, HTML) and to the linters, and both engines must print the same verdicts. Edge cases first, product-shaped copy after them. The runners add every string of tests/fixtures/bidi-strings.json and ortho-seeded-errors.json and the copy of the fixture specs.",
+ "strings": [
+  "",
+  " ",
+  "a",
+  "ا",
+  "==x==",
+  "== x ==",
+  "a ==b== c ==d==",
+  "==a\nb==",
+  "سطر\nسطر آخر",
+  "ثلاثة\n\nأربعة",
+  "==الذكاء== الاصطناعي في ChatGPT Plus بـ$20 شهريًا",
+  "لـChatGPT Plus جديد",
+  "ChatGPT Plus للجميع",
+  "جرّب (ChatGPT Plus) النهاردة",
+  "تعرف ChatGPT Plus. وبعدين؟",
+  "@a @b و @c، @d.",
+  "#ai #ذكاء_اصطناعي #AI.",
+  "https://example.com/x?y=1 ثم www.example.org/ar وexample.com",
+  "john.doe@x.com و Mr.Smith و node.js و v2.beta و e.g. و U.S.A",
+  "5kg و 20% و $15 و €20 و £3.5 و 1,200 و 1.5 و 3.14159",
+  "١٢٣ و ٤٫٥ و ٥٠٪ و ١٬٢٠٠",
+  "۱۲۳ و ۴۵",
+  "123 و ١٢٣",
+  "2026-10-22 الساعة 10:30",
+  "+20 100 123 4567 أو 0100 123 4567",
+  "5 10 15 20 25",
+  "👍 جيد 🔥 و ✅ تمام",
+  "اسحب ← للمزيد",
+  "الخطوة 3 و رقم 5 ونصيحة 7 وبالخطوة 9",
+  "5 ساعات و 10 أيام و 3 ورش",
+  "اشترك في 5 دورات",
+  "بـ5 جنيه",
+  "٢٠ GB و 20 GB و 4K و GPT4 و ChatGPT-4o",
+  "مَرْحَبًا بِكُمْ في المَنزِل",
+  "كلمـــة و مـــرحبا",
+  "نص... آخر. . . و هكذا....",
+  "كيف؟؟ ممتاز!! نعم،،",
+  "هل ,تفهم؟ نعم;تمام ؟",
+  "Don't stop O'Reilly naïve café",
+  "ABC.def-ghi_jkl/mno&pqr'",
+  "الـAI أسرع و لـAI و للAI و بـ AI",
+  "كل النتايج 100٪ و 100% معًا",
+  "فكرة 1 وفكرة ٢ و فكرة 3",
+  "5 أخطاء بتموّت الكاروسيل",
+  "مشكلة كاروسيلك غالبا مش في الألوان",
+  "احفظ البوست ده",
+  "Stop scrolling and read this: 3 ways to write hooks",
+  "أولًا: كبّر الخط؛ ثانيًا: قصّر الجملة، ثالثًا: اسأل؟",
+  "اتعلم انشاء كاروسيل من الصفر في ساعة",
+  "واحد اتنين ثلاثة أربعة خمسة ستة سبعة ثمانية تسعة عشرة",
+  "ytb.com و a.bc و abc.d.ef و Abc.com",
+  "20,000 متابع… و12 تفاعل بس",
+  "فتحنا ف10 دقائق بس",
+  "جربت ب3 أدوات وبعدها ل5 أشخاص",
+  "الوقت كاف و3 ساعات تكفي",
+  "كلمة12 ملتصقة بالرقم",
+  "و12 وب3 ول5"
+ ],
+ "similarityPairs": [
+  [
+   "5 أخطاء بتموّت الكاروسيل",
+   "خمسة أخطاء بتموت الكاروسيل"
+  ],
+  [
+   "مشكلة كاروسيلك غالبا مش في الألوان",
+   "مشكلتك مش في الألوان… مشكلتك في أول جملة"
+  ],
+  [
+   "",
+   ""
+  ],
+  [
+   "a",
+   ""
+  ],
+  [
+   "ab",
+   "ab"
+  ],
+  [
+   "Hello World",
+   "hello world"
+  ],
+  [
+   "إنشاء",
+   "انشاء"
+  ],
+  [
+   "٣ نصائح",
+   "3 نصائح"
+  ]
+ ],
+ "kashida": [
+  "سلام",
+  "بشرى",
+  "مرحبا",
+  "كلمة",
+  "دار",
+  "عين",
+  "الإبداع",
+  "مَدرسة",
+  "ق",
+  "نشر"
+ ],
+ "colors": [
+  [
+   "#111111",
+   "#F4F4F2"
+  ],
+  [
+   "#E3262B",
+   "#F4F4F2"
+  ],
+  [
+   "#777777",
+   "#FFFFFF"
+  ],
+  [
+   "#E8B05C",
+   "#1A1A1A"
+  ],
+  [
+   "#0B5FFF",
+   "#0A0A0A"
+  ],
+  [
+   "#ABCDEF",
+   "#FEDCBA"
+  ],
+  [
+   "#123",
+   "#fff"
+  ]
+ ],
+ "numbers": [
+  0,
+  1,
+  0,
+  3,
+  3.0,
+  0.1,
+  0.25,
+  1.5,
+  100,
+  12345.678,
+  1e-06,
+  1e-05,
+  1.234e-05,
+  1e+20,
+  123456789012345680000,
+  1e-06,
+  1.7976931348623157e+20
+ ]
+}

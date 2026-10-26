@@ -1,0 +1,43 @@
+<title>كاروسيل ستوديو</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<!--CS:NOTICE-->
+<script id="cs-early">(function () { var r = document.documentElement; r.setAttribute("dir", "{{dir}}"); r.setAttribute("lang", "{{lang}}"); })();</script>
+<style id="cs-studio-css"><!--CS:STUDIO_CSS--></style>
+<svg id="cs-icons" xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<symbol id="cs-mark" viewBox="0 0 32 32">
+<rect x="1.5" y="8" width="5" height="16" rx="2.5" fill="currentColor" opacity=".35"/>
+<rect x="8" y="3" width="21" height="26" rx="5" fill="currentColor"/>
+<path d="M25 11.5h-10M25 16h-14M25 20.5h-7" fill="none" stroke-width="2.4" stroke-linecap="round" style="stroke:var(--ui-surface)"/>
+</symbol>
+<!--CS:ICONS-->
+</svg>
+<div id="cs-app" class="ui-app" dir="{{dir}}" lang="{{lang}}">
+<div class="ui-boot" role="status">
+<svg class="ui-mark" viewBox="0 0 32 32" aria-hidden="true"><use href="#cs-mark"/></svg>
+<p>{{t:boot.loading}}</p>
+<div class="ui-boot-bar"></div>
+<noscript><p>{{t:boot.noscript}}</p></noscript>
+</div>
+</div>
+<style id="cs-fonts"><!--CS:FONTS--></style>
+<!--CS:BLOCKS-->
+<!--CS:CHUNKS-->
+<script id="cs-boot">
+(function () {
+  function fail(e) {
+    var app = document.getElementById("cs-app");
+    if (app) {
+      app.textContent = "";
+      var p = document.createElement("p");
+      p.className = "ui-boot";
+      p.setAttribute("role", "alert");
+      p.textContent = "{{t:boot.failed}}";
+      app.appendChild(p);
+    }
+    try { console.error("[carousel-studio] boot failed", e); } catch (x) { /* no console */ }
+  }
+  try {
+    CS.core.boot().then(function (d) { CS.ui.mountStudio(document.getElementById("cs-app"), d); }).catch(fail);
+  } catch (e) { fail(e); }
+})();
+</script>

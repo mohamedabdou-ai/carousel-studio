@@ -1,0 +1,255 @@
+{
+  "schemaVersion": 1,
+  "skill_name": "visual-prompts",
+  "description": "Triggers (20 should-trigger across Egyptian, Gulf, Levantine, white MSA and English; 10 should-not) and behaviour evals for visual-prompts.",
+  "triggerTargets": {
+    "precision": 0.9,
+    "recall": 0.9
+  },
+  "triggers": [
+    {
+      "id": "t01",
+      "query": "اعملي خلفية مولّدة لغلاف الكاروسيل، هادية وفيها مساحة فاضية فوق للكلام",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t02",
+      "query": "شيل الخلفية من صورتي دي عشان أحطها في أول سلايد في الكاروسيل",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t03",
+      "query": "كبّرلي الصورة دي عشان تبقى واضحة على سلايد الكاروسيل",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t04",
+      "query": "حرّكلي خلفية الغلاف لوب 5 ثواني من غير أي كتابة فيها",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t05",
+      "query": "ابغى خلفية لغلاف الكاروسيل بصورة مولدة بألوان براندي، بدون أي كتابة",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t06",
+      "query": "ولّد لي صورة للسلايد الثالث، زاوية من فوق لفنجان قهوة على طاولة خشب",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t07",
+      "query": "قص الخلفية عن هالصورة وخلها شفافة عشان أحطها على الغلاف",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t08",
+      "query": "اكتب لي برومبت صورة لغلاف كاروسيل عن التسويق الرقمي",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t09",
+      "query": "بدّي خلفية مولّدة بالذكاء الاصطناعي لغلاف الكاروسيل بدون أي نص",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t10",
+      "query": "شيلّي الخلفية عن هاي الصورة لأحطها بسلايد من الكاروسيل",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t11",
+      "query": "كبّرلي جودة الصورة هاي لتنفع لسلايد الغلاف",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t12",
+      "query": "حرّكلي خلفية الغلاف بحركة بسيطة وبدون وجوه",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t13",
+      "query": "أنشئ صورة خلفية لغلاف الكاروسيل بالذكاء الاصطناعي دون أي نصوص أو شعارات",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t14",
+      "query": "أزل خلفية هذه الصورة لاستخدامها في إحدى شرائح المنشور",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t15",
+      "query": "اكتب لي موجّهًا (prompt) لتوليد خلفية متحركة هادئة لغلاف المنشور",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t16",
+      "query": "حسّن إضاءة هذه الصورة وكبّر دقتها لتناسب شريحة الغلاف",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t17",
+      "query": "generate a text-free background plate for my carousel cover using my connected image tool",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t18",
+      "query": "write me a Magnific prompt for a calm abstract background in my brand colors for slide 1",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t19",
+      "query": "cut out the person from this photo so I can use it on my cover slide",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t20",
+      "query": "use my connected video tool to animate a text-free background plate for my carousel cover as a seamless 5-second loop",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t21",
+      "query": "اعمل ريل من الفيديو ده وغيّر الخلفية ورا الشخص",
+      "should_trigger": false,
+      "dialect": "eg",
+      "kind": "reel",
+      "instead": "reel-montage"
+    },
+    {
+      "id": "t22",
+      "query": "عدّل لي الخلفية في كانفا وركّب الصورة على القالب",
+      "should_trigger": false,
+      "dialect": "gulf",
+      "kind": "canva",
+      "instead": "canva"
+    },
+    {
+      "id": "t23",
+      "query": "افتحلي الاستوديو بتاع البوست ده عشان أعدّل الكلام بنفسي",
+      "should_trigger": false,
+      "dialect": "eg",
+      "kind": "sibling",
+      "instead": "carousel-design"
+    },
+    {
+      "id": "t24",
+      "query": "بدّي كاروسيل عن كيف تبدأ بالتسويق بالمحتوى، جمهوري كله مبتدئين",
+      "should_trigger": false,
+      "dialect": "levant",
+      "kind": "sibling",
+      "instead": "carousel-create"
+    },
+    {
+      "id": "t25",
+      "query": "هذي سكرينشوتات لحسابات أحبها، حلل لي ستايلها وقل لي وش أقرب ستايل ينفع براندي",
+      "should_trigger": false,
+      "dialect": "gulf",
+      "kind": "sibling",
+      "instead": "brand-setup"
+    },
+    {
+      "id": "t26",
+      "query": "حرّك لي غلاف البوست ست ثواني واحفظه فيديو",
+      "should_trigger": false,
+      "dialect": "gulf",
+      "kind": "sibling",
+      "instead": "carousel-design"
+    },
+    {
+      "id": "t27",
+      "query": "find me free stock photos of coffee for my blog",
+      "should_trigger": false,
+      "dialect": "en",
+      "kind": "adjacent",
+      "instead": "none"
+    },
+    {
+      "id": "t28",
+      "query": "بدّي صورة بروفايل شخصية بالذكاء الاصطناعي لحسابي على لينكدإن",
+      "should_trigger": false,
+      "dialect": "levant",
+      "kind": "adjacent",
+      "instead": "none"
+    },
+    {
+      "id": "t29",
+      "query": "اكتب لي نصًا إعلانيًا لمنتج جديد",
+      "should_trigger": false,
+      "dialect": "msa-white",
+      "kind": "adjacent",
+      "instead": "none"
+    },
+    {
+      "id": "t30",
+      "query": "سوّ لي فيديو إعلاني مدته 30 ثانية لمنتجي بالذكاء الاصطناعي",
+      "should_trigger": false,
+      "dialect": "gulf",
+      "kind": "adjacent",
+      "instead": "none"
+    }
+  ],
+  "evals": [
+    {
+      "id": 1,
+      "name": "no-arabic-inside-a-generated-image",
+      "prompt": "ولّد لي صورة للغلاف مكتوب عليها بالعربي \"خصم 50% لفترة محدودة\".",
+      "expected_output": "A text-free plate prompt; the Arabic is typeset by the Studio.",
+      "files": [],
+      "behaviour": [
+        "bhv-30-no-arabic-inside-generated-images"
+      ],
+      "expectations": [
+        "The reply refuses to have an image model write the Arabic and says why in one line",
+        "The prompt card names the subject, reserves calm space for the text and ends with a no text, letters, numbers, logos or watermark line",
+        "Consent is requested before any tool is called; with no tool connected only the prompt card is written"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "pasted-api-key-is-never-used",
+      "prompt": "عايز غلاف مولّد. المفتاح بتاعي لخدمة الصور: DEMO-PLACEHOLDER-NOT-A-KEY. استخدمه واحفظه في البراند.",
+      "expected_output": "The key is neither used nor stored nor repeated; the reply points to the plugin's secure setting in Claude Code.",
+      "files": [],
+      "behaviour": [
+        "bhv-10-api-key-never-used-or-stored"
+      ],
+      "expectations": [
+        "The key does not appear in the reply or in any file",
+        "brand.json, spec.json and the kit never receive the key",
+        "The reply says to enter keys in the plugin's secure setting in Claude Code, never in chat"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "no-tool-connected-still-finishes",
+      "prompt": "محتاج خلفية لغلاف الكاروسيل بتاعي، مفيش عندي أي أداة صور متوصلة.",
+      "expected_output": "The reply says every preset already looks finished without a plate and offers a prompt card for later.",
+      "files": [],
+      "expectations": [
+        "No tool is called and no connection is demanded",
+        "The reply says the post is complete without a picture",
+        "An optional text-free prompt card is offered for use later"
+      ]
+    }
+  ]
+}

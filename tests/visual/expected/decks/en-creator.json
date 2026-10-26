@@ -1,0 +1,211 @@
+{
+  "specVersion": 1,
+  "id": "post-plan-en-creator",
+  "rev": 1,
+  "brand": {
+    "slug": "fresh-start",
+    "snapshotHash": "8c523dc8be32fef0"
+  },
+  "brief": {
+    "topic": "Write a hook that stops the scroll",
+    "input": "idea"
+  },
+  "format": "carousel",
+  "mode": "guided",
+  "checkpoint": "design",
+  "canvas": {
+    "preset": "ig-3x4",
+    "w": 1080,
+    "h": 1440,
+    "safe": [
+      34,
+      45,
+      1012,
+      1350
+    ],
+    "exports": [
+      "3x4",
+      "4x5"
+    ]
+  },
+  "locale": {
+    "dialect": "en",
+    "register": "white",
+    "digits": "western",
+    "appLanguage": "ar",
+    "swipeCue": "arrow-rtl"
+  },
+  "intent": "save",
+  "awareness": "solution",
+  "contentType": "value",
+  "architecture": "steps",
+  "angle": {
+    "id": "a5",
+    "title": "4 checks before you hit post",
+    "lens": "framework",
+    "score": 75,
+    "why": "A short checklist people keep for later"
+  },
+  "hook": {
+    "id": "F19-PRECHECK-before-you",
+    "family": "F19",
+    "text": "4 checks before you hit post",
+    "cover": "4 checks before you hit post",
+    "score": {
+      "R": 31,
+      "J": 27,
+      "P": 10,
+      "total": 68
+    },
+    "slide2": "Most flops fail at line one"
+  },
+  "style": {
+    "presetId": "creator@1.0"
+  },
+  "compat": {
+    "paint": "auto",
+    "mp4": "auto",
+    "hfRuntime": "auto"
+  },
+  "slides": [
+    {
+      "id": "s01",
+      "n": 1,
+      "type": "cover",
+      "kicker": "Quick guide",
+      "headline": "Write a ==hook== people stop for"
+    },
+    {
+      "id": "s02",
+      "n": 2,
+      "type": "rehook",
+      "headline": "Slide two is ==half== the game",
+      "sub": "Here is why",
+      "bridge": "Swipe"
+    },
+    {
+      "id": "s03",
+      "n": 3,
+      "type": "step",
+      "ord": 1,
+      "title": "Read it at thumbnail size",
+      "body": "Shrink it. If you cannot read it in a glance, enlarge the text.",
+      "demo": {
+        "lines": [
+          {
+            "text": "5 tips for writing"
+          },
+          {
+            "text": "Why does nobody finish your post?",
+            "hi": true
+          }
+        ],
+        "caption": "This is what stops the thumb"
+      }
+    },
+    {
+      "id": "s04",
+      "n": 4,
+      "type": "stat",
+      "number": {
+        "value": "8",
+        "unit": "of 100"
+      },
+      "title": "readers reach the last slide",
+      "body": "Make slide two count."
+    },
+    {
+      "id": "s05",
+      "n": 5,
+      "type": "quote",
+      "title": "What readers ask",
+      "body": "How much for one carousel?",
+      "attribution": "A follower"
+    },
+    {
+      "id": "s06",
+      "n": 6,
+      "type": "summary",
+      "title": "The four checks",
+      "bullets": [
+        "Read it small",
+        "Pay off on slide two",
+        "One idea per slide",
+        "One call to action"
+      ]
+    },
+    {
+      "id": "s07",
+      "n": 7,
+      "type": "cta",
+      "title": "Save this post",
+      "cta": {
+        "kind": "save",
+        "text": "Save it for your next hook"
+      }
+    }
+  ],
+  "cover": {
+    "motion": {
+      "recipe": "counter",
+      "feel": "calm",
+      "seconds": 6,
+      "fps": 30,
+      "source": "internal"
+    }
+  },
+  "captionPack": {
+    "firstLine": "Most posts lose people before slide two. Run these four checks first.",
+    "keywordLine": "A quick pre-post checklist for Instagram carousels: thumbnail test, slide two, one idea, one ask.",
+    "body": "1. Read the cover at thumbnail size\n2. Make slide two pay off\n3. Cut every slide to one idea\n4. Pick one call to action\n\nTwo minutes of checking beats an hour of redesigning later.",
+    "cta": "Save this for when you need it.",
+    "hashtags": [
+      "#instagramtips",
+      "#carouseldesign",
+      "#contentcreation"
+    ],
+    "perSlide": [
+      "line 1",
+      "line 2",
+      "line 3",
+      "line 4",
+      "line 5",
+      "line 6",
+      "line 7"
+    ],
+    "alt": [
+      "alt 1",
+      "alt 2",
+      "alt 3",
+      "alt 4",
+      "alt 5",
+      "alt 6",
+      "alt 7"
+    ]
+  },
+  "sources": [],
+  "assets": [],
+  "qa": {
+    "status": "pass",
+    "runAt": "2026-10-22T09:20:00Z",
+    "engine": "cs-1.1.0",
+    "results": []
+  },
+  "approvals": {
+    "angle": {
+      "at": "2026-10-22T09:04:00Z"
+    },
+    "script": {
+      "at": "2026-10-22T09:16:00Z"
+    }
+  },
+  "meta": {
+    "createdAt": "2026-10-22T09:00:00Z",
+    "updatedAt": "2026-10-22T09:20:00Z",
+    "updatedBy": "claude",
+    "generator": {
+      "skill": "carousel-create",
+      "version": "1.0.0"
+    }
+  }
+}

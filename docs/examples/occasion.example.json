@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "id": "ramadan-2027",
+  "kind": "religious",
+  "names": {
+    "ar": "رمضان",
+    "en": "Ramadan"
+  },
+  "minPluginVersion": "1.1.0",
+  "dates": [
+    {
+      "country": "SA",
+      "start": "2027-02-08",
+      "end": "2027-03-08",
+      "rule": "hijri",
+      "confidence": "±1d"
+    }
+  ],
+  "windows": {
+    "plan": -28,
+    "pre": -7,
+    "post": 3
+  },
+  "overlay": {
+    "allowedKeys": [
+      "roles.accent2",
+      "background.texture"
+    ],
+    "tokens": {
+      "roles.accent2": "#C9A227"
+    },
+    "motifs": [
+      "motifs/lantern.svg"
+    ],
+    "presetsAllowed": [
+      "heritage"
+    ]
+  },
+  "copyKit": {
+    "greetings": {
+      "eg": [
+        "رمضان كريم"
+      ],
+      "msa-white": [
+        "رمضان مبارك"
+      ]
+    },
+    "seedAngles": [
+      "مواعيد النشر بعد الإفطار"
+    ],
+    "ctaNotes": ""
+  },
+  "timing": {
+    "shift": "after-iftar"
+  },
+  "sensitivities": {
+    "noQuranOnPromo": true,
+    "noShahada": true,
+    "noSaudiFlagOnPromo": true,
+    "noKaabaForSelling": true,
+    "noDisputedMaps": true,
+    "term": "الخليج العربي"
+  }
+}

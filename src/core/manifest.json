@@ -1,0 +1,6 @@
+{
+  "module": "core",
+  "chunk": "cs-core.js",
+  "order": 1,
+  "files": ["registry.js", "resolve.js", "compose.js", "fit.js", "freeze.js", "render.js", "spec.js", "ready.js", "boot.js"]
+}

@@ -1,0 +1,254 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "1.0.0",
+  "description": "Text of posting-guide.md in the publishing kit. Read by CS.export.text.postingGuide(dialect). Markdown shape: '# title', the intro, '## 1. title' + body for every card in order, a bullet list of the kit.files that exist in the kit, and videoMissing only when the MP4 was skipped. The aiLabel block is the optional fifth card: append it as '## 5.' only when any asset has aiGenerated true. Every string is {eg, gulf, levant, msa-white, en}.",
+  "dialectStatus": {
+    "eg": "written",
+    "msa-white": "written",
+    "en": "written",
+    "gulf": "beta, not reviewed by a native writer yet",
+    "levant": "beta, not reviewed by a native writer yet"
+  },
+  "title": {
+    "eg": "دليل النشر على Instagram",
+    "gulf": "دليل النشر على Instagram",
+    "levant": "دليل النشر على Instagram",
+    "msa-white": "دليل النشر على Instagram",
+    "en": "Instagram posting guide"
+  },
+  "intro": {
+    "eg": "الملفات جاهزة بالترتيب. اتبع الخطوات دي وانت بتنشر من تطبيق Instagram.",
+    "gulf": "الملفات جاهزة بالترتيب. اتبع هالخطوات وانت تنشر من تطبيق Instagram.",
+    "levant": "الملفات جاهزة بالترتيب. اتبع هالخطوات وإنت عم تنشر من تطبيق Instagram.",
+    "msa-white": "الملفات جاهزة بالترتيب. اتبع الخطوات التالية عند النشر من تطبيق Instagram.",
+    "en": "The files are ready in order. Follow these steps when you post from the Instagram app."
+  },
+  "cards": [
+    {
+      "id": "pick-order",
+      "title": {
+        "eg": "اختار الملفات بالترتيب",
+        "gulf": "اختر الملفات بالترتيب",
+        "levant": "اختار الملفات بالترتيب",
+        "msa-white": "اختر الملفات بالترتيب",
+        "en": "Pick the files in order"
+      },
+      "body": {
+        "eg": "افتح بوست جديد واختار أكتر من ملف. ابدأ بالغلاف المتحرك 01-cover.mp4 (أو 01-cover.png لو عايز غلاف ثابت، ولا تحط الاتنين)، وبعده 02 و03 وكمّل بالترتيب لآخر سلايد. الغلاف لازم يبقى الأول، لأن Instagram ما بيسمحش تختار صورة غلاف للفيديو جوه الكاروسيل.",
+        "gulf": "افتح منشور جديد واختر أكثر من ملف. ابدأ بالغلاف المتحرك 01-cover.mp4 (أو 01-cover.png إذا تبي غلاف ثابت، ولا تحط الاثنين)، وبعده 02 و03 وكمّل بالترتيب لين آخر سلايد. الغلاف لازم يكون الأول، لأن Instagram ما يخليك تختار صورة غلاف للفيديو داخل الكاروسيل.",
+        "levant": "افتح منشور جديد واختار أكتر من ملف. ابدأ بالغلاف المتحرك 01-cover.mp4 (أو 01-cover.png إذا بدك غلاف ثابت، ولا تحط الاثنين)، وبعده 02 و03 وكمّل بالترتيب لآخر سلايد. لازم يكون الغلاف الأول، لأنو Instagram ما بيخليك تختار صورة غلاف للفيديو جوّا الكاروسيل.",
+        "msa-white": "افتح منشورًا جديدًا واختر أكثر من ملف. ابدأ بالغلاف المتحرك 01-cover.mp4 (أو 01-cover.png إن أردت غلافًا ثابتًا، ولا تضع الاثنين)، ثم 02 و03 وهكذا بالترتيب حتى آخر سلايد. يجب أن يكون الغلاف أولًا، لأن Instagram لا يتيح اختيار صورة غلاف للفيديو داخل الكاروسيل.",
+        "en": "Start a new post and select several files. Begin with the animated cover 01-cover.mp4 (or 01-cover.png for a still cover, never both), then 02, 03 and on in order to the last slide. The cover must come first because Instagram has no cover picker for a video inside a carousel."
+      }
+    },
+    {
+      "id": "keep-ratio",
+      "title": {
+        "eg": "سيب المقاس 3:4 زي ما هو",
+        "gulf": "خلّ المقاس 3:4 مثل ما هو",
+        "levant": "خلّي المقاس 3:4 متل ما هو",
+        "msa-white": "أبقِ المقاس 3:4 كما هو",
+        "en": "Keep the 3:4 size"
+      },
+      "body": {
+        "eg": "كل الملفات في مجلد 3x4 مقاسها 1080×1440. لو Instagram عرض عليك أيقونة قص أو مقاس تاني، سيبه على الأصلي (3:4) عشان مفيش حاجة تتقص. مجلد 4x5 للجدولة بأدوات النشر بس.",
+        "gulf": "كل الملفات في مجلد 3x4 مقاسها 1080×1440. إذا طلع لك قص أو مقاس ثاني، خلّه على الأصلي (3:4) عشان ما ينقص شي. مجلد 4x5 للجدولة بأدوات النشر بس.",
+        "levant": "كل الملفات بمجلد 3x4 مقاسها 1080×1440. إذا طلعلك قص أو مقاس تاني، خلّيه على الأصلي (3:4) كرمال ما ينقص شي. مجلد 4x5 للجدولة بأدوات النشر بس.",
+        "msa-white": "جميع ملفات مجلد 3x4 مقاسها 1080×1440. إن عرض عليك التطبيق قصًا أو مقاسًا آخر فأبقِه على الأصلي (3:4) حتى لا يُقصّ شيء. مجلد 4x5 مخصص للجدولة عبر أدوات النشر فقط.",
+        "en": "Every file in the 3x4 folder is 1080×1440. If Instagram offers a crop or another ratio, keep the original (3:4) so nothing is cut. The 4x5 folder is only for scheduling tools."
+      }
+    },
+    {
+      "id": "caption",
+      "title": {
+        "eg": "الصق الكابشن",
+        "gulf": "الصق الكابشن",
+        "levant": "الصق الكابشن",
+        "msa-white": "الصق التعليق",
+        "en": "Paste the caption"
+      },
+      "body": {
+        "eg": "انسخ الكابشن من caption.txt والصقه كله. أول سطر هو اللي بيظهر قبل «المزيد» فهو سبب السحب. الهاشتاجات في الآخر (5 بالكتير). كابشنات السلايدات في slide-captions.txt اختيارية: السلايد اللي من غير كابشن بيتنشر عادي.",
+        "gulf": "انسخ الكابشن من caption.txt والصقه كامل. أول سطر هو اللي يظهر قبل «المزيد» فهو سبب السحب. الهاشتاقات في الآخر (5 بالكثير). كابشنات السلايدات في slide-captions.txt اختيارية: السلايد اللي بدون كابشن ينشر عادي.",
+        "levant": "انسخ الكابشن من caption.txt والصقه كله. أول سطر هو يلي بيظهر قبل «المزيد» فهو سبب السحب. الهاشتاغات بالآخر (5 كحد أقصى). كابشنات السلايدات بـslide-captions.txt اختيارية: السلايد بلا كابشن بينشر عادي.",
+        "msa-white": "انسخ التعليق من caption.txt والصقه كاملًا. السطر الأول هو ما يظهر قبل «المزيد»، فهو سبب السحب. الوسوم في النهاية (خمسة على الأكثر). تعليقات السلايدات في slide-captions.txt اختيارية: السلايد بلا تعليق يُنشر عاديًا.",
+        "en": "Copy the caption from caption.txt and paste all of it. The first line is what shows before \"more\", so it is the reason to swipe. Hashtags go last (5 at most). The per-slide captions in slide-captions.txt are optional: a slide without one posts normally."
+      }
+    },
+    {
+      "id": "alt-text",
+      "title": {
+        "eg": "ضيف النص البديل",
+        "gulf": "أضف النص البديل",
+        "levant": "ضيف النص البديل",
+        "msa-white": "أضف النص البديل",
+        "en": "Add the alt text"
+      },
+      "body": {
+        "eg": "من «الإعدادات المتقدمة» اختار كتابة نص بديل، وحط نص كل صورة من alt-text.txt. ده بيساعد اللي بيستخدموا قارئ الشاشة.",
+        "gulf": "من «الإعدادات المتقدمة» اختر كتابة نص بديل، وحط نص كل صورة من alt-text.txt. هذا يساعد اللي يستخدمون قارئ الشاشة.",
+        "levant": "من «الإعدادات المتقدمة» اختار كتابة نص بديل، وحط نص كل صورة من alt-text.txt. هيدا بيساعد يلي بيستخدموا قارئ الشاشة.",
+        "msa-white": "من «الإعدادات المتقدمة» اختر كتابة نص بديل، وضع نص كل صورة من alt-text.txt. هذا يساعد مستخدمي قارئ الشاشة.",
+        "en": "In the advanced settings choose to write alt text and add each picture's text from alt-text.txt. It helps people who use a screen reader."
+      }
+    }
+  ],
+  "aiLabel": {
+    "id": "ai-label",
+    "when": "any asset has aiGenerated true",
+    "title": {
+      "eg": "فعّل علامة الذكاء الاصطناعي",
+      "gulf": "فعّل علامة الذكاء الاصطناعي",
+      "levant": "فعّل علامة الذكاء الاصطناعي",
+      "msa-white": "فعّل علامة الذكاء الاصطناعي",
+      "en": "Switch on the AI label"
+    },
+    "body": {
+      "eg": "في البوست ده صورة اتعملت بالذكاء الاصطناعي. من «الإعدادات المتقدمة» فعّل علامة الذكاء الاصطناعي قبل ما تنشر.",
+      "gulf": "في هالمنشور صورة مولّدة بالذكاء الاصطناعي. من «الإعدادات المتقدمة» فعّل علامة الذكاء الاصطناعي قبل لا تنشر.",
+      "levant": "بهالمنشور في صورة انعملت بالذكاء الاصطناعي. من «الإعدادات المتقدمة» فعّل علامة الذكاء الاصطناعي قبل ما تنشر.",
+      "msa-white": "يتضمن هذا المنشور صورة أُنشئت بالذكاء الاصطناعي. فعّل علامة الذكاء الاصطناعي من «الإعدادات المتقدمة» قبل النشر.",
+      "en": "This post contains an AI-generated image. Switch on the AI label in the advanced settings before you post."
+    }
+  },
+  "kit": {
+    "title": {
+      "eg": "اللي جوه الحزمة",
+      "gulf": "محتويات الحزمة",
+      "levant": "شو بالحزمة",
+      "msa-white": "محتويات الحزمة",
+      "en": "What is in the kit"
+    },
+    "files": [
+      {
+        "path": "3x4/01-cover.mp4",
+        "note": {
+          "eg": "الغلاف المتحرك، أول ملف في الكاروسيل",
+          "gulf": "الغلاف المتحرك، أول ملف في الكاروسيل",
+          "levant": "الغلاف المتحرك، أول ملف بالكاروسيل",
+          "msa-white": "الغلاف المتحرك، أول ملف في الكاروسيل",
+          "en": "The animated cover, the first file of the carousel"
+        }
+      },
+      {
+        "path": "3x4/01-cover.png",
+        "note": {
+          "eg": "الغلاف كصورة ثابتة، بديل للفيديو",
+          "gulf": "الغلاف كصورة ثابتة، بديل للفيديو",
+          "levant": "الغلاف كصورة ثابتة، بديل للفيديو",
+          "msa-white": "الغلاف كصورة ثابتة، بديل للفيديو",
+          "en": "The cover as a still image, an alternative to the video"
+        }
+      },
+      {
+        "path": "3x4/NN.png",
+        "pattern": true,
+        "note": {
+          "eg": "باقي السلايدات بالترتيب (02، 03 …)",
+          "gulf": "باقي السلايدات بالترتيب (02، 03 …)",
+          "levant": "باقي السلايدات بالترتيب (02، 03 …)",
+          "msa-white": "بقية السلايدات بالترتيب (02، 03 …)",
+          "en": "The remaining slides in order (02, 03 …)"
+        }
+      },
+      {
+        "path": "4x5/01-cover.mp4",
+        "note": {
+          "eg": "الغلاف المتحرك بمقاس 4:5 لأدوات الجدولة",
+          "gulf": "الغلاف المتحرك بمقاس 4:5 لأدوات الجدولة",
+          "levant": "الغلاف المتحرك بمقاس 4:5 لأدوات الجدولة",
+          "msa-white": "الغلاف المتحرك بمقاس 4:5 لأدوات الجدولة",
+          "en": "The animated cover at 4:5 for scheduling tools"
+        }
+      },
+      {
+        "path": "4x5/NN.jpg",
+        "pattern": true,
+        "note": {
+          "eg": "نسخ JPEG بمقاس 4:5 لأدوات الجدولة فقط",
+          "gulf": "نسخ JPEG بمقاس 4:5 لأدوات الجدولة فقط",
+          "levant": "نسخ JPEG بمقاس 4:5 لأدوات الجدولة فقط",
+          "msa-white": "نسخ JPEG بمقاس 4:5 لأدوات الجدولة فقط",
+          "en": "JPEG copies at 4:5, for scheduling tools only"
+        }
+      },
+      {
+        "path": "caption.txt",
+        "note": {
+          "eg": "الكابشن جاهز للصق",
+          "gulf": "الكابشن جاهز للصق",
+          "levant": "الكابشن جاهز للصق",
+          "msa-white": "التعليق جاهز للصق",
+          "en": "The caption, ready to paste"
+        }
+      },
+      {
+        "path": "hashtags.txt",
+        "note": {
+          "eg": "الهاشتاجات (5 بالكتير)",
+          "gulf": "الهاشتاقات (5 بالكثير)",
+          "levant": "الهاشتاغات (5 كحد أقصى)",
+          "msa-white": "الوسوم (خمسة على الأكثر)",
+          "en": "The hashtags (5 at most)"
+        }
+      },
+      {
+        "path": "slide-captions.txt",
+        "note": {
+          "eg": "كابشن لكل سلايد (اختياري)",
+          "gulf": "كابشن لكل سلايد (اختياري)",
+          "levant": "كابشن لكل سلايد (اختياري)",
+          "msa-white": "تعليق لكل سلايد (اختياري)",
+          "en": "A caption for each slide (optional)"
+        }
+      },
+      {
+        "path": "alt-text.txt",
+        "note": {
+          "eg": "النص البديل لكل صورة",
+          "gulf": "النص البديل لكل صورة",
+          "levant": "النص البديل لكل صورة",
+          "msa-white": "النص البديل لكل صورة",
+          "en": "Alt text for each picture"
+        }
+      },
+      {
+        "path": "carousel.pdf",
+        "note": {
+          "eg": "كل السلايدات في ملف PDF واحد",
+          "gulf": "كل السلايدات في ملف PDF واحد",
+          "levant": "كل السلايدات بملف PDF واحد",
+          "msa-white": "جميع السلايدات في ملف PDF واحد",
+          "en": "All slides in one PDF"
+        }
+      },
+      {
+        "path": "spec.json",
+        "note": {
+          "eg": "مصدر البوست القابل للتعديل",
+          "gulf": "مصدر المنشور القابل للتعديل",
+          "levant": "مصدر المنشور القابل للتعديل",
+          "msa-white": "مصدر المنشور القابل للتعديل",
+          "en": "The editable source of the post"
+        }
+      },
+      {
+        "path": "qa-report.md",
+        "note": {
+          "eg": "تقرير فحص الجودة",
+          "gulf": "تقرير فحص الجودة",
+          "levant": "تقرير فحص الجودة",
+          "msa-white": "تقرير فحص الجودة",
+          "en": "The quality-check report"
+        }
+      }
+    ]
+  },
+  "videoMissing": {
+    "eg": "الفيديو مش موجود في الحزمة لأن المتصفح ده مش بيدعم ترميز الفيديو. صدّر الفيديو من الكمبيوتر بمتصفح حديث زي Chrome أو Edge، أو انشر الغلاف الثابت 01-cover.png.",
+    "gulf": "الفيديو مو موجود في الحزمة لأن هذا المتصفح ما يدعم ترميز الفيديو. صدّر الفيديو من الكمبيوتر بمتصفح حديث مثل Chrome أو Edge، أو انشر الغلاف الثابت 01-cover.png.",
+    "levant": "الفيديو مش موجود بالحزمة لأنو هالمتصفح ما بيدعم ترميز الفيديو. صدّر الفيديو من الكمبيوتر بمتصفح حديث متل Chrome أو Edge، أو انشر الغلاف الثابت 01-cover.png.",
+    "msa-white": "الفيديو غير موجود في الحزمة لأن هذا المتصفح لا يدعم ترميز الفيديو. صدّر الفيديو من حاسوب بمتصفح حديث مثل Chrome أو Edge، أو انشر الغلاف الثابت 01-cover.png.",
+    "en": "The video is not in the kit because this browser cannot encode video. Export the video from a computer with a recent browser such as Chrome or Edge, or post the still cover 01-cover.png."
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "id": "plan-demo-2026-12",
+  "brandSlug": "demo-brand",
+  "period": "2026-12",
+  "goal": "followers",
+  "cadence": {
+    "perWeek": 4,
+    "days": [
+      "sun",
+      "tue",
+      "wed",
+      "thu"
+    ],
+    "hours": [
+      "20:30"
+    ],
+    "tz": "Asia/Dubai"
+  },
+  "slots": [
+    {
+      "id": "w1-d1",
+      "date": "2026-12-01",
+      "time": "20:30",
+      "pillarId": "tools",
+      "format": "carousel",
+      "intent": "save",
+      "architecture": "listicle",
+      "status": "idea"
+    }
+  ],
+  "ideaBank": [
+    {
+      "id": "i1",
+      "text": "أدوات مجانية للمونتاج",
+      "pillarId": "tools",
+      "intents": [
+        "save"
+      ],
+      "source": "user"
+    }
+  ],
+  "angleBank": [],
+  "occasions": [
+    "uae-national-day-2026"
+  ]
+}

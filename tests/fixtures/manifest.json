@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 1,
+  "description": "Index of tests/fixtures. `kind` selects the check evals/validate_evals.py runs; `lint: clean` marks sample specs that must pass the text gates (no BLOCK and no FIX), `lint: none` marks stubs. Every spec names the brand fixture whose snapshotHash it carries. The files are synthetic: no client text, no owner-pack phrase and no credit appear in any of them.",
+  "fixtures": [
+    {
+      "file": "brand.eg.creator.json",
+      "kind": "brand",
+      "dialect": "eg",
+      "covers": [
+        "brand",
+        "voice-fingerprint",
+        "hooks-history"
+      ]
+    },
+    {
+      "file": "brand.gulf.client.json",
+      "kind": "brand",
+      "dialect": "gulf",
+      "covers": [
+        "brand",
+        "client",
+        "soft-sell"
+      ]
+    },
+    {
+      "file": "brand.msa.indic.json",
+      "kind": "brand",
+      "dialect": "msa-white",
+      "covers": [
+        "brand",
+        "digits-opt-in"
+      ]
+    },
+    {
+      "file": "brand.en.minimal.json",
+      "kind": "brand",
+      "dialect": "en",
+      "covers": [
+        "brand",
+        "skipped-sections",
+        "english"
+      ]
+    },
+    {
+      "file": "spec.eg.8slides.json",
+      "kind": "spec",
+      "dialect": "eg",
+      "checkpoint": "design",
+      "brand": "brand.eg.creator.json",
+      "lint": "clean",
+      "covers": [
+        "flagship",
+        "listicle",
+        "5-mistakes",
+        "guided"
+      ]
+    },
+    {
+      "file": "spec.eg.angle-stub.json",
+      "kind": "spec",
+      "dialect": "eg",
+      "checkpoint": "angle",
+      "brand": "brand.eg.creator.json",
+      "lint": "none",
+      "covers": [
+        "checkpoint-1",
+        "guided"
+      ]
+    },
+    {
+      "file": "spec.eg.single.json",
+      "kind": "spec",
+      "dialect": "eg",
+      "checkpoint": "design",
+      "brand": "brand.eg.creator.json",
+      "lint": "clean",
+      "covers": [
+        "single",
+        "poster",
+        "fast"
+      ]
+    },
+    {
+      "file": "spec.gulf.9slides.json",
+      "kind": "spec",
+      "dialect": "gulf",
+      "checkpoint": "design",
+      "brand": "brand.gulf.client.json",
+      "lint": "clean",
+      "covers": [
+        "soft-sell",
+        "offer",
+        "keyword-dm",
+        "sources"
+      ]
+    },
+    {
+      "file": "spec.levant.10slides.json",
+      "kind": "spec",
+      "dialect": "levant",
+      "checkpoint": "design",
+      "brand": "brand.eg.creator.json",
+      "lint": "clean",
+      "covers": [
+        "steps",
+        "dialect-override"
+      ]
+    },
+    {
+      "file": "spec.msa-white.indic.8slides.json",
+      "kind": "spec",
+      "dialect": "msa-white",
+      "checkpoint": "design",
+      "brand": "brand.msa.indic.json",
+      "lint": "clean",
+      "covers": [
+        "myth-fact",
+        "arabic-indic",
+        "calc-source",
+        "send-cta"
+      ]
+    },
+    {
+      "file": "spec.en.8slides.json",
+      "kind": "spec",
+      "dialect": "en",
+      "checkpoint": "design",
+      "brand": "brand.en.minimal.json",
+      "lint": "clean",
+      "covers": [
+        "english",
+        "steps",
+        "arrow-ltr"
+      ]
+    },
+    {
+      "file": "plan.eg.2026-11.json",
+      "kind": "plan",
+      "covers": [
+        "monthly-plan",
+        "rotation",
+        "occasion-without-pack"
+      ]
+    },
+    {
+      "file": "bidi-strings.json",
+      "kind": "bidi",
+      "covers": [
+        "bidi",
+        "digits",
+        "tokenizer"
+      ]
+    },
+    {
+      "file": "ortho-seeded-errors.json",
+      "kind": "ortho",
+      "covers": [
+        "orthography",
+        "autofix-vs-suggestion"
+      ]
+    },
+    {
+      "file": "hook-candidates.eg.json",
+      "kind": "hooks",
+      "covers": [
+        "hook-gates",
+        "top3-three-families"
+      ]
+    },
+    {
+      "file": "source.article.injection.eg.txt",
+      "kind": "source",
+      "injection": true,
+      "covers": [
+        "injection",
+        "source-is-data"
+      ]
+    },
+    {
+      "file": "source.transcript.eg.txt",
+      "kind": "source",
+      "covers": [
+        "transcript",
+        "repurposing"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+ "about": "G4 (spec 6.0): adjacent chart marks are 3:1 apart or separated by a 3 px gap or outline. The chart builders (A6a now, A7 later) contract to leave gapPx between neighbouring marks of one chart; preset_lint assumes exactly that (CHART_GAP_PX) and takes a measured figure with --chart-gap. tests/preset-lint/chart-gap.mjs measures it on the real builders; the lint may never assume more than the charts draw.",
+ "g4MinPx": 3,
+ "gapPx": 3,
+ "outlineMinPx": 3,
+ "appliesTo": "every chart kind that draws more than one mark (spec 3.3): bars, columns, donut and ring slices, meter segments, waffle cells, pictogram and icon rows",
+ "measure": "the smallest distance in px between the painted edges of two neighbouring marks of one chart, at the size the chart is drawn; a chart whose marks all carry an outline of outlineMinPx or more is exempt (G1)",
+ "status": "measured on the built charts (bars-h: 23 px between 6 bars; the numeral waffle: 4 px between 100 cells; six presets, three tones, both directions) by tests/preset-lint/chart-gap.mjs, run from tests/unit/py/test_preset_lint.py::ChartSeparationTests. A chart kind the builders register without a measurement strategy there is listed as skipped by that test: add its strategy to chart-gap.mjs when it lands (A6a, A7)"
+}

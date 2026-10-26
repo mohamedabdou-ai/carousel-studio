@@ -1,0 +1,120 @@
+{
+  "specVersion": 1,
+  "id": "post-20261023-9003",
+  "rev": 1,
+  "brand": {
+    "slug": "content-workshop"
+  },
+  "brief": {
+    "topic": "تنظيم وقت الكتابة",
+    "input": "idea"
+  },
+  "format": "carousel",
+  "mode": "fast",
+  "checkpoint": "design",
+  "canvas": {
+    "preset": "ig-3x4",
+    "w": 1080,
+    "h": 1440,
+    "safe": [
+      34,
+      45,
+      1012,
+      1350
+    ],
+    "exports": [
+      "3x4",
+      "4x5"
+    ]
+  },
+  "locale": {
+    "dialect": "eg",
+    "register": "dialect",
+    "digits": "western",
+    "appLanguage": "ar",
+    "swipeCue": "arrow-rtl"
+  },
+  "intent": "save",
+  "awareness": "problem",
+  "contentType": "value",
+  "architecture": "listicle",
+  "style": {
+    "presetId": "creator@1.0",
+    "metaLabel": "وقت الكتابة"
+  },
+  "sources": [{ "id": "src1", "kind": "ownData", "ref": "اقتراح عملي من الكاتب لتقسيم جلسة الكتابة", "excerpt": "جرّب الكتابة عشر دقايق وبعدها خد راحة." }],
+  "assets": [],
+  "cover": {
+    "motion": {
+      "recipe": "none",
+      "seconds": 6
+    }
+  },
+  "compat": {
+    "mp4": "off"
+  },
+  "slides": [
+    {
+      "id": "s01",
+      "n": 1,
+      "type": "cover",
+      "headline": "وقتك بيضيع قبل ما تكتب؟",
+      "sub": "خلّي البداية أسهل بخطوة صغيرة"
+    },
+    {
+      "id": "s02",
+      "n": 2,
+      "type": "rehook",
+      "headline": "ابدأ بفكرة واحدة",
+      "sub": "سيب باقي الأفكار لبعدين",
+      "free": {
+        "html": "<div class=\"f-focus\"><h2 data-field=\"headline\" data-mark=\"underline\"></h2><p data-field=\"sub\"></p><div class=\"f-art\"><span data-icon=\"clock\" data-size=\"lg\" data-treatment=\"ring\"></span><span data-object=\"book\" data-size=\"lg\"></span></div><p class=\"f-note\" data-tone=\"field\" data-edit=\"text\">البداية بسيطة</p></div>",
+        "css": ".f-focus{display:flex;flex-direction:column;gap:40px;padding-block:48px}.f-focus h2{font-size:80px}.f-focus p{font-size:48px}.f-art{display:flex;gap:60px;align-items:center;justify-content:center;padding-block:32px}.f-note{padding:32px;border-radius:24px}"
+      }
+    },
+    {
+      "id": "s03",
+      "n": 3,
+      "type": "item",
+      "title": "اتفق مع نفسك",
+      "body": "اكتب 10 دقايق وبعدين خد راحة",
+      "sourceIds": ["src1"],
+      "free": {
+        "html": "<div class=\"f-plan\"><h2 data-field=\"title\"></h2><div class=\"f-chat\"><p data-from=\"them\" data-edit=\"text\">هنبدأ إمتى؟</p><p data-from=\"me\" data-field=\"body\"></p></div><p class=\"f-reminder\" data-edit=\"text\">حط الموبايل بعيد عنك</p></div>",
+        "css": ".f-plan{display:flex;flex-direction:column;gap:64px;padding-block:48px}.f-plan h2{font-size:80px}.f-chat{font-size:48px}.f-reminder{font-size:48px;padding:32px;border:4px solid var(--cs-line);border-radius:24px}"
+      }
+    },
+    {
+      "id": "s04",
+      "n": 4,
+      "type": "cta",
+      "title": "خلّيها عادة صغيرة",
+      "body": "ارجع للخطوات دي وقت ما تتعطّل",
+      "cta": {
+        "kind": "save",
+        "text": "احفظها لبكرة"
+      },
+      "free": {
+        "html": "<div class=\"f-card\" data-tone=\"invert\"><h2 data-field=\"title\"></h2><p data-field=\"body\"></p><div class=\"f-save\"><span data-icon=\"bookmark\" data-size=\"lg\"></span><p data-field=\"cta.text\"></p></div><p data-edit=\"text\">خطوة صغيرة كل يوم بتفرق</p></div>",
+        "css": ".f-card{display:flex;flex-direction:column;gap:48px;padding:48px;border-radius:32px;min-block-size:720px}.f-card h2{font-size:72px}.f-card p{font-size:48px}.f-save{display:flex;align-items:center;gap:24px;padding-block:32px}"
+      }
+    }
+  ],
+  "captionPack": {
+    "firstLine": "البداية الصغيرة بتسهّل الكتابة.",
+    "body": "اختار فكرة واحدة، وخصّص لها وقت بسيط كل يوم.",
+    "cta": "احفظ الخطوات لبكرة.",
+    "perSlide": [
+      "خلّي البداية أسهل.",
+      "ركّز على فكرة واحدة.",
+      "اتفق مع نفسك على وقت قصير.",
+      "ارجع للخطوات وقت ما تحتاجها."
+    ],
+    "alt": [
+      "غلاف عن تنظيم وقت الكتابة.",
+      "فكرة واحدة مع ساعة وكتاب.",
+      "محادثة عن الكتابة عشر دقايق.",
+      "بطاقة لحفظ الخطوات والرجوع لها."
+    ]
+  }
+}

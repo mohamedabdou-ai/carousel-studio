@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "version": "1.0.0",
+  "default": "creator",
+  "presets": [
+    {
+      "id": "swiss",
+      "version": "1.0",
+      "dir": "swiss",
+      "name": {
+        "ar": "سويس",
+        "en": "Swiss"
+      },
+      "bestFor": [
+        "hot takes",
+        "lists",
+        "opinion",
+        "marketing and design"
+      ],
+      "ships": "1.2",
+      "preview": "swiss/preview.png",
+      "fonts": [
+        "ibm-plex-sans-arabic",
+        "readex-pro",
+        "ibm-plex-sans"
+      ]
+    },
+    {
+      "id": "creator",
+      "version": "1.0",
+      "dir": "creator",
+      "name": {
+        "ar": "صانع المحتوى",
+        "en": "Creator"
+      },
+      "bestFor": [
+        "personal brands",
+        "careers",
+        "ai tools",
+        "finance tips",
+        "number-led lists"
+      ],
+      "ships": "1.0",
+      "preview": "creator/preview.png",
+      "fonts": [
+        "alexandria",
+        "readex-pro"
+      ]
+    },
+    {
+      "id": "notebook",
+      "version": "1.0",
+      "dir": "notebook",
+      "name": {
+        "ar": "دفتر ملاحظات",
+        "en": "Notebook"
+      },
+      "bestFor": [
+        "checklists",
+        "prompts",
+        "cheat sheets",
+        "step by step",
+        "study notes"
+      ],
+      "ships": "1.0",
+      "preview": "notebook/preview.png",
+      "fonts": [
+        "playpen-sans-arabic",
+        "readex-pro"
+      ]
+    },
+    {
+      "id": "poster",
+      "version": "1.0",
+      "dir": "poster",
+      "name": {
+        "ar": "بوستر",
+        "en": "Poster"
+      },
+      "bestFor": [
+        "x vs y",
+        "numbers",
+        "health and nutrition",
+        "finance comparisons",
+        "infographics"
+      ],
+      "ships": "1.0",
+      "preview": "poster/preview.png",
+      "fonts": [
+        "noto-kufi-arabic",
+        "alexandria"
+      ]
+    },
+    {
+      "id": "interface",
+      "version": "1.0",
+      "dir": "interface",
+      "name": {
+        "ar": "واجهة",
+        "en": "Interface"
+      },
+      "bestFor": [
+        "tool packs",
+        "walkthroughs",
+        "software reviews",
+        "free vs paid",
+        "setup guides",
+        "teaching Instagram and carousels"
+      ],
+      "ships": "1.2",
+      "preview": "interface/preview.png",
+      "fonts": [
+        "readex-pro",
+        "inter"
+      ]
+    },
+    {
+      "id": "heritage",
+      "version": "1.0",
+      "dir": "heritage",
+      "name": {
+        "ar": "تراثي",
+        "en": "Heritage"
+      },
+      "bestFor": [
+        "culture",
+        "national days",
+        "ramadan and eids",
+        "typography",
+        "storytelling"
+      ],
+      "ships": "1.2",
+      "preview": "heritage/preview.png",
+      "fonts": [
+        "reem-kufi",
+        "el-messiri"
+      ]
+    }
+  ]
+}

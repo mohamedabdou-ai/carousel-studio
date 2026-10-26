@@ -1,0 +1,125 @@
+{
+  "specVersion": 1,
+  "id": "post-20261022-0003",
+  "rev": 1,
+  "brand": {
+    "slug": "content-workshop",
+    "snapshotHash": "14976278932d0a11"
+  },
+  "brief": {
+    "topic": "الوعد في الغلاف أهم من الخط",
+    "input": "idea"
+  },
+  "format": "single",
+  "mode": "fast",
+  "checkpoint": "design",
+  "canvas": {
+    "preset": "ig-3x4",
+    "w": 1080,
+    "h": 1440,
+    "safe": [
+      34,
+      45,
+      1012,
+      1350
+    ],
+    "exports": [
+      "3x4",
+      "4x5"
+    ]
+  },
+  "locale": {
+    "dialect": "eg",
+    "register": "dialect",
+    "digits": "western",
+    "appLanguage": "ar",
+    "swipeCue": "arrow-rtl"
+  },
+  "intent": "save",
+  "awareness": "problem",
+  "contentType": "value",
+  "angle": {
+    "id": "a1",
+    "title": "الوعد قبل الشكل",
+    "lens": "contrarian",
+    "score": 76,
+    "why": "قلب معتقد شائع بجملة قصيرة"
+  },
+  "hook": {
+    "id": "F17-REFRAME-not-x-but-y",
+    "family": "F17",
+    "text": "مش الخط اللي بيبيع… ده الوعد",
+    "cover": "مش الخط اللي بيبيع… ده الوعد",
+    "score": {
+      "R": 33,
+      "J": 28,
+      "P": 14,
+      "total": 75
+    }
+  },
+  "style": {
+    "presetId": "creator@1.0"
+  },
+  "compat": {
+    "paint": "auto",
+    "mp4": "auto",
+    "hfRuntime": "auto"
+  },
+  "slides": [
+    {
+      "id": "s01",
+      "n": 1,
+      "type": "poster",
+      "kicker": "تذكير سريع",
+      "headline": "مش الخط اللي بيبيع…\n==ده الوعد==",
+      "sub": "وعد محدد",
+      "cta": {
+        "kind": "save",
+        "text": "احفظه لما تيجي تكتب الغلاف الجاي"
+      },
+      "media": {
+        "slot": "none",
+        "ai": false
+      }
+    }
+  ],
+  "cover": {
+    "motion": {
+      "recipe": "none"
+    }
+  },
+  "captionPack": {
+    "firstLine": "الخط مش هو اللي بيبيع الكاروسيل، الوعد هو اللي بيبيعه.",
+    "keywordLine": "تذكير سريع لغلاف كاروسيل Instagram: اوعد بحاجة محددة قبل ما تفكر في الشكل.",
+    "body": "اكتب اللي هيطلع بيه القارئ، مش اسم الموضوع.",
+    "cta": "احفظه لما تيجي تكتب الغلاف الجاي.",
+    "hashtags": [
+      "#كاروسيل",
+      "#كتابة_المحتوى"
+    ],
+    "perSlide": [
+      "الوعد قبل الشكل: سطر واحد يفرق."
+    ],
+    "alt": [
+      "بوستر: «مش الخط اللي بيبيع… ده الوعد» بخط أسود كبير على خلفية بيضاء، وتحته «وعد محدد»، وفوقه «تذكير سريع»."
+    ]
+  },
+  "sources": [],
+  "assets": [],
+  "qa": {
+    "status": "pass",
+    "runAt": "2026-10-22T09:20:00Z",
+    "engine": "cs-1.1.0",
+    "results": []
+  },
+  "approvals": {},
+  "meta": {
+    "createdAt": "2026-10-22T09:00:00Z",
+    "updatedAt": "2026-10-22T09:20:00Z",
+    "updatedBy": "claude",
+    "generator": {
+      "skill": "carousel-create",
+      "version": "1.0.0"
+    }
+  }
+}

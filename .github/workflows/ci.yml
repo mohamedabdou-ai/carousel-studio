@@ -1,0 +1,205 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Python 3.11 and Node 22 are the supported versions (CONTRACT 0.4). The plugin itself has no Node dependencies;
+# package.json only drives the repository tooling, and playwright-core is a development dependency of the browser tests.
+
+jobs:
+  policy:
+    name: Policy, sync and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      # Sources of the visual language that are not shipped yet (the icon library, scenes, icon_search.py, art_direct.py) are reported as pending and
+      # skipped. When they all ship, the final integration adds --strict here so that a missing source can no longer pass.
+      - name: Shared files are byte-identical copies
+        run: python tools/sync_shared.py --check
+      - name: The creative team's agents and briefs match team/
+        run: python tools/sync_team.py --check
+      # All thirteen chunks (nine of 1.0, four of the visual language) must exist and equal a fresh build; the table shows each size against its ceiling.
+      - name: Runtime chunks match their sources
+        run: node tools/build.mjs --check --report
+      - name: Directory policy (the plugin folder, which is what the directory counts)
+        run: python tools/check_directory.py
+      # The directory has not confirmed whether it counts the plugin folder or the whole repository, so the whole repository is held to a
+      # ratchet: the number below is the committed file count and may only go down. Raise it only with a line in CONTRIBUTING.md saying why.
+      - name: Directory policy (the whole repository, file-count ratchet)
+        run: python tools/check_directory.py --root . --scope repo --repo-max-files 915
+      - name: Shipped Arabic text follows the spelling, digit and bidi rules
+        run: python -m unittest tests.unit.py.test_shipped_text
+      - name: Release dry run (version agreement and archive)
+        run: python tools/release.py --version "$(python -c "import json; print(json.load(open('package.json'))['version'])")" --out "$RUNNER_TEMP/release" --checks none
+
+  python:
+    name: Python tests (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    # The Linux leg runs in UTF-8 mode. The Windows leg runs with Python's defaults (a legacy code page for pipes and consoles), because that
+    # is what a person on Windows has, and the scripts must read and write Arabic correctly there without help from the environment.
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            encoding: utf-8
+            utf8_mode: "1"
+          - os: windows-latest
+            encoding: ""
+            utf8_mode: ""
+    env:
+      PYTHONUTF8: ${{ matrix.utf8_mode }}
+      PYTHONIOENCODING: ${{ matrix.encoding }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Unit tests (includes a --help run of every plugin script)
+        run: python -m unittest discover -s tests/unit/py -p "test_*.py"
+
+  node:
+    name: Node tests and conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci
+      - name: Library
+        run: node --test "tests/unit/js/lib/*.test.mjs"
+      - name: Quality gates
+        run: node --test "tests/unit/js/qa/*.test.cjs"
+      - name: Studio UI logic
+        run: node --test "tests/unit/js/ui/*.test.mjs"
+      - name: Engine
+        run: node tests/unit/js/core/run.mjs --lib real
+      - name: JavaScript and Python give the same verdicts
+        run: node tests/conformance/run_js.mjs --out tests/conformance/.verdicts.js.json && python tests/conformance/run_py.py --compare tests/conformance/.verdicts.js.json
+      - name: Defect corpus (every planted defect is found) and clean corpus (no false BLOCK), in both engines
+        run: |
+          node tests/corpus-bad/run.mjs
+          python tests/corpus-bad/run.py
+      - name: Build tooling (chunk names, ceilings, skeleton)
+        run: node --test "tests/unit/js/build/*.test.mjs"
+      # The visual-language suites below are npm scripts that the integration beats add as their test files arrive (test:icons, test:visual,
+      # test:vui). `npm run --if-present` does nothing until a script exists, so this workflow needs no edit when they do.
+      - name: Icon library, planner and visual panel logic (node only)
+        run: |
+          npm run --if-present test:icons
+          npm run --if-present test:visual
+          npm run --if-present test:vui
+
+  browser:
+    name: Browser tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci
+      - name: Install Chromium for the tests
+        run: npx playwright-core install --with-deps chromium
+      - name: Studio smoke test (stub engine, then the shipped engine chunks)
+        run: |
+          node tests/mobile-e2e/studio-smoke.mjs
+          node tests/mobile-e2e/studio-smoke.mjs --real-engine
+      - name: Every preset and variant passes the rendered gates
+        run: node tests/mobile-e2e/preset-matrix.mjs --variants
+      - name: Arabic-Indic digits and the other registers
+        run: |
+          node tests/mobile-e2e/preset-matrix.mjs --digits arabic-indic
+          node tests/mobile-e2e/preset-matrix.mjs --dialect gulf
+          node tests/mobile-e2e/preset-matrix.mjs --dialect msa-white
+          node tests/mobile-e2e/preset-matrix.mjs --dialect levant
+          node tests/mobile-e2e/preset-matrix.mjs --dialect en
+      - name: Chrome and text against the geometry of the design, in both crops
+        run: node tests/geometry/run.mjs
+      - name: Golden hashes of the engine's tokens and slide markup
+        run: node tests/golden/run.mjs
+      - name: Nothing about the viewer reaches a spec, a kit or a published page
+        run: node tests/privacy/run.mjs
+      - name: Cover video lane
+        run: node tests/video/run.mjs
+      # The six covers of 1.0 must not move (SSIM 0.995). A cover that moved is saved under tests/mobile-e2e/output for the artifact below.
+      - name: Covers have not changed since 1.0
+        run: node tests/cover-baseline/run.mjs --check --out tests/mobile-e2e/output/cover-baseline
+      # Browser suites of the visual language (art builders, rendered gates, automatic-plan acceptance, calibration): npm scripts added by the
+      # integration beats as the files arrive; nothing runs until a script exists.
+      - name: Visual language in the browser
+        run: |
+          npm run --if-present test:art
+          npm run --if-present test:qav
+          npm run --if-present test:auto
+          npm run --if-present test:calibration
+      - name: Keep the outputs of a failed run
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-test-output
+          path: |
+            tests/mobile-e2e/output
+            tests/video/output
+          if-no-files-found: ignore
+          retention-days: 7
+
+  # The contact sheets of the 20 types in the six presets at 130 px with the rhythm strip (spec 7.6 and 10.2) are attached to every pull request
+  # as an artifact, so the look can be judged without opening the Studio. The job is separate so that the browser job stays short, and it does
+  # nothing until package.json has a "contact:sheets" script that writes the PNG sheets into tests/mobile-e2e/output/contact-sheets.
+  contact-sheets:
+    name: Contact sheets
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Is there a sheet maker yet
+        id: have
+        run: |
+          if node -e "process.exit(require('./package.json').scripts['contact:sheets'] ? 0 : 1)"; then echo "sheets=1" >> "$GITHUB_OUTPUT"; else echo "sheets=0" >> "$GITHUB_OUTPUT"; echo "No contact:sheets script in package.json yet; nothing to render."; fi
+      - uses: actions/setup-python@v5
+        if: steps.have.outputs.sheets == '1'
+        with:
+          python-version: "3.11"
+      - if: steps.have.outputs.sheets == '1'
+        run: npm ci
+      - name: Install Chromium for the sheets
+        if: steps.have.outputs.sheets == '1'
+        run: npx playwright-core install --with-deps chromium
+      - name: Render the contact sheets
+        if: steps.have.outputs.sheets == '1'
+        run: npm run contact:sheets
+      - name: Attach the contact sheets
+        if: steps.have.outputs.sheets == '1' && always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: contact-sheets
+          path: tests/mobile-e2e/output/contact-sheets
+          if-no-files-found: warn
+          retention-days: 14

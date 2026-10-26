@@ -1,0 +1,266 @@
+{
+  "schemaVersion": 1,
+  "skill_name": "brand-setup",
+  "description": "Triggers (20 should-trigger across Egyptian, Gulf, Levantine, white MSA and English; 10 should-not) and behaviour evals for brand-setup.",
+  "triggerTargets": {
+    "precision": 0.9,
+    "recall": 0.9
+  },
+  "triggers": [
+    {
+      "id": "t01",
+      "query": "عايز أبدأ براند جديد، أنا مدرب لياقة وجمهوري شباب في مصر والخليج",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t02",
+      "query": "ظبطلي هوية الصفحة بتاعتي: ألوان وخطوط وستايل، وطلعلي براند بوك أعتمده",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t03",
+      "query": "إزاي أخلي الأداة تكتب بصوتي؟ هبعتلك 6 كابشنات قديمة من صفحتي تتعلم منهم",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t04",
+      "query": "عندي 3 عملاء، عايز أعمل براند لكل واحد وأقدر أبدّل بينهم بسهولة",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t05",
+      "query": "ابغى أسوي براند جديد لعميل عندي في الرياض، ولهجته بيضاء خليجية",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t06",
+      "query": "أبي أضيف بنك الهوكات حقي للأداة، ملف Markdown فيه الهوكات اللي استخدمتها قبل",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t07",
+      "query": "كمّل لي إعداد البراند اللي بدأناه أمس، وقفنا عند قسم الصوت",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t08",
+      "query": "هذي سكرينشوتات لحسابات أحبها، حلل لي ستايلها وقل لي وش أقرب ستايل ينفع براندي",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t09",
+      "query": "بدّي أعمل براند جديد لصفحتي، جمهوري بلبنان والأردن",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t10",
+      "query": "هي كابشناتي القديمة، بدّي تطلّع لي بصمة صوتي وتعرف شو الكلمات يلي بحبها وشو الكلمات يلي بتجنبها",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t11",
+      "query": "بدّي بدّل لبراند تاني من البراندات يلي عندي، وبدّي شوف إعداداته",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t12",
+      "query": "ابدأ معي إعداد البراند من الصفر، بس اسألني سؤالين سؤالين",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t13",
+      "query": "أريد إعداد هوية جديدة لعلامتي التجارية تشمل اللهجة والصوت والألوان والخطوط",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t14",
+      "query": "أرغب في تحديث ألوان العلامة وإضافة شعارها ثم اعتماد دليل الهوية",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t15",
+      "query": "استورد ملف العلامة brand.json الذي صدّرته من الصفحة الرئيسية للعلامة",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t16",
+      "query": "حدّد لي البصمة الصوتية لحسابي انطلاقًا من هذه الكابشنات العشرة",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t17",
+      "query": "Set up a new brand for my agency client: Egyptian dialect, audience in the Gulf",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t18",
+      "query": "I want to import my hook bank (a CSV of hooks I've used) and attach it to my brand profile",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t19",
+      "query": "I want to set up my brand from my past posts: they use big black Arabic type on a cream background, one red accent, no photos. Tell me which preset is closest, then build my brand book",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t20",
+      "query": "switch to my other brand profile (the coffee shop) and show me its voice settings",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t21",
+      "query": "حوّلي الفيديو ده لريل بالموشن جرافيك والترجمة",
+      "should_trigger": false,
+      "dialect": "eg",
+      "kind": "reel",
+      "instead": "reel-montage"
+    },
+    {
+      "id": "t22",
+      "query": "صمم لي شعار جديد لشركتي بالذكاء الاصطناعي",
+      "should_trigger": false,
+      "dialect": "gulf",
+      "kind": "adjacent",
+      "instead": "none"
+    },
+    {
+      "id": "t23",
+      "query": "سوّ لي كاروسيل عن أخطاء التسعير للفريلانسرز، وأبغاه بلهجة بيضاء خليجية",
+      "should_trigger": false,
+      "dialect": "gulf",
+      "kind": "sibling",
+      "instead": "carousel-create"
+    },
+    {
+      "id": "t24",
+      "query": "ابغى خطة محتوى لشهر رمضان لحسابي",
+      "should_trigger": false,
+      "dialect": "gulf",
+      "kind": "sibling",
+      "instead": "content-plan"
+    },
+    {
+      "id": "t25",
+      "query": "يرجى تدقيق هذا النص إملائيًا ولغويًا قبل النشر: \"ان هذة الطريقه افضل من سابقتها\"",
+      "should_trigger": false,
+      "dialect": "msa-white",
+      "kind": "sibling",
+      "instead": "arabic-proofread"
+    },
+    {
+      "id": "t26",
+      "query": "غيّر ستايل البوست لحاجة أنضف وأهدى، وحرّك الغلاف",
+      "should_trigger": false,
+      "dialect": "eg",
+      "kind": "sibling",
+      "instead": "carousel-design"
+    },
+    {
+      "id": "t27",
+      "query": "write the 'About us' page copy for my company website",
+      "should_trigger": false,
+      "dialect": "en",
+      "kind": "adjacent",
+      "instead": "none"
+    },
+    {
+      "id": "t28",
+      "query": "ضيف شعاري وألواني على قالب كانفا",
+      "should_trigger": false,
+      "dialect": "levant",
+      "kind": "canva",
+      "instead": "canva"
+    },
+    {
+      "id": "t29",
+      "query": "ما الفرق بين العلامة التجارية والهوية البصرية؟ اشرحها لطلاب التسويق",
+      "should_trigger": false,
+      "dialect": "msa-white",
+      "kind": "unrelated",
+      "instead": "none"
+    },
+    {
+      "id": "t30",
+      "query": "إيه الزوايا الممكنة لموضوع \"الذكاء الاصطناعي للموظفين\"؟ عايز أشوف الأقوى قبل ما أكتب",
+      "should_trigger": false,
+      "dialect": "eg",
+      "kind": "sibling",
+      "instead": "content-angles"
+    }
+  ],
+  "evals": [
+    {
+      "id": 1,
+      "name": "new-brand-dialect-first-two-questions",
+      "prompt": "عايز أبدأ براند جديد.",
+      "expected_output": "A short welcome, a progress line, the dialect question first with numbered choices, and no more than two questions in the message.",
+      "files": [],
+      "fixtures": [
+        "brand.en.minimal.json"
+      ],
+      "behaviour": [
+        "bhv-31-brand-onboarding-dialect-first"
+      ],
+      "expectations": [
+        "The first question asks which dialect the brand writes in, with numbered choices (Egyptian, Gulf, Levantine, simplified MSA, English)",
+        "The message holds at most two questions",
+        "A progress line such as القسم 1 من 6 is shown",
+        "Digits are not asked about yet and the default stays Western 123"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "voice-fingerprint-from-past-captions",
+      "prompt": "دي 4 كابشنات قديمة من صفحتي، اتعلم منها صوتي:\n1) جرّبت أغيّر أول سلايد في كل بوست لمدة أسبوعين. الفرق كان واضح.\n2) مش لازم تبقى مصمم عشان تعمل كاروسيل محترف.\n3) أكتر سؤال بوصلني: أكتب كام سلايد؟\n4) الكابشن الطويل مش عيب لو كل سطر فيه فايدة.",
+      "expected_output": "A voice fingerprint computed by fingerprint.py, three rewrites to confirm, and a brand.json that validates.",
+      "files": [],
+      "fixtures": [
+        "brand.eg.creator.json"
+      ],
+      "behaviour": [
+        "bhv-32-brand-voice-from-captions"
+      ],
+      "expectations": [
+        "fingerprint.py ran on the captions",
+        "The reply shows the voice in plain words (sentence length, person, words to use) and offers three rewrites to confirm",
+        "A brand.json is saved and validates",
+        "Nothing beyond the brand profile is stored about the user"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "no-brand-continue-with-defaults",
+      "prompt": "مفيش عندي براند لسه وعايز أبدأ على طول: اعملي كاروسيل عن تسعير الخدمات. كمّل بالافتراضي من غير أسئلة إعداد.",
+      "expected_output": "The post proceeds with defaults; at most one quiet line mentions that a setup exists.",
+      "files": [],
+      "behaviour": [
+        "bhv-04-no-brand-defaults-no-nagging"
+      ],
+      "expectations": [
+        "No onboarding questions are asked",
+        "The dialect follows the user's own words (Egyptian) and digits are Western",
+        "At most one short line mentions the brand setup, once"
+      ]
+    }
+  ]
+}

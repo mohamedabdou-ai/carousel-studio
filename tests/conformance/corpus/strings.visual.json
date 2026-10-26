@@ -1,0 +1,67 @@
+{
+ "schemaVersion": 1,
+ "description": "Strings for the text a slide shows besides the old fields (round 3): item titles and values, demo lines and captions, art captions, a word and its unit, chart labels, mock titles, lines, choices, captions and stamps. Figures, tool names, numbers with a unit and a noun, Latin chips, marks and line breaks. Both engines must print the same tokens, counts, digit conversions and HTML.",
+ "strings": [
+  "2,500 خطوة",
+  "خطوة 3 من 5",
+  "٣٠ دقيقة بس",
+  "8 من 10 مشاهدين",
+  "74% زيادة في الحفظ",
+  "+30%",
+  "x2 أسرع",
+  "4.5 نجوم من 5",
+  "من 1,200 إلى 3,400 متابع",
+  "السعر 49$ في الشهر",
+  "Canva",
+  "CapCut Pro",
+  "Notion AI",
+  "ChatGPT-4o",
+  "قبل",
+  "بعد",
+  "رسم توضيحي",
+  "المصدر: s1",
+  "المصدر: تقرير 2025",
+  "5 نصايح للكتابة",
+  "ليه محدش بيكمّل بوستك؟",
+  "ده اللي بيوقّف الإبهام",
+  "ابعتها لصاحبك",
+  "اكتب كلمة كاروسيل",
+  "كلمة ==مفتاحية== في الرسايل",
+  "Step 1: write the hook",
+  "3 tools, 0 budget",
+  "100% free",
+  "A/B test",
+  "Day 1 → Day 30",
+  "عنوان بسطرين\nتحت بعض",
+  "هل ينفع كده؟ أيوه!",
+  "مثال: 12 ساعة",
+  "الحل في 3 خطوات: افتح، اكتب، انشر",
+  "٢٠٢٦ و 2026",
+  "1.5x و 0.5",
+  "رقم 1 و No. 1",
+  "@brand_name و #تسويق",
+  "ملاحظة: الأرقام تقريبية",
+  "عدّ 1 2 3 ثم ابدأ",
+  "15 دقيقة فقط",
+  "3 أدوات و 4 مهام",
+  "سري للغاية",
+  "حفظ  وإرسال",
+  "2,500 خطوة",
+  "۳ أيام",
+  "x 2"
+ ],
+ "similarityPairs": [
+  [
+   "ليه محدش بيكمّل بوستك؟",
+   "ليه محدش بيكمل البوست؟"
+  ],
+  [
+   "5 نصايح للكتابة",
+   "خمس نصائح للكتابة"
+  ],
+  [
+   "قبل",
+   "بعد"
+  ]
+ ]
+}

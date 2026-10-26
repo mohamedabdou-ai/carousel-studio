@@ -1,0 +1,542 @@
+{
+"schemaVersion": 1,
+"description": "Posts that are written correctly (draft 13.2: zero false BLOCKs). Fixtures as they are, plus rewrites that exercise the places a text gate could wrongly block: dialect words that are ordinary in another register (دول, كانت, مو, وش), alternative calls to action and plain sentences. The text gates (run.mjs, run.py) must report no BLOCK for any of them; lesser findings are counted. A corpus of real posts is kept private and is run the same way by the owner. Fields as in corpus-bad/defects.json.",
+"posts": [
+{
+"id": "eg-8",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json"
+},
+{
+"id": "gulf-9",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json"
+},
+{
+"id": "levant-10",
+"base": "spec.levant.10slides.json"
+},
+{
+"id": "msa-white-indic-8",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json"
+},
+{
+"id": "en-8",
+"base": "spec.en.8slides.json",
+"brand": "brand.en.minimal.json"
+},
+{
+"id": "eg-single",
+"base": "spec.eg.single.json"
+},
+{
+"id": "eg-angle-stub",
+"base": "spec.eg.angle-stub.json"
+},
+{
+"id": "eg-reach-send",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/intent",
+"value": "reach"
+},
+{
+"op": "add",
+"path": "/slides/7/title",
+"value": "ابعت البوست ده"
+},
+{
+"op": "add",
+"path": "/slides/7/cta",
+"value": {
+"kind": "send",
+"text": "ابعته لصاحبك اللي بيعمل نفس الغلطة"
+}
+},
+{
+"op": "add",
+"path": "/captionPack/cta",
+"value": "ابعت البوست لصاحبك اللي محتاجه."
+}
+]
+},
+{
+"id": "eg-question-cta",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/7/title",
+"value": "قولي رأيك"
+},
+{
+"op": "add",
+"path": "/slides/7/cta",
+"value": {
+"kind": "question",
+"text": "أنهي غلطة من الخمسة بتعملها دلوقتي؟"
+}
+},
+{
+"op": "add",
+"path": "/captionPack/cta",
+"value": "قولي في التعليقات أنهي غلطة بتعملها."
+}
+]
+},
+{
+"id": "eg-reword-1",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/body",
+"value": "لو القارئ هيكبّر الصورة عشان يقرا، هيعدّي. استخدم خط كبير وجملة قصيرة."
+},
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "التعريف بنفسك في التانية بياخد مكان الفايدة. سيبه للبروفايل وابدأ بالمفيد."
+},
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "كل سلايد فيها فكرة واحدة بس. لو الفكرة محتاجة شرح، خدلها سلايد تانية."
+},
+{
+"op": "add",
+"path": "/slides/5/body",
+"value": "لو الدعوة هي هي في كل بوست، الناس بتتعود عليها. غيّر بين الحفظ والإرسال."
+},
+{
+"op": "add",
+"path": "/slides/6/body",
+"value": "الغلاف اللي بيذكر الموضوع بس مش كفاية. اكتب القارئ هيستفيد إيه بالظبط."
+}
+]
+},
+{
+"id": "eg-reword-2",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/body",
+"value": "الخط الكبير بيتقرا من مسافة. الصغير بيتعدّى."
+},
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "الفايدة الأول. التعريف في البروفايل."
+},
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "فكرة في كل سلايد. الباقي في اللي بعدها."
+},
+{
+"op": "add",
+"path": "/slides/5/body",
+"value": "دعوة واحدة محددة، وبدّلها كل كام بوست."
+},
+{
+"op": "add",
+"path": "/slides/6/body",
+"value": "الغلاف بيوعد بحاجة محددة، مش اسم موضوع."
+}
+]
+},
+{
+"id": "eg-demonstratives",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/body",
+"value": "6\u00a0أدوات دول بتغنيك عن المصمم. جرّبهم واحدة واحدة."
+},
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "كانت أول مرة أجرب فيها الغلاف الجديد، والفرق كان واضح من أول يوم."
+},
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "اللي بيعرف يكتب جملة قصيرة بيوفّر نص وقته."
+}
+]
+},
+{
+"id": "eg-casual",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "مش لازم تكون مصمم. كل اللي محتاجه فكرة واضحة وخط بيتقرا."
+},
+{
+"op": "add",
+"path": "/slides/5/body",
+"value": "جرّب الأسبوع ده وشوف الفرق بنفسك، ومتخليش الدعوة تتكرر."
+}
+]
+},
+{
+"id": "gulf-dowal",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "يوصلك داخل الرياض بدون رسوم، ونشحن لدول الخليج كلها بسعر ثابت."
+}
+]
+},
+{
+"id": "gulf-mo-wesh",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "مو لازم تشترك كل شهر، وقف الاشتراك وقت ما تبي. وش تحتاج؟ بس اختيارك."
+},
+{
+"op": "add",
+"path": "/slides/2/body",
+"value": "كانت المحمصة تشتغل كل صباح، ونرسل الدفعة نفس اليوم."
+}
+]
+},
+{
+"id": "gulf-which-countries",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "في أي دول نوصّل؟ الرياض بدون رسوم، وباقي دول المجلس برسوم بسيطة."
+}
+]
+},
+{
+"id": "gulf-follow-cta",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/7/cta",
+"value": {
+"kind": "follow",
+"text": "تابعنا عشان تعرف عن النكهات الجديدة قبل غيرك"
+}
+},
+{
+"op": "add",
+"path": "/slides/8/cta",
+"value": {
+"kind": "follow",
+"text": "تابعنا عشان تعرف عن النكهات الجديدة قبل غيرك"
+}
+},
+{
+"op": "add",
+"path": "/slides/8/title",
+"value": "تابع الجديد"
+},
+{
+"op": "add",
+"path": "/captionPack/cta",
+"value": "تابعنا لين توصلك النكهات الجديدة."
+}
+]
+},
+{
+"id": "gulf-reword",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/body",
+"value": "نحمّص دفعة صغيرة كل أسبوع ونرسلها لك بنفس اليوم."
+},
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "اختر حبوب فاتحة أو غامقة، وبدّل اختيارك وقت ما تبي."
+}
+]
+},
+{
+"id": "levant-dowal",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "تخيّل صاحبك وهو عم يقرا، واكتب الجملة هيك كأنك بتحكيله. هيك بتوصل لقرّاء من كل دول الخليج."
+}
+]
+},
+{
+"id": "levant-kanet",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "كانت الجملة الطويلة بتتعبني، فصرت قصّها بسطرين."
+},
+{
+"op": "add",
+"path": "/slides/2/body",
+"value": "ابدأ بالنتيجة، مش بالمقدمة. شو رح يطلع فيه القارئ؟"
+}
+]
+},
+{
+"id": "levant-reach-question",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/intent",
+"value": "reach"
+},
+{
+"op": "add",
+"path": "/slides/9/title",
+"value": "شو رأيك؟"
+},
+{
+"op": "add",
+"path": "/slides/9/cta",
+"value": {
+"kind": "question",
+"text": "أي خطوة منهم بتصعب عليك أكتر؟"
+}
+},
+{
+"op": "add",
+"path": "/captionPack/cta",
+"value": "احكيلنا بالتعليقات أي خطوة بتصعب عليك."
+}
+]
+},
+{
+"id": "levant-reword",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/5/body",
+"value": "جملة وحدة بكل سطر. إذا طولت، قصّها قبل ما تنزّل."
+},
+{
+"op": "add",
+"path": "/slides/6/body",
+"value": "اللي بدك ياه الناس تلاقيه بالبحث، حطه بالسطر التاني."
+}
+]
+},
+{
+"id": "levant-hek",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/7/body",
+"value": "اقرا الكابشن بصوت عالي مرة. أي جملة بتتعثر فيها، عدّلها هيك."
+}
+]
+},
+{
+"id": "msa-dowal-alkhaleej",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/sides/1/text",
+"value": "أفضل دول الخليج للادخار تبدأ بخطة بسيطة"
+}
+]
+},
+{
+"id": "msa-dowal-majlis",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/sides/1/text",
+"value": "دول مجلس التعاون تشجع الادخار المنتظم"
+}
+]
+},
+{
+"id": "msa-kanat",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/5/sides/1/text",
+"value": "كانت العادة الصغيرة هي الفارق في النهاية"
+}
+]
+},
+{
+"id": "msa-cta-question",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/intent",
+"value": "reach"
+},
+{
+"op": "add",
+"path": "/slides/7/title",
+"value": "شاركنا رأيك"
+},
+{
+"op": "add",
+"path": "/slides/7/cta",
+"value": {
+"kind": "question",
+"text": "ما الخرافة التي صدقتها أطول مدة؟"
+}
+},
+{
+"op": "add",
+"path": "/captionPack/cta",
+"value": "شاركنا في التعليقات الخرافة التي صدقتها."
+}
+]
+},
+{
+"id": "msa-reword",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/sides/1/text",
+"value": "من يبدأ بمبلغ صغير يكسب العادة قبل المبلغ"
+},
+{
+"op": "add",
+"path": "/slides/4/sides/0/text",
+"value": "المبلغ الصغير لا يستحق عناء الادخار"
+}
+]
+},
+{
+"id": "en-reword-1",
+"base": "spec.en.8slides.json",
+"brand": "brand.en.minimal.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/body",
+"value": "Shrink the cover to thumbnail size. If it is hard to read, enlarge the text."
+},
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "Skip the intro. Put the first useful idea on slide two."
+}
+]
+},
+{
+"id": "en-reword-2",
+"base": "spec.en.8slides.json",
+"brand": "brand.en.minimal.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "A slide with a paragraph is two slides. Split it."
+},
+{
+"op": "add",
+"path": "/slides/5/body",
+"value": "Pick one ask, save or send or answer, and end the deck with it."
+}
+]
+},
+{
+"id": "en-send",
+"base": "spec.en.8slides.json",
+"brand": "brand.en.minimal.json",
+"patch": [
+{
+"op": "add",
+"path": "/intent",
+"value": "send"
+},
+{
+"op": "add",
+"path": "/slides/7/title",
+"value": "Send it on"
+},
+{
+"op": "add",
+"path": "/slides/7/cta",
+"value": {
+"kind": "send",
+"text": "Send it to someone who posts daily"
+}
+},
+{
+"op": "add",
+"path": "/captionPack/cta",
+"value": "Send this to a friend who posts every day."
+}
+]
+},
+{
+"id": "en-question",
+"base": "spec.en.8slides.json",
+"brand": "brand.en.minimal.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/7/title",
+"value": "Tell us"
+},
+{
+"op": "add",
+"path": "/slides/7/cta",
+"value": {
+"kind": "question",
+"text": "Which check do you skip most?"
+}
+},
+{
+"op": "add",
+"path": "/captionPack/cta",
+"value": "Tell us in the comments which check you skip."
+}
+]
+}
+]
+}

@@ -1,0 +1,339 @@
+{
+  "schemaVersion": 1,
+  "id": "notebook",
+  "version": "1.0",
+  "name": {
+    "ar": "دفتر ملاحظات",
+    "en": "Notebook"
+  },
+  "description": {
+    "ar": "ورق مسطّر بحبر أزرق وقلم أحمر: خط يدوي واضح، وتسطير مزدوج للكلمة المهمة، وقوائم تحفظها وتنفّذها.",
+    "en": "Ruled paper, blue ink and a red pen: friendly handwriting, a double underline on the key word and checklists worth saving."
+  },
+  "bestFor": [
+    "checklists",
+    "prompts",
+    "cheat sheets",
+    "step by step",
+    "study notes"
+  ],
+  "ships": "1.0",
+  "paintable": true,
+  "roles": {
+    "bg": "#F6F0DF",
+    "surface": "#FFFCF2",
+    "ink": "#1D2B5A",
+    "inkMuted": "#56608A",
+    "accent": "#D8382C",
+    "accent2": "#CBA36B"
+  },
+  "brandBindings": [
+    "bg",
+    "surface",
+    "ink",
+    "inkMuted",
+    "accent",
+    "fonts"
+  ],
+  "type": {
+    "display": {
+      "family": "playpen-sans-arabic",
+      "wght": 700,
+      "lh": 1.35
+    },
+    "heading": {
+      "family": "playpen-sans-arabic",
+      "wght": 700,
+      "lh": 1.4
+    },
+    "body": {
+      "family": "readex-pro",
+      "wght": 400,
+      "lh": 1.6
+    },
+    "latin": {
+      "family": "readex-pro",
+      "wght": 600
+    },
+    "scale": {
+      "hero": [
+        120,
+        170
+      ],
+      "heroTarget": 142,
+      "h1": 84,
+      "h2": 68,
+      "title": [
+        64,
+        72
+      ],
+      "body": [
+        44,
+        48
+      ],
+      "small": 34,
+      "micro": 30
+    }
+  },
+  "layout": {
+    "align": "start",
+    "coverAnchor": "top",
+    "headlineWidth": [
+      0.65,
+      0.85
+    ]
+  },
+  "background": {
+    "kind": "paper",
+    "params": {
+      "role": "bg"
+    }
+  },
+  "decor": {
+    "highlight": "underline",
+    "numbering": "pill",
+    "texture": "ruled",
+    "kashida": {
+      "allowed": false
+    }
+  },
+  "chrome": {
+    "handle": {
+      "slot": "header-start",
+      "logo": "auto"
+    },
+    "meta": {
+      "slot": "header-end"
+    },
+    "counter": {
+      "slot": "footer-center",
+      "format": "{i} من {n}"
+    },
+    "swipe": {
+      "slot": "footer-end",
+      "style": "label+chevron"
+    },
+    "savePill": {
+      "slot": "footer-start",
+      "showOn": [
+        "cta"
+      ]
+    }
+  },
+  "variants": {
+    "cover": [
+      "top",
+      "center",
+      "split"
+    ],
+    "rehook": [
+      "base",
+      "split"
+    ],
+    "item": [
+      "base",
+      "side-number",
+      "ghost-number"
+    ],
+    "step": [
+      "pill",
+      "base",
+      "ghost-number"
+    ],
+    "stat": [
+      "base",
+      "bar"
+    ],
+    "compare": [
+      "columns",
+      "stacked",
+      "versus"
+    ],
+    "myth-fact": [
+      "columns",
+      "stacked"
+    ],
+    "quote": [
+      "base",
+      "mark"
+    ],
+    "story-beat": [
+      "panel",
+      "base"
+    ],
+    "checklist": [
+      "boxes",
+      "ruled",
+      "base"
+    ],
+    "summary": [
+      "list",
+      "grid"
+    ],
+    "setup": [
+      "cards",
+      "base"
+    ],
+    "proof": [
+      "screenshot",
+      "base"
+    ],
+    "share": [
+      "base",
+      "big-word"
+    ],
+    "cta": [
+      "pill",
+      "base",
+      "keyword"
+    ],
+    "offer": [
+      "card",
+      "base"
+    ],
+    "testimonial": [
+      "card",
+      "base"
+    ],
+    "poster": [
+      "top",
+      "center"
+    ],
+    "grid": [
+      "bento"
+    ],
+    "timeline": [
+      "rail"
+    ]
+  },
+  "motion": {
+    "default": "highlight-sweep",
+    "allowed": [
+      "calm",
+      "reorder",
+      "highlight-sweep",
+      "counter",
+      "stamp",
+      "map-dots",
+      "drop-clock"
+    ]
+  },
+  "floors": {
+    "hero": 96,
+    "body": 42,
+    "meta": 30,
+    "contrastBody": 4.5,
+    "contrastLarge": 3
+  },
+  "art": {
+    "stroke": 2,
+    "cap": "round",
+    "join": "round",
+    "container": "hand-circle",
+    "radius": {
+      "chip": 14,
+      "tile": 18,
+      "card": 18,
+      "panel": 20,
+      "window": 20
+    },
+    "shadow": {
+      "kind": "hard",
+      "dx": -4,
+      "dy": 5
+    },
+    "outline": 3,
+    "objectOutline": 0.035,
+    "outlineColor": "ink",
+    "retrace": {
+      "dx": 0.5,
+      "dy": 0.4,
+      "rot": 0.8
+    },
+    "fill": "flat",
+    "wobble": 0.6,
+    "tilt": 3,
+    "texture": "ruled",
+    "doodle": "pencil",
+    "colors": {
+      "note": "#FFE88A",
+      "support": [
+        "#2E8B57",
+        "#F4B63F"
+      ]
+    },
+    "mark": "outline",
+    "badge": "stamp",
+    "fills": {
+      "giant": "surface"
+    },
+    "hand": {
+      "family": "playpen-sans-arabic",
+      "wght": 400
+    },
+    "chipOffset": 0,
+    "templates": [
+      "cluster",
+      "duo-stack",
+      "trio",
+      "versus"
+    ],
+    "affinity": {
+      "icon": 0.7,
+      "scene": 0.8,
+      "rows": 0.9,
+      "numeral": 0.6,
+      "chart": 0.5,
+      "mock": 1,
+      "photo": 0.5,
+      "field": 0.6,
+      "word": 0.7,
+      "pattern": 0.3
+    },
+    "marks": [
+      "arrow",
+      "circle",
+      "underline",
+      "strike",
+      "doodle",
+      "tick"
+    ],
+    "rail": {
+      "style": "tally"
+    },
+    "thread": {
+      "style": "none"
+    },
+    "motif": "page-tab"
+  },
+  "tones": {
+    "invert": {
+      "roles": {
+        "bg": "ink",
+        "surface": {
+          "mix": [
+            "ink",
+            "bg",
+            0.035
+          ]
+        },
+        "ink": "bg",
+        "inkMuted": {
+          "muted": 4.7
+        },
+        "accent": "accent"
+      }
+    },
+    "field": {
+      "roles": {
+        "bg": "accent2",
+        "surface": "surface",
+        "ink": "ink",
+        "inkMuted": {
+          "muted": 4.7
+        },
+        "accent": "accent"
+      }
+    }
+  }
+}

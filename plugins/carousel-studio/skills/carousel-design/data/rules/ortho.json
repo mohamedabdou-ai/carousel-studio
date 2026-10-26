@@ -1,0 +1,1000 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "1.0.0",
+  "description": "Orthography, punctuation, digit and bidi rules read by _cs.lint (Python) and CS.qa (JavaScript). word-map rules match whole tokens on diacritic-stripped text and honour clitics; regex rules run on the raw NFC text with literal replacements (no capture groups); check rules call the engine's built-in checks. Only deterministic, high-precision rules carry autofix. Confidence below 0.9 means: read the sentence before accepting the fix.",
+  "clitics": [
+    "و",
+    "ف",
+    "ب",
+    "ل",
+    "ك",
+    "ال",
+    "وال",
+    "بال",
+    "كال",
+    "فال",
+    "لل",
+    "ولل"
+  ],
+  "rules": [
+    {
+      "id": "ORTHO-ENC-001",
+      "kind": "check",
+      "sev": "BLOCK",
+      "confidence": 1.0,
+      "autofix": true,
+      "check": "persian-letters",
+      "msg": {
+        "ar": "حرف فارسي في نص عربي (ی ک ھ): يُستبدل بـ ي ك ه.",
+        "en": "Persian letter in Arabic text (ی ک ھ): replace with ي ك ه."
+      }
+    },
+    {
+      "id": "ORTHO-ENC-002",
+      "kind": "char",
+      "sev": "BLOCK",
+      "confidence": 0.95,
+      "autofix": true,
+      "map": {
+        "ہ": "ه",
+        "ۃ": "ة",
+        "ے": "ي"
+      },
+      "msg": {
+        "ar": "حرف أردي دخل النص من لصق مصدر آخر: يُستبدل بنظيره العربي.",
+        "en": "Urdu letter pasted from another source: replace with its Arabic equivalent."
+      }
+    },
+    {
+      "id": "ORTHO-ENC-003",
+      "kind": "regex",
+      "sev": "BLOCK",
+      "confidence": 0.95,
+      "autofix": false,
+      "pattern": "[\\uFB50-\\uFDF9\\uFE70-\\uFEFE]",
+      "replace": "",
+      "msg": {
+        "ar": "النص مكتوب بأشكال العرض الجاهزة (Presentation Forms) غالبًا من PDF: أعد النص من مصدره الأصلي بالحروف الأساسية.",
+        "en": "Text uses Arabic Presentation Forms (usually pasted from a PDF): re-source it with base letters."
+      }
+    },
+    {
+      "id": "ORTHO-ENC-004",
+      "kind": "regex",
+      "sev": "FIX",
+      "confidence": 0.95,
+      "autofix": false,
+      "pattern": "[\\u200B\\uFEFF\\u00AD\\u2060]",
+      "replace": "",
+      "msg": {
+        "ar": "محرف خفي (مسافة صفرية العرض أو شرطة اختيارية) داخل النص: يُحذف.",
+        "en": "Invisible character (zero-width space, soft hyphen, BOM or word joiner) in the copy: delete it."
+      }
+    },
+    {
+      "id": "ORTHO-ENC-005",
+      "kind": "regex",
+      "sev": "FIX",
+      "confidence": 0.9,
+      "autofix": false,
+      "pattern": "[\\u200E\\u200F\\u061C\\u202A-\\u202C\\u2066-\\u2069]",
+      "replace": "",
+      "msg": {
+        "ar": "علامة اتجاه مدسوسة في النص المخزَّن: المحرك يعزل المقاطع اللاتينية بنفسه، فاحذفها.",
+        "en": "Direction mark inside stored copy: the engine isolates LTR runs itself, so remove it."
+      }
+    },
+    {
+      "id": "ORTHO-ENC-006",
+      "kind": "regex",
+      "sev": "BLOCK",
+      "confidence": 0.98,
+      "autofix": false,
+      "pattern": "[\\u202D\\u202E]",
+      "replace": "",
+      "msg": {
+        "ar": "محرف قلب الاتجاه القسري (LRO/RLO): ممنوع نهائيًا لأنه يكسر النسخ والبحث وقارئ الشاشة.",
+        "en": "Forced direction override (LRO/RLO): never allowed; it breaks copy, search and screen readers."
+      }
+    },
+    {
+      "id": "ORTHO-DIG-001",
+      "kind": "check",
+      "sev": "BLOCK",
+      "confidence": 1.0,
+      "autofix": true,
+      "check": "persian-digits",
+      "msg": {
+        "ar": "أرقام فارسية دخلت من لصق مصدر آخر: تُحوَّل لنظام أرقام البراند.",
+        "en": "Persian digits pasted from another source: convert to the brand digit system."
+      }
+    },
+    {
+      "id": "ORTHO-DIG-002",
+      "kind": "check",
+      "sev": "BLOCK",
+      "confidence": 1.0,
+      "autofix": true,
+      "check": "mixed-digits",
+      "msg": {
+        "ar": "نظامان للأرقام في نص واحد: يُوحَّد على نظام واحد (الغربية 123 افتراضيًا).",
+        "en": "Two digit systems in one text: unify (Western 123 by default)."
+      }
+    },
+    {
+      "id": "ORTHO-DIG-003",
+      "kind": "check",
+      "sev": "BLOCK",
+      "confidence": 1.0,
+      "autofix": true,
+      "check": "percent-sign",
+      "msg": {
+        "ar": "علامة النسبة لا تطابق نظام الأرقام: % مع الأرقام 123، و٪ مع الأرقام الهندية.",
+        "en": "Percent sign does not match the digit system: % goes with 0-9, ٪ with Arabic-Indic digits."
+      }
+    },
+    {
+      "id": "ORTHO-DIG-004",
+      "kind": "check",
+      "sev": "FIX",
+      "confidence": 0.95,
+      "autofix": true,
+      "check": "digit-glued-to-word",
+      "msg": {
+        "ar": "رقم ملتصق بالكلمة: تُضاف مسافة بينهما.",
+        "en": "A digit is glued to the word next to it: add a space."
+      }
+    },
+    {
+      "id": "ORTHO-PUNCT-001",
+      "kind": "check",
+      "sev": "FIX",
+      "confidence": 0.98,
+      "autofix": true,
+      "check": "space-before-punct",
+      "msg": {
+        "ar": "مسافة قبل علامة الترقيم: تُحذف.",
+        "en": "Space before a punctuation mark: remove it."
+      }
+    },
+    {
+      "id": "ORTHO-PUNCT-002",
+      "kind": "check",
+      "sev": "FIX",
+      "confidence": 0.9,
+      "autofix": false,
+      "check": "missing-space-after-punct",
+      "msg": {
+        "ar": "علامة ترقيم بلا مسافة بعدها: أضف مسافة.",
+        "en": "Punctuation mark without a following space: add one."
+      }
+    },
+    {
+      "id": "ORTHO-PUNCT-003",
+      "kind": "check",
+      "sev": "FIX",
+      "confidence": 0.95,
+      "autofix": true,
+      "check": "latin-punct-in-arabic",
+      "msg": {
+        "ar": "علامة ترقيم لاتينية داخل جملة عربية: تُستبدل بـ ، ؛ ؟",
+        "en": "Latin punctuation inside an Arabic sentence: use ، ؛ ؟"
+      }
+    },
+    {
+      "id": "ORTHO-PUNCT-004",
+      "kind": "check",
+      "sev": "FIX",
+      "confidence": 1.0,
+      "autofix": true,
+      "check": "double-space",
+      "msg": {
+        "ar": "مسافتان متتاليتان: تُختزلان إلى مسافة.",
+        "en": "Double space: collapse to one."
+      }
+    },
+    {
+      "id": "ORTHO-PUNCT-005",
+      "kind": "check",
+      "sev": "FIX",
+      "confidence": 0.98,
+      "autofix": true,
+      "check": "ellipsis-dots",
+      "msg": {
+        "ar": "ثلاث نقاط: تُستبدل بعلامة الحذف …",
+        "en": "Three dots: use the single ellipsis character …"
+      }
+    },
+    {
+      "id": "ORTHO-PUNCT-006",
+      "kind": "check",
+      "sev": "FIX",
+      "confidence": 0.95,
+      "autofix": true,
+      "check": "repeated-punct",
+      "msg": {
+        "ar": "علامة ترقيم مكرّرة (؟؟ !! ،،): تُختزل إلى علامة واحدة.",
+        "en": "Repeated punctuation (؟؟ !! ،،): keep one."
+      }
+    },
+    {
+      "id": "ORTHO-PUNCT-007",
+      "kind": "check",
+      "sev": "NOTE",
+      "confidence": 0.6,
+      "autofix": false,
+      "check": "emoji-edge",
+      "msg": {
+        "ar": "إيموجي في أول السطر العربي أو آخره: قد ينقلب موضعه؛ الأفضل داخل الجملة أو بلا إيموجي.",
+        "en": "Emoji at the edge of an Arabic line may flip sides: place it inside the sentence or drop it."
+      }
+    },
+    {
+      "id": "ORTHO-BIDI-001",
+      "kind": "check",
+      "sev": "BLOCK",
+      "confidence": 0.98,
+      "autofix": true,
+      "check": "lam-latin-stranded",
+      "msg": {
+        "ar": "«لـ/بـ/الـ» منفصلة عن الكلمة اللاتينية بعدها: تُلصق بها.",
+        "en": "A prefix (لـ/بـ/الـ) is separated from the Latin word it belongs to: attach it."
+      }
+    },
+    {
+      "id": "ORTHO-BIDI-002",
+      "kind": "check",
+      "sev": "FIX",
+      "confidence": 0.85,
+      "autofix": true,
+      "check": "number-noun-unbound",
+      "msg": {
+        "ar": "الرقم ومعدوده بمسافة عادية: تُستبدل بمسافة غير فاصلة (U+00A0) حتى لا ينفصلا بين سطرين.",
+        "en": "Number and noun separated by an ordinary space: bind with U+00A0 so they never split across lines."
+      }
+    },
+    {
+      "id": "ORTHO-TATWEEL-001",
+      "kind": "check",
+      "sev": "FIX",
+      "confidence": 0.98,
+      "autofix": true,
+      "check": "programmatic-tatweel",
+      "msg": {
+        "ar": "تطويل (كشيدة) مكتوب بالمحرف: يُحذف؛ الكشيدة الزخرفية تُضاف من الاستوديو لكلمة واحدة فقط وحيث يسمح الستايل.",
+        "en": "Hand-typed tatweel: remove it; decorative kashida is applied by the Studio to one word where the preset allows."
+      }
+    },
+    {
+      "id": "ORTHO-TASH-001",
+      "kind": "regex",
+      "sev": "FIX",
+      "confidence": 0.7,
+      "autofix": false,
+      "pattern": "[\\u0621-\\u064A]*[\\u064B-\\u0652][\\u0621-\\u064A\\u064B-\\u0652]*[\\u064B-\\u0652][\\u0621-\\u064A\\u064B-\\u0652]*[\\u064B-\\u0652][\\u0621-\\u064A\\u064B-\\u0652]*",
+      "replace": "",
+      "msg": {
+        "ar": "تشكيل كامل لكلمة: التشكيل للتمييز عند اللبس فقط؛ أبقِ الحركة التي تفرّق المعنى واحذف الباقي.",
+        "en": "Fully vowelled word: keep a diacritic only where it disambiguates the word, drop the rest."
+      }
+    },
+    {
+      "id": "ORTHO-HAMZA-001",
+      "kind": "word-map",
+      "sev": "FIX",
+      "confidence": 0.92,
+      "autofix": false,
+      "msg": {
+        "ar": "همزة القطع ناقصة: مصدر الفعل الرباعي يبدأ بـ«إ».",
+        "en": "Missing hamza: the verbal noun of a form-IV verb starts with «إ»."
+      },
+      "clitics": true,
+      "map": {
+        "اعلان": "إعلان",
+        "اعلانات": "إعلانات",
+        "اضافة": "إضافة",
+        "اضافات": "إضافات",
+        "اضافي": "إضافي",
+        "اضافية": "إضافية",
+        "اجابة": "إجابة",
+        "اجابات": "إجابات",
+        "ارسال": "إرسال",
+        "انشاء": "إنشاء",
+        "ادارة": "إدارة",
+        "اعادة": "إعادة",
+        "اكمال": "إكمال",
+        "اجراء": "إجراء",
+        "اجراءات": "إجراءات",
+        "انتاج": "إنتاج",
+        "انتاجية": "إنتاجية",
+        "امكانية": "إمكانية",
+        "امكانيات": "إمكانيات",
+        "اتقان": "إتقان",
+        "ابداع": "إبداع",
+        "انجاز": "إنجاز",
+        "انجازات": "إنجازات",
+        "ارشاد": "إرشاد",
+        "احصاء": "إحصاء",
+        "احصائية": "إحصائية",
+        "احصائيات": "إحصائيات",
+        "اشارة": "إشارة",
+        "اصدار": "إصدار",
+        "اصلاح": "إصلاح",
+        "ادخال": "إدخال",
+        "اخراج": "إخراج",
+        "الغاء": "إلغاء",
+        "ايجاد": "إيجاد",
+        "ايجابي": "إيجابي",
+        "ايجابية": "إيجابية",
+        "ايمان": "إيمان",
+        "اجازة": "إجازة",
+        "اعجاب": "إعجاب",
+        "انسان": "إنسان"
+      }
+    },
+    {
+      "id": "ORTHO-HAMZA-002",
+      "kind": "word-map",
+      "sev": "FIX",
+      "confidence": 0.9,
+      "autofix": false,
+      "msg": {
+        "ar": "همزة القطع ناقصة في صيغة التفضيل (أفعل).",
+        "en": "Missing hamza on a comparative/superlative (أفعل) form."
+      },
+      "clitics": true,
+      "map": {
+        "افضل": "أفضل",
+        "اكثر": "أكثر",
+        "اقل": "أقل",
+        "اهم": "أهم",
+        "احسن": "أحسن",
+        "احلى": "أحلى",
+        "اجمل": "أجمل",
+        "اسرع": "أسرع",
+        "اسهل": "أسهل",
+        "اصعب": "أصعب",
+        "اكبر": "أكبر",
+        "اصغر": "أصغر",
+        "اقوى": "أقوى",
+        "ارخص": "أرخص",
+        "اغلى": "أغلى",
+        "اطول": "أطول",
+        "اقصر": "أقصر",
+        "ابسط": "أبسط",
+        "اذكى": "أذكى",
+        "ادق": "أدق",
+        "اوضح": "أوضح",
+        "احدث": "أحدث",
+        "اعلى": "أعلى",
+        "ادنى": "أدنى",
+        "اشهر": "أشهر"
+      }
+    },
+    {
+      "id": "ORTHO-HAMZA-003",
+      "kind": "word-map",
+      "sev": "FIX",
+      "confidence": 0.88,
+      "autofix": false,
+      "msg": {
+        "ar": "همزة القطع ناقصة في أول الاسم.",
+        "en": "Missing hamza at the start of the noun."
+      },
+      "clitics": true,
+      "map": {
+        "ادوات": "أدوات",
+        "اداة": "أداة",
+        "اسئلة": "أسئلة",
+        "اسعار": "أسعار",
+        "اسباب": "أسباب",
+        "اخطاء": "أخطاء",
+        "افكار": "أفكار",
+        "اعمال": "أعمال",
+        "اشخاص": "أشخاص",
+        "اوقات": "أوقات",
+        "اسرار": "أسرار",
+        "اساس": "أساس",
+        "اساسي": "أساسي",
+        "اساسية": "أساسية",
+        "اسلوب": "أسلوب",
+        "اساليب": "أساليب",
+        "امثلة": "أمثلة",
+        "اهداف": "أهداف",
+        "اهمية": "أهمية",
+        "ارقام": "أرقام",
+        "ارباح": "أرباح",
+        "اموال": "أموال",
+        "ايام": "أيام",
+        "اخبار": "أخبار",
+        "اصدقاء": "أصدقاء",
+        "اصحاب": "أصحاب",
+        "اطفال": "أطفال",
+        "اسماء": "أسماء",
+        "استاذ": "أستاذ",
+        "استاذة": "أستاذة",
+        "امراة": "امرأة",
+        "اسبوع": "أسبوع",
+        "اسابيع": "أسابيع",
+        "اسبوعي": "أسبوعي",
+        "ابواب": "أبواب",
+        "اجهزة": "أجهزة",
+        "اشياء": "أشياء",
+        "اهل": "أهل"
+      }
+    },
+    {
+      "id": "ORTHO-HAMZA-004",
+      "kind": "word-map",
+      "sev": "FIX",
+      "confidence": 0.85,
+      "autofix": false,
+      "msg": {
+        "ar": "همزة القطع ناقصة في كلمة وظيفية شائعة.",
+        "en": "Missing hamza on a very common function word."
+      },
+      "clitics": true,
+      "map": {
+        "ايضا": "أيضا",
+        "اولا": "أولا",
+        "اخيرا": "أخيرا",
+        "ابدا": "أبدا",
+        "احيانا": "أحيانا",
+        "اصلا": "أصلا",
+        "اساسا": "أساسا",
+        "امس": "أمس",
+        "اذا": "إذا",
+        "اذن": "إذن",
+        "الى": "إلى",
+        "اول": "أول",
+        "اخير": "أخير",
+        "احدى": "إحدى",
+        "اهلا": "أهلا",
+        "راي": "رأي",
+        "رايك": "رأيك",
+        "رايكم": "رأيكم",
+        "رايي": "رأيي"
+      }
+    },
+    {
+      "id": "ORTHO-HAMZA-005",
+      "kind": "word-map",
+      "sev": "NOTE",
+      "confidence": 0.75,
+      "autofix": false,
+      "dialects": [
+        "eg"
+      ],
+      "msg": {
+        "ar": "الهمزة في الإملاء المصري المتعارف عليه: «إزاي، إيه، أوي، أكتر، إحنا، أكيد». نصيحة إملائية لا خطأ.",
+        "en": "Conventional Egyptian spelling carries the hamza («إزاي، إيه، أوي، أكتر، إحنا، أكيد»). A style note, not an error."
+      },
+      "clitics": true,
+      "map": {
+        "ازاي": "إزاي",
+        "ايه": "إيه",
+        "اوي": "أوي",
+        "اكتر": "أكتر",
+        "احنا": "إحنا",
+        "اكيد": "أكيد"
+      }
+    },
+    {
+      "id": "ORTHO-HAMZA-006",
+      "kind": "word-map",
+      "sev": "NOTE",
+      "confidence": 0.75,
+      "autofix": false,
+      "dialects": [
+        "eg",
+        "levant"
+      ],
+      "msg": {
+        "ar": "«إنت» بهمزة تحت في المصري والشامي.",
+        "en": "Spell «إنت» with hamza below in Egyptian and Levantine."
+      },
+      "clitics": false,
+      "map": {
+        "انت": "إنت",
+        "وانت": "وإنت",
+        "فانت": "فإنت"
+      }
+    },
+    {
+      "id": "ORTHO-HAMZA-007",
+      "kind": "word-map",
+      "sev": "FIX",
+      "confidence": 0.8,
+      "autofix": false,
+      "dialects": [
+        "msa-white",
+        "gulf"
+      ],
+      "msg": {
+        "ar": "«أنت» بهمزة فوق في الفصحى والخليجي.",
+        "en": "Spell «أنت» with hamza above in MSA and Gulf copy."
+      },
+      "clitics": false,
+      "map": {
+        "انت": "أنت",
+        "وانت": "وأنت",
+        "فانت": "فأنت"
+      }
+    },
+    {
+      "id": "ORTHO-HAMZA-008",
+      "kind": "word-map",
+      "sev": "FIX",
+      "confidence": 0.9,
+      "autofix": false,
+      "msg": {
+        "ar": "كتابة الهمزة على غير كرسيّها الصحيح.",
+        "en": "Hamza written on the wrong seat."
+      },
+      "clitics": true,
+      "map": {
+        "شئ": "شيء",
+        "شئون": "شؤون",
+        "مسئول": "مسؤول",
+        "مسئولية": "مسؤولية",
+        "مسئولين": "مسؤولين",
+        "مسئولة": "مسؤولة",
+        "تفائل": "تفاؤل",
+        "تشائم": "تشاؤم",
+        "فجاة": "فجأة",
+        "مفاجاة": "مفاجأة",
+        "ملجا": "ملجأ",
+        "سوال": "سؤال",
+        "هادىء": "هادئ",
+        "هاديء": "هادئ",
+        "بطىء": "بطيء",
+        "بطئ": "بطيء",
+        "شاطىء": "شاطئ",
+        "قارىء": "قارئ",
+        "مبادىء": "مبادئ",
+        "مبتدىء": "مبتدئ",
+        "جرىء": "جريء",
+        "منشىء": "منشئ"
+      }
+    },
+    {
+      "id": "ORTHO-HAMZA-009",
+      "kind": "word-map",
+      "sev": "FIX",
+      "confidence": 0.7,
+      "autofix": false,
+      "msg": {
+        "ar": "«الوان» تفقد همزتها: «ألوان»، أو «الألوان» لو المقصود المعرّفة؛ اقرأ الجملة قبل القبول.",
+        "en": "«الوان» lost its hamza: «ألوان», or «الألوان» if the definite form was meant; read the sentence before accepting."
+      },
+      "clitics": false,
+      "map": {
+        "الوان": "ألوان"
+      }
+    },
+    {
+      "id": "ORTHO-HAMZA-010",
+      "kind": "word-map",
+      "sev": "FIX",
+      "confidence": 0.8,
+      "autofix": false,
+      "msg": {
+        "ar": "«احد» تفقد همزتها: «أحد». أما «واحد» فصحيحة كما هي.",
+        "en": "«احد» lost its hamza: «أحد». «واحد» is correct as written."
+      },
+      "clitics": false,
+      "map": {
+        "احد": "أحد"
+      }
+    },
+    {
+      "id": "ORTHO-HAMZA-011",
+      "kind": "word-map",
+      "sev": "FIX",
+      "confidence": 0.85,
+      "autofix": false,
+      "msg": {
+        "ar": "همزة القطع ناقصة في «أنا» و«أين».",
+        "en": "Missing hamza on «أنا» and «أين»."
+      },
+      "clitics": false,
+      "map": {
+        "انا": "أنا",
+        "وانا": "وأنا",
+        "فانا": "فأنا",
+        "اين": "أين",
+        "واين": "وأين",
+        "فاين": "فأين"
+      }
+    },
+    {
+      "id": "ORTHO-WASL-001",
+      "kind": "word-map",
+      "sev": "FIX",
+      "confidence": 0.9,
+      "autofix": false,
+      "msg": {
+        "ar": "همزة وصل كُتبت همزة قطع: مصادر الأفعال الخماسية والسداسية تبدأ بألف عادية.",
+        "en": "A connecting hamza (hamzat al-wasl) was written as a cutting hamza: verbal nouns of forms VII-X start with a plain alif."
+      },
+      "clitics": true,
+      "map": {
+        "إستخدام": "استخدام",
+        "إستخدم": "استخدم",
+        "إستخدمت": "استخدمت",
+        "إستمرار": "استمرار",
+        "إستثمار": "استثمار",
+        "إستعمال": "استعمال",
+        "إستراتيجية": "استراتيجية",
+        "إستفسار": "استفسار",
+        "إستقبال": "استقبال",
+        "إستعداد": "استعداد",
+        "إستجابة": "استجابة",
+        "إنتظار": "انتظار",
+        "إنتشار": "انتشار",
+        "إجتماع": "اجتماع",
+        "إختيار": "اختيار",
+        "إختبار": "اختبار",
+        "إقتصاد": "اقتصاد",
+        "إكتشاف": "اكتشاف",
+        "إنتباه": "انتباه",
+        "إشتراك": "اشتراك",
+        "إشتراكات": "اشتراكات",
+        "إثنين": "اثنين",
+        "إثنان": "اثنان",
+        "إثنتين": "اثنتين",
+        "إثنا": "اثنا",
+        "إثني": "اثني"
+      }
+    },
+    {
+      "id": "ORTHO-TAA-001",
+      "kind": "word-map",
+      "sev": "FIX",
+      "confidence": 0.65,
+      "autofix": false,
+      "msg": {
+        "ar": "هل المقصود تاء مربوطة؟ الكلمة مؤنثة وتنتهي هنا بهاء. تحقق من السياق: قد تكون هاء ضمير الغائب فعلًا.",
+        "en": "Taa marbuta expected? The word is feminine but ends in a haa here. Check the context: it may genuinely be the pronoun suffix."
+      },
+      "clitics": true,
+      "map": {
+        "مدرسه": "مدرسة",
+        "جامعه": "جامعة",
+        "شركه": "شركة",
+        "ساعه": "ساعة",
+        "فكره": "فكرة",
+        "رساله": "رسالة",
+        "خطوه": "خطوة",
+        "طريقه": "طريقة",
+        "نتيجه": "نتيجة",
+        "مشكله": "مشكلة",
+        "مقاله": "مقالة",
+        "قصه": "قصة",
+        "تجربه": "تجربة",
+        "فرصه": "فرصة",
+        "خدمه": "خدمة",
+        "حياه": "حياة",
+        "صفحه": "صفحة",
+        "قناه": "قناة",
+        "قاعده": "قاعدة",
+        "قيمه": "قيمة",
+        "دقيقه": "دقيقة",
+        "ثانيه": "ثانية",
+        "سنه": "سنة",
+        "مرحله": "مرحلة",
+        "معلومه": "معلومة",
+        "عمليه": "عملية",
+        "كلمه": "كلمة",
+        "جمله": "جملة",
+        "نقطه": "نقطة",
+        "صوره": "صورة",
+        "مجموعه": "مجموعة",
+        "منطقه": "منطقة",
+        "ميزه": "ميزة",
+        "مهاره": "مهارة",
+        "فائده": "فائدة",
+        "فايده": "فائدة",
+        "خبره": "خبرة",
+        "دوره": "دورة",
+        "سياره": "سيارة",
+        "مساحه": "مساحة",
+        "صناعه": "صناعة",
+        "زياره": "زيارة",
+        "تجاره": "تجارة",
+        "هويه": "هوية",
+        "ثقافه": "ثقافة",
+        "دراسه": "دراسة",
+        "منصه": "منصة",
+        "مسابقه": "مسابقة",
+        "حلقه": "حلقة",
+        "عائله": "عائلة",
+        "مهمه": "مهمة",
+        "قضيه": "قضية",
+        "حقيقه": "حقيقة",
+        "طبيعه": "طبيعة",
+        "مبادره": "مبادرة",
+        "ملاحظه": "ملاحظة",
+        "محاضره": "محاضرة",
+        "مناسبه": "مناسبة",
+        "مؤسسه": "مؤسسة",
+        "معرفه": "معرفة",
+        "مشاركه": "مشاركة",
+        "بدايه": "بداية",
+        "نهايه": "نهاية",
+        "رحله": "رحلة",
+        "شبكه": "شبكة",
+        "بطاقه": "بطاقة",
+        "خريطه": "خريطة",
+        "ورقه": "ورقة",
+        "مكتبه": "مكتبة",
+        "كتابه": "كتابة",
+        "بيئه": "بيئة",
+        "ماده": "مادة",
+        "سهوله": "سهولة",
+        "صعوبه": "صعوبة",
+        "سرعه": "سرعة",
+        "جوده": "جودة",
+        "قوه": "قوة",
+        "ميزانيه": "ميزانية",
+        "استراتيجيه": "استراتيجية",
+        "تقنيه": "تقنية",
+        "تغطيه": "تغطية",
+        "تنميه": "تنمية",
+        "تغذيه": "تغذية",
+        "حكايه": "حكاية"
+      }
+    },
+    {
+      "id": "ORTHO-TAA-002",
+      "kind": "word-map",
+      "sev": "FIX",
+      "confidence": 0.65,
+      "autofix": false,
+      "msg": {
+        "ar": "همزة قطع ناقصة وتاء مربوطة مكتوبة هاءً في الكلمة نفسها.",
+        "en": "The word is missing its hamza and writes the taa marbuta as a haa."
+      },
+      "clitics": true,
+      "map": {
+        "اضافه": "إضافة",
+        "اداره": "إدارة",
+        "اعاده": "إعادة",
+        "اجابه": "إجابة",
+        "اسره": "أسرة",
+        "اهميه": "أهمية"
+      }
+    },
+    {
+      "id": "ORTHO-YAA-001",
+      "kind": "word-map",
+      "sev": "FIX",
+      "confidence": 0.9,
+      "autofix": false,
+      "msg": {
+        "ar": "الياء والألف المقصورة: النقطتان تحت الياء في «في، اللي، الذي، التي، هي»، وبلا نقطتين في «حتى، متى، مستشفى، أخرى».",
+        "en": "Yaa vs alif maqsura: dotted yaa in «في، اللي، الذي، التي، هي», dotless in «حتى، متى، مستشفى، أخرى»."
+      },
+      "clitics": true,
+      "map": {
+        "فى": "في",
+        "اللى": "اللي",
+        "الذى": "الذي",
+        "التى": "التي",
+        "هى": "هي",
+        "حتي": "حتى",
+        "متي": "متى",
+        "مستشفي": "مستشفى",
+        "معني": "معنى",
+        "ذكري": "ذكرى",
+        "موسي": "موسى",
+        "عيسي": "عيسى",
+        "يحيي": "يحيى",
+        "مصطفي": "مصطفى",
+        "الكبري": "الكبرى",
+        "الصغري": "الصغرى",
+        "الوسطي": "الوسطى",
+        "اخري": "أخرى",
+        "اخرى": "أخرى",
+        "اولي": "أولى",
+        "اولى": "أولى"
+      }
+    },
+    {
+      "id": "ORTHO-YAA-002",
+      "kind": "word-map",
+      "sev": "FIX",
+      "confidence": 0.8,
+      "autofix": false,
+      "msg": {
+        "ar": "ياء النسبة تُكتب بنقطتين تحتها.",
+        "en": "The relative-adjective (nisba) yaa carries its two dots."
+      },
+      "clitics": true,
+      "map": {
+        "رئيسى": "رئيسي",
+        "اساسى": "أساسي",
+        "شخصى": "شخصي",
+        "عملى": "عملي",
+        "عربى": "عربي",
+        "مصرى": "مصري",
+        "اسلامى": "إسلامي",
+        "اجتماعى": "اجتماعي",
+        "اقتصادى": "اقتصادي",
+        "تجارى": "تجاري",
+        "رقمى": "رقمي",
+        "مالى": "مالي",
+        "فنى": "فني",
+        "علمى": "علمي",
+        "ثقافى": "ثقافي",
+        "طبى": "طبي",
+        "تعليمى": "تعليمي",
+        "مهنى": "مهني",
+        "يومى": "يومي",
+        "مجانى": "مجاني",
+        "نهائى": "نهائي"
+      }
+    },
+    {
+      "id": "ORTHO-SPLIT-001",
+      "kind": "word-map",
+      "sev": "FIX",
+      "confidence": 0.95,
+      "autofix": false,
+      "msg": {
+        "ar": "خطأ إملائي شائع في كلمة من كلمات الإشارة أو الاستدراك أو لفظ الجلالة.",
+        "en": "Common misspelling of a demonstrative, a contrastive particle or the name of God."
+      },
+      "clitics": false,
+      "map": {
+        "هاذا": "هذا",
+        "هاذه": "هذه",
+        "ذالك": "ذلك",
+        "لاكن": "لكن",
+        "اولائك": "أولئك",
+        "اولئك": "أولئك",
+        "هولاء": "هؤلاء",
+        "اللة": "الله",
+        "هذة": "هذه"
+      }
+    },
+    {
+      "id": "ORTHO-SPLIT-002",
+      "kind": "word-map",
+      "sev": "FIX",
+      "confidence": 0.8,
+      "autofix": false,
+      "msg": {
+        "ar": "«لا شيء» كلمتان.",
+        "en": "«لا شيء» is two words."
+      },
+      "clitics": false,
+      "map": {
+        "لاشيء": "لا شيء"
+      }
+    },
+    {
+      "id": "ORTHO-SPLIT-003",
+      "kind": "word-map",
+      "sev": "NOTE",
+      "confidence": 0.7,
+      "autofix": false,
+      "msg": {
+        "ar": "الأصل «الحمد لله» بمسافة؛ الالتصاق شائع لكنه خروج عن الإملاء المعياري.",
+        "en": "The standard spelling is «الحمد لله» with a space; the merged form is common but non-standard."
+      },
+      "clitics": false,
+      "map": {
+        "الحمدلله": "الحمد لله"
+      }
+    },
+    {
+      "id": "ORTHO-SPLIT-004",
+      "kind": "regex",
+      "sev": "BLOCK",
+      "confidence": 0.95,
+      "autofix": false,
+      "pattern": "إنشاء الله",
+      "replace": "إن شاء الله",
+      "msg": {
+        "ar": "«إنشاء الله» تعني «خلق الله»! الصواب «إن شاء الله» بثلاث كلمات.",
+        "en": "«إنشاء الله» means «the creation of God». The phrase is «إن شاء الله», three words."
+      }
+    },
+    {
+      "id": "ORTHO-SPLIT-005",
+      "kind": "regex",
+      "sev": "BLOCK",
+      "confidence": 0.95,
+      "autofix": false,
+      "pattern": "انشاء الله",
+      "replace": "إن شاء الله",
+      "msg": {
+        "ar": "«انشاء الله» خطأ في العبارة: الصواب «إن شاء الله» بثلاث كلمات.",
+        "en": "«انشاء الله» is a misspelling of «إن شاء الله» (three words)."
+      }
+    },
+    {
+      "id": "ORTHO-SPLIT-006",
+      "kind": "regex",
+      "sev": "FIX",
+      "confidence": 0.9,
+      "autofix": false,
+      "pattern": "ان شاء الله",
+      "replace": "إن شاء الله",
+      "msg": {
+        "ar": "همزة القطع ناقصة في «إن شاء الله».",
+        "en": "Missing hamza in «إن شاء الله»."
+      }
+    },
+    {
+      "id": "ORTHO-SPLIT-007",
+      "kind": "regex",
+      "sev": "FIX",
+      "confidence": 0.92,
+      "autofix": false,
+      "pattern": "(إنشاء|انشاء)الله",
+      "replace": "إن شاء الله",
+      "msg": {
+        "ar": "«إن شاء الله» ثلاث كلمات منفصلة.",
+        "en": "«إن شاء الله» is three separate words."
+      }
+    },
+    {
+      "id": "ORTHO-SPLIT-008",
+      "kind": "regex",
+      "sev": "FIX",
+      "confidence": 0.9,
+      "autofix": false,
+      "pattern": "ماشاء الله",
+      "replace": "ما شاء الله",
+      "msg": {
+        "ar": "«ما شاء الله» ثلاث كلمات منفصلة.",
+        "en": "«ما شاء الله» is three separate words."
+      }
+    },
+    {
+      "id": "ORTHO-SPLIT-009",
+      "kind": "regex",
+      "sev": "FIX",
+      "confidence": 0.9,
+      "autofix": false,
+      "pattern": "ماشاءالله",
+      "replace": "ما شاء الله",
+      "msg": {
+        "ar": "«ما شاء الله» ثلاث كلمات منفصلة.",
+        "en": "«ما شاء الله» is three separate words."
+      }
+    },
+    {
+      "id": "ORTHO-TRANS-001",
+      "kind": "word-map",
+      "sev": "NOTE",
+      "confidence": 0.5,
+      "autofix": false,
+      "msg": {
+        "ar": "اسم علامة أو أداة مكتوب بحروف عربية: القاعدة أن الأسماء اللاتينية تبقى لاتينية (أضفه إلى مسموحات البراند لو تحب الكتابة العربية).",
+        "en": "A brand or tool name spelled in Arabic letters: Latin names stay Latin (add it to the brand allow-list if you prefer the Arabic spelling)."
+      },
+      "clitics": false,
+      "map": {
+        "يوتيوب": "YouTube",
+        "انستجرام": "Instagram",
+        "انستغرام": "Instagram",
+        "إنستجرام": "Instagram",
+        "إنستغرام": "Instagram",
+        "انستقرام": "Instagram",
+        "فيسبوك": "Facebook",
+        "واتساب": "WhatsApp",
+        "جوجل": "Google",
+        "غوغل": "Google",
+        "كانفا": "Canva",
+        "جيميل": "Gmail",
+        "ايفون": "iPhone",
+        "إيفون": "iPhone",
+        "اندرويد": "Android",
+        "أندرويد": "Android"
+      }
+    }
+  ]
+}

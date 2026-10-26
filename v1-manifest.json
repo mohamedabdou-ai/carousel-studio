@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "version": "1.1.0",
+  "description": "What version 1.0 ships and what it leaves for later. tools/release.py compares the lists with the tree and refuses to release a tree that disagrees with them. An item that was not solid by the end of the build is listed under 'deferred' and is neither shipped nor half-shipped (decision Q36); README.md and CHANGELOG.md repeat the deferred list.",
+  "skills": [
+    "arabic-proofread",
+    "brand-setup",
+    "carousel-create",
+    "carousel-design",
+    "content-angles",
+    "content-plan",
+    "visual-prompts"
+  ],
+  "commands": [
+    "audit",
+    "brand",
+    "carousel",
+    "plan",
+    "post",
+    "studio"
+  ],
+  "agents": [
+    "cs-arabic-editor",
+    "cs-art-director",
+    "cs-audience-panel",
+    "cs-copywriter",
+    "cs-creative-director",
+    "cs-motion-designer",
+    "cs-qa-producer",
+    "cs-strategist",
+    "cs-visual-artist"
+  ],
+  "presets": [
+    "swiss",
+    "creator",
+    "notebook",
+    "poster",
+    "interface",
+    "heritage"
+  ],
+  "recipes": [
+    "calm",
+    "counter",
+    "highlight-sweep",
+    "stamp",
+    "reorder",
+    "story",
+    "map-dots",
+    "drop-clock",
+    "none"
+  ],
+  "dialects": {
+    "stable": [
+      "eg",
+      "msa-white",
+      "en"
+    ],
+    "beta": [
+      "gulf",
+      "levant"
+    ]
+  },
+  "deferred": [
+    {
+      "id": "preset-editorial",
+      "what": "The `editorial` style",
+      "target": "1.2",
+      "reason": "Q37: v1 ships six presets."
+    },
+    {
+      "id": "preset-scrapbook",
+      "what": "The `scrapbook` style",
+      "target": "1.2",
+      "reason": "Q37."
+    },
+    {
+      "id": "styles-held",
+      "what": "The `swiss`, `interface` and `heritage` styles on the new engine. Their files stay in the tree with `ships: \"1.2\"`, so the Studio never loads them and the skills never offer them.",
+      "target": "1.2",
+      "reason": "Owner's call (2026-10-24): launch with creator, notebook and poster."
+    },
+    {
+      "id": "recipes-more",
+      "what": "Four more cover motion recipes: morph, split, cash-wipe, scale",
+      "target": "1.2",
+      "reason": "Listed in the engine, not shipped; the Motion tab shows only shipped recipes."
+    },
+    {
+      "id": "occasion-ramadan",
+      "what": "The Ramadan style overlay and the other occasion packs (data only)",
+      "target": "1.2",
+      "reason": "Q35: v1 ships the layered style system and the occasion calendar; packs arrive as updates."
+    },
+    {
+      "id": "handoff-design-canva",
+      "what": "Handoff to Claude Design and to Canva",
+      "target": "1.x",
+      "reason": "Q41: only if spikes SP12 and SP13 pass; the Studio exports PNG, MP4, PDF and a ZIP kit meanwhile."
+    },
+    {
+      "id": "studio-external-plate",
+      "what": "Decoding an external AI motion plate inside the Studio",
+      "target": "1.2",
+      "reason": "CONTRACT Appendix B item 10: external motion plates work in the Claude Code lane."
+    },
+    {
+      "id": "scheduler-publishing",
+      "what": "Direct publishing through a connected scheduler",
+      "target": "1.x",
+      "reason": "Q34: v1 exports a kit for manual posting."
+    },
+    {
+      "id": "native-review-gulf-levant",
+      "what": "Native-speaker review of the Gulf and Levantine registers",
+      "target": "on review",
+      "reason": "Q43: both stay marked beta until a native reviewer passes them."
+    },
+    {
+      "id": "analytics-and-radar",
+      "what": "Analytics-driven tips, competitor analysis and the trend radar",
+      "target": "2.0",
+      "reason": "Q6."
+    },
+    {
+      "id": "darija",
+      "what": "Maghrebi Darija",
+      "target": "later",
+      "reason": "Q4."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+[
+  {"id":"icon","anchor":{"kind":"icon","icon":"target","captions":["الهدف"]}},
+  {"id":"object","anchor":{"kind":"icon","object":"book","captions":["ملاحظة"]}},
+  {"id":"field-icon","anchor":{"kind":"field","icon":"target","captions":["الهدف"]}},
+  {"id":"field-word","anchor":{"kind":"field","word":"وضوح"}},
+  {"id":"field-numeral","anchor":{"kind":"field","value":"12","unit":"خطوة"}},
+  {"id":"field-panel","type":"compare","sides":[{"label":"قبل","text":"فكرة طويلة بلا هدف"},{"label":"بعد","text":"فكرة واضحة بهدف واحد"}],"anchor":{"kind":"field"}},
+  {"id":"numeral-none","anchor":{"kind":"numeral","value":"12","unit":"خطوة","companion":"none"}},
+  {"id":"numeral-waffle","anchor":{"kind":"numeral","value":"40","unit":"%","companion":"waffle"}},
+  {"id":"numeral-bar","anchor":{"kind":"numeral","value":"40","unit":"%","companion":"bar"}},
+  {"id":"numeral-icon","anchor":{"kind":"numeral","value":"12","unit":"خطوة","companion":"icon","icon":"target"}},
+  {"id":"chart-bars-h","anchor":{"kind":"chart","chart":{"kind":"bars-h","values":[{"label":"قبل","value":30},{"label":"بعد","value":60},{"label":"الهدف","value":90}]}}},
+  {"id":"mock-chat","type":"step","demo":{"lines":[{"who":"me","text":"كيف أبدأ الفكرة؟"},{"who":"them","text":"ابدأ بنتيجة واضحة"},{"who":"me","text":"ثم أكتب مثالًا"}]},"anchor":{"kind":"mock","mock":{"kind":"chat"}}},
+  {"id":"mock-notes","type":"step","bullets":["حدد النتيجة","اكتب المثال","راجع الفكرة"],"anchor":{"kind":"mock","mock":{"kind":"notes"}}},
+  {"id":"rows-list","type":"setup","bullets":["حدد النتيجة","اكتب المثال","راجع الفكرة"],"anchor":{"kind":"rows"}},
+  {"id":"word-solid","anchor":{"kind":"word","word":"وضوح","wordStyle":"solid"}},
+  {"id":"word-sticker","anchor":{"kind":"word","word":"وضوح","wordStyle":"sticker"}},
+  {"id":"word-struck","anchor":{"kind":"word","word":"وضوح","wordStyle":"struck"}}
+]

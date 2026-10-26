@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="{{CS_LANG}}" dir="{{CS_DIR}}">
+<head>
+<meta charset="utf-8">
+<!--
+  Carousel Studio animated cover. Carousel Studio is Apache-2.0; this composition follows the HyperFrames format (Apache-2.0).
+  Fonts embedded below, unmodified: {{CS_FONT_FAMILIES}}. They are under the SIL Open Font License 1.1, and each font file
+  keeps its own copyright and licence notice.
+-->
+<title>cover</title>
+<meta name="viewport" content="width={{CS_WIDTH}},height={{CS_HEIGHT}}">
+<style id="cs-fonts"><!--CS:FONTS--></style>
+<style id="cs-slide-css"><!--CS:CSS--></style>
+<style id="cs-stage-css">
+  html, body { margin: 0; padding: 0; background: #000; }
+  body { width: {{CS_WIDTH}}px; height: {{CS_HEIGHT}}px; overflow: hidden; }
+  #stage { position: relative; width: {{CS_WIDTH}}px; height: {{CS_HEIGHT}}px; overflow: hidden; }
+  #cs-frame { position: absolute; left: 0; top: {{CS_OFFSET_Y}}px; width: 1080px; height: 1440px; }
+</style>
+</head>
+<body>
+<div id="stage" data-composition-id="{{CS_ID}}" data-start="0" data-duration="{{CS_DURATION}}" data-width="{{CS_WIDTH}}" data-height="{{CS_HEIGHT}}">
+  <div id="cs-frame"><!--CS:SLIDE--></div>
+</div>
+<script type="application/json" id="cs-timeline"><!--CS:TIMELINE--></script>
+<script id="cs-hf"><!--CS:RUNTIME--></script>
+<script>CS.motion.hf.install(document, JSON.parse(document.getElementById("cs-timeline").textContent), "{{CS_ID}}");</script>
+</body>
+</html>

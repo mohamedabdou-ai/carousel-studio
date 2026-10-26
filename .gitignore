@@ -1,0 +1,56 @@
+# Operating system and editors
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Build and test output (the generated runtime chunks ARE committed)
+/dist/
+/out/
+/release/
+/coverage/
+/.cache/
+/private/
+/examples/
+tests/conformance/.verdicts*.json
+tests/golden/*.png
+tests/mobile-e2e/output/
+tests/video/output/
+# written by tests/video/harness/make-specs.mjs on every run of tests/video/run.mjs
+tests/video/harness/specs/
+
+# Local data that must never be committed
+/workspace/
+CarouselStudio/
+*.local.json
+.claude/settings.local.json
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Logs
+*.log
+
+# Working folder for the Claude and Codex team runs (briefs, logs, client notes); never committed
+/.team/
+
+# Local cache of a design tool; never committed
+/.impeccable/

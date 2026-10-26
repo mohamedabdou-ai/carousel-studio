@@ -1,0 +1,399 @@
+{
+  "schemaVersion": 1,
+  "description": "Twenty seeded orthography errors, one per case, each tied to a rule id of carousel-design/data/rules/ortho.json, with the text after every fix (`fixedAll`) and after only the deterministic autofixes (`fixedAutofix`). `autofix` mirrors the rule: hamza, taa marbuta, yaa, wasl and spelling rules are suggestions and are never applied automatically. `controls` are correct sentences that must stay silent (false-positive guard). `start`/`end` are code-point offsets of `original` in `text`.",
+  "rulesFile": "plugins/carousel-studio/skills/carousel-design/data/rules/ortho.json",
+  "cases": [
+    {
+      "id": "OE-01",
+      "dialect": "eg",
+      "text": "اتعلم انشاء كاروسيل من الصفر في ساعة",
+      "errors": [
+        {
+          "rule": "ORTHO-HAMZA-001",
+          "kind": "hamza",
+          "original": "انشاء",
+          "fix": "إنشاء",
+          "autofix": false,
+          "start": 6,
+          "end": 11
+        }
+      ],
+      "fixedAll": "اتعلم إنشاء كاروسيل من الصفر في ساعة",
+      "fixedAutofix": "اتعلم انشاء كاروسيل من الصفر في ساعة"
+    },
+    {
+      "id": "OE-02",
+      "dialect": "eg",
+      "text": "افضل وقت للنشر بعد المغرب",
+      "errors": [
+        {
+          "rule": "ORTHO-HAMZA-002",
+          "kind": "hamza",
+          "original": "افضل",
+          "fix": "أفضل",
+          "autofix": false,
+          "start": 0,
+          "end": 4
+        }
+      ],
+      "fixedAll": "أفضل وقت للنشر بعد المغرب",
+      "fixedAutofix": "افضل وقت للنشر بعد المغرب"
+    },
+    {
+      "id": "OE-03",
+      "dialect": "gulf",
+      "text": "وش اخطاء التصميم اللي تقلل التفاعل",
+      "errors": [
+        {
+          "rule": "ORTHO-HAMZA-003",
+          "kind": "hamza",
+          "original": "اخطاء",
+          "fix": "أخطاء",
+          "autofix": false,
+          "start": 3,
+          "end": 8
+        }
+      ],
+      "fixedAll": "وش أخطاء التصميم اللي تقلل التفاعل",
+      "fixedAutofix": "وش اخطاء التصميم اللي تقلل التفاعل"
+    },
+    {
+      "id": "OE-04",
+      "dialect": "msa-white",
+      "text": "هو مسئول عن مراجعة النص قبل النشر",
+      "errors": [
+        {
+          "rule": "ORTHO-HAMZA-008",
+          "kind": "hamza-seat",
+          "original": "مسئول",
+          "fix": "مسؤول",
+          "autofix": false,
+          "start": 3,
+          "end": 8
+        }
+      ],
+      "fixedAll": "هو مسؤول عن مراجعة النص قبل النشر",
+      "fixedAutofix": "هو مسئول عن مراجعة النص قبل النشر"
+    },
+    {
+      "id": "OE-05",
+      "dialect": "msa-white",
+      "text": "إستخدم أداة واحدة في كل مرة",
+      "errors": [
+        {
+          "rule": "ORTHO-WASL-001",
+          "kind": "hamzat-wasl",
+          "original": "إستخدم",
+          "fix": "استخدم",
+          "autofix": false,
+          "start": 0,
+          "end": 6
+        }
+      ],
+      "fixedAll": "استخدم أداة واحدة في كل مرة",
+      "fixedAutofix": "إستخدم أداة واحدة في كل مرة"
+    },
+    {
+      "id": "OE-06",
+      "dialect": "eg",
+      "text": "كل خطوه بتاخد دقيقتين بس",
+      "errors": [
+        {
+          "rule": "ORTHO-TAA-001",
+          "kind": "taa-marbuta",
+          "original": "خطوه",
+          "fix": "خطوة",
+          "autofix": false,
+          "start": 3,
+          "end": 7
+        }
+      ],
+      "fixedAll": "كل خطوة بتاخد دقيقتين بس",
+      "fixedAutofix": "كل خطوه بتاخد دقيقتين بس"
+    },
+    {
+      "id": "OE-07",
+      "dialect": "eg",
+      "text": "اللى بيكتب كويس بيتقرا للآخر",
+      "errors": [
+        {
+          "rule": "ORTHO-YAA-001",
+          "kind": "yaa-alif-maqsura",
+          "original": "اللى",
+          "fix": "اللي",
+          "autofix": false,
+          "start": 0,
+          "end": 4
+        }
+      ],
+      "fixedAll": "اللي بيكتب كويس بيتقرا للآخر",
+      "fixedAutofix": "اللى بيكتب كويس بيتقرا للآخر"
+    },
+    {
+      "id": "OE-08",
+      "dialect": "msa-white",
+      "text": "قدّم محتوى مجانى كل أسبوع",
+      "errors": [
+        {
+          "rule": "ORTHO-YAA-002",
+          "kind": "nisba-yaa",
+          "original": "مجانى",
+          "fix": "مجاني",
+          "autofix": false,
+          "start": 11,
+          "end": 16
+        }
+      ],
+      "fixedAll": "قدّم محتوى مجاني كل أسبوع",
+      "fixedAutofix": "قدّم محتوى مجانى كل أسبوع"
+    },
+    {
+      "id": "OE-09",
+      "dialect": "msa-white",
+      "text": "هاذا هو الحل الأنسب لك",
+      "errors": [
+        {
+          "rule": "ORTHO-SPLIT-001",
+          "kind": "demonstrative",
+          "original": "هاذا",
+          "fix": "هذا",
+          "autofix": false,
+          "start": 0,
+          "end": 4
+        }
+      ],
+      "fixedAll": "هذا هو الحل الأنسب لك",
+      "fixedAutofix": "هاذا هو الحل الأنسب لك"
+    },
+    {
+      "id": "OE-10",
+      "dialect": "eg",
+      "text": "الكتاب مفيد جدا للمدیر الجديد",
+      "errors": [
+        {
+          "rule": "ORTHO-ENC-001",
+          "kind": "persian-letter",
+          "original": "ی",
+          "fix": "ي",
+          "autofix": true,
+          "start": 20,
+          "end": 21
+        }
+      ],
+      "fixedAll": "الكتاب مفيد جدا للمدير الجديد",
+      "fixedAutofix": "الكتاب مفيد جدا للمدير الجديد"
+    },
+    {
+      "id": "OE-11",
+      "dialect": "eg",
+      "text": "اشترك في ٥\u00a0دورات و 3\u00a0ورش",
+      "errors": [
+        {
+          "rule": "ORTHO-DIG-002",
+          "kind": "mixed-digits",
+          "original": "٥",
+          "fix": "5",
+          "autofix": true,
+          "start": 9,
+          "end": 10
+        }
+      ],
+      "fixedAll": "اشترك في 5\u00a0دورات و 3\u00a0ورش",
+      "fixedAutofix": "اشترك في 5\u00a0دورات و 3\u00a0ورش"
+    },
+    {
+      "id": "OE-12",
+      "dialect": "eg",
+      "text": "نسبة الخصم 50٪ لفترة محدودة",
+      "errors": [
+        {
+          "rule": "ORTHO-DIG-003",
+          "kind": "percent-sign",
+          "original": "٪",
+          "fix": "%",
+          "autofix": true,
+          "start": 13,
+          "end": 14
+        }
+      ],
+      "fixedAll": "نسبة الخصم 50% لفترة محدودة",
+      "fixedAutofix": "نسبة الخصم 50% لفترة محدودة"
+    },
+    {
+      "id": "OE-13",
+      "dialect": "eg",
+      "text": "بتاخد 5ساعات في اليوم",
+      "errors": [
+        {
+          "rule": "ORTHO-DIG-004",
+          "kind": "digit-glued",
+          "original": "5ساعات",
+          "fix": "5\u00a0ساعات",
+          "autofix": true,
+          "start": 6,
+          "end": 12
+        }
+      ],
+      "fixedAll": "بتاخد 5\u00a0ساعات في اليوم",
+      "fixedAutofix": "بتاخد 5\u00a0ساعات في اليوم"
+    },
+    {
+      "id": "OE-14",
+      "dialect": "eg",
+      "text": "جرّب الأداة دي ، وقولي رأيك",
+      "errors": [
+        {
+          "rule": "ORTHO-PUNCT-001",
+          "kind": "space-before-punct",
+          "original": " ،",
+          "fix": "،",
+          "autofix": true,
+          "start": 14,
+          "end": 16
+        }
+      ],
+      "fixedAll": "جرّب الأداة دي، وقولي رأيك",
+      "fixedAutofix": "جرّب الأداة دي، وقولي رأيك"
+    },
+    {
+      "id": "OE-15",
+      "dialect": "gulf",
+      "text": "جرب الأداة, وقل لنا رأيك",
+      "errors": [
+        {
+          "rule": "ORTHO-PUNCT-003",
+          "kind": "latin-punct",
+          "original": ",",
+          "fix": "،",
+          "autofix": true,
+          "start": 10,
+          "end": 11
+        }
+      ],
+      "fixedAll": "جرب الأداة، وقل لنا رأيك",
+      "fixedAutofix": "جرب الأداة، وقل لنا رأيك"
+    },
+    {
+      "id": "OE-16",
+      "dialect": "levant",
+      "text": "استنّى شوي... رح تفهم",
+      "errors": [
+        {
+          "rule": "ORTHO-PUNCT-005",
+          "kind": "ellipsis-dots",
+          "original": "...",
+          "fix": "…",
+          "autofix": true,
+          "start": 10,
+          "end": 13
+        }
+      ],
+      "fixedAll": "استنّى شوي… رح تفهم",
+      "fixedAutofix": "استنّى شوي… رح تفهم"
+    },
+    {
+      "id": "OE-17",
+      "dialect": "eg",
+      "text": "ليه محدش بيحفظ البوست؟؟",
+      "errors": [
+        {
+          "rule": "ORTHO-PUNCT-006",
+          "kind": "repeated-punct",
+          "original": "؟؟",
+          "fix": "؟",
+          "autofix": true,
+          "start": 21,
+          "end": 23
+        }
+      ],
+      "fixedAll": "ليه محدش بيحفظ البوست؟",
+      "fixedAutofix": "ليه محدش بيحفظ البوست؟"
+    },
+    {
+      "id": "OE-18",
+      "dialect": "eg",
+      "text": "الحل بـ ChatGPT أسرع بكتير",
+      "errors": [
+        {
+          "rule": "ORTHO-BIDI-001",
+          "kind": "lam-latin-stranded",
+          "original": "بـ ChatGPT",
+          "fix": "بـChatGPT",
+          "autofix": true,
+          "start": 5,
+          "end": 15
+        }
+      ],
+      "fixedAll": "الحل بـChatGPT أسرع بكتير",
+      "fixedAutofix": "الحل بـChatGPT أسرع بكتير"
+    },
+    {
+      "id": "OE-19",
+      "dialect": "msa-white",
+      "text": "اقرأ الكـــاروسيل الآن",
+      "errors": [
+        {
+          "rule": "ORTHO-TATWEEL-001",
+          "kind": "programmatic-tatweel",
+          "original": "الكـــاروسيل",
+          "fix": "الكاروسيل",
+          "autofix": true,
+          "start": 5,
+          "end": 17
+        }
+      ],
+      "fixedAll": "اقرأ الكاروسيل الآن",
+      "fixedAutofix": "اقرأ الكاروسيل الآن"
+    },
+    {
+      "id": "OE-20",
+      "dialect": "eg",
+      "text": "افتح  الإعدادات وغيّر الخط",
+      "errors": [
+        {
+          "rule": "ORTHO-PUNCT-004",
+          "kind": "double-space",
+          "original": "  ",
+          "fix": " ",
+          "autofix": true,
+          "start": 4,
+          "end": 6
+        }
+      ],
+      "fixedAll": "افتح الإعدادات وغيّر الخط",
+      "fixedAutofix": "افتح الإعدادات وغيّر الخط"
+    }
+  ],
+  "controls": [
+    {
+      "id": "OC-01",
+      "dialect": "eg",
+      "text": "إن شاء الله هننزل البوست بكرة"
+    },
+    {
+      "id": "OC-02",
+      "dialect": "eg",
+      "text": "إنت محتاج غلاف أوضح من ده"
+    },
+    {
+      "id": "OC-03",
+      "dialect": "msa-white",
+      "text": "استخدم ChatGPT لتلخيص المقال"
+    },
+    {
+      "id": "OC-04",
+      "dialect": "msa-white",
+      "text": "اشترك بـ$20\u00a0شهريًا"
+    },
+    {
+      "id": "OC-05",
+      "dialect": "msa-white",
+      "text": "الخطوة\u00a03: حدّد هدفك أولا"
+    },
+    {
+      "id": "OC-06",
+      "dialect": "msa-white",
+      "text": "في هذا المثال، الفرق واضح؛ لكن التنفيذ أصعب."
+    }
+  ]
+}

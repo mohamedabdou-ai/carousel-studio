@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "id": "swiss",
+  "version": "1.0",
+  "name": { "ar": "سويس", "en": "Swiss" },
+  "description": { "ar": "خطوط ثقيلة على خلفية فاتحة وتشديد بلون واحد", "en": "Heavy type, one accent" },
+  "bestFor": ["hot takes", "lists"],
+  "ships": "1.0",
+  "paintable": true,
+  "roles": { "bg": "#F4F4F2", "surface": "#FFFFFF", "ink": "#111111", "inkMuted": "#5A5A5A", "accent": "#E3262B" },
+  "brandBindings": ["bg", "ink", "accent", "fonts"],
+  "type": {
+    "display": { "family": "alexandria", "wght": 800, "lh": 1.3 },
+    "heading": { "family": "alexandria", "wght": 700, "lh": 1.35 },
+    "body": { "family": "readex-pro", "wght": 400, "lh": 1.6 },
+    "latin": { "family": "readex-pro", "wght": 600 },
+    "scale": { "hero": [120, 180], "heroTarget": 150, "h1": 88, "h2": 72, "title": [64, 72], "body": [44, 48], "small": 34, "micro": 30 }
+  },
+  "layout": { "align": "start", "coverAnchor": "top", "headlineWidth": [0.65, 0.85] },
+  "background": { "kind": "solid", "params": { "role": "bg" } },
+  "decor": { "highlight": "bar", "numbering": "ghost", "texture": "none", "kashida": { "allowed": false } },
+  "chrome": {
+    "handle": { "slot": "header-start", "logo": "auto" },
+    "meta": { "slot": "header-end" },
+    "counter": { "slot": "footer-center", "format": "{i} من {n}" },
+    "swipe": { "slot": "footer-end", "style": "label+chevron" },
+    "savePill": { "slot": "footer-start", "showOn": ["cover", "cta"] }
+  },
+  "variants": {
+    "cover": ["top", "center", "split", "photo"],
+    "rehook": ["base", "split", "big-number"],
+    "item": ["ghost-number", "base", "side-number", "media"],
+    "step": ["base", "ghost-number", "pill"],
+    "stat": ["base", "bar"],
+    "compare": ["columns", "stacked", "versus"],
+    "myth-fact": ["stacked", "columns", "stamp"],
+    "quote": ["base", "mark", "photo"],
+    "story-beat": ["base", "panel", "media"],
+    "checklist": ["base", "boxes", "ruled"],
+    "summary": ["list", "grid"],
+    "setup": ["base", "cards"],
+    "proof": ["screenshot", "base"],
+    "share": ["base", "big-word"],
+    "cta": ["base", "pill", "keyword"],
+    "offer": ["base", "card"],
+    "testimonial": ["base", "photo", "card"],
+    "poster": ["top", "center", "split", "photo"],
+    "grid": ["bento"],
+    "timeline": ["rail"]
+  },
+  "motion": { "default": "calm", "allowed": ["calm", "counter", "highlight-sweep", "stamp"] },
+  "floors": { "hero": 96, "body": 42, "meta": 30, "contrastBody": 4.5, "contrastLarge": 3.0 }
+}

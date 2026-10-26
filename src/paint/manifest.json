@@ -1,0 +1,6 @@
+{
+  "module": "paint",
+  "chunk": "cs-paint.js",
+  "order": 0,
+  "files": ["core.js", "css.js", "svg.js", "replay.js", "metrics.js", "png.js", "api.js"]
+}

@@ -1,0 +1,264 @@
+{
+  "specVersion": 1,
+  "id": "post-plan-gulf-poster",
+  "rev": 1,
+  "brand": {
+    "slug": "qahwa-house",
+    "snapshotHash": "b937024da5ea45a1"
+  },
+  "brief": {
+    "topic": "اشتراك قهوة أسبوعي",
+    "input": "idea"
+  },
+  "format": "carousel",
+  "mode": "guided",
+  "checkpoint": "design",
+  "canvas": {
+    "preset": "ig-3x4",
+    "w": 1080,
+    "h": 1440,
+    "safe": [
+      34,
+      45,
+      1012,
+      1350
+    ],
+    "exports": [
+      "3x4",
+      "4x5"
+    ]
+  },
+  "locale": {
+    "dialect": "gulf",
+    "register": "dialect",
+    "digits": "western",
+    "appLanguage": "ar",
+    "swipeCue": "arrow-rtl"
+  },
+  "intent": "sell",
+  "awareness": "solution",
+  "contentType": "soft-sell",
+  "architecture": "offer",
+  "angle": {
+    "id": "a4",
+    "title": "تخيّل قهوتك توصلك طازجة كل أسبوع",
+    "lens": "imagine",
+    "score": 74,
+    "why": "فائدة واضحة وعرض محدد بكلمة مفتاحية"
+  },
+  "hook": {
+    "id": "S2-BENEFIT-delivered",
+    "family": "S2",
+    "text": "قهوة طازجة توصلك كل أسبوع وأنت في بيتك",
+    "cover": "قهوة طازجة… توصلك كل أسبوع",
+    "score": {
+      "R": 32,
+      "J": 27,
+      "P": 12,
+      "total": 71
+    },
+    "slide2": "محمصة هالأسبوع مو من شهور"
+  },
+  "style": {
+    "presetId": "poster@1.0"
+  },
+  "compat": {
+    "paint": "auto",
+    "mp4": "auto",
+    "hfRuntime": "auto"
+  },
+  "slides": [
+    {
+      "id": "s01",
+      "n": 1,
+      "type": "cover",
+      "kicker": "قهوة",
+      "headline": "قهوة ==طازجة== كل أسبوع",
+      "media": {
+        "slot": "none",
+        "ai": false
+      }
+    },
+    {
+      "id": "s02",
+      "n": 2,
+      "type": "item",
+      "ord": 1,
+      "title": "تحميص طازج",
+      "body": "كل أسبوع نحمّص دفعة صغيرة ونرسلها لك في نفس اليوم.",
+      "bridge": "وبعدها؟"
+    },
+    {
+      "id": "s03",
+      "n": 3,
+      "type": "item",
+      "ord": 2,
+      "title": "اختيار يناسبك",
+      "body": "نكهات خفيفة أو غامقة، وأنت تختار.",
+      "bridge": "والسعر؟"
+    },
+    {
+      "id": "s04",
+      "n": 4,
+      "type": "compare",
+      "title": "قهوة السوبرماركت وقهوتنا",
+      "variant": "table",
+      "items": [
+        {
+          "title": "التحميص",
+          "text": "قديم / هذا الأسبوع"
+        },
+        {
+          "title": "التوصيل",
+          "text": "مرة / كل أسبوع"
+        },
+        {
+          "title": "السعر",
+          "text": "مرتفع / أقل"
+        }
+      ]
+    },
+    {
+      "id": "s05",
+      "n": 5,
+      "type": "testimonial",
+      "body": "أول مرة أشرب قهوة بهالطعم في بيتي.",
+      "attribution": "عميلة من الرياض",
+      "sourceIds": [
+        "src2"
+      ],
+      "demo": {
+        "lines": [
+          {
+            "who": "them",
+            "text": "أول مرة أشرب قهوة بهالطعم في بيتي."
+          }
+        ]
+      }
+    },
+    {
+      "id": "s06",
+      "n": 6,
+      "type": "offer",
+      "title": "اشتراك الأسبوع الأول بسعر خاص",
+      "number": {
+        "value": "99",
+        "unit": "ريال",
+        "sourceId": "src1"
+      },
+      "bullets": [
+        "شحنة أسبوعية طازجة",
+        "توصيل مجاني داخل الرياض",
+        "إيقاف الاشتراك بأي وقت"
+      ],
+      "sourceIds": [
+        "src1"
+      ],
+      "cta": {
+        "kind": "keyword-dm",
+        "text": "اكتب «اشتراك» بالتعليقات ويوصلك رابط الطلب على الخاص مباشرة"
+      }
+    },
+    {
+      "id": "s07",
+      "n": 7,
+      "type": "cta",
+      "title": "اطلب اشتراكك",
+      "cta": {
+        "kind": "keyword-dm",
+        "text": "اكتب «اشتراك» بالتعليقات ويوصلك رابط الطلب على الخاص مباشرة"
+      },
+      "demo": {
+        "lines": [
+          {
+            "who": "me",
+            "text": "اشتراك"
+          }
+        ]
+      }
+    }
+  ],
+  "cover": {
+    "motion": {
+      "recipe": "calm",
+      "feel": "calm",
+      "seconds": 6,
+      "fps": 30,
+      "source": "internal"
+    }
+  },
+  "captionPack": {
+    "firstLine": "تبي قهوتك توصلك محمصة هالأسبوع مو من شهور؟",
+    "keywordLine": "اشتراك قهوة مختصة في الرياض: حبوب طازجة وتوصيل لين الباب بدون ما تطلع من بيتك.",
+    "body": "1. تحميص طازج كل أسبوع في نفس يوم الشحن.\n2. حبوب فاتحة أو غامقة على ذوقك.\n3. توصيل لين الباب داخل الرياض.\n4. نكهات تتجدد كل شهر بدون التزام.",
+    "cta": "اكتب «اشتراك» بالتعليقات ويوصلك رابط الطلب على الخاص مباشرة.",
+    "hashtags": [
+      "#قهوة_مختصة",
+      "#الرياض",
+      "#اشتراك_قهوة"
+    ],
+    "perSlide": [
+      "line 1",
+      "line 2",
+      "line 3",
+      "line 4",
+      "line 5",
+      "line 6",
+      "line 7"
+    ],
+    "alt": [
+      "alt 1",
+      "alt 2",
+      "alt 3",
+      "alt 4",
+      "alt 5",
+      "alt 6",
+      "alt 7"
+    ],
+    "asset": {
+      "keyword": "اشتراك",
+      "description": "رابط الطلب",
+      "delivery": "instant"
+    }
+  },
+  "sources": [
+    {
+      "id": "src1",
+      "kind": "user",
+      "ref": "قائمة أسعار العميل",
+      "excerpt": "اشتراك الأسبوع الأول: 99 ريال",
+      "verified": true
+    },
+    {
+      "id": "src2",
+      "kind": "user",
+      "ref": "موافقة العميلة على نشر رأيها",
+      "excerpt": "أول مرة أشرب قهوة بهالطعم في بيتي",
+      "verified": true
+    }
+  ],
+  "assets": [],
+  "qa": {
+    "status": "pass",
+    "runAt": "2026-10-22T09:20:00Z",
+    "engine": "cs-1.1.0",
+    "results": []
+  },
+  "approvals": {
+    "angle": {
+      "at": "2026-10-22T09:04:00Z"
+    },
+    "script": {
+      "at": "2026-10-22T09:16:00Z"
+    }
+  },
+  "meta": {
+    "createdAt": "2026-10-22T09:00:00Z",
+    "updatedAt": "2026-10-22T09:20:00Z",
+    "updatedBy": "claude",
+    "generator": {
+      "skill": "carousel-create",
+      "version": "1.0.0"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+/* test decor for the fixture preset "swiss": enough look to judge the layout, nothing more */
+.cs-slide[data-preset="swiss"][data-hl="bar"] .cs-em { background-image: linear-gradient(var(--cs-accent), var(--cs-accent)); background-repeat: no-repeat; background-size: 100% 0.16em; background-position: 0 96%; }
+.cs-slide[data-preset="swiss"] .cs-kicker { color: var(--cs-accent); font-weight: 600; }
+.cs-slide[data-preset="swiss"] .cs-savepill { background: var(--cs-accent); color: var(--cs-on-accent); border-radius: 999px; padding-inline: 20px; }
+.cs-slide[data-preset="swiss"] .cs-cta { background: var(--cs-accent); color: var(--cs-on-accent); border-radius: 999px; }
+.cs-slide[data-preset="swiss"] .cs-side { background: var(--cs-surface); border-radius: 24px; }
+.cs-slide[data-preset="swiss"] .cs-bullet::before { content: ""; position: absolute; inset-inline-start: 0; inset-block-start: 0.62em; inline-size: 0.5em; block-size: 0.5em; background: var(--cs-accent); }
+.cs-slide[data-preset="swiss"] .cs-number { color: var(--cs-ink); }
+.cs-slide[data-preset="swiss"][data-variant="pill"] .cs-ord { background: var(--cs-ink); color: var(--cs-bg); border-radius: 999px; padding: 6px 22px; }
+.cs-slide[data-preset="swiss"] .cs-media-slot { background: var(--cs-surface); }

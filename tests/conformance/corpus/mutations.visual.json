@@ -1,0 +1,232 @@
+{
+  "schemaVersion": 1,
+  "description": "Mutations for the text a slide shows besides the old fields (round 3). Each one applies a JSON patch to a fixture deck and runs every text gate. `expect` lists findings planted on purpose ({gate, el, rule?}) and clean controls ({absent: true}); each runner checks them against its own results, so two engines that both miss a planted defect cannot pass. The defect deck plants one defect in every kind of new field; the clean deck repeats it repaired.",
+  "mutations": [
+    {"id": "vf-defects-eg", "base": "spec.eg.8slides.json", "brand": "brand.eg.creator.json", "patch": [
+      {"op": "replace", "path": "/slides/2", "value": {"id": "s03", "n": 3, "type": "grid", "title": "3 أدوات للبداية", "variant": "bento", "bridge": "والأهم بعدها", "items": [{"title": "Canva", "text": "5 خطوات", "value": "٥٠٪", "hi": true}, {"title": "انشاء حساب", "text": "في دقيقتين"}, {"title": "CapCut", "text": "في عالم اليوم الحقيقة الصادمة"}]}},
+      {"op": "replace", "path": "/slides/3", "value": {"id": "s04", "n": 4, "type": "step", "ord": 2, "title": "ابدأ بسؤال", "body": "اسأل سؤال واحد بس.", "demo": {"lines": [{"who": "me", "text": "في عالم اليوم الحقيقة الصادمة"}, {"who": "them", "text": "ليه محدش بيكمّل؟"}], "caption": "نص  مكرر"}}},
+      {"op": "replace", "path": "/slides/4", "value": {"id": "s05", "n": 5, "type": "item", "ord": 3, "title": "الأرقام بتقنع", "body": "رقم واحد واضح أحسن من ثلاثة.", "visual": {"anchor": {"kind": "chart", "chart": {"kind": "bars-h", "values": [{"label": "85% من الناس", "value": 85}, {"label": "الباقي", "value": 15}]}, "captions": ["۵ أدوات", "لـ ChatGPT"], "word": "انشاء", "unit": "٥ ساعات"}}}},
+      {"op": "replace", "path": "/slides/5", "value": {"id": "s06", "n": 6, "type": "story-beat", "body": "اتصل بيا عميل وقالي حاجة غريبة.", "visual": {"anchor": {"kind": "mock", "mock": {"kind": "chat", "title": "محادثة  مكررة", "lines": [{"who": "them", "text": "نص  مكرر"}, {"who": "me", "text": "تمام"}], "items": ["3 أدوات"], "caption": "فكرة ۵", "stamp": "انشاء"}}}}},
+      {"op": "replace", "path": "/slides/6", "value": {"id": "s07", "n": 7, "type": "timeline", "title": "رحلة شهر", "items": [{"title": "الأسبوع الأول", "text": "ابدأ بسيط", "value": "يوم 7"}, {"title": "الأسبوع الثاني", "text": "ثبّت العادة", "value": "يوم ۱۴"}, {"title": "آخر الشهر", "hi": true}]}}
+    ], "expect": [
+      {"gate": "O1", "el": "s03.items.1", "rule": "O1.ortho-hamza-001"},
+      {"gate": "B1", "el": "s03.items-text.0", "rule": "B1.unbound-pair"},
+      {"gate": "N1", "el": "s03.items-value.0", "rule": "N1.system"},
+      {"gate": "C8", "el": "s03.items-text.2", "rule": "C8.hype"},
+      {"gate": "O1", "el": "s03.items.0", "absent": true},
+      {"gate": "O1", "el": "s03.items-text.1", "absent": true},
+      {"gate": "C8", "el": "s04.demo.0", "rule": "C8.hype"},
+      {"gate": "O1", "el": "s04.demo-caption", "rule": "O1.ortho-punct-004"},
+      {"gate": "O1", "el": "s04.demo.1", "absent": true},
+      {"gate": "SRC1", "el": "s05.chart.0.label", "rule": "SRC1.missing"},
+      {"gate": "N1", "el": "s05.anchor.captions.0", "rule": "N1.persian"},
+      {"gate": "B1", "el": "s05.anchor.captions.1", "rule": "B1.stranded-lam"},
+      {"gate": "O1", "el": "s05.anchor.word", "rule": "O1.ortho-hamza-001"},
+      {"gate": "N1", "el": "s05.anchor.unit", "rule": "N1.system"},
+      {"gate": "O1", "el": "s05.chart.1.label", "absent": true},
+      {"gate": "O1", "el": "s06.mock.title", "rule": "O1.ortho-punct-004"},
+      {"gate": "O1", "el": "s06.mock.lines.0", "rule": "O1.ortho-punct-004"},
+      {"gate": "B1", "el": "s06.mock.items.0", "rule": "B1.unbound-pair"},
+      {"gate": "N1", "el": "s06.mock.caption", "rule": "N1.persian"},
+      {"gate": "O1", "el": "s06.mock.stamp", "rule": "O1.ortho-hamza-001"},
+      {"gate": "O1", "el": "s06.mock.lines.1", "absent": true},
+      {"gate": "N1", "el": "s07.items-value.1", "rule": "N1.persian"},
+      {"gate": "N1", "el": "s07.items-value.0", "absent": true}
+    ]},
+    {"id": "vf-clean-eg", "base": "spec.eg.8slides.json", "brand": "brand.eg.creator.json", "patch": [
+      {"op": "replace", "path": "/slides/2", "value": {"id": "s03", "n": 3, "type": "grid", "title": "3 أدوات للبداية", "variant": "bento", "bridge": "والأهم بعدها", "items": [{"title": "Canva", "text": "5 خطوات", "value": "2,500", "hi": true}, {"title": "إنشاء حساب", "text": "في دقيقتين"}, {"title": "CapCut", "text": "من الموبايل على طول"}]}},
+      {"op": "replace", "path": "/slides/3", "value": {"id": "s04", "n": 4, "type": "step", "ord": 2, "title": "ابدأ بسؤال", "body": "اسأل سؤال واحد بس.", "demo": {"lines": [{"who": "me", "text": "5 نصايح للكتابة"}, {"who": "them", "text": "ليه محدش بيكمّل؟"}], "caption": "ده اللي بيوقّف الإبهام"}}},
+      {"op": "replace", "path": "/slides/4", "value": {"id": "s05", "n": 5, "type": "item", "ord": 3, "title": "الأرقام بتقنع", "body": "رقم واحد واضح أحسن من ثلاثة.", "visual": {"anchor": {"kind": "chart", "chart": {"kind": "bars-h", "values": [{"label": "85% من الناس", "value": 85}, {"label": "الباقي", "value": 15}]}, "captions": ["5 أدوات", "مع ChatGPT"], "word": "إنشاء", "unit": "ساعات"}}, "sourceIds": ["src1"]}},
+      {"op": "replace", "path": "/slides/5", "value": {"id": "s06", "n": 6, "type": "story-beat", "body": "اتصل بيا عميل وقالي حاجة غريبة.", "visual": {"anchor": {"kind": "mock", "mock": {"kind": "chat", "title": "محادثة", "lines": [{"who": "them", "text": "شفت ده؟"}, {"who": "me", "text": "تمام"}], "items": ["3 أدوات"], "caption": "فكرة 5", "stamp": "إنشاء"}}}}},
+      {"op": "replace", "path": "/slides/6", "value": {"id": "s07", "n": 7, "type": "timeline", "title": "رحلة شهر", "items": [{"title": "الأسبوع الأول", "text": "ابدأ بسيط", "value": "يوم 7"}, {"title": "الأسبوع الثاني", "text": "ثبّت العادة", "value": "يوم 14"}, {"title": "آخر الشهر", "hi": true}]}},
+      {"op": "add", "path": "/sources", "value": [{"id": "src1", "kind": "ownData", "ref": "تجربة داخلية", "excerpt": "85% من المشاهدين بيعدّوا الغلاف و15% بيكمّلوا"}]}
+    ], "expect": [
+      {"gate": "O1", "el": "s03.items.0", "absent": true},
+      {"gate": "N1", "el": "s03.items.0", "absent": true},
+      {"gate": "B1", "el": "s03.items.0", "absent": true},
+      {"gate": "SRC1", "el": "s03.items.0", "absent": true},
+      {"gate": "O1", "el": "s03.items.1", "absent": true},
+      {"gate": "N1", "el": "s03.items.1", "absent": true},
+      {"gate": "B1", "el": "s03.items.1", "absent": true},
+      {"gate": "SRC1", "el": "s03.items.1", "absent": true},
+      {"gate": "O1", "el": "s03.items.2", "absent": true},
+      {"gate": "N1", "el": "s03.items.2", "absent": true},
+      {"gate": "B1", "el": "s03.items.2", "absent": true},
+      {"gate": "SRC1", "el": "s03.items.2", "absent": true},
+      {"gate": "O1", "el": "s03.items-text.0", "absent": true},
+      {"gate": "N1", "el": "s03.items-text.0", "absent": true},
+      {"gate": "B1", "el": "s03.items-text.0", "absent": true},
+      {"gate": "SRC1", "el": "s03.items-text.0", "absent": true},
+      {"gate": "O1", "el": "s03.items-text.1", "absent": true},
+      {"gate": "N1", "el": "s03.items-text.1", "absent": true},
+      {"gate": "B1", "el": "s03.items-text.1", "absent": true},
+      {"gate": "SRC1", "el": "s03.items-text.1", "absent": true},
+      {"gate": "O1", "el": "s03.items-text.2", "absent": true},
+      {"gate": "N1", "el": "s03.items-text.2", "absent": true},
+      {"gate": "B1", "el": "s03.items-text.2", "absent": true},
+      {"gate": "SRC1", "el": "s03.items-text.2", "absent": true},
+      {"gate": "O1", "el": "s03.items-value.0", "absent": true},
+      {"gate": "N1", "el": "s03.items-value.0", "absent": true},
+      {"gate": "B1", "el": "s03.items-value.0", "absent": true},
+      {"gate": "SRC1", "el": "s03.items-value.0", "absent": true},
+      {"gate": "O1", "el": "s04.demo.0", "absent": true},
+      {"gate": "N1", "el": "s04.demo.0", "absent": true},
+      {"gate": "B1", "el": "s04.demo.0", "absent": true},
+      {"gate": "SRC1", "el": "s04.demo.0", "absent": true},
+      {"gate": "O1", "el": "s04.demo.1", "absent": true},
+      {"gate": "N1", "el": "s04.demo.1", "absent": true},
+      {"gate": "B1", "el": "s04.demo.1", "absent": true},
+      {"gate": "SRC1", "el": "s04.demo.1", "absent": true},
+      {"gate": "O1", "el": "s04.demo-caption", "absent": true},
+      {"gate": "N1", "el": "s04.demo-caption", "absent": true},
+      {"gate": "B1", "el": "s04.demo-caption", "absent": true},
+      {"gate": "SRC1", "el": "s04.demo-caption", "absent": true},
+      {"gate": "O1", "el": "s05.chart.0.label", "absent": true},
+      {"gate": "N1", "el": "s05.chart.0.label", "absent": true},
+      {"gate": "B1", "el": "s05.chart.0.label", "absent": true},
+      {"gate": "SRC1", "el": "s05.chart.0.label", "absent": true},
+      {"gate": "O1", "el": "s05.chart.1.label", "absent": true},
+      {"gate": "N1", "el": "s05.chart.1.label", "absent": true},
+      {"gate": "B1", "el": "s05.chart.1.label", "absent": true},
+      {"gate": "SRC1", "el": "s05.chart.1.label", "absent": true},
+      {"gate": "O1", "el": "s05.anchor.captions.0", "absent": true},
+      {"gate": "N1", "el": "s05.anchor.captions.0", "absent": true},
+      {"gate": "B1", "el": "s05.anchor.captions.0", "absent": true},
+      {"gate": "SRC1", "el": "s05.anchor.captions.0", "absent": true},
+      {"gate": "O1", "el": "s05.anchor.captions.1", "absent": true},
+      {"gate": "N1", "el": "s05.anchor.captions.1", "absent": true},
+      {"gate": "B1", "el": "s05.anchor.captions.1", "absent": true},
+      {"gate": "SRC1", "el": "s05.anchor.captions.1", "absent": true},
+      {"gate": "O1", "el": "s05.anchor.word", "absent": true},
+      {"gate": "N1", "el": "s05.anchor.word", "absent": true},
+      {"gate": "B1", "el": "s05.anchor.word", "absent": true},
+      {"gate": "SRC1", "el": "s05.anchor.word", "absent": true},
+      {"gate": "O1", "el": "s05.anchor.unit", "absent": true},
+      {"gate": "N1", "el": "s05.anchor.unit", "absent": true},
+      {"gate": "B1", "el": "s05.anchor.unit", "absent": true},
+      {"gate": "SRC1", "el": "s05.anchor.unit", "absent": true},
+      {"gate": "O1", "el": "s06.mock.title", "absent": true},
+      {"gate": "N1", "el": "s06.mock.title", "absent": true},
+      {"gate": "B1", "el": "s06.mock.title", "absent": true},
+      {"gate": "SRC1", "el": "s06.mock.title", "absent": true},
+      {"gate": "O1", "el": "s06.mock.lines.0", "absent": true},
+      {"gate": "N1", "el": "s06.mock.lines.0", "absent": true},
+      {"gate": "B1", "el": "s06.mock.lines.0", "absent": true},
+      {"gate": "SRC1", "el": "s06.mock.lines.0", "absent": true},
+      {"gate": "O1", "el": "s06.mock.lines.1", "absent": true},
+      {"gate": "N1", "el": "s06.mock.lines.1", "absent": true},
+      {"gate": "B1", "el": "s06.mock.lines.1", "absent": true},
+      {"gate": "SRC1", "el": "s06.mock.lines.1", "absent": true},
+      {"gate": "O1", "el": "s06.mock.items.0", "absent": true},
+      {"gate": "N1", "el": "s06.mock.items.0", "absent": true},
+      {"gate": "B1", "el": "s06.mock.items.0", "absent": true},
+      {"gate": "SRC1", "el": "s06.mock.items.0", "absent": true},
+      {"gate": "O1", "el": "s06.mock.caption", "absent": true},
+      {"gate": "N1", "el": "s06.mock.caption", "absent": true},
+      {"gate": "B1", "el": "s06.mock.caption", "absent": true},
+      {"gate": "SRC1", "el": "s06.mock.caption", "absent": true},
+      {"gate": "O1", "el": "s06.mock.stamp", "absent": true},
+      {"gate": "N1", "el": "s06.mock.stamp", "absent": true},
+      {"gate": "B1", "el": "s06.mock.stamp", "absent": true},
+      {"gate": "SRC1", "el": "s06.mock.stamp", "absent": true},
+      {"gate": "O1", "el": "s07.items.0", "absent": true},
+      {"gate": "N1", "el": "s07.items.0", "absent": true},
+      {"gate": "B1", "el": "s07.items.0", "absent": true},
+      {"gate": "SRC1", "el": "s07.items.0", "absent": true},
+      {"gate": "O1", "el": "s07.items-text.0", "absent": true},
+      {"gate": "N1", "el": "s07.items-text.0", "absent": true},
+      {"gate": "B1", "el": "s07.items-text.0", "absent": true},
+      {"gate": "SRC1", "el": "s07.items-text.0", "absent": true},
+      {"gate": "O1", "el": "s07.items-value.0", "absent": true},
+      {"gate": "N1", "el": "s07.items-value.0", "absent": true},
+      {"gate": "B1", "el": "s07.items-value.0", "absent": true},
+      {"gate": "SRC1", "el": "s07.items-value.0", "absent": true},
+      {"gate": "O1", "el": "s07.items-value.1", "absent": true},
+      {"gate": "N1", "el": "s07.items-value.1", "absent": true},
+      {"gate": "B1", "el": "s07.items-value.1", "absent": true},
+      {"gate": "SRC1", "el": "s07.items-value.1", "absent": true}
+    ]},
+    {"id": "vf-source-mismatch", "base": "spec.eg.8slides.json", "brand": "brand.eg.creator.json", "patch": [
+      {"op": "replace", "path": "/slides/2", "value": {"id": "s03", "n": 3, "type": "grid", "title": "3 أدوات للبداية", "variant": "bento", "bridge": "والأهم بعدها", "items": [{"title": "Canva", "text": "5 خطوات", "value": "2,500", "hi": true}, {"title": "إنشاء حساب", "text": "في دقيقتين"}, {"title": "CapCut", "text": "من الموبايل على طول"}]}},
+      {"op": "replace", "path": "/slides/3", "value": {"id": "s04", "n": 4, "type": "step", "ord": 2, "title": "ابدأ بسؤال", "body": "اسأل سؤال واحد بس.", "demo": {"lines": [{"who": "me", "text": "5 نصايح للكتابة"}, {"who": "them", "text": "ليه محدش بيكمّل؟"}], "caption": "ده اللي بيوقّف الإبهام"}}},
+      {"op": "replace", "path": "/slides/4", "value": {"id": "s05", "n": 5, "type": "item", "ord": 3, "title": "الأرقام بتقنع", "body": "رقم واحد واضح أحسن من ثلاثة.", "visual": {"anchor": {"kind": "chart", "chart": {"kind": "bars-h", "values": [{"label": "91% من الناس", "value": 85}, {"label": "الباقي", "value": 15}]}, "captions": ["5 أدوات", "مع ChatGPT"], "word": "إنشاء", "unit": "ساعات"}}, "sourceIds": ["src1"]}},
+      {"op": "replace", "path": "/slides/5", "value": {"id": "s06", "n": 6, "type": "story-beat", "body": "اتصل بيا عميل وقالي حاجة غريبة.", "visual": {"anchor": {"kind": "mock", "mock": {"kind": "chat", "title": "محادثة", "lines": [{"who": "them", "text": "شفت ده؟"}, {"who": "me", "text": "تمام"}], "items": ["3 أدوات"], "caption": "فكرة 5", "stamp": "إنشاء"}}}}},
+      {"op": "replace", "path": "/slides/6", "value": {"id": "s07", "n": 7, "type": "timeline", "title": "رحلة شهر", "items": [{"title": "الأسبوع الأول", "text": "ابدأ بسيط", "value": "يوم 7"}, {"title": "الأسبوع الثاني", "text": "ثبّت العادة", "value": "يوم 14"}, {"title": "آخر الشهر", "hi": true}]}},
+      {"op": "add", "path": "/sources", "value": [{"id": "src1", "kind": "ownData", "ref": "تجربة داخلية", "excerpt": "85% من المشاهدين بيعدّوا الغلاف و15% بيكمّلوا"}]}
+    ], "expect": [
+      {"gate": "SRC1", "el": "s05.chart.0.label", "rule": "SRC1.mismatch"}
+    ]},
+    {"id": "vf-source-unlinked", "base": "spec.eg.8slides.json", "brand": "brand.eg.creator.json", "patch": [
+      {"op": "replace", "path": "/slides/2", "value": {"id": "s03", "n": 3, "type": "grid", "title": "3 أدوات للبداية", "variant": "bento", "bridge": "والأهم بعدها", "items": [{"title": "Canva", "text": "5 خطوات", "value": "2,500", "hi": true}, {"title": "إنشاء حساب", "text": "في دقيقتين"}, {"title": "CapCut", "text": "من الموبايل على طول"}]}},
+      {"op": "replace", "path": "/slides/3", "value": {"id": "s04", "n": 4, "type": "step", "ord": 2, "title": "ابدأ بسؤال", "body": "اسأل سؤال واحد بس.", "demo": {"lines": [{"who": "me", "text": "5 نصايح للكتابة"}, {"who": "them", "text": "ليه محدش بيكمّل؟"}], "caption": "ده اللي بيوقّف الإبهام"}}},
+      {"op": "replace", "path": "/slides/4", "value": {"id": "s05", "n": 5, "type": "item", "ord": 3, "title": "الأرقام بتقنع", "body": "رقم واحد واضح أحسن من ثلاثة.", "visual": {"anchor": {"kind": "chart", "chart": {"kind": "bars-h", "values": [{"label": "85% من الناس", "value": 85}, {"label": "الباقي", "value": 15}]}, "captions": ["5 أدوات", "مع ChatGPT"], "word": "إنشاء", "unit": "ساعات"}}}},
+      {"op": "replace", "path": "/slides/5", "value": {"id": "s06", "n": 6, "type": "story-beat", "body": "اتصل بيا عميل وقالي حاجة غريبة.", "visual": {"anchor": {"kind": "mock", "mock": {"kind": "chat", "title": "محادثة", "lines": [{"who": "them", "text": "شفت ده؟"}, {"who": "me", "text": "تمام"}], "items": ["3 أدوات"], "caption": "فكرة 5", "stamp": "إنشاء"}}}}},
+      {"op": "replace", "path": "/slides/6", "value": {"id": "s07", "n": 7, "type": "timeline", "title": "رحلة شهر", "items": [{"title": "الأسبوع الأول", "text": "ابدأ بسيط", "value": "يوم 7"}, {"title": "الأسبوع الثاني", "text": "ثبّت العادة", "value": "يوم 14"}, {"title": "آخر الشهر", "hi": true}]}},
+      {"op": "add", "path": "/sources", "value": [{"id": "src1", "kind": "ownData", "ref": "تجربة داخلية", "excerpt": "85% من المشاهدين بيعدّوا الغلاف و15% بيكمّلوا"}]}
+    ], "expect": [
+      {"gate": "SRC1", "el": "s05.chart.0.label", "absent": true}
+    ]},
+    {"id": "vf-words-over", "base": "spec.eg.8slides.json", "brand": "brand.eg.creator.json", "patch": [
+      {"op": "replace", "path": "/slides/1", "value": {"id": "s02", "n": 2, "type": "grid", "title": "ست أدوات بتفرق", "items": [{"title": "واحد اثنين ثلاثة", "text": "أربعة خمسة ستة سبعة ثمانية"}, {"title": "واحد اثنين ثلاثة", "text": "أربعة خمسة ستة سبعة ثمانية"}, {"title": "واحد اثنين ثلاثة", "text": "أربعة خمسة ستة سبعة ثمانية"}, {"title": "واحد اثنين ثلاثة", "text": "أربعة خمسة ستة سبعة ثمانية"}, {"title": "واحد اثنين ثلاثة", "text": "أربعة خمسة ستة سبعة ثمانية"}, {"title": "واحد اثنين ثلاثة", "text": "أربعة خمسة ستة سبعة ثمانية"}]}},
+      {"op": "replace", "path": "/slides/2", "value": {"id": "s03", "n": 3, "type": "item", "ord": 1, "title": "خط صغير", "body": "كبّر الخط."}}
+    ], "expect": [
+      {"gate": "C3", "el": "s02", "rule": "C3.words"},
+      {"gate": "C2", "el": "s02", "rule": "C2.slide-words"},
+      {"gate": "C2", "el": "s03", "absent": true}
+    ]},
+    {"id": "vf-words-slide", "base": "spec.eg.8slides.json", "brand": "brand.eg.creator.json", "patch": [
+      {"op": "replace", "path": "/slides/2", "value": {"id": "s03", "n": 3, "type": "story-beat", "body": "قصة قصيرة عن عميل اتصل بيا", "demo": {"lines": [{"text": "ازيك"}, {"text": "تمام الحمد لله"}], "caption": "من تجربة حقيقية"}, "items": [{"title": "واحد اثنين ثلاثة", "text": "أربعة خمسة ستة سبعة ثمانية"}, {"title": "واحد اثنين ثلاثة", "text": "أربعة خمسة ستة سبعة ثمانية"}, {"title": "واحد اثنين ثلاثة", "text": "أربعة خمسة ستة سبعة ثمانية"}, {"title": "واحد اثنين ثلاثة", "text": "أربعة خمسة ستة سبعة ثمانية"}], "visual": {"anchor": {"kind": "mock", "mock": {"kind": "notes", "title": "ملاحظات العميل", "items": ["واحد اثنين ثلاثة أربعة خمسة", "ستة سبعة ثمانية تسعة عشرة"], "caption": "ملخص المكالمة"}}}}}
+    ], "expect": [
+      {"gate": "C2", "el": "s03", "rule": "C2.slide-words"}
+    ]},
+    {"id": "vf-gulf-markers", "base": "spec.gulf.9slides.json", "brand": "brand.gulf.client.json", "patch": [
+      {"op": "add", "path": "/slides/2/demo", "value": {"lines": [{"who": "me", "text": "عايز تعرف إزاي دلوقتي"}]}},
+      {"op": "add", "path": "/slides/2/visual", "value": {"anchor": {"kind": "mock", "mock": {"kind": "chat", "lines": [{"text": "عايز تعرف إزاي دلوقتي"}, {"text": "مش هتتعب"}]}}}},
+      {"op": "add", "path": "/slides/3/items", "value": [{"title": "أبي", "text": "كيف ذا"}, {"title": "شلون"}]}
+    ], "expect": [
+      {"gate": "O1", "el": "s03.demo.0", "rule": "O1.deny-marker"},
+      {"gate": "O1", "el": "s03.mock.lines.0", "rule": "O1.deny-marker"},
+      {"gate": "O1", "el": "s03.mock.lines.1", "rule": "O1.deny-marker"},
+      {"gate": "O1", "el": "s04.items.0", "absent": true}
+    ]},
+    {"id": "vf-indic-deck", "base": "spec.msa-white.indic.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/2/items", "value": [{"title": "أداة", "text": "مثال", "value": "12 ساعة"}, {"title": "ثانية", "value": "١٢ ساعة"}]},
+      {"op": "add", "path": "/slides/2/visual", "value": {"anchor": {"kind": "chart", "chart": {"kind": "bars-h", "values": [{"label": "نسبة 50%", "value": 50}]}, "unit": "12 ساعة"}}}
+    ], "expect": [
+      {"gate": "N1", "el": "s03.items-value.0", "rule": "N1.system"},
+      {"gate": "N1", "el": "s03.chart.0.label", "rule": "N1.system"},
+      {"gate": "N1", "el": "s03.anchor.unit", "rule": "N1.system"},
+      {"gate": "N1", "el": "s03.items-value.1", "absent": true}
+    ]},
+    {"id": "vf-en-deck", "base": "spec.en.8slides.json", "brand": "brand.en.minimal.json", "patch": [
+      {"op": "add", "path": "/slides/2/items", "value": [{"title": "Canva  Pro", "text": "Step ٥ first", "value": "2,500"}, {"title": "CapCut"}]},
+      {"op": "add", "path": "/slides/2/demo", "value": {"lines": [{"who": "me", "text": "teh best  way"}], "caption": "A/B test it"}}
+    ], "expect": [
+      {"gate": "O1", "el": "s03.demo.0", "rule": "O1.ortho-punct-004"},
+      {"gate": "O1", "el": "s03.items.0", "rule": "O1.ortho-punct-004"},
+      {"gate": "N1", "el": "s03.items-text.0", "rule": "N1.system"},
+      {"gate": "O1", "el": "s03.items.1", "absent": true}
+    ]},
+    {"id": "vf-single-post", "base": "spec.eg.single.json", "patch": [
+      {"op": "add", "path": "/slides/0/items", "value": [{"title": "انشاء حساب"}, {"title": "تمام"}]},
+      {"op": "add", "path": "/slides/0/demo", "value": {"lines": [{"text": "نص  مكرر"}]}}
+    ], "expect": [
+      {"gate": "O1", "el": "s01.items.0", "rule": "O1.ortho-hamza-001"},
+      {"gate": "O1", "el": "s01.demo.0", "rule": "O1.ortho-punct-004"},
+      {"gate": "O1", "el": "s01.items.1", "absent": true}
+    ]},
+    {"id": "vf-odd-values", "base": "spec.eg.8slides.json", "brand": "brand.eg.creator.json", "patch": [
+      {"op": "add", "path": "/slides/2/items", "value": [{"title": "", "text": "   ", "value": 5}, {"title": 7}, {"text": "انشاء"}]},
+      {"op": "add", "path": "/slides/2/demo", "value": {"caption": 7, "lines": ["oops", {"text": "نص  مكرر"}]}},
+      {"op": "add", "path": "/slides/2/visual", "value": {"anchor": {"word": null, "unit": 3, "captions": [1, "ok"], "chart": {"values": [{"value": 1}, {"label": 4}]}, "mock": {"lines": [3, {"who": "me"}, {"text": "انشاء"}], "items": [8, "انشاء"]}}}}
+    ], "expect": [
+      {"gate": "O1", "el": "s03.items-text.2", "rule": "O1.ortho-hamza-001"},
+      {"gate": "O1", "el": "s03.demo.1", "rule": "O1.ortho-punct-004"},
+      {"gate": "O1", "el": "s03.mock.lines.2", "rule": "O1.ortho-hamza-001"},
+      {"gate": "O1", "el": "s03.mock.items.1", "rule": "O1.ortho-hamza-001"},
+      {"gate": "O1", "el": "s03.items.0", "absent": true},
+      {"gate": "O1", "el": "s03.items-value.0", "absent": true},
+      {"gate": "O1", "el": "s03.demo.0", "absent": true}
+    ]}
+  ]
+}

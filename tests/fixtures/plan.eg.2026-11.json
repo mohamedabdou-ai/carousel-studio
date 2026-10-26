@@ -1,0 +1,305 @@
+{
+  "schemaVersion": 1,
+  "id": "plan-content-workshop-2026-11",
+  "brandSlug": "content-workshop",
+  "period": "2026-11",
+  "goal": "followers",
+  "cadence": {
+    "perWeek": 4,
+    "days": [
+      "sun",
+      "tue",
+      "wed",
+      "thu"
+    ],
+    "hours": [
+      "20:30"
+    ],
+    "tz": "Africa/Cairo"
+  },
+  "slots": [
+    {
+      "id": "w1-d1",
+      "date": "2026-11-01",
+      "time": "20:30",
+      "pillarId": "writing",
+      "format": "carousel",
+      "intent": "save",
+      "architecture": "listicle",
+      "family": "P3",
+      "ctaKind": "save",
+      "status": "designed",
+      "title": "5\u00a0أخطاء بتموّت الكاروسيل",
+      "specId": "post-20261022-0001",
+      "angleId": "a2"
+    },
+    {
+      "id": "w1-d2",
+      "date": "2026-11-03",
+      "time": "20:30",
+      "pillarId": "growth",
+      "format": "carousel",
+      "intent": "reach",
+      "architecture": "opinion",
+      "family": "F21",
+      "ctaKind": "question",
+      "status": "idea",
+      "title": "الكابشن الطويل مش عيب"
+    },
+    {
+      "id": "w1-d3",
+      "date": "2026-11-04",
+      "time": "20:30",
+      "pillarId": "writing",
+      "format": "carousel",
+      "intent": "send",
+      "architecture": "myth-fact",
+      "family": "F17",
+      "ctaKind": "send",
+      "status": "idea",
+      "title": "مشكلتك مش في الألوان"
+    },
+    {
+      "id": "w1-d4",
+      "date": "2026-11-05",
+      "time": "20:30",
+      "pillarId": "design",
+      "format": "carousel",
+      "intent": "save",
+      "architecture": "steps",
+      "family": "P14",
+      "ctaKind": "save",
+      "status": "idea",
+      "title": "كاروسيل من غير مصمم"
+    },
+    {
+      "id": "w2-d1",
+      "date": "2026-11-08",
+      "time": "20:30",
+      "pillarId": "writing",
+      "format": "carousel",
+      "intent": "save",
+      "architecture": "framework",
+      "family": "P11",
+      "ctaKind": "save",
+      "status": "idea",
+      "title": "قائمة مراجعة قبل النشر"
+    },
+    {
+      "id": "w2-d2",
+      "date": "2026-11-10",
+      "time": "20:30",
+      "pillarId": "growth",
+      "format": "carousel",
+      "intent": "reach",
+      "architecture": "story",
+      "family": "P9",
+      "ctaKind": "follow",
+      "status": "idea",
+      "title": "أول كاروسيل جاب حفظ"
+    },
+    {
+      "id": "w2-d3",
+      "date": "2026-11-11",
+      "time": "20:30",
+      "pillarId": "design",
+      "format": "carousel",
+      "intent": "send",
+      "architecture": "comparison",
+      "family": "P15",
+      "ctaKind": "send",
+      "status": "idea",
+      "title": "جرّبت 3\u00a0أدوات للتصميم"
+    },
+    {
+      "id": "w2-d4",
+      "date": "2026-11-12",
+      "time": "20:30",
+      "pillarId": "writing",
+      "format": "carousel",
+      "intent": "save",
+      "architecture": "listicle",
+      "family": "P1",
+      "ctaKind": "save",
+      "status": "idea",
+      "title": "6\u00a0أنواع أول سلايد"
+    },
+    {
+      "id": "w3-d1",
+      "date": "2026-11-15",
+      "time": "20:30",
+      "pillarId": "design",
+      "format": "carousel",
+      "intent": "save",
+      "architecture": "steps",
+      "family": "F19",
+      "ctaKind": "save",
+      "status": "idea",
+      "title": "راجع الغلاف قبل ما تنزّل"
+    },
+    {
+      "id": "w3-d2",
+      "date": "2026-11-17",
+      "time": "20:30",
+      "pillarId": "growth",
+      "format": "carousel",
+      "intent": "send",
+      "architecture": "myth-fact",
+      "family": "P4",
+      "ctaKind": "send",
+      "status": "idea",
+      "title": "الناس بتقول الكاروسيل لازم يتصمم حلو"
+    },
+    {
+      "id": "w3-d3",
+      "date": "2026-11-18",
+      "time": "20:30",
+      "pillarId": "growth",
+      "format": "carousel",
+      "intent": "reach",
+      "architecture": "opinion",
+      "family": "F20",
+      "ctaKind": "question",
+      "status": "idea",
+      "title": "نص كتير ولا نص قليل؟"
+    },
+    {
+      "id": "w3-d4",
+      "date": "2026-11-19",
+      "time": "20:30",
+      "pillarId": "writing",
+      "format": "carousel",
+      "intent": "sell",
+      "architecture": "lead-magnet",
+      "family": "S1",
+      "ctaKind": "keyword-dm",
+      "status": "idea",
+      "title": "قالب هوك جاهز"
+    },
+    {
+      "id": "w4-d1",
+      "date": "2026-11-22",
+      "time": "20:30",
+      "pillarId": "writing",
+      "format": "carousel",
+      "intent": "save",
+      "architecture": "listicle",
+      "family": "P1",
+      "ctaKind": "save",
+      "status": "idea",
+      "title": "5\u00a0أنواع دعوة للحفظ"
+    },
+    {
+      "id": "w4-d2",
+      "date": "2026-11-24",
+      "time": "20:30",
+      "pillarId": "design",
+      "format": "carousel",
+      "intent": "save",
+      "architecture": "framework",
+      "family": "P11",
+      "ctaKind": "save",
+      "status": "idea",
+      "title": "ملف سلايدات جاهز"
+    },
+    {
+      "id": "w4-d3",
+      "date": "2026-11-25",
+      "time": "20:30",
+      "pillarId": "growth",
+      "format": "carousel",
+      "intent": "reach",
+      "architecture": "opinion",
+      "family": "F21",
+      "ctaKind": "question",
+      "status": "idea",
+      "title": "مش كل بوست محتاج هاشتاج"
+    },
+    {
+      "id": "w4-d4",
+      "date": "2026-11-26",
+      "time": "20:30",
+      "pillarId": "writing",
+      "format": "carousel",
+      "intent": "sell",
+      "architecture": "offer",
+      "family": "S2",
+      "ctaKind": "keyword-dm",
+      "status": "idea",
+      "title": "ورشة الكتابة للمبتدئين"
+    },
+    {
+      "id": "occ-white-friday",
+      "date": "2026-11-27",
+      "time": "20:30",
+      "pillarId": "writing",
+      "format": "single",
+      "intent": "sell",
+      "family": "S2",
+      "ctaKind": "keyword-dm",
+      "status": "idea",
+      "title": "عرض الجمعة البيضاء",
+      "note": "لا توجد حزمة مناسبة في النسخة الأولى: الخطة بستايل البراند وتحذير في الكابشن."
+    }
+  ],
+  "ideaBank": [
+    {
+      "id": "i1",
+      "text": "ليه أول سلايد بيتحفظ أكتر لما بيحتوي على رقم؟",
+      "pillarId": "writing",
+      "intents": [
+        "save"
+      ],
+      "source": "user"
+    },
+    {
+      "id": "i2",
+      "text": "الفرق بين كابشن للقارئ وكابشن للبحث",
+      "pillarId": "writing",
+      "intents": [
+        "save",
+        "send"
+      ],
+      "source": "audience-faq"
+    },
+    {
+      "id": "i3",
+      "text": "إزاي تراجع كاروسيلك على موبايلك قبل النشر",
+      "pillarId": "design",
+      "intents": [
+        "save"
+      ],
+      "source": "user"
+    },
+    {
+      "id": "i4",
+      "text": "هل الهاشتاجات لسه بتفرق؟",
+      "pillarId": "growth",
+      "intents": [
+        "reach"
+      ],
+      "source": "audience-faq"
+    }
+  ],
+  "angleBank": [
+    {
+      "id": "a1",
+      "title": "الوعد قبل الشكل",
+      "lens": "contrarian",
+      "score": 76,
+      "topic": "غلاف الكاروسيل",
+      "pillarId": "writing"
+    },
+    {
+      "id": "a3",
+      "title": "6\u00a0خطوات لكابشن بيكمّلوه للآخر",
+      "lens": "framework",
+      "score": 79,
+      "topic": "كتابة الكابشن",
+      "pillarId": "writing"
+    }
+  ],
+  "occasions": [],
+  "createdAt": "2026-10-22T09:30:00Z",
+  "updatedAt": "2026-10-22T09:30:00Z"
+}

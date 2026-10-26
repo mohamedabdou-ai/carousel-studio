@@ -1,0 +1,19 @@
+{
+  "module": "brandbook",
+  "chunk": "cs-brandbook.js",
+  "order": 0,
+  "files": [
+    "shared.js",
+    "css.js",
+    "book.js",
+    "printable.js",
+    "home.js",
+    "screens/preview.js",
+    "screens/motion.js",
+    "screens/copy.js",
+    "exportflow.js",
+    "screens/export.js",
+    "screens/about.js",
+    "index.js"
+  ]
+}

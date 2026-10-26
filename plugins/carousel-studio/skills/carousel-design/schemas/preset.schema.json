@@ -1,0 +1,1092 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:carousel-studio:schema:preset:1",
+  "title": "Carousel Studio style preset",
+  "description": "styles/<id>/preset.json. Archetype partials own layout; presets own look (tokens + decor.css + variant flags).",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "$ref": "#/$defs/presetSlug"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$"
+    },
+    "name": {
+      "type": "object",
+      "properties": {
+        "ar": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "en": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        }
+      },
+      "required": [
+        "ar",
+        "en"
+      ],
+      "additionalProperties": false
+    },
+    "description": {
+      "$ref": "#/$defs/msg"
+    },
+    "bestFor": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 80
+      },
+      "maxItems": 8
+    },
+    "ships": {
+      "type": "string",
+      "enum": [
+        "1.0",
+        "1.1",
+        "1.2"
+      ],
+      "description": "First plugin version that ships this preset."
+    },
+    "paintable": {
+      "const": true
+    },
+    "roles": {
+      "type": "object",
+      "properties": {
+        "bg": {
+          "$ref": "#/$defs/hexColor"
+        },
+        "surface": {
+          "$ref": "#/$defs/hexColor"
+        },
+        "ink": {
+          "$ref": "#/$defs/hexColor"
+        },
+        "inkMuted": {
+          "$ref": "#/$defs/hexColor"
+        },
+        "accent": {
+          "$ref": "#/$defs/hexColor"
+        },
+        "accent2": {
+          "$ref": "#/$defs/hexColor"
+        }
+      },
+      "required": [
+        "bg",
+        "ink",
+        "inkMuted",
+        "accent"
+      ],
+      "additionalProperties": false
+    },
+    "brandBindings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "bg",
+          "surface",
+          "ink",
+          "inkMuted",
+          "accent",
+          "accent2",
+          "fonts"
+        ]
+      },
+      "maxItems": 7,
+      "uniqueItems": true,
+      "description": "Roles (and 'fonts') that the brand palette / fonts replace."
+    },
+    "type": {
+      "type": "object",
+      "properties": {
+        "display": {
+          "$ref": "#/$defs/font"
+        },
+        "heading": {
+          "$ref": "#/$defs/font"
+        },
+        "body": {
+          "$ref": "#/$defs/font"
+        },
+        "latin": {
+          "$ref": "#/$defs/font"
+        },
+        "scale": {
+          "type": "object",
+          "properties": {
+            "hero": {
+              "$ref": "#/$defs/size"
+            },
+            "heroTarget": {
+              "type": "integer",
+              "minimum": 12,
+              "maximum": 400
+            },
+            "h1": {
+              "$ref": "#/$defs/size"
+            },
+            "h2": {
+              "$ref": "#/$defs/size"
+            },
+            "title": {
+              "$ref": "#/$defs/size"
+            },
+            "body": {
+              "$ref": "#/$defs/size"
+            },
+            "small": {
+              "$ref": "#/$defs/size"
+            },
+            "micro": {
+              "$ref": "#/$defs/size"
+            },
+            "numeral": {
+              "$ref": "#/$defs/size"
+            }
+          },
+          "required": [
+            "hero",
+            "h1",
+            "h2",
+            "title",
+            "body",
+            "small",
+            "micro"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "display",
+        "heading",
+        "body",
+        "latin",
+        "scale"
+      ],
+      "additionalProperties": false
+    },
+    "layout": {
+      "type": "object",
+      "properties": {
+        "align": {
+          "type": "string",
+          "enum": [
+            "start",
+            "center"
+          ]
+        },
+        "coverAnchor": {
+          "type": "string",
+          "enum": [
+            "top",
+            "center"
+          ]
+        },
+        "headlineWidth": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 1
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "align",
+        "coverAnchor",
+        "headlineWidth"
+      ],
+      "additionalProperties": false
+    },
+    "background": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "solid",
+            "gradient",
+            "paper",
+            "photo",
+            "pattern"
+          ]
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "decor": {
+      "type": "object",
+      "properties": {
+        "highlight": {
+          "type": "string",
+          "enum": [
+            "bar",
+            "underline",
+            "marker",
+            "color"
+          ]
+        },
+        "numbering": {
+          "type": "string",
+          "enum": [
+            "ghost",
+            "pill",
+            "plain"
+          ]
+        },
+        "texture": {
+          "type": "string",
+          "enum": [
+            "none",
+            "grain",
+            "ruled",
+            "grid",
+            "dots",
+            "paper",
+            "pattern"
+          ]
+        },
+        "motif": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{0,39}$"
+        },
+        "kashida": {
+          "type": "object",
+          "properties": {
+            "allowed": {
+              "type": "boolean"
+            },
+            "maxWords": {
+              "const": 1
+            }
+          },
+          "required": [
+            "allowed"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "highlight",
+        "numbering",
+        "kashida"
+      ],
+      "additionalProperties": false
+    },
+    "chrome": {
+      "type": "object",
+      "properties": {
+        "handle": {
+          "type": "object",
+          "properties": {
+            "slot": {
+              "$ref": "#/$defs/chromeSlot"
+            },
+            "logo": {
+              "type": "string",
+              "enum": [
+                "auto",
+                "never"
+              ],
+              "description": "auto = show the brand logo (height 56 px) before the handle when the brand has one"
+            }
+          },
+          "required": [
+            "slot"
+          ],
+          "additionalProperties": false
+        },
+        "meta": {
+          "type": "object",
+          "properties": {
+            "slot": {
+              "$ref": "#/$defs/chromeSlot"
+            }
+          },
+          "required": [
+            "slot"
+          ],
+          "additionalProperties": false
+        },
+        "counter": {
+          "type": "object",
+          "properties": {
+            "slot": {
+              "$ref": "#/$defs/chromeSlot"
+            },
+            "format": {
+              "type": "string",
+              "enum": [
+                "{i} من {n}",
+                "{i}/{n}",
+                "{i}"
+              ]
+            }
+          },
+          "required": [
+            "slot",
+            "format"
+          ],
+          "additionalProperties": false
+        },
+        "swipe": {
+          "type": "object",
+          "properties": {
+            "slot": {
+              "$ref": "#/$defs/chromeSlot"
+            },
+            "style": {
+              "type": "string",
+              "enum": [
+                "label+chevron",
+                "chevron",
+                "label",
+                "none"
+              ]
+            }
+          },
+          "required": [
+            "slot",
+            "style"
+          ],
+          "additionalProperties": false
+        },
+        "savePill": {
+          "type": "object",
+          "properties": {
+            "slot": {
+              "$ref": "#/$defs/chromeSlot"
+            },
+            "showOn": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/slideType"
+              },
+              "maxItems": 20
+            }
+          },
+          "required": [
+            "slot"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "handle",
+        "counter",
+        "swipe"
+      ],
+      "additionalProperties": false
+    },
+    "variants": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,23}$"
+        },
+        "minItems": 1,
+        "maxItems": 8
+      },
+      "description": "slideType -> variant flags this preset styles; the first is the default."
+    },
+    "motion": {
+      "type": "object",
+      "properties": {
+        "default": {
+          "$ref": "#/$defs/recipe"
+        },
+        "allowed": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/recipe"
+          },
+          "maxItems": 13
+        }
+      },
+      "required": [
+        "default",
+        "allowed"
+      ],
+      "additionalProperties": false
+    },
+    "floors": {
+      "type": "object",
+      "properties": {
+        "hero": {
+          "type": "integer",
+          "minimum": 96
+        },
+        "body": {
+          "type": "integer",
+          "minimum": 42
+        },
+        "meta": {
+          "type": "integer",
+          "minimum": 30
+        },
+        "contrastBody": {
+          "type": "number",
+          "minimum": 4.5
+        },
+        "contrastLarge": {
+          "type": "number",
+          "minimum": 3
+        }
+      },
+      "required": [
+        "hero",
+        "body",
+        "meta",
+        "contrastBody",
+        "contrastLarge"
+      ],
+      "additionalProperties": false
+    },
+    "art": {
+      "type": "object",
+      "properties": {
+        "stroke": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 6
+        },
+        "cap": {
+          "type": "string",
+          "enum": [
+            "butt",
+            "round",
+            "square"
+          ]
+        },
+        "join": {
+          "type": "string",
+          "enum": [
+            "miter",
+            "round",
+            "bevel"
+          ]
+        },
+        "container": {
+          "type": "string",
+          "enum": [
+            "square",
+            "disc",
+            "hand-circle",
+            "stamp",
+            "app-tile",
+            "arch"
+          ]
+        },
+        "radius": {
+          "type": "object",
+          "properties": {
+            "chip": {
+              "$ref": "#/$defs/px999"
+            },
+            "tile": {
+              "$ref": "#/$defs/px999"
+            },
+            "card": {
+              "$ref": "#/$defs/px999"
+            },
+            "panel": {
+              "$ref": "#/$defs/px999"
+            },
+            "window": {
+              "$ref": "#/$defs/px999"
+            }
+          },
+          "additionalProperties": false
+        },
+        "shadow": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "none",
+                "hard",
+                "soft"
+              ]
+            },
+            "dx": {
+              "type": "number",
+              "minimum": -64,
+              "maximum": 64
+            },
+            "dy": {
+              "type": "number",
+              "minimum": -64,
+              "maximum": 64
+            },
+            "blur": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 96
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "additionalProperties": false
+        },
+        "outline": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 12
+        },
+        "objectOutline": {
+          "type": "number",
+          "minimum": 0.03,
+          "maximum": 0.04
+        },
+        "outlineColor": {
+          "$ref": "#/$defs/colorRef"
+        },
+        "retrace": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "dx": {
+                  "type": "number",
+                  "minimum": -2,
+                  "maximum": 2
+                },
+                "dy": {
+                  "type": "number",
+                  "minimum": -2,
+                  "maximum": 2
+                },
+                "rot": {
+                  "type": "number",
+                  "minimum": -5,
+                  "maximum": 5
+                },
+                "tint": {
+                  "$ref": "#/$defs/colorRef"
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        "fill": {
+          "type": "string",
+          "enum": [
+            "flat",
+            "tint"
+          ]
+        },
+        "wobble": {
+          "$ref": "#/$defs/unit"
+        },
+        "tilt": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 12
+        },
+        "stampTilt": {
+          "type": "number",
+          "minimum": -30,
+          "maximum": 30
+        },
+        "texture": {
+          "$ref": "#/$defs/token24"
+        },
+        "doodle": {
+          "$ref": "#/$defs/token24"
+        },
+        "colors": {
+          "type": "object",
+          "properties": {
+            "note": {
+              "$ref": "#/$defs/hexColor"
+            },
+            "support": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/hexColor"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "additionalProperties": false
+        },
+        "mark": {
+          "type": "string",
+          "enum": [
+            "fill",
+            "outline"
+          ]
+        },
+        "badge": {
+          "type": "string",
+          "enum": [
+            "star",
+            "scallop",
+            "stamp"
+          ]
+        },
+        "fills": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/colorRef"
+          }
+        },
+        "hand": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/font"
+            }
+          ]
+        },
+        "chipOffset": {
+          "type": "number",
+          "minimum": -24,
+          "maximum": 24
+        },
+        "templates": {
+          "$ref": "#/$defs/token24List"
+        },
+        "affinity": {
+          "type": "object",
+          "properties": {
+            "icon": {
+              "$ref": "#/$defs/unit"
+            },
+            "scene": {
+              "$ref": "#/$defs/unit"
+            },
+            "rows": {
+              "$ref": "#/$defs/unit"
+            },
+            "numeral": {
+              "$ref": "#/$defs/unit"
+            },
+            "chart": {
+              "$ref": "#/$defs/unit"
+            },
+            "mock": {
+              "$ref": "#/$defs/unit"
+            },
+            "photo": {
+              "$ref": "#/$defs/unit"
+            },
+            "field": {
+              "$ref": "#/$defs/unit"
+            },
+            "word": {
+              "$ref": "#/$defs/unit"
+            },
+            "pattern": {
+              "$ref": "#/$defs/unit"
+            }
+          },
+          "additionalProperties": false
+        },
+        "marks": {
+          "$ref": "#/$defs/token24List"
+        },
+        "rail": {
+          "type": "object",
+          "properties": {
+            "style": {
+              "$ref": "#/$defs/token24"
+            }
+          },
+          "additionalProperties": false
+        },
+        "thread": {
+          "type": "object",
+          "properties": {
+            "style": {
+              "$ref": "#/$defs/token24"
+            },
+            "extends": {
+              "$ref": "#/$defs/token24"
+            }
+          },
+          "additionalProperties": false
+        },
+        "motif": {
+          "type": "string",
+          "maxLength": 40,
+          "pattern": "^[a-z0-9][a-z0-9-]{0,39}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "tones": {
+      "type": "object",
+      "properties": {
+        "invert": {
+          "$ref": "#/$defs/tone"
+        },
+        "field": {
+          "$ref": "#/$defs/tone"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "version",
+    "name",
+    "ships",
+    "paintable",
+    "roles",
+    "brandBindings",
+    "type",
+    "layout",
+    "background",
+    "decor",
+    "chrome",
+    "variants",
+    "motion",
+    "floors"
+  ],
+  "additionalProperties": false,
+  "x-sharedDefs": [
+    "hexColor",
+    "msg",
+    "presetSlug",
+    "recipe",
+    "slideType"
+  ],
+  "$defs": {
+    "chromeSlot": {
+      "type": "string",
+      "enum": [
+        "header-start",
+        "header-center",
+        "header-end",
+        "footer-start",
+        "footer-center",
+        "footer-end"
+      ]
+    },
+    "colorRef": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/toneRole"
+        },
+        {
+          "$ref": "#/$defs/hexColor"
+        }
+      ]
+    },
+    "font": {
+      "type": "object",
+      "properties": {
+        "family": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{1,47}$",
+          "description": "Font registry id."
+        },
+        "wght": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 900
+        },
+        "lh": {
+          "type": "number",
+          "minimum": 1.0,
+          "maximum": 2.2
+        }
+      },
+      "required": [
+        "family",
+        "wght"
+      ],
+      "additionalProperties": false
+    },
+    "hexColor": {
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$",
+      "description": "Opaque sRGB colour, 6 hex digits. Alpha is never stored in roles."
+    },
+    "msg": {
+      "type": "object",
+      "properties": {
+        "ar": {
+          "type": "string",
+          "maxLength": 600
+        },
+        "en": {
+          "type": "string",
+          "maxLength": 600
+        }
+      },
+      "required": [
+        "ar",
+        "en"
+      ],
+      "additionalProperties": false,
+      "description": "Bilingual message. 'ar' is white (simplified) MSA."
+    },
+    "presetSlug": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,31}$"
+    },
+    "px999": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 999
+    },
+    "recipe": {
+      "type": "string",
+      "enum": [
+        "calm",
+        "counter",
+        "highlight-sweep",
+        "stamp",
+        "reorder",
+        "story",
+        "morph",
+        "split",
+        "map-dots",
+        "cash-wipe",
+        "drop-clock",
+        "scale",
+        "none"
+      ]
+    },
+    "size": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 12,
+          "maximum": 640
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 12,
+            "maximum": 640
+          },
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "[min, max] px at 1080 wide; the fit search runs inside it."
+        }
+      ]
+    },
+    "slideType": {
+      "type": "string",
+      "enum": [
+        "cover",
+        "rehook",
+        "item",
+        "step",
+        "stat",
+        "compare",
+        "myth-fact",
+        "quote",
+        "story-beat",
+        "checklist",
+        "summary",
+        "setup",
+        "proof",
+        "share",
+        "cta",
+        "offer",
+        "testimonial",
+        "poster",
+        "grid",
+        "timeline"
+      ]
+    },
+    "token24": {
+      "type": "string",
+      "maxLength": 24,
+      "pattern": "^[a-z][a-z0-9-]{0,23}$"
+    },
+    "token24List": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/token24"
+      },
+      "maxItems": 12
+    },
+    "tone": {
+      "type": "object",
+      "properties": {
+        "roles": {
+          "type": "object",
+          "properties": {
+            "bg": {
+              "$ref": "#/$defs/toneValue"
+            },
+            "surface": {
+              "$ref": "#/$defs/toneValue"
+            },
+            "ink": {
+              "$ref": "#/$defs/toneValue"
+            },
+            "inkMuted": {
+              "$ref": "#/$defs/toneValue"
+            },
+            "accent": {
+              "$ref": "#/$defs/toneValue"
+            }
+          },
+          "required": [
+            "bg",
+            "surface",
+            "ink",
+            "inkMuted",
+            "accent"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "roles"
+      ],
+      "additionalProperties": false
+    },
+    "toneRole": {
+      "type": "string",
+      "enum": [
+        "bg",
+        "surface",
+        "ink",
+        "inkMuted",
+        "accent",
+        "accent2"
+      ]
+    },
+    "toneUnit": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/toneRole"
+        },
+        {
+          "$ref": "#/$defs/unit"
+        }
+      ]
+    },
+    "toneValue": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/toneRole"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "mix": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/toneUnit"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          },
+          "required": [
+            "mix"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "lightness": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/toneUnit"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "required": [
+            "lightness"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "muted": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 21
+            }
+          },
+          "required": [
+            "muted"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "pick": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/toneRole"
+                    },
+                    "minItems": 1,
+                    "maxItems": 4
+                  },
+                  {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 21
+                  }
+                ]
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "required": [
+            "pick"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "unit": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

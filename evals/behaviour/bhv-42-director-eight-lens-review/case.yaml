@@ -1,0 +1,61 @@
+schema_version: "1.0"
+name: bhv-42-director-eight-lens-review
+description: "The director reviews the finished script against eight lenses with a score and quoted evidence each; the verdict follows the scores mechanically and a REVISE carries at most three notes addressed to named agents."
+tags: [behaviour, needs-bash, carousel-create, creative-team, director-review]
+plugins: ["../../../plugins/carousel-studio"]
+execution:
+  prompt: |
+    ده كابسول البراند بتاعي (ملف المشروع):
+
+        [Carousel Studio brand capsule v1]
+        brand: ورشة المحتوى (content-workshop) | dialect: eg | register: dialect | digits: western | swipe: arrow-rtl
+        voice: ودود وعملي، جمل قصيرة. نستخدم «ببلاش» و«جرّب». لا نستخدم «ثورة» ولا «سر».
+        palette: bg #F4F4F2 ink #111111 accent #E3262B | fonts: ibm-plex-sans-arabic / readex-pro / inter | preset: swiss
+        home: -
+
+    بسرعة: كاروسيل 8 سلايدات عن ليه الكابشن الطويل مش عيب. قبل ما تسلّمني، عايز مراجعة المدير الإبداعي.
+  append_system_prompt: |
+    This is an automated evaluation of the Carousel Studio plugin, not a live session. There is no Artifact tool, no network access and no connected image, video or design tool. Save every file you create in the current working directory and never in a home folder: name the post spec spec.json, the production board board.md, a brand profile brand.json and a plan plan-YYYY-MM.json, and when a script offers a workspace or root option (for example brand_io.py --dir) point it at the current directory. Subagents may be unavailable: when they are, run each team role as an explicit role pass, as the skill says. Otherwise answer the user exactly as you normally would.
+  max_turns: 80
+  timeout_seconds: 1800
+  allowed_tools: [Skill, Read, Write, Edit, Bash, Glob, Grep, Agent]
+runs: 2
+graders:
+  - type: tool_used
+    name: uses-carousel-create
+    tool: Skill
+    input_match: 'carousel-create'
+    min: 1
+  - type: regex
+    name: verdict
+    pattern: 'SHIP|REVISE|KILL'
+    match: contains
+    weight: 2
+  - type: regex
+    name: eight-lens-lines-on-the-board
+    pattern: '(?s)الفكرة\s+[1-5]\s+—.*الهوك\s+[1-5]\s+—.*التدفق\s+[1-5]\s+—.*القيمة\s+[1-5]\s+—.*الصوت\s+[1-5]\s+—.*الصنعة\s+[1-5]\s+—.*الدليل\s+[1-5]\s+—.*الدعوة\s+[1-5]\s+—'
+    match: contains
+    target: {source: file, path: board.md}
+    weight: 2
+  - type: tool_used
+    name: runs-the-board-checker
+    tool: Bash
+    input_match: 'board_check\.py'
+    min: 1
+    weight: 2
+  - type: llm
+    name: eight-lenses-scored-with-evidence
+    criteria: |
+      The director's review scores EIGHT lenses (idea, hook, flow, value, voice, craft, proof, call to action) from 1 to 5, one line each that quotes evidence (a slide number, a field or a persona's words), and ends with exactly one verdict: SHIP, REVISE or KILL.
+    weight: 2
+  - type: llm
+    name: verdict-follows-the-scores
+    criteria: |
+      The verdict follows the rules: SHIP only if every lens is 4 or more and at least two of the three personas reached the call-to-action slide; KILL if Idea or Hook is 2 or less; otherwise REVISE with one to three notes. If the verdict is REVISE, each note is addressed to one named role (copywriter, art director, motion designer...) and says what to change, not how to write it.
+    weight: 2
+  - type: regex
+    name: no-author-credit
+    pattern: 'محمد عبده|Mohamed Abdou'
+    match: not_contains
+    weight: 2
+expected_outcome: "Eight scored lenses with evidence and one verdict that follows from the scores."

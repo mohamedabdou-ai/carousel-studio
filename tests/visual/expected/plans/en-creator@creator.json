@@ -1,0 +1,108 @@
+{
+  "slides": [
+    {
+      "id": "s02",
+      "visual": {
+        "anchor": {
+          "kind": "field",
+          "word": "Here"
+        },
+        "recipe": "over",
+        "tone": "base",
+        "field": true,
+        "bleed": "both",
+        "marks": [
+          "circle"
+        ],
+        "why": "No picture says this honestly, so the word is the picture",
+        "alt": "The word «Here» set large"
+      }
+    },
+    {
+      "id": "s03",
+      "visual": {
+        "anchor": {
+          "kind": "mock",
+          "mock": {
+            "kind": "notes",
+            "caption": "This is what stops the thumb"
+          }
+        },
+        "recipe": "under",
+        "tone": "base",
+        "why": "We put the slide's own words inside a notes page",
+        "alt": "notes page: 5 tips for writing"
+      },
+      "variant": "track"
+    },
+    {
+      "id": "s04",
+      "visual": {
+        "anchor": {
+          "kind": "numeral",
+          "companion": "waffle",
+          "of": 100,
+          "filled": 8
+        },
+        "recipe": "over",
+        "tone": "field",
+        "field": true,
+        "bleed": "both",
+        "why": "The number 8 is the idea, so we made it big",
+        "alt": "The number 8 of 100"
+      }
+    },
+    {
+      "id": "s05",
+      "visual": {
+        "anchor": {
+          "kind": "field",
+          "word": "carousel"
+        },
+        "recipe": "under",
+        "tone": "invert",
+        "field": true,
+        "why": "No picture says this honestly, so the word is the picture",
+        "alt": "The word «carousel» set large"
+      }
+    },
+    {
+      "id": "s06",
+      "visual": {
+        "anchor": {
+          "kind": "rows"
+        },
+        "recipe": "full",
+        "tone": "base",
+        "rowIcons": [
+          "book-open",
+          "credit-card",
+          "lightbulb",
+          "phone-call"
+        ],
+        "why": "We put an icon beside each point so it reads fast",
+        "alt": "A list of 4 points, each with an icon"
+      }
+    },
+    {
+      "id": "s07",
+      "visual": {
+        "anchor": {
+          "kind": "word",
+          "word": "next",
+          "wordStyle": "sticker"
+        },
+        "recipe": "center",
+        "tone": "base",
+        "field": true,
+        "why": "No picture says this honestly, so the word is the picture",
+        "alt": "The word «next» set large"
+      },
+      "variant": "action"
+    }
+  ],
+  "style": {
+    "planV": "1.1.0+e7d18307+5a1ce000"
+  },
+  "notes": []
+}

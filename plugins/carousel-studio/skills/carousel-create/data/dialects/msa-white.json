@@ -1,0 +1,1445 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "1.0.0",
+  "dialect": "msa-white",
+  "label": {
+    "ar": "فصحى مبسّطة",
+    "en": "Simplified MSA"
+  },
+  "status": "stable",
+  "nativeReviewed": false,
+  "markers": [
+    "لن",
+    "سوف",
+    "لم",
+    "حيث",
+    "لكن",
+    "الذي",
+    "التي",
+    "هذا",
+    "هذه",
+    "ذلك",
+    "لأن",
+    "كي",
+    "لماذا",
+    "كيف",
+    "أين"
+  ],
+  "deny": [
+    {
+      "id": "DM-MSA-001",
+      "text": "مش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ليس / لا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ليس / لا."
+      },
+      "suggest": "ليس / لا"
+    },
+    {
+      "id": "DM-MSA-002",
+      "text": "ومش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ليس / لا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ليس / لا."
+      },
+      "suggest": "ليس / لا"
+    },
+    {
+      "id": "DM-MSA-003",
+      "text": "مو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ليس / لا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ليس / لا."
+      },
+      "suggest": "ليس / لا"
+    },
+    {
+      "id": "DM-MSA-004",
+      "text": "ومو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ليس / لا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ليس / لا."
+      },
+      "suggest": "ليس / لا"
+    },
+    {
+      "id": "DM-MSA-005",
+      "text": "مب",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ليس / لا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ليس / لا."
+      },
+      "suggest": "ليس / لا"
+    },
+    {
+      "id": "DM-MSA-006",
+      "text": "ومب",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ليس / لا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ليس / لا."
+      },
+      "suggest": "ليس / لا"
+    },
+    {
+      "id": "DM-MSA-007",
+      "text": "ده",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: هذا / هذه / هؤلاء.",
+        "en": "A shared colloquial word in a simplified-MSA post; use هذا / هذه / هؤلاء."
+      },
+      "suggest": "هذا / هذه / هؤلاء"
+    },
+    {
+      "id": "DM-MSA-008",
+      "text": "وده",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: هذا / هذه / هؤلاء.",
+        "en": "A shared colloquial word in a simplified-MSA post; use هذا / هذه / هؤلاء."
+      },
+      "suggest": "هذا / هذه / هؤلاء"
+    },
+    {
+      "id": "DM-MSA-009",
+      "text": "دي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: هذا / هذه / هؤلاء.",
+        "en": "A shared colloquial word in a simplified-MSA post; use هذا / هذه / هؤلاء."
+      },
+      "suggest": "هذا / هذه / هؤلاء"
+    },
+    {
+      "id": "DM-MSA-012",
+      "text": "هيدا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: هذا / هذه / هؤلاء.",
+        "en": "A shared colloquial word in a simplified-MSA post; use هذا / هذه / هؤلاء."
+      },
+      "suggest": "هذا / هذه / هؤلاء"
+    },
+    {
+      "id": "DM-MSA-013",
+      "text": "وهيدا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: هذا / هذه / هؤلاء.",
+        "en": "A shared colloquial word in a simplified-MSA post; use هذا / هذه / هؤلاء."
+      },
+      "suggest": "هذا / هذه / هؤلاء"
+    },
+    {
+      "id": "DM-MSA-014",
+      "text": "هاد",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: هذا / هذه / هؤلاء.",
+        "en": "A shared colloquial word in a simplified-MSA post; use هذا / هذه / هؤلاء."
+      },
+      "suggest": "هذا / هذه / هؤلاء"
+    },
+    {
+      "id": "DM-MSA-015",
+      "text": "وهاد",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: هذا / هذه / هؤلاء.",
+        "en": "A shared colloquial word in a simplified-MSA post; use هذا / هذه / هؤلاء."
+      },
+      "suggest": "هذا / هذه / هؤلاء"
+    },
+    {
+      "id": "DM-MSA-016",
+      "text": "هيدي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: هذا / هذه / هؤلاء.",
+        "en": "A shared colloquial word in a simplified-MSA post; use هذا / هذه / هؤلاء."
+      },
+      "suggest": "هذا / هذه / هؤلاء"
+    },
+    {
+      "id": "DM-MSA-017",
+      "text": "وهيدي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: هذا / هذه / هؤلاء.",
+        "en": "A shared colloquial word in a simplified-MSA post; use هذا / هذه / هؤلاء."
+      },
+      "suggest": "هذا / هذه / هؤلاء"
+    },
+    {
+      "id": "DM-MSA-018",
+      "text": "إزاي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: كيف.",
+        "en": "A shared colloquial word in a simplified-MSA post; use كيف."
+      },
+      "suggest": "كيف"
+    },
+    {
+      "id": "DM-MSA-019",
+      "text": "وإزاي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: كيف.",
+        "en": "A shared colloquial word in a simplified-MSA post; use كيف."
+      },
+      "suggest": "كيف"
+    },
+    {
+      "id": "DM-MSA-020",
+      "text": "ازاي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: كيف.",
+        "en": "A shared colloquial word in a simplified-MSA post; use كيف."
+      },
+      "suggest": "كيف"
+    },
+    {
+      "id": "DM-MSA-021",
+      "text": "وازاي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: كيف.",
+        "en": "A shared colloquial word in a simplified-MSA post; use كيف."
+      },
+      "suggest": "كيف"
+    },
+    {
+      "id": "DM-MSA-022",
+      "text": "شلون",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: كيف.",
+        "en": "A shared colloquial word in a simplified-MSA post; use كيف."
+      },
+      "suggest": "كيف"
+    },
+    {
+      "id": "DM-MSA-023",
+      "text": "وشلون",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: كيف.",
+        "en": "A shared colloquial word in a simplified-MSA post; use كيف."
+      },
+      "suggest": "كيف"
+    },
+    {
+      "id": "DM-MSA-024",
+      "text": "كيفاش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: كيف.",
+        "en": "A shared colloquial word in a simplified-MSA post; use كيف."
+      },
+      "suggest": "كيف"
+    },
+    {
+      "id": "DM-MSA-025",
+      "text": "وكيفاش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: كيف.",
+        "en": "A shared colloquial word in a simplified-MSA post; use كيف."
+      },
+      "suggest": "كيف"
+    },
+    {
+      "id": "DM-MSA-026",
+      "text": "ليه",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: لماذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use لماذا."
+      },
+      "suggest": "لماذا"
+    },
+    {
+      "id": "DM-MSA-027",
+      "text": "وليه",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: لماذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use لماذا."
+      },
+      "suggest": "لماذا"
+    },
+    {
+      "id": "DM-MSA-028",
+      "text": "ليش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: لماذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use لماذا."
+      },
+      "suggest": "لماذا"
+    },
+    {
+      "id": "DM-MSA-029",
+      "text": "وليش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: لماذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use لماذا."
+      },
+      "suggest": "لماذا"
+    },
+    {
+      "id": "DM-MSA-030",
+      "text": "علاش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: لماذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use لماذا."
+      },
+      "suggest": "لماذا"
+    },
+    {
+      "id": "DM-MSA-031",
+      "text": "وعلاش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: لماذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use لماذا."
+      },
+      "suggest": "لماذا"
+    },
+    {
+      "id": "DM-MSA-032",
+      "text": "دلوقتي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: الآن.",
+        "en": "A shared colloquial word in a simplified-MSA post; use الآن."
+      },
+      "suggest": "الآن"
+    },
+    {
+      "id": "DM-MSA-033",
+      "text": "ودلوقتي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: الآن.",
+        "en": "A shared colloquial word in a simplified-MSA post; use الآن."
+      },
+      "suggest": "الآن"
+    },
+    {
+      "id": "DM-MSA-034",
+      "text": "دلوقت",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: الآن.",
+        "en": "A shared colloquial word in a simplified-MSA post; use الآن."
+      },
+      "suggest": "الآن"
+    },
+    {
+      "id": "DM-MSA-035",
+      "text": "ودلوقت",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: الآن.",
+        "en": "A shared colloquial word in a simplified-MSA post; use الآن."
+      },
+      "suggest": "الآن"
+    },
+    {
+      "id": "DM-MSA-036",
+      "text": "الحين",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: الآن.",
+        "en": "A shared colloquial word in a simplified-MSA post; use الآن."
+      },
+      "suggest": "الآن"
+    },
+    {
+      "id": "DM-MSA-037",
+      "text": "والحين",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: الآن.",
+        "en": "A shared colloquial word in a simplified-MSA post; use الآن."
+      },
+      "suggest": "الآن"
+    },
+    {
+      "id": "DM-MSA-038",
+      "text": "هلق",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: الآن.",
+        "en": "A shared colloquial word in a simplified-MSA post; use الآن."
+      },
+      "suggest": "الآن"
+    },
+    {
+      "id": "DM-MSA-039",
+      "text": "وهلق",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: الآن.",
+        "en": "A shared colloquial word in a simplified-MSA post; use الآن."
+      },
+      "suggest": "الآن"
+    },
+    {
+      "id": "DM-MSA-040",
+      "text": "هلأ",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: الآن.",
+        "en": "A shared colloquial word in a simplified-MSA post; use الآن."
+      },
+      "suggest": "الآن"
+    },
+    {
+      "id": "DM-MSA-041",
+      "text": "وهلأ",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: الآن.",
+        "en": "A shared colloquial word in a simplified-MSA post; use الآن."
+      },
+      "suggest": "الآن"
+    },
+    {
+      "id": "DM-MSA-042",
+      "text": "دابا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: الآن.",
+        "en": "A shared colloquial word in a simplified-MSA post; use الآن."
+      },
+      "suggest": "الآن"
+    },
+    {
+      "id": "DM-MSA-043",
+      "text": "ودابا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: الآن.",
+        "en": "A shared colloquial word in a simplified-MSA post; use الآن."
+      },
+      "suggest": "الآن"
+    },
+    {
+      "id": "DM-MSA-044",
+      "text": "عايز",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-045",
+      "text": "وعايز",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-046",
+      "text": "عاوز",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-047",
+      "text": "وعاوز",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-048",
+      "text": "عايزة",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-049",
+      "text": "وعايزة",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-050",
+      "text": "عايزين",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-051",
+      "text": "وعايزين",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-052",
+      "text": "بدي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-053",
+      "text": "وبدي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-054",
+      "text": "بدك",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-055",
+      "text": "وبدك",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-056",
+      "text": "بدنا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-057",
+      "text": "وبدنا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-058",
+      "text": "أبي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-059",
+      "text": "وأبي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-060",
+      "text": "ابي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-061",
+      "text": "وابي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-062",
+      "text": "أبغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-063",
+      "text": "وأبغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-064",
+      "text": "ابغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-065",
+      "text": "وابغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-066",
+      "text": "تبي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-067",
+      "text": "وتبي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-068",
+      "text": "تبغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-069",
+      "text": "وتبغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أريد / تريد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أريد / تريد."
+      },
+      "suggest": "أريد / تريد"
+    },
+    {
+      "id": "DM-MSA-070",
+      "text": "كده",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: هكذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use هكذا."
+      },
+      "suggest": "هكذا"
+    },
+    {
+      "id": "DM-MSA-071",
+      "text": "وكده",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: هكذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use هكذا."
+      },
+      "suggest": "هكذا"
+    },
+    {
+      "id": "DM-MSA-072",
+      "text": "كدا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: هكذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use هكذا."
+      },
+      "suggest": "هكذا"
+    },
+    {
+      "id": "DM-MSA-073",
+      "text": "وكدا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: هكذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use هكذا."
+      },
+      "suggest": "هكذا"
+    },
+    {
+      "id": "DM-MSA-074",
+      "text": "هيك",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: هكذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use هكذا."
+      },
+      "suggest": "هكذا"
+    },
+    {
+      "id": "DM-MSA-075",
+      "text": "وهيك",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: هكذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use هكذا."
+      },
+      "suggest": "هكذا"
+    },
+    {
+      "id": "DM-MSA-076",
+      "text": "بتاع",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: خاص بـ.",
+        "en": "A shared colloquial word in a simplified-MSA post; use خاص بـ."
+      },
+      "suggest": "خاص بـ"
+    },
+    {
+      "id": "DM-MSA-077",
+      "text": "وبتاع",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: خاص بـ.",
+        "en": "A shared colloquial word in a simplified-MSA post; use خاص بـ."
+      },
+      "suggest": "خاص بـ"
+    },
+    {
+      "id": "DM-MSA-078",
+      "text": "بتاعت",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: خاص بـ.",
+        "en": "A shared colloquial word in a simplified-MSA post; use خاص بـ."
+      },
+      "suggest": "خاص بـ"
+    },
+    {
+      "id": "DM-MSA-079",
+      "text": "وبتاعت",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: خاص بـ.",
+        "en": "A shared colloquial word in a simplified-MSA post; use خاص بـ."
+      },
+      "suggest": "خاص بـ"
+    },
+    {
+      "id": "DM-MSA-080",
+      "text": "بتاعة",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: خاص بـ.",
+        "en": "A shared colloquial word in a simplified-MSA post; use خاص بـ."
+      },
+      "suggest": "خاص بـ"
+    },
+    {
+      "id": "DM-MSA-081",
+      "text": "وبتاعة",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: خاص بـ.",
+        "en": "A shared colloquial word in a simplified-MSA post; use خاص بـ."
+      },
+      "suggest": "خاص بـ"
+    },
+    {
+      "id": "DM-MSA-082",
+      "text": "أوي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: جدًّا / كثيرًا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use جدًّا / كثيرًا."
+      },
+      "suggest": "جدًّا / كثيرًا"
+    },
+    {
+      "id": "DM-MSA-083",
+      "text": "وأوي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: جدًّا / كثيرًا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use جدًّا / كثيرًا."
+      },
+      "suggest": "جدًّا / كثيرًا"
+    },
+    {
+      "id": "DM-MSA-084",
+      "text": "اوي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: جدًّا / كثيرًا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use جدًّا / كثيرًا."
+      },
+      "suggest": "جدًّا / كثيرًا"
+    },
+    {
+      "id": "DM-MSA-085",
+      "text": "واوي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: جدًّا / كثيرًا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use جدًّا / كثيرًا."
+      },
+      "suggest": "جدًّا / كثيرًا"
+    },
+    {
+      "id": "DM-MSA-086",
+      "text": "كتير",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: جدًّا / كثيرًا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use جدًّا / كثيرًا."
+      },
+      "suggest": "جدًّا / كثيرًا"
+    },
+    {
+      "id": "DM-MSA-087",
+      "text": "وكتير",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: جدًّا / كثيرًا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use جدًّا / كثيرًا."
+      },
+      "suggest": "جدًّا / كثيرًا"
+    },
+    {
+      "id": "DM-MSA-088",
+      "text": "وايد",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: جدًّا / كثيرًا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use جدًّا / كثيرًا."
+      },
+      "suggest": "جدًّا / كثيرًا"
+    },
+    {
+      "id": "DM-MSA-089",
+      "text": "بزاف",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: جدًّا / كثيرًا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use جدًّا / كثيرًا."
+      },
+      "suggest": "جدًّا / كثيرًا"
+    },
+    {
+      "id": "DM-MSA-090",
+      "text": "وبزاف",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: جدًّا / كثيرًا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use جدًّا / كثيرًا."
+      },
+      "suggest": "جدًّا / كثيرًا"
+    },
+    {
+      "id": "DM-MSA-091",
+      "text": "هواي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: جدًّا / كثيرًا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use جدًّا / كثيرًا."
+      },
+      "suggest": "جدًّا / كثيرًا"
+    },
+    {
+      "id": "DM-MSA-092",
+      "text": "وهواي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: جدًّا / كثيرًا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use جدًّا / كثيرًا."
+      },
+      "suggest": "جدًّا / كثيرًا"
+    },
+    {
+      "id": "DM-MSA-093",
+      "text": "فين",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أين.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أين."
+      },
+      "suggest": "أين"
+    },
+    {
+      "id": "DM-MSA-094",
+      "text": "وفين",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أين.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أين."
+      },
+      "suggest": "أين"
+    },
+    {
+      "id": "DM-MSA-095",
+      "text": "وين",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: أين.",
+        "en": "A shared colloquial word in a simplified-MSA post; use أين."
+      },
+      "suggest": "أين"
+    },
+    {
+      "id": "DM-MSA-096",
+      "text": "إيه",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ماذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ماذا."
+      },
+      "suggest": "ماذا"
+    },
+    {
+      "id": "DM-MSA-097",
+      "text": "وإيه",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ماذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ماذا."
+      },
+      "suggest": "ماذا"
+    },
+    {
+      "id": "DM-MSA-098",
+      "text": "ايه",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ماذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ماذا."
+      },
+      "suggest": "ماذا"
+    },
+    {
+      "id": "DM-MSA-099",
+      "text": "وايه",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ماذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ماذا."
+      },
+      "suggest": "ماذا"
+    },
+    {
+      "id": "DM-MSA-100",
+      "text": "شو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ماذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ماذا."
+      },
+      "suggest": "ماذا"
+    },
+    {
+      "id": "DM-MSA-101",
+      "text": "وشو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ماذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ماذا."
+      },
+      "suggest": "ماذا"
+    },
+    {
+      "id": "DM-MSA-102",
+      "text": "شنو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ماذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ماذا."
+      },
+      "suggest": "ماذا"
+    },
+    {
+      "id": "DM-MSA-103",
+      "text": "وشنو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ماذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ماذا."
+      },
+      "suggest": "ماذا"
+    },
+    {
+      "id": "DM-MSA-104",
+      "text": "وش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ماذا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ماذا."
+      },
+      "suggest": "ماذا"
+    },
+    {
+      "id": "DM-MSA-105",
+      "text": "رح",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: سـ / سوف.",
+        "en": "A shared colloquial word in a simplified-MSA post; use سـ / سوف."
+      },
+      "suggest": "سـ / سوف"
+    },
+    {
+      "id": "DM-MSA-106",
+      "text": "ورح",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: سـ / سوف.",
+        "en": "A shared colloquial word in a simplified-MSA post; use سـ / سوف."
+      },
+      "suggest": "سـ / سوف"
+    },
+    {
+      "id": "DM-MSA-107",
+      "text": "منيح",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: جيّد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use جيّد."
+      },
+      "suggest": "جيّد"
+    },
+    {
+      "id": "DM-MSA-108",
+      "text": "ومنيح",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: جيّد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use جيّد."
+      },
+      "suggest": "جيّد"
+    },
+    {
+      "id": "DM-MSA-109",
+      "text": "كويس",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: جيّد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use جيّد."
+      },
+      "suggest": "جيّد"
+    },
+    {
+      "id": "DM-MSA-110",
+      "text": "وكويس",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: جيّد.",
+        "en": "A shared colloquial word in a simplified-MSA post; use جيّد."
+      },
+      "suggest": "جيّد"
+    },
+    {
+      "id": "DM-MSA-111",
+      "text": "إمتى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: متى.",
+        "en": "A shared colloquial word in a simplified-MSA post; use متى."
+      },
+      "suggest": "متى"
+    },
+    {
+      "id": "DM-MSA-112",
+      "text": "وإمتى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: متى.",
+        "en": "A shared colloquial word in a simplified-MSA post; use متى."
+      },
+      "suggest": "متى"
+    },
+    {
+      "id": "DM-MSA-113",
+      "text": "امتى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: متى.",
+        "en": "A shared colloquial word in a simplified-MSA post; use متى."
+      },
+      "suggest": "متى"
+    },
+    {
+      "id": "DM-MSA-114",
+      "text": "وامتى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: متى.",
+        "en": "A shared colloquial word in a simplified-MSA post; use متى."
+      },
+      "suggest": "متى"
+    }
+  ],
+  "warn": [
+    {
+      "id": "WM-MSA-001",
+      "text": "بس",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: لكن / فقط.",
+        "en": "A shared colloquial word in a simplified-MSA post; use لكن / فقط."
+      },
+      "suggest": "لكن / فقط"
+    },
+    {
+      "id": "WM-MSA-002",
+      "text": "وبس",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: لكن / فقط.",
+        "en": "A shared colloquial word in a simplified-MSA post; use لكن / فقط."
+      },
+      "suggest": "لكن / فقط"
+    },
+    {
+      "id": "WM-MSA-003",
+      "text": "يلا",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: هيّا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use هيّا."
+      },
+      "suggest": "هيّا"
+    },
+    {
+      "id": "WM-MSA-004",
+      "text": "ويلا",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: هيّا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use هيّا."
+      },
+      "suggest": "هيّا"
+    },
+    {
+      "id": "WM-MSA-005",
+      "text": "خلاص",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: انتهى / تمّ.",
+        "en": "A shared colloquial word in a simplified-MSA post; use انتهى / تمّ."
+      },
+      "suggest": "انتهى / تمّ"
+    },
+    {
+      "id": "WM-MSA-006",
+      "text": "وخلاص",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: انتهى / تمّ.",
+        "en": "A shared colloquial word in a simplified-MSA post; use انتهى / تمّ."
+      },
+      "suggest": "انتهى / تمّ"
+    },
+    {
+      "id": "WM-MSA-007",
+      "text": "طيب",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: حسنًا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use حسنًا."
+      },
+      "suggest": "حسنًا"
+    },
+    {
+      "id": "WM-MSA-008",
+      "text": "وطيب",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: حسنًا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use حسنًا."
+      },
+      "suggest": "حسنًا"
+    },
+    {
+      "id": "WM-MSA-009",
+      "text": "عشان",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: لأن / كي.",
+        "en": "A shared colloquial word in a simplified-MSA post; use لأن / كي."
+      },
+      "suggest": "لأن / كي"
+    },
+    {
+      "id": "WM-MSA-010",
+      "text": "وعشان",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: لأن / كي.",
+        "en": "A shared colloquial word in a simplified-MSA post; use لأن / كي."
+      },
+      "suggest": "لأن / كي"
+    },
+    {
+      "id": "WM-MSA-011",
+      "text": "علشان",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: لأن / كي.",
+        "en": "A shared colloquial word in a simplified-MSA post; use لأن / كي."
+      },
+      "suggest": "لأن / كي"
+    },
+    {
+      "id": "WM-MSA-012",
+      "text": "وعلشان",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: لأن / كي.",
+        "en": "A shared colloquial word in a simplified-MSA post; use لأن / كي."
+      },
+      "suggest": "لأن / كي"
+    },
+    {
+      "id": "WM-MSA-013",
+      "text": "شوية",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: قليلًا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use قليلًا."
+      },
+      "suggest": "قليلًا"
+    },
+    {
+      "id": "WM-MSA-014",
+      "text": "وشوية",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: قليلًا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use قليلًا."
+      },
+      "suggest": "قليلًا"
+    },
+    {
+      "id": "WM-MSA-015",
+      "text": "شوي",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: قليلًا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use قليلًا."
+      },
+      "suggest": "قليلًا"
+    },
+    {
+      "id": "WM-MSA-016",
+      "text": "وشوي",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: قليلًا.",
+        "en": "A shared colloquial word in a simplified-MSA post; use قليلًا."
+      },
+      "suggest": "قليلًا"
+    },
+    {
+      "id": "WM-MSA-017",
+      "text": "لسه",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ما زال.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ما زال."
+      },
+      "suggest": "ما زال"
+    },
+    {
+      "id": "WM-MSA-018",
+      "text": "ولسه",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ما زال.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ما زال."
+      },
+      "suggest": "ما زال"
+    },
+    {
+      "id": "WM-MSA-019",
+      "text": "لسا",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ما زال.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ما زال."
+      },
+      "suggest": "ما زال"
+    },
+    {
+      "id": "WM-MSA-020",
+      "text": "ولسا",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة عامية مشتركة في منشور بالفصحى المبسّطة؛ البديل: ما زال.",
+        "en": "A shared colloquial word in a simplified-MSA post; use ما زال."
+      },
+      "suggest": "ما زال"
+    }
+  ],
+  "lexicon": {
+    "not": [
+      "ليس",
+      "لا"
+    ],
+    "will": [
+      "سـ"
+    ],
+    "want": [
+      "تريد"
+    ],
+    "think-that": [
+      "تظن أن"
+    ],
+    "thing": [
+      "شيء",
+      "أشياء"
+    ],
+    "how": [
+      "كيف"
+    ],
+    "why": [
+      "لماذا"
+    ],
+    "now": [
+      "الآن"
+    ],
+    "a-lot": [
+      "كثيرا"
+    ],
+    "do": [
+      "تنجز",
+      "تصنع"
+    ],
+    "before": [
+      "قبل أن"
+    ],
+    "free": [
+      "مجاني",
+      "مجانا"
+    ],
+    "this": [
+      "هذا",
+      "هذه"
+    ]
+  },
+  "cta": {
+    "save": [
+      "احفظ المنشور لتعود إليه عند الحاجة",
+      "احفظه لوقت تحتاج إليه",
+      "احفظه لتعود إليه حين تبدأ"
+    ],
+    "send": [
+      "شاركه مع {who}",
+      "أرسله إلى {who}",
+      "أرسله إلى {who} {reason}"
+    ],
+    "question": [
+      "{question} اكتب إجابتك في سطر واحد",
+      "{question} شاركنا رأيك في التعليقات"
+    ],
+    "keyword-dm": [
+      "اكتب «{keyword}» في التعليقات ليصلك {asset} في رسالة خاصة فورا"
+    ],
+    "follow": [
+      "تابعنا ليصلك {series}",
+      "{series} القادم {day}"
+    ]
+  },
+  "registerNotes": {
+    "ar": "فصحى مبسّطة: بناء فصيح بجمل قصيرة والفعل أولًا ومفردات يومية، بلا زخرفة بلاغية ولا لهجة ولا جمود إداري. تصلح للجمهور العابر للدول وللتعليمات وللمنشورات المرجعية، وتُقترح تلقائيًا للموضوعات الحكومية والمالية والصحية والقانونية.",
+    "en": "Simplified MSA: standard grammar with short sentences, verb first and everyday words; no rhetorical ornament, no dialect, no bureaucratic stiffness. Fits cross-country audiences, instructions and reference posts, and is suggested for government, finance, health and legal topics."
+  }
+}

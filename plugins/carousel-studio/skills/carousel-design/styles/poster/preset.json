@@ -1,0 +1,349 @@
+{
+  "schemaVersion": 1,
+  "id": "poster",
+  "version": "1.0",
+  "name": {
+    "ar": "بوستر",
+    "en": "Poster"
+  },
+  "description": {
+    "ar": "لوحات توضيحية مطبوعة: ورق كريمي بإطار واحد وعلامات قص في الأركان، وعنوان أخضر داكن، وختم ولوحات برقم شكل. للمقارنات والأرقام.",
+    "en": "A printed specimen sheet: cream paper in one frame with crop marks, a deep-green headline, plates with figure tabs, rust stamps and ledgers. Built for comparisons and numbers."
+  },
+  "bestFor": [
+    "x vs y",
+    "numbers",
+    "health and nutrition",
+    "finance comparisons",
+    "infographics"
+  ],
+  "ships": "1.0",
+  "paintable": true,
+  "roles": {
+    "bg": "#F3EBD8",
+    "surface": "#FBF6E9",
+    "ink": "#1B4332",
+    "inkMuted": "#4A5F55",
+    "accent": "#B04A1E"
+  },
+  "brandBindings": [
+    "bg",
+    "surface",
+    "ink",
+    "inkMuted",
+    "accent",
+    "fonts"
+  ],
+  "type": {
+    "display": {
+      "family": "noto-kufi-arabic",
+      "wght": 800,
+      "lh": 1.3
+    },
+    "heading": {
+      "family": "noto-kufi-arabic",
+      "wght": 700,
+      "lh": 1.35
+    },
+    "body": {
+      "family": "alexandria",
+      "wght": 400,
+      "lh": 1.6
+    },
+    "latin": {
+      "family": "alexandria",
+      "wght": 800
+    },
+    "scale": {
+      "hero": [
+        120,
+        170
+      ],
+      "heroTarget": 140,
+      "h1": 84,
+      "h2": 68,
+      "title": [
+        64,
+        72
+      ],
+      "body": [
+        44,
+        48
+      ],
+      "small": 34,
+      "micro": 30
+    }
+  },
+  "layout": {
+    "align": "center",
+    "coverAnchor": "top",
+    "headlineWidth": [
+      0.7,
+      0.85
+    ]
+  },
+  "background": {
+    "kind": "paper",
+    "params": {
+      "role": "bg"
+    }
+  },
+  "decor": {
+    "highlight": "color",
+    "numbering": "plain",
+    "texture": "none",
+    "kashida": {
+      "allowed": false
+    }
+  },
+  "chrome": {
+    "handle": {
+      "slot": "header-start",
+      "logo": "auto"
+    },
+    "meta": {
+      "slot": "header-end"
+    },
+    "counter": {
+      "slot": "footer-center",
+      "format": "{i} من {n}"
+    },
+    "swipe": {
+      "slot": "footer-end",
+      "style": "label+chevron"
+    },
+    "savePill": {
+      "slot": "footer-start",
+      "showOn": []
+    }
+  },
+  "variants": {
+    "cover": [
+      "top",
+      "center",
+      "number"
+    ],
+    "rehook": [
+      "base",
+      "big-number",
+      "statement"
+    ],
+    "item": [
+      "base",
+      "side-number",
+      "ghost-number",
+      "numeral"
+    ],
+    "step": [
+      "pill",
+      "base",
+      "track"
+    ],
+    "stat": [
+      "bar",
+      "base",
+      "icon",
+      "chart"
+    ],
+    "compare": [
+      "versus",
+      "columns",
+      "stacked",
+      "table",
+      "before-after"
+    ],
+    "myth-fact": [
+      "stamp",
+      "columns",
+      "stacked"
+    ],
+    "quote": [
+      "base",
+      "mark",
+      "statement"
+    ],
+    "story-beat": [
+      "base",
+      "panel"
+    ],
+    "checklist": [
+      "ruled",
+      "boxes",
+      "base"
+    ],
+    "summary": [
+      "list",
+      "grid"
+    ],
+    "setup": [
+      "base",
+      "cards"
+    ],
+    "proof": [
+      "screenshot",
+      "base"
+    ],
+    "share": [
+      "big-word",
+      "base"
+    ],
+    "cta": [
+      "pill",
+      "base",
+      "action"
+    ],
+    "offer": [
+      "card",
+      "base"
+    ],
+    "testimonial": [
+      "card",
+      "base"
+    ],
+    "poster": [
+      "top",
+      "center"
+    ],
+    "grid": [
+      "bento"
+    ],
+    "timeline": [
+      "rail"
+    ]
+  },
+  "motion": {
+    "default": "highlight-sweep",
+    "allowed": [
+      "calm",
+      "counter",
+      "stamp",
+      "highlight-sweep",
+      "story",
+      "map-dots",
+      "drop-clock"
+    ]
+  },
+  "floors": {
+    "hero": 96,
+    "body": 42,
+    "meta": 30,
+    "contrastBody": 4.5,
+    "contrastLarge": 3.0
+  },
+  "art": {
+    "stroke": 2.5,
+    "cap": "butt",
+    "join": "miter",
+    "container": "square",
+    "radius": {
+      "chip": 0,
+      "tile": 0,
+      "card": 4,
+      "panel": 4,
+      "window": 0
+    },
+    "shadow": {
+      "kind": "none"
+    },
+    "outline": 0,
+    "objectOutline": 0.035,
+    "outlineColor": "ink",
+    "fill": "flat",
+    "wobble": 0,
+    "tilt": 0,
+    "stampTilt": -8,
+    "texture": "none",
+    "doodle": "geometric",
+    "colors": {
+      "note": "#EFE2BF",
+      "support": [
+        "#A8741A",
+        "#3A6EA5"
+      ]
+    },
+    "mark": "fill",
+    "hand": null,
+    "chipOffset": 0,
+    "badge": "stamp",
+    "templates": [
+      "specimen",
+      "ground",
+      "hub"
+    ],
+    "affinity": {
+      "icon": 0.7,
+      "scene": 0.6,
+      "rows": 0.6,
+      "numeral": 0.8,
+      "chart": 0.9,
+      "mock": 0.4,
+      "photo": 0.4,
+      "field": 0.7,
+      "word": 0.8,
+      "pattern": 0.3
+    },
+    "marks": [
+      "leader",
+      "stamp",
+      "bracket",
+      "tab",
+      "underline"
+    ],
+    "rail": {
+      "style": "ticks"
+    },
+    "motif": "label-tab"
+  },
+  "tones": {
+    "invert": {
+      "roles": {
+        "bg": {
+          "lightness": [
+            "inkMuted",
+            0.29
+          ]
+        },
+        "surface": {
+          "lightness": [
+            "inkMuted",
+            0.37
+          ]
+        },
+        "ink": "bg",
+        "inkMuted": {
+          "muted": 4.7
+        },
+        "accent": {
+          "mix": [
+            "accent",
+            "bg",
+            0.55
+          ]
+        }
+      }
+    },
+    "field": {
+      "roles": {
+        "bg": "accent",
+        "surface": {
+          "mix": [
+            "accent",
+            "ink",
+            0.3
+          ]
+        },
+        "ink": "bg",
+        "inkMuted": "bg",
+        "accent": {
+          "pick": [
+            [
+              "ink",
+              "bg"
+            ],
+            3.0
+          ]
+        }
+      }
+    }
+  }
+}

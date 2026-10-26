@@ -1,0 +1,19 @@
+{
+  "module": "qa",
+  "chunk": "cs-qa.js",
+  "order": 0,
+  "files": [
+    "core.js",
+    "lint.js",
+    "gates-copy.js",
+    "gates-caption.js",
+    "gates-lang.js",
+    "gates-rendered.js",
+    "metrics.js",
+    "mp4.js",
+    "gates-export.js",
+    "autofix.js",
+    "report.js",
+    "api.js"
+  ]
+}

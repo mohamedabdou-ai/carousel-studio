@@ -1,0 +1,6261 @@
+{
+ "schemaVersion": 1,
+ "dataVersion": "1.0.0",
+ "strings": {
+  "a11y.skip": {
+   "eg": "انتقل إلى المحتوى",
+   "gulf": "انتقل إلى المحتوى",
+   "levant": "انتقل إلى المحتوى",
+   "msa-white": "انتقل إلى المحتوى",
+   "en": "Skip to content"
+  },
+  "about.credit": {
+   "eg": "من صنع محمد عبده، وحسابه ⁦@mohamed.abdou90⁩ على Instagram لو حبيت تتابعه.",
+   "gulf": "من صنع محمد عبده، وحسابه ⁦@mohamed.abdou90⁩ على Instagram لو حبيت تتابعه.",
+   "levant": "من صنع محمد عبده، وحسابه ⁦@mohamed.abdou90⁩ على Instagram لو حبيت تتابعه.",
+   "msa-white": "من صنع محمد عبده، وحسابه ⁦@mohamed.abdou90⁩ على Instagram لو حبيت تتابعه.",
+   "en": "Made by Mohamed Abdou"
+  },
+  "about.social.facebook": {
+   "eg": "mohamedabdou.ai.90",
+   "gulf": "mohamedabdou.ai.90",
+   "levant": "mohamedabdou.ai.90",
+   "msa-white": "mohamedabdou.ai.90",
+   "en": "mohamedabdou.ai.90"
+  },
+  "about.social.instagram": {
+   "eg": "@mohamed.abdou90",
+   "gulf": "@mohamed.abdou90",
+   "levant": "@mohamed.abdou90",
+   "msa-white": "@mohamed.abdou90",
+   "en": "@mohamed.abdou90"
+  },
+  "about.social.linkedin": {
+   "eg": "mohamed-abdou90",
+   "gulf": "mohamed-abdou90",
+   "levant": "mohamed-abdou90",
+   "msa-white": "mohamed-abdou90",
+   "en": "mohamed-abdou90"
+  },
+  "about.social.store": {
+   "eg": "store.pyraai.cloud",
+   "gulf": "store.pyraai.cloud",
+   "levant": "store.pyraai.cloud",
+   "msa-white": "store.pyraai.cloud",
+   "en": "store.pyraai.cloud"
+  },
+  "about.social.tiktok": {
+   "eg": "@mohamedabdou.ai",
+   "gulf": "@mohamedabdou.ai",
+   "levant": "@mohamedabdou.ai",
+   "msa-white": "@mohamedabdou.ai",
+   "en": "@mohamedabdou.ai"
+  },
+  "about.social.youtube": {
+   "eg": "@mohamedabdou-ai",
+   "gulf": "@mohamedabdou-ai",
+   "levant": "@mohamedabdou-ai",
+   "msa-white": "@mohamedabdou-ai",
+   "en": "@mohamedabdou-ai"
+  },
+  "about.thanks": {
+   "eg": "الأداة دي مجانية — كلمة شكر أو ذكر بتفرق معانا.",
+   "gulf": "الأداة هذي مجانية — كلمة شكر أو ذكر تفرق معنا.",
+   "levant": "الأداة هاي مجانية — كلمة شكر أو ذكر بتفرق معنا.",
+   "msa-white": "الأداة مجانية — كلمة شكر أو ذكر تفرق معنا.",
+   "en": "This tool is free. A thank-you or a mention means a lot to us."
+  },
+  "about.url.facebook": {
+   "eg": "https://www.facebook.com/mohamedabdou.ai.90",
+   "gulf": "https://www.facebook.com/mohamedabdou.ai.90",
+   "levant": "https://www.facebook.com/mohamedabdou.ai.90",
+   "msa-white": "https://www.facebook.com/mohamedabdou.ai.90",
+   "en": "https://www.facebook.com/mohamedabdou.ai.90"
+  },
+  "about.url.instagram": {
+   "eg": "https://www.instagram.com/mohamed.abdou90",
+   "gulf": "https://www.instagram.com/mohamed.abdou90",
+   "levant": "https://www.instagram.com/mohamed.abdou90",
+   "msa-white": "https://www.instagram.com/mohamed.abdou90",
+   "en": "https://www.instagram.com/mohamed.abdou90"
+  },
+  "about.url.linkedin": {
+   "eg": "https://www.linkedin.com/in/mohamed-abdou90",
+   "gulf": "https://www.linkedin.com/in/mohamed-abdou90",
+   "levant": "https://www.linkedin.com/in/mohamed-abdou90",
+   "msa-white": "https://www.linkedin.com/in/mohamed-abdou90",
+   "en": "https://www.linkedin.com/in/mohamed-abdou90"
+  },
+  "about.url.store": {
+   "eg": "https://store.pyraai.cloud",
+   "gulf": "https://store.pyraai.cloud",
+   "levant": "https://store.pyraai.cloud",
+   "msa-white": "https://store.pyraai.cloud",
+   "en": "https://store.pyraai.cloud"
+  },
+  "about.url.tiktok": {
+   "eg": "https://www.tiktok.com/@mohamedabdou.ai",
+   "gulf": "https://www.tiktok.com/@mohamedabdou.ai",
+   "levant": "https://www.tiktok.com/@mohamedabdou.ai",
+   "msa-white": "https://www.tiktok.com/@mohamedabdou.ai",
+   "en": "https://www.tiktok.com/@mohamedabdou.ai"
+  },
+  "about.url.youtube": {
+   "eg": "https://www.youtube.com/@mohamedabdou-ai",
+   "gulf": "https://www.youtube.com/@mohamedabdou-ai",
+   "levant": "https://www.youtube.com/@mohamedabdou-ai",
+   "msa-white": "https://www.youtube.com/@mohamedabdou-ai",
+   "en": "https://www.youtube.com/@mohamedabdou-ai"
+  },
+  "app.name": {
+   "eg": "كاروسيل ستوديو",
+   "gulf": "كاروسيل ستوديو",
+   "levant": "كاروسيل ستوديو",
+   "msa-white": "كاروسيل ستوديو",
+   "en": "Carousel Studio"
+  },
+  "applang.ar": {
+   "eg": "عربي",
+   "gulf": "عربي",
+   "levant": "عربي",
+   "msa-white": "عربي",
+   "en": "Arabic"
+  },
+  "applang.ar.sub": {
+   "eg": "السلايد التاني بييجي من الشمال",
+   "gulf": "السلايد الثاني يأتي من اليسار",
+   "levant": "السلايد الثاني يأتي من اليسار",
+   "msa-white": "السلايد الثاني يأتي من اليسار",
+   "en": "Slide 2 comes from the left"
+  },
+  "applang.en": {
+   "eg": "إنجليزي",
+   "gulf": "إنجليزي",
+   "levant": "إنجليزي",
+   "msa-white": "إنجليزي",
+   "en": "English"
+  },
+  "applang.en.sub": {
+   "eg": "السلايد التاني بييجي من اليمين",
+   "gulf": "السلايد الثاني يأتي من اليمين",
+   "levant": "السلايد الثاني يأتي من اليمين",
+   "msa-white": "السلايد الثاني يأتي من اليمين",
+   "en": "Slide 2 comes from the right"
+  },
+  "applang.mixed": {
+   "eg": "مختلط",
+   "gulf": "مختلط",
+   "levant": "مختلط",
+   "msa-white": "مختلط",
+   "en": "Mixed"
+  },
+  "applang.mixed.sub": {
+   "eg": "من غير سهم، والعداد هو اللي بيدل",
+   "gulf": "بدون سهم، ويعتمد على العداد",
+   "levant": "بدون سهم، ويعتمد على العداد",
+   "msa-white": "بدون سهم، ويعتمد على العداد",
+   "en": "No arrow, the counter leads"
+  },
+  "approve.design.blocked.text": {
+   "eg": {
+    "one": "لازم تتحل ملاحظة حاجبة واحدة قبل الاعتماد. افتح الفحص وصلّحها، أو تجاوزها لو مسموح.",
+    "two": "لازم تتحل ملاحظتين حاجبتين قبل الاعتماد. افتح الفحص وصلّحها، أو تجاوزها لو مسموح.",
+    "few": "لازم تتحل {n} ملاحظات حاجبة قبل الاعتماد. افتح الفحص وصلّحها، أو تجاوزها لو مسموح.",
+    "many": "لازم تتحل {n} ملاحظة حاجبة قبل الاعتماد. افتح الفحص وصلّحها، أو تجاوزها لو مسموح.",
+    "other": "لازم تتحل {n} ملاحظة حاجبة قبل الاعتماد. افتح الفحص وصلّحها، أو تجاوزها لو مسموح."
+   },
+   "gulf": {
+    "one": "يجب حل ملاحظة حاجبة واحدة قبل الاعتماد. افتح الفحص وأصلحها، أو تجاوزها إن كان ذلك مسموحًا.",
+    "two": "يجب حل ملاحظتين حاجبتين قبل الاعتماد. افتح الفحص وأصلحها، أو تجاوزها إن كان ذلك مسموحًا.",
+    "few": "يجب حل {n} ملاحظات حاجبة قبل الاعتماد. افتح الفحص وأصلحها، أو تجاوزها إن كان ذلك مسموحًا.",
+    "many": "يجب حل {n} ملاحظة حاجبة قبل الاعتماد. افتح الفحص وأصلحها، أو تجاوزها إن كان ذلك مسموحًا.",
+    "other": "يجب حل {n} ملاحظة حاجبة قبل الاعتماد. افتح الفحص وأصلحها، أو تجاوزها إن كان ذلك مسموحًا."
+   },
+   "levant": {
+    "one": "يجب حل ملاحظة حاجبة واحدة قبل الاعتماد. افتح الفحص وأصلحها، أو تجاوزها إن كان ذلك مسموحًا.",
+    "two": "يجب حل ملاحظتين حاجبتين قبل الاعتماد. افتح الفحص وأصلحها، أو تجاوزها إن كان ذلك مسموحًا.",
+    "few": "يجب حل {n} ملاحظات حاجبة قبل الاعتماد. افتح الفحص وأصلحها، أو تجاوزها إن كان ذلك مسموحًا.",
+    "many": "يجب حل {n} ملاحظة حاجبة قبل الاعتماد. افتح الفحص وأصلحها، أو تجاوزها إن كان ذلك مسموحًا.",
+    "other": "يجب حل {n} ملاحظة حاجبة قبل الاعتماد. افتح الفحص وأصلحها، أو تجاوزها إن كان ذلك مسموحًا."
+   },
+   "msa-white": {
+    "one": "يجب حل ملاحظة حاجبة واحدة قبل الاعتماد. افتح الفحص وأصلحها، أو تجاوزها إن كان ذلك مسموحًا.",
+    "two": "يجب حل ملاحظتين حاجبتين قبل الاعتماد. افتح الفحص وأصلحها، أو تجاوزها إن كان ذلك مسموحًا.",
+    "few": "يجب حل {n} ملاحظات حاجبة قبل الاعتماد. افتح الفحص وأصلحها، أو تجاوزها إن كان ذلك مسموحًا.",
+    "many": "يجب حل {n} ملاحظة حاجبة قبل الاعتماد. افتح الفحص وأصلحها، أو تجاوزها إن كان ذلك مسموحًا.",
+    "other": "يجب حل {n} ملاحظة حاجبة قبل الاعتماد. افتح الفحص وأصلحها، أو تجاوزها إن كان ذلك مسموحًا."
+   },
+   "en": {
+    "one": "1 blocking note must be resolved before approval. Open the checks and fix it, or override it if it allows that.",
+    "other": "{n} blocking notes must be resolved before approval. Open the checks and fix them, or override the ones that allow it."
+   }
+  },
+  "approve.design.blocked.title": {
+   "eg": "التصميم فيه ملاحظات حاجبة",
+   "gulf": "التصميم فيه ملاحظات حاجبة",
+   "levant": "التصميم فيه ملاحظات حاجبة",
+   "msa-white": "التصميم فيه ملاحظات حاجبة",
+   "en": "The design has blocking notes"
+  },
+  "approve.design.checking": {
+   "eg": "بنفحص التصميم قبل الاعتماد…",
+   "gulf": "نفحص التصميم قبل الاعتماد…",
+   "levant": "نفحص التصميم قبل الاعتماد…",
+   "msa-white": "نفحص التصميم قبل الاعتماد…",
+   "en": "Checking the design before approval…"
+  },
+  "approve.design.done": {
+   "eg": "اتعتمد التصميم وثبّتنا السطور. جاهز للتصدير.",
+   "gulf": "اعتُمد التصميم وثبّتنا السطور. جاهز للتصدير.",
+   "levant": "اعتُمد التصميم وثبّتنا السطور. جاهز للتصدير.",
+   "msa-white": "اعتُمد التصميم وثبّتنا السطور. جاهز للتصدير.",
+   "en": "Design approved and the lines are locked. Ready to export."
+  },
+  "approve.design.failed": {
+   "eg": "ماقدرناش نثبّت التصميم. جرّب تاني.",
+   "gulf": "تعذّر تثبيت التصميم. حاول مرة أخرى.",
+   "levant": "تعذّر تثبيت التصميم. حاول مرة أخرى.",
+   "msa-white": "تعذّر تثبيت التصميم. حاول مرة أخرى.",
+   "en": "We could not lock the design. Try again."
+  },
+  "approve.design.review": {
+   "eg": "افتح الفحص",
+   "gulf": "افتح الفحص",
+   "levant": "افتح الفحص",
+   "msa-white": "افتح الفحص",
+   "en": "Open checks"
+  },
+  "approve.script.anyway": {
+   "eg": "كمّل رغم ذلك",
+   "gulf": "كمّل رغم ذلك",
+   "levant": "كمّل رغم ذلك",
+   "msa-white": "كمّل رغم ذلك",
+   "en": "Continue anyway"
+  },
+  "approve.script.blocked.text": {
+   "eg": {
+    "one": "لسه فيه ملاحظة حاجبة واحدة. تقدر تكمّل وتصلحها بعدين، بس هتفضل ظاهرة في الفحص.",
+    "two": "لسه فيه ملاحظتين حاجبتين. تقدر تكمّل وتصلحها بعدين، بس هتفضل ظاهرة في الفحص.",
+    "few": "لسه فيه {n} ملاحظات حاجبة. تقدر تكمّل وتصلحها بعدين، بس هتفضل ظاهرة في الفحص.",
+    "many": "لسه فيه {n} ملاحظة حاجبة. تقدر تكمّل وتصلحها بعدين، بس هتفضل ظاهرة في الفحص.",
+    "other": "لسه فيه {n} ملاحظة حاجبة. تقدر تكمّل وتصلحها بعدين، بس هتفضل ظاهرة في الفحص."
+   },
+   "gulf": {
+    "one": "ما زالت هناك ملاحظة حاجبة واحدة. يمكنك المتابعة وإصلاحها لاحقًا، لكنها ستظهر في الفحص.",
+    "two": "ما زالت هناك ملاحظتان حاجبتان. يمكنك المتابعة وإصلاحها لاحقًا، لكنها ستظهر في الفحص.",
+    "few": "ما زالت هناك {n} ملاحظات حاجبة. يمكنك المتابعة وإصلاحها لاحقًا، لكنها ستظهر في الفحص.",
+    "many": "ما زالت هناك {n} ملاحظة حاجبة. يمكنك المتابعة وإصلاحها لاحقًا، لكنها ستظهر في الفحص.",
+    "other": "ما زالت هناك {n} ملاحظة حاجبة. يمكنك المتابعة وإصلاحها لاحقًا، لكنها ستظهر في الفحص."
+   },
+   "levant": {
+    "one": "ما زالت هناك ملاحظة حاجبة واحدة. يمكنك المتابعة وإصلاحها لاحقًا، لكنها ستظهر في الفحص.",
+    "two": "ما زالت هناك ملاحظتان حاجبتان. يمكنك المتابعة وإصلاحها لاحقًا، لكنها ستظهر في الفحص.",
+    "few": "ما زالت هناك {n} ملاحظات حاجبة. يمكنك المتابعة وإصلاحها لاحقًا، لكنها ستظهر في الفحص.",
+    "many": "ما زالت هناك {n} ملاحظة حاجبة. يمكنك المتابعة وإصلاحها لاحقًا، لكنها ستظهر في الفحص.",
+    "other": "ما زالت هناك {n} ملاحظة حاجبة. يمكنك المتابعة وإصلاحها لاحقًا، لكنها ستظهر في الفحص."
+   },
+   "msa-white": {
+    "one": "ما زالت هناك ملاحظة حاجبة واحدة. يمكنك المتابعة وإصلاحها لاحقًا، لكنها ستظهر في الفحص.",
+    "two": "ما زالت هناك ملاحظتان حاجبتان. يمكنك المتابعة وإصلاحها لاحقًا، لكنها ستظهر في الفحص.",
+    "few": "ما زالت هناك {n} ملاحظات حاجبة. يمكنك المتابعة وإصلاحها لاحقًا، لكنها ستظهر في الفحص.",
+    "many": "ما زالت هناك {n} ملاحظة حاجبة. يمكنك المتابعة وإصلاحها لاحقًا، لكنها ستظهر في الفحص.",
+    "other": "ما زالت هناك {n} ملاحظة حاجبة. يمكنك المتابعة وإصلاحها لاحقًا، لكنها ستظهر في الفحص."
+   },
+   "en": {
+    "one": "1 blocking note is still open. You can continue and fix it later, but it will stay in the checks.",
+    "other": "{n} blocking notes still open. You can continue and fix them later, but they will stay in the checks."
+   }
+  },
+  "approve.script.blocked.title": {
+   "eg": "فيه ملاحظات حاجبة في النص",
+   "gulf": "في النص ملاحظات حاجبة",
+   "levant": "في ملاحظات حاجبة بالنص",
+   "msa-white": "في النص ملاحظات حاجبة",
+   "en": "The script has blocking notes"
+  },
+  "approve.script.done": {
+   "eg": "اتعتمد النص. نبدأ التصميم.",
+   "gulf": "اعتُمد النص. نبدأ التصميم.",
+   "levant": "اعتُمد النص. نبدأ التصميم.",
+   "msa-white": "اعتُمد النص. نبدأ التصميم.",
+   "en": "Script approved. On to the design."
+  },
+  "approve.script.review": {
+   "eg": "راجعها",
+   "gulf": "راجعها",
+   "levant": "راجعها",
+   "msa-white": "راجعها",
+   "en": "Review"
+  },
+  "arch.case-study": {
+   "eg": "حالة",
+   "gulf": "حالة",
+   "levant": "حالة",
+   "msa-white": "حالة",
+   "en": "Case study"
+  },
+  "arch.comparison": {
+   "eg": "مقارنة",
+   "gulf": "مقارنة",
+   "levant": "مقارنة",
+   "msa-white": "مقارنة",
+   "en": "Comparison"
+  },
+  "arch.framework": {
+   "eg": "إطار عمل",
+   "gulf": "إطار عمل",
+   "levant": "إطار عمل",
+   "msa-white": "إطار عمل",
+   "en": "Framework"
+  },
+  "arch.lead-magnet": {
+   "eg": "هدية مجانية",
+   "gulf": "هدية مجانية",
+   "levant": "هدية مجانية",
+   "msa-white": "هدية مجانية",
+   "en": "Lead magnet"
+  },
+  "arch.listicle": {
+   "eg": "قائمة",
+   "gulf": "قائمة",
+   "levant": "قائمة",
+   "msa-white": "قائمة",
+   "en": "List"
+  },
+  "arch.myth-fact": {
+   "eg": "خرافة وحقيقة",
+   "gulf": "خرافة وحقيقة",
+   "levant": "خرافة وحقيقة",
+   "msa-white": "خرافة وحقيقة",
+   "en": "Myth vs fact"
+  },
+  "arch.news": {
+   "eg": "خبر",
+   "gulf": "خبر",
+   "levant": "خبر",
+   "msa-white": "خبر",
+   "en": "News"
+  },
+  "arch.offer": {
+   "eg": "عرض",
+   "gulf": "عرض",
+   "levant": "عرض",
+   "msa-white": "عرض",
+   "en": "Offer"
+  },
+  "arch.opinion": {
+   "eg": "رأي",
+   "gulf": "رأي",
+   "levant": "رأي",
+   "msa-white": "رأي",
+   "en": "Opinion"
+  },
+  "arch.results": {
+   "eg": "نتائج",
+   "gulf": "نتائج",
+   "levant": "نتائج",
+   "msa-white": "نتائج",
+   "en": "Results"
+  },
+  "arch.steps": {
+   "eg": "خطوات",
+   "gulf": "خطوات",
+   "levant": "خطوات",
+   "msa-white": "خطوات",
+   "en": "Steps"
+  },
+  "arch.story": {
+   "eg": "قصة",
+   "gulf": "قصة",
+   "levant": "قصة",
+   "msa-white": "قصة",
+   "en": "Story"
+  },
+  "bb.alternates": {
+   "eg": "بدائل",
+   "gulf": "بدائل",
+   "levant": "بدائل",
+   "msa-white": "بدائل",
+   "en": "Alternatives"
+  },
+  "bb.applang": {
+   "eg": "لغة Instagram عند الجمهور",
+   "gulf": "لغة Instagram عند الجمهور",
+   "levant": "لغة Instagram عند الجمهور",
+   "msa-white": "لغة Instagram عند الجمهور",
+   "en": "Audience's Instagram language"
+  },
+  "bb.approved": {
+   "eg": "معتمد · نسخة {v} · {date}",
+   "gulf": "معتمد · نسخة {v} · {date}",
+   "levant": "معتمد · نسخة {v} · {date}",
+   "msa-white": "معتمد · نسخة {v} · {date}",
+   "en": "Approved · version {v} · {date}"
+  },
+  "bb.avoid": {
+   "eg": "لا تقل",
+   "gulf": "لا تقل",
+   "levant": "لا تقل",
+   "msa-white": "لا تقل",
+   "en": "Avoid"
+  },
+  "bb.contrast": {
+   "eg": "اختبار التباين",
+   "gulf": "اختبار التباين",
+   "levant": "اختبار التباين",
+   "msa-white": "اختبار التباين",
+   "en": "Contrast test"
+  },
+  "bb.countries": {
+   "eg": "الدول",
+   "gulf": "الدول",
+   "levant": "الدول",
+   "msa-white": "الدول",
+   "en": "Countries"
+  },
+  "bb.cover.kicker": {
+   "eg": "كتاب البراند",
+   "gulf": "كتاب البراند",
+   "levant": "كتاب البراند",
+   "msa-white": "كتاب البراند",
+   "en": "Brand book"
+  },
+  "bb.cta": {
+   "eg": "أسلوب الدعوة",
+   "gulf": "أسلوب الدعوة",
+   "levant": "أسلوب الدعوة",
+   "msa-white": "أسلوب الدعوة",
+   "en": "Call-to-action style"
+  },
+  "bb.cue.arrow-ltr": {
+   "eg": "اسحب →",
+   "gulf": "اسحب →",
+   "levant": "اسحب →",
+   "msa-white": "اسحب →",
+   "en": "Swipe →"
+  },
+  "bb.cue.arrow-rtl": {
+   "eg": "اسحب ←",
+   "gulf": "اسحب ←",
+   "levant": "اسحب ←",
+   "msa-white": "اسحب ←",
+   "en": "Swipe ←"
+  },
+  "bb.cue.neutral": {
+   "eg": "التالي",
+   "gulf": "التالي",
+   "levant": "التالي",
+   "msa-white": "التالي",
+   "en": "Next"
+  },
+  "bb.demo.bridge": {
+   "eg": "والجاية أحلى",
+   "gulf": "والتالية أفضل",
+   "levant": "والتالية أفضل",
+   "msa-white": "والتالية أفضل",
+   "en": "The next one is better"
+  },
+  "bb.demo.cta": {
+   "eg": "احفظ البوست",
+   "gulf": "احفظ البوست",
+   "levant": "احفظ البوست",
+   "msa-white": "احفظ البوست",
+   "en": "Save this post"
+  },
+  "bb.demo.cta.text": {
+   "eg": "ارجعله لما تحتاجه",
+   "gulf": "ارجع إليه حين تحتاجه",
+   "levant": "ارجع إليه حين تحتاجه",
+   "msa-white": "ارجع إليه حين تحتاجه",
+   "en": "Come back to it when you need it"
+  },
+  "bb.demo.slide2": {
+   "eg": "أول فكرة بتسدّد وعد الغلاف",
+   "gulf": "أول فكرة تسدّد وعد الغلاف",
+   "levant": "أول فكرة تسدّد وعد الغلاف",
+   "msa-white": "أول فكرة تسدّد وعد الغلاف",
+   "en": "The first idea pays off the cover's promise"
+  },
+  "bb.desires": {
+   "eg": "ما يريدونه",
+   "gulf": "ما يريدونه",
+   "levant": "ما يريدونه",
+   "msa-white": "ما يريدونه",
+   "en": "What they want"
+  },
+  "bb.dialect": {
+   "eg": "اللهجة",
+   "gulf": "اللهجة",
+   "levant": "اللهجة",
+   "msa-white": "اللهجة",
+   "en": "Dialect"
+  },
+  "bb.digits": {
+   "eg": "الأرقام",
+   "gulf": "الأرقام",
+   "levant": "الأرقام",
+   "msa-white": "الأرقام",
+   "en": "Digits"
+  },
+  "bb.draft": {
+   "eg": "مسودة",
+   "gulf": "مسودة",
+   "levant": "مسودة",
+   "msa-white": "مسودة",
+   "en": "Draft"
+  },
+  "bb.fail": {
+   "eg": "ضعيف",
+   "gulf": "ضعيف",
+   "levant": "ضعيف",
+   "msa-white": "ضعيف",
+   "en": "Fails"
+  },
+  "bb.fingerprint": {
+   "eg": "بصمة الكتابة",
+   "gulf": "بصمة الكتابة",
+   "levant": "بصمة الكتابة",
+   "msa-white": "بصمة الكتابة",
+   "en": "Writing fingerprint"
+  },
+  "bb.font.body-sample": {
+   "eg": "الخط الأساسي بيظهر هنا في الفقرات.",
+   "gulf": "الخط الأساسي يظهر هنا في الفقرات.",
+   "levant": "الخط الأساسي يظهر هنا في الفقرات.",
+   "msa-white": "الخط الأساسي يظهر هنا في الفقرات.",
+   "en": "The body font shows here, in paragraphs."
+  },
+  "bb.font.hint": {
+   "eg": "تركيبات الخطوط معروضة على جملتك. اختار اللي يعبّر عن البراند.",
+   "gulf": "تركيبات الخطوط معروضة على جملتك. اختر ما يعبّر عن البراند.",
+   "levant": "تركيبات الخطوط معروضة على جملتك. اختر ما يعبّر عن البراند.",
+   "msa-white": "تركيبات الخطوط معروضة على جملتك. اختر ما يعبّر عن البراند.",
+   "en": "Font pairings shown on your own line. Pick the one that says the brand."
+  },
+  "bb.font.pick": {
+   "eg": "تركيبة الخطوط",
+   "gulf": "تركيبة الخطوط",
+   "levant": "تركيبة الخطوط",
+   "msa-white": "تركيبة الخطوط",
+   "en": "Font pairing"
+  },
+  "bb.fonts": {
+   "eg": "الخطوط",
+   "gulf": "الخطوط",
+   "levant": "الخطوط",
+   "msa-white": "الخطوط",
+   "en": "Fonts"
+  },
+  "bb.fp.ellipsis": {
+   "eg": "النقاط المتتابعة",
+   "gulf": "النقاط المتتابعة",
+   "levant": "النقاط المتتابعة",
+   "msa-white": "النقاط المتتابعة",
+   "en": "Ellipses"
+  },
+  "bb.fp.emoji": {
+   "eg": "إيموجي لكل 100 كلمة",
+   "gulf": "إيموجي لكل 100 كلمة",
+   "levant": "إيموجي لكل 100 كلمة",
+   "msa-white": "إيموجي لكل 100 كلمة",
+   "en": "Emoji per 100 words"
+  },
+  "bb.fp.latin": {
+   "eg": "نسبة الإنجليزية",
+   "gulf": "نسبة الإنجليزية",
+   "levant": "نسبة الإنجليزية",
+   "msa-white": "نسبة الإنجليزية",
+   "en": "English share"
+  },
+  "bb.fp.none": {
+   "eg": "محتاجين 3 كابشنات على الأقل عشان نحسب البصمة.",
+   "gulf": "نحتاج 3 كابشنات على الأقل لحساب البصمة.",
+   "levant": "نحتاج 3 كابشنات على الأقل لحساب البصمة.",
+   "msa-white": "نحتاج 3 كابشنات على الأقل لحساب البصمة.",
+   "en": "We need at least 3 captions to compute the fingerprint."
+  },
+  "bb.fp.person.ana": {
+   "eg": "بتتكلم بصيغة «أنا»",
+   "gulf": "تتكلم بصيغة «أنا»",
+   "levant": "تتكلم بصيغة «أنا»",
+   "msa-white": "تتكلم بصيغة «أنا»",
+   "en": "Writes in the first person singular"
+  },
+  "bb.fp.person.ehna": {
+   "eg": "بتتكلم بصيغة «إحنا»",
+   "gulf": "تتكلم بصيغة «نحن»",
+   "levant": "تتكلم بصيغة «نحن»",
+   "msa-white": "تتكلم بصيغة «نحن»",
+   "en": "Writes in the first person plural"
+  },
+  "bb.fp.person.mixed": {
+   "eg": "بتخلط «أنا» و«إحنا»",
+   "gulf": "تمزج «أنا» و«نحن»",
+   "levant": "تمزج «أنا» و«نحن»",
+   "msa-white": "تمزج «أنا» و«نحن»",
+   "en": "Mixes “I” and “we”"
+  },
+  "bb.fp.qbang": {
+   "eg": "أسئلة وتعجب",
+   "gulf": "أسئلة وتعجب",
+   "levant": "أسئلة وتعجب",
+   "msa-white": "أسئلة وتعجب",
+   "en": "Questions and exclamations"
+  },
+  "bb.fp.sentlen": {
+   "eg": "طول الجملة (كلمات)",
+   "gulf": "طول الجملة (كلمات)",
+   "levant": "طول الجملة (كلمات)",
+   "msa-white": "طول الجملة (كلمات)",
+   "en": "Sentence length (words)"
+  },
+  "bb.fp.signatures": {
+   "eg": "عبارات مميزة",
+   "gulf": "عبارات مميزة",
+   "levant": "عبارات مميزة",
+   "msa-white": "عبارات مميزة",
+   "en": "Signature phrases"
+  },
+  "bb.goal": {
+   "eg": "هدف المحتوى",
+   "gulf": "هدف المحتوى",
+   "levant": "هدف المحتوى",
+   "msa-white": "هدف المحتوى",
+   "en": "Content goal"
+  },
+  "bb.goal.clients": {
+   "eg": "عملاء",
+   "gulf": "عملاء",
+   "levant": "عملاء",
+   "msa-white": "عملاء",
+   "en": "Clients"
+  },
+  "bb.goal.followers": {
+   "eg": "متابعين",
+   "gulf": "متابعين",
+   "levant": "متابعين",
+   "msa-white": "متابعين",
+   "en": "Followers"
+  },
+  "bb.goal.sales": {
+   "eg": "مبيعات",
+   "gulf": "مبيعات",
+   "levant": "مبيعات",
+   "msa-white": "مبيعات",
+   "en": "Sales"
+  },
+  "bb.hours": {
+   "eg": "أفضل الأوقات",
+   "gulf": "أفضل الأوقات",
+   "levant": "أفضل الأوقات",
+   "msa-white": "أفضل الأوقات",
+   "en": "Best times"
+  },
+  "bb.identity": {
+   "eg": "الهوية والجمهور",
+   "gulf": "الهوية والجمهور",
+   "levant": "الهوية والجمهور",
+   "msa-white": "الهوية والجمهور",
+   "en": "Identity and audience"
+  },
+  "bb.kind.business": {
+   "eg": "نشاط تجاري",
+   "gulf": "نشاط تجاري",
+   "levant": "نشاط تجاري",
+   "msa-white": "نشاط تجاري",
+   "en": "Business"
+  },
+  "bb.kind.client": {
+   "eg": "عميل",
+   "gulf": "عميل",
+   "levant": "عميل",
+   "msa-white": "عميل",
+   "en": "Client"
+  },
+  "bb.kind.creator": {
+   "eg": "صانع محتوى",
+   "gulf": "صانع محتوى",
+   "levant": "صانع محتوى",
+   "msa-white": "صانع محتوى",
+   "en": "Creator"
+  },
+  "bb.latin": {
+   "eg": "أسماء تبقى بالإنجليزية",
+   "gulf": "أسماء تبقى بالإنجليزية",
+   "levant": "أسماء تبقى بالإنجليزية",
+   "msa-white": "أسماء تبقى بالإنجليزية",
+   "en": "Names that stay in English"
+  },
+  "bb.locale": {
+   "eg": "اللهجة والأرقام والسحب",
+   "gulf": "اللهجة والأرقام والسحب",
+   "levant": "اللهجة والأرقام والسحب",
+   "msa-white": "اللهجة والأرقام والسحب",
+   "en": "Dialect, digits and swipe"
+  },
+  "bb.mix": {
+   "eg": "توزيع الأهداف",
+   "gulf": "توزيع الأهداف",
+   "levant": "توزيع الأهداف",
+   "msa-white": "توزيع الأهداف",
+   "en": "Goal mix"
+  },
+  "bb.models": {
+   "eg": "حسابات بنتعلم منها",
+   "gulf": "حسابات نتعلم منها",
+   "levant": "حسابات نتعلم منها",
+   "msa-white": "حسابات نتعلم منها",
+   "en": "Accounts you learn from"
+  },
+  "bb.n": {
+   "eg": "القسم {n}",
+   "gulf": "القسم {n}",
+   "levant": "القسم {n}",
+   "msa-white": "القسم {n}",
+   "en": "Section {n}"
+  },
+  "bb.niche": {
+   "eg": "المجال",
+   "gulf": "المجال",
+   "levant": "المجال",
+   "msa-white": "المجال",
+   "en": "Niche"
+  },
+  "bb.none": {
+   "eg": "لسه ماتحددش",
+   "gulf": "لم يُحدَّد بعد",
+   "levant": "لم يُحدَّد بعد",
+   "msa-white": "لم يُحدَّد بعد",
+   "en": "Not set yet"
+  },
+  "bb.objections": {
+   "eg": "اعتراضاتهم",
+   "gulf": "اعتراضاتهم",
+   "levant": "اعتراضاتهم",
+   "msa-white": "اعتراضاتهم",
+   "en": "Their objections"
+  },
+  "bb.offer": {
+   "eg": "اللي بتقدّمه",
+   "gulf": "ما تقدّمه",
+   "levant": "ما تقدّمه",
+   "msa-white": "ما تقدّمه",
+   "en": "What you offer"
+  },
+  "bb.pains": {
+   "eg": "ما يؤلمهم",
+   "gulf": "ما يؤلمهم",
+   "levant": "ما يؤلمهم",
+   "msa-white": "ما يؤلمهم",
+   "en": "Their pains"
+  },
+  "bb.pair": {
+   "eg": "الزوج",
+   "gulf": "الزوج",
+   "levant": "الزوج",
+   "msa-white": "الزوج",
+   "en": "Pair"
+  },
+  "bb.palette": {
+   "eg": "الألوان",
+   "gulf": "الألوان",
+   "levant": "الألوان",
+   "msa-white": "الألوان",
+   "en": "Palette"
+  },
+  "bb.persona": {
+   "eg": "الجمهور",
+   "gulf": "الجمهور",
+   "levant": "الجمهور",
+   "msa-white": "الجمهور",
+   "en": "Audience"
+  },
+  "bb.perweek": {
+   "eg": {
+    "one": "بوست واحد في الأسبوع",
+    "two": "بوستين في الأسبوع",
+    "few": "{n} بوستات في الأسبوع",
+    "many": "{n} بوست في الأسبوع",
+    "other": "{n} بوست في الأسبوع"
+   },
+   "gulf": {
+    "one": "بوست واحد في الأسبوع",
+    "two": "بوستين في الأسبوع",
+    "few": "{n} بوستات في الأسبوع",
+    "many": "{n} بوست في الأسبوع",
+    "other": "{n} بوست في الأسبوع"
+   },
+   "levant": {
+    "one": "بوست واحد في الأسبوع",
+    "two": "بوستين في الأسبوع",
+    "few": "{n} بوستات في الأسبوع",
+    "many": "{n} بوست في الأسبوع",
+    "other": "{n} بوست في الأسبوع"
+   },
+   "msa-white": {
+    "one": "بوست واحد في الأسبوع",
+    "two": "بوستين في الأسبوع",
+    "few": "{n} بوستات في الأسبوع",
+    "many": "{n} بوست في الأسبوع",
+    "other": "{n} بوست في الأسبوع"
+   },
+   "en": {
+    "one": "1 post a week",
+    "other": "{n} posts a week"
+   }
+  },
+  "bb.pillars": {
+   "eg": "ركائز المحتوى",
+   "gulf": "ركائز المحتوى",
+   "levant": "ركائز المحتوى",
+   "msa-white": "ركائز المحتوى",
+   "en": "Content pillars"
+  },
+  "bb.preset": {
+   "eg": "الستايل المستخدم",
+   "gulf": "الستايل المستخدم",
+   "levant": "الستايل المستخدم",
+   "msa-white": "الستايل المستخدم",
+   "en": "The style in use"
+  },
+  "bb.preset.unavailable": {
+   "eg": "معاينة الستايل مش متاحة هنا.",
+   "gulf": "معاينة الستايل غير متاحة هنا.",
+   "levant": "معاينة الستايل غير متاحة هنا.",
+   "msa-white": "معاينة الستايل غير متاحة هنا.",
+   "en": "The style preview is not available here."
+  },
+  "bb.proof": {
+   "eg": "إثباتات",
+   "gulf": "إثباتات",
+   "levant": "إثباتات",
+   "msa-white": "إثباتات",
+   "en": "Proof points"
+  },
+  "bb.ratio": {
+   "eg": "النسبة",
+   "gulf": "النسبة",
+   "levant": "النسبة",
+   "msa-white": "النسبة",
+   "en": "Ratio"
+  },
+  "bb.register": {
+   "eg": "المستوى",
+   "gulf": "المستوى",
+   "levant": "المستوى",
+   "msa-white": "المستوى",
+   "en": "Register"
+  },
+  "bb.register.dialect": {
+   "eg": "لهجة",
+   "gulf": "لهجة",
+   "levant": "لهجة",
+   "msa-white": "لهجة",
+   "en": "Dialect"
+  },
+  "bb.register.msa": {
+   "eg": "فصحى",
+   "gulf": "فصحى",
+   "levant": "فصحى",
+   "msa-white": "فصحى",
+   "en": "Modern Standard"
+  },
+  "bb.register.white": {
+   "eg": "بيضاء مبسّطة",
+   "gulf": "بيضاء مبسّطة",
+   "levant": "بيضاء مبسّطة",
+   "msa-white": "بيضاء مبسّطة",
+   "en": "Plain white Arabic"
+  },
+  "bb.rhythm": {
+   "eg": "الإيقاع",
+   "gulf": "الإيقاع",
+   "levant": "الإيقاع",
+   "msa-white": "الإيقاع",
+   "en": "Rhythm"
+  },
+  "bb.role.accent": {
+   "eg": "اللون المميز",
+   "gulf": "اللون المميز",
+   "levant": "اللون المميز",
+   "msa-white": "اللون المميز",
+   "en": "Accent"
+  },
+  "bb.role.accent2": {
+   "eg": "لون مميز ثانٍ",
+   "gulf": "لون مميز ثانٍ",
+   "levant": "لون مميز ثانٍ",
+   "msa-white": "لون مميز ثانٍ",
+   "en": "Second accent"
+  },
+  "bb.role.bg": {
+   "eg": "الخلفية",
+   "gulf": "الخلفية",
+   "levant": "الخلفية",
+   "msa-white": "الخلفية",
+   "en": "Background"
+  },
+  "bb.role.ink": {
+   "eg": "الحبر",
+   "gulf": "الحبر",
+   "levant": "الحبر",
+   "msa-white": "الحبر",
+   "en": "Ink"
+  },
+  "bb.role.inkMuted": {
+   "eg": "الحبر الخافت",
+   "gulf": "الحبر الخافت",
+   "levant": "الحبر الخافت",
+   "msa-white": "الحبر الخافت",
+   "en": "Muted ink"
+  },
+  "bb.role.onAccent": {
+   "eg": "نص على اللون المميز",
+   "gulf": "نص على اللون المميز",
+   "levant": "نص على اللون المميز",
+   "msa-white": "نص على اللون المميز",
+   "en": "Text on accent"
+  },
+  "bb.role.surface": {
+   "eg": "السطح",
+   "gulf": "السطح",
+   "levant": "السطح",
+   "msa-white": "السطح",
+   "en": "Surface"
+  },
+  "bb.samples": {
+   "eg": "من كلامك",
+   "gulf": "من كلامك",
+   "levant": "من كلامك",
+   "msa-white": "من كلامك",
+   "en": "In your words"
+  },
+  "bb.say": {
+   "eg": "قل",
+   "gulf": "قل",
+   "levant": "قل",
+   "msa-white": "قل",
+   "en": "Say"
+  },
+  "bb.slide.cover": {
+   "eg": "الغلاف",
+   "gulf": "الغلاف",
+   "levant": "الغلاف",
+   "msa-white": "الغلاف",
+   "en": "Cover"
+  },
+  "bb.slide.cta": {
+   "eg": "الدعوة للتصرف",
+   "gulf": "الدعوة للتصرف",
+   "levant": "الدعوة للتصرف",
+   "msa-white": "الدعوة للتصرف",
+   "en": "Call to action"
+  },
+  "bb.slide.second": {
+   "eg": "السلايد الثاني",
+   "gulf": "السلايد الثاني",
+   "levant": "السلايد الثاني",
+   "msa-white": "السلايد الثاني",
+   "en": "Second slide"
+  },
+  "bb.strategy": {
+   "eg": "الاستراتيجية",
+   "gulf": "الاستراتيجية",
+   "levant": "الاستراتيجية",
+   "msa-white": "الاستراتيجية",
+   "en": "Strategy"
+  },
+  "bb.swipe": {
+   "eg": "إشارة السحب",
+   "gulf": "إشارة السحب",
+   "levant": "إشارة السحب",
+   "msa-white": "إشارة السحب",
+   "en": "Swipe cue"
+  },
+  "bb.tone.calm": {
+   "eg": "هادئ",
+   "gulf": "هادئ",
+   "levant": "هادئ",
+   "msa-white": "هادئ",
+   "en": "Calm"
+  },
+  "bb.tone.energetic": {
+   "eg": "حماسي",
+   "gulf": "حماسي",
+   "levant": "حماسي",
+   "msa-white": "حماسي",
+   "en": "Energetic"
+  },
+  "bb.tone.formal": {
+   "eg": "رسمي",
+   "gulf": "رسمي",
+   "levant": "رسمي",
+   "msa-white": "رسمي",
+   "en": "Formal"
+  },
+  "bb.tone.friendly": {
+   "eg": "ودود",
+   "gulf": "ودود",
+   "levant": "ودود",
+   "msa-white": "ودود",
+   "en": "Friendly"
+  },
+  "bb.tone.playful": {
+   "eg": "مرح",
+   "gulf": "مرح",
+   "levant": "مرح",
+   "msa-white": "مرح",
+   "en": "Playful"
+  },
+  "bb.tone.serious": {
+   "eg": "جاد",
+   "gulf": "جاد",
+   "levant": "جاد",
+   "msa-white": "جاد",
+   "en": "Serious"
+  },
+  "bb.tools": {
+   "eg": "الأدوات المتصلة",
+   "gulf": "الأدوات المتصلة",
+   "levant": "الأدوات المتصلة",
+   "msa-white": "الأدوات المتصلة",
+   "en": "Connected tools"
+  },
+  "bb.uidialect": {
+   "eg": "لغة الأداة",
+   "gulf": "لغة الأداة",
+   "levant": "لغة الأداة",
+   "msa-white": "لغة الأداة",
+   "en": "Tool language"
+  },
+  "bb.uidialect.white": {
+   "eg": "فصحى بيضاء دلوقتي، وهتتحول للهجتك بعد ما يراجعها متحدث أصلي",
+   "gulf": "فصحى بيضاء حاليًا، وستتحول إلى لهجتك بعد أن يراجعها متحدث أصلي",
+   "levant": "فصحى بيضاء حاليًا، وستتحول إلى لهجتك بعد أن يراجعها متحدث أصلي",
+   "msa-white": "فصحى بيضاء حاليًا، وستتحول إلى لهجتك بعد أن يراجعها متحدث أصلي",
+   "en": "White MSA for now; it switches to your dialect after a native speaker has reviewed it"
+  },
+  "bb.version": {
+   "eg": "نسخة {v}",
+   "gulf": "نسخة {v}",
+   "levant": "نسخة {v}",
+   "msa-white": "نسخة {v}",
+   "en": "Version {v}"
+  },
+  "bb.visual": {
+   "eg": "الهوية البصرية",
+   "gulf": "الهوية البصرية",
+   "levant": "الهوية البصرية",
+   "msa-white": "الهوية البصرية",
+   "en": "Visual identity"
+  },
+  "bb.voice": {
+   "eg": "الصوت",
+   "gulf": "الصوت",
+   "levant": "الصوت",
+   "msa-white": "الصوت",
+   "en": "Voice"
+  },
+  "bb.wcag": {
+   "eg": "المعيار",
+   "gulf": "المعيار",
+   "levant": "المعيار",
+   "msa-white": "المعيار",
+   "en": "Standard"
+  },
+  "bb.who": {
+   "eg": "مين إنت",
+   "gulf": "من أنت",
+   "levant": "من أنت",
+   "msa-white": "من أنت",
+   "en": "Who you are"
+  },
+  "boot.failed": {
+   "eg": "ماقدرناش نفتح الاستوديو. حمّل الصفحة تاني، ولو اتكرر قول لـClaude.",
+   "gulf": "تعذّر فتح الاستوديو. أعد تحميل الصفحة، فإن تكرر الأمر فأخبر Claude.",
+   "levant": "تعذّر فتح الاستوديو. أعد تحميل الصفحة، فإن تكرر الأمر فأخبر Claude.",
+   "msa-white": "تعذّر فتح الاستوديو. أعد تحميل الصفحة، فإن تكرر الأمر فأخبر Claude.",
+   "en": "The Studio could not open. Reload the page, and tell Claude if it happens again."
+  },
+  "boot.loading": {
+   "eg": "بنجهّز الاستوديو…",
+   "gulf": "نجهّز الاستوديو…",
+   "levant": "نجهّز الاستوديو…",
+   "msa-white": "نجهّز الاستوديو…",
+   "en": "Preparing the Studio…"
+  },
+  "boot.noscript": {
+   "eg": "الاستوديو محتاج JavaScript متفعّل.",
+   "gulf": "الاستوديو يحتاج تفعيل JavaScript.",
+   "levant": "الاستوديو يحتاج تفعيل JavaScript.",
+   "msa-white": "الاستوديو يحتاج تفعيل JavaScript.",
+   "en": "The Studio needs JavaScript."
+  },
+  "calm.bottom": {
+   "eg": "أسفل",
+   "gulf": "أسفل",
+   "levant": "أسفل",
+   "msa-white": "أسفل",
+   "en": "Bottom"
+  },
+  "calm.center": {
+   "eg": "الوسط",
+   "gulf": "الوسط",
+   "levant": "الوسط",
+   "msa-white": "الوسط",
+   "en": "Centre"
+  },
+  "calm.end": {
+   "eg": "النهاية",
+   "gulf": "النهاية",
+   "levant": "النهاية",
+   "msa-white": "النهاية",
+   "en": "End"
+  },
+  "calm.none": {
+   "eg": "غير محددة",
+   "gulf": "غير محددة",
+   "levant": "غير محددة",
+   "msa-white": "غير محددة",
+   "en": "Not set"
+  },
+  "calm.start": {
+   "eg": "البداية",
+   "gulf": "البداية",
+   "levant": "البداية",
+   "msa-white": "البداية",
+   "en": "Start"
+  },
+  "calm.top": {
+   "eg": "أعلى",
+   "gulf": "أعلى",
+   "levant": "أعلى",
+   "msa-white": "أعلى",
+   "en": "Top"
+  },
+  "check.attest": {
+   "eg": "الرقم ده من عندي",
+   "gulf": "الرقم هذا من عندي",
+   "levant": "هالرقم من عندي",
+   "msa-white": "هذا الرقم من عندي",
+   "en": "This number is mine"
+  },
+  "check.attested": {
+   "eg": "اتسجّل الرقم على إنه من عندك.",
+   "gulf": "سُجّل الرقم على أنه من عندك.",
+   "levant": "سُجّل الرقم على أنه من عندك.",
+   "msa-white": "سُجّل الرقم على أنه من عندك.",
+   "en": "Recorded as your own statement."
+  },
+  "check.autofix": {
+   "eg": "صلّح تلقائيًا",
+   "gulf": "صلّح تلقائيًا",
+   "levant": "صلّح تلقائيًا",
+   "msa-white": "صلّح تلقائيًا",
+   "en": "Fix automatically"
+  },
+  "check.autofix.done": {
+   "eg": {
+    "one": "صلّحنا ملاحظة واحدة تلقائيًا",
+    "two": "صلّحنا ملاحظتين تلقائيًا",
+    "few": "صلّحنا {n} ملاحظات تلقائيًا",
+    "many": "صلّحنا {n} ملاحظة تلقائيًا",
+    "other": "صلّحنا {n} ملاحظة تلقائيًا"
+   },
+   "gulf": {
+    "one": "أصلحنا ملاحظة واحدة تلقائيًا",
+    "two": "أصلحنا ملاحظتين تلقائيًا",
+    "few": "أصلحنا {n} ملاحظات تلقائيًا",
+    "many": "أصلحنا {n} ملاحظة تلقائيًا",
+    "other": "أصلحنا {n} ملاحظة تلقائيًا"
+   },
+   "levant": {
+    "one": "أصلحنا ملاحظة واحدة تلقائيًا",
+    "two": "أصلحنا ملاحظتين تلقائيًا",
+    "few": "أصلحنا {n} ملاحظات تلقائيًا",
+    "many": "أصلحنا {n} ملاحظة تلقائيًا",
+    "other": "أصلحنا {n} ملاحظة تلقائيًا"
+   },
+   "msa-white": {
+    "one": "أصلحنا ملاحظة واحدة تلقائيًا",
+    "two": "أصلحنا ملاحظتين تلقائيًا",
+    "few": "أصلحنا {n} ملاحظات تلقائيًا",
+    "many": "أصلحنا {n} ملاحظة تلقائيًا",
+    "other": "أصلحنا {n} ملاحظة تلقائيًا"
+   },
+   "en": {
+    "one": "Fixed {n} note automatically",
+    "other": "Fixed {n} notes automatically"
+   }
+  },
+  "check.autofix.none": {
+   "eg": "مفيش حاجة تتصلّح تلقائيًا.",
+   "gulf": "لا شيء يُصلَّح تلقائيًا.",
+   "levant": "لا شيء يُصلَّح تلقائيًا.",
+   "msa-white": "لا شيء يُصلَّح تلقائيًا.",
+   "en": "Nothing can be fixed automatically."
+  },
+  "check.autofixable": {
+   "eg": "بيتصلّح تلقائيًا",
+   "gulf": "يُصلَّح تلقائيًا",
+   "levant": "يُصلَّح تلقائيًا",
+   "msa-white": "يُصلَّح تلقائيًا",
+   "en": "Auto-fixable"
+  },
+  "check.cue.why": {
+   "eg": "ليه الإشارة دي؟",
+   "gulf": "ليش هالإشارة؟",
+   "levant": "ليش هالإشارة؟",
+   "msa-white": "لماذا هذه الإشارة؟",
+   "en": "Why this swipe cue?"
+  },
+  "check.empty.text": {
+   "eg": "النص والتصميم عدّوا القواعد.",
+   "gulf": "النص والتصميم اجتازا القواعد.",
+   "levant": "النص والتصميم اجتازا القواعد.",
+   "msa-white": "النص والتصميم اجتازا القواعد.",
+   "en": "The copy and design passed the rules."
+  },
+  "check.empty.title": {
+   "eg": "مفيش ملاحظات",
+   "gulf": "لا توجد ملاحظات",
+   "levant": "لا توجد ملاحظات",
+   "msa-white": "لا توجد ملاحظات",
+   "en": "No notes"
+  },
+  "check.filtered": {
+   "eg": "مفيش ملاحظات في الفلتر ده.",
+   "gulf": "لا ملاحظات في هذا الفلتر.",
+   "levant": "لا ملاحظات في هذا الفلتر.",
+   "msa-white": "لا ملاحظات في هذا الفلتر.",
+   "en": "No notes in this filter."
+  },
+  "check.jump": {
+   "eg": "روح للعنصر",
+   "gulf": "اذهب إلى العنصر",
+   "levant": "اذهب إلى العنصر",
+   "msa-white": "اذهب إلى العنصر",
+   "en": "Go to the element"
+  },
+  "check.last": {
+   "eg": "آخر فحص كامل {time}",
+   "gulf": "آخر فحص كامل {time}",
+   "levant": "آخر فحص كامل {time}",
+   "msa-white": "آخر فحص كامل {time}",
+   "en": "Last full check {time}"
+  },
+  "check.lede": {
+   "eg": "بنراجع النص والتصميم على قواعد النشر، وقدّام كل ملاحظة اللي المفروض يتعدّل.",
+   "gulf": "نراجع النص والتصميم على قواعد النشر، وتذكر كل ملاحظة ما يجب تعديله.",
+   "levant": "نراجع النص والتصميم على قواعد النشر، وتذكر كل ملاحظة ما يجب تعديله.",
+   "msa-white": "نراجع النص والتصميم على قواعد النشر، وتذكر كل ملاحظة ما يجب تعديله.",
+   "en": "We check the copy and the design against the publishing rules. Every note says what to change."
+  },
+  "check.overridden": {
+   "eg": "تجاوز بسبب: {reason}",
+   "gulf": "تجاوز بسبب: {reason}",
+   "levant": "تجاوز بسبب: {reason}",
+   "msa-white": "تجاوز بسبب: {reason}",
+   "en": "Overridden: {reason}"
+  },
+  "check.override": {
+   "eg": "تجاوز",
+   "gulf": "تجاوز",
+   "levant": "تجاوز",
+   "msa-white": "تجاوز",
+   "en": "Override"
+  },
+  "check.override.confirm": {
+   "eg": "تجاوز",
+   "gulf": "تجاوز",
+   "levant": "تجاوز",
+   "msa-white": "تجاوز",
+   "en": "Override"
+  },
+  "check.override.done": {
+   "eg": "سجّلنا التجاوز.",
+   "gulf": "سجّلنا التجاوز.",
+   "levant": "سجّلنا التجاوز.",
+   "msa-white": "سجّلنا التجاوز.",
+   "en": "Override recorded."
+  },
+  "check.override.need-reason": {
+   "eg": "اكتب سبب للتجاوز.",
+   "gulf": "اكتب سببًا للتجاوز.",
+   "levant": "اكتب سببًا للتجاوز.",
+   "msa-white": "اكتب سببًا للتجاوز.",
+   "en": "Write a reason for the override."
+  },
+  "check.override.ph": {
+   "eg": "ليه هتتجاوزها؟",
+   "gulf": "لماذا تتجاوزها؟",
+   "levant": "لماذا تتجاوزها؟",
+   "msa-white": "لماذا تتجاوزها؟",
+   "en": "Why are you overriding it?"
+  },
+  "check.override.refused": {
+   "eg": "الملاحظة دي مابتتجاوزش.",
+   "gulf": "هذه الملاحظة لا تُتجاوز.",
+   "levant": "هذه الملاحظة لا تُتجاوز.",
+   "msa-white": "هذه الملاحظة لا تُتجاوز.",
+   "en": "This note cannot be overridden."
+  },
+  "check.override.text": {
+   "eg": "هنسجّل التجاوز مع سببك في تقرير الفحص. الملاحظة: {gate}.",
+   "gulf": "سنسجّل التجاوز مع سببك في تقرير الفحص. الملاحظة: {gate}.",
+   "levant": "سنسجّل التجاوز مع سببك في تقرير الفحص. الملاحظة: {gate}.",
+   "msa-white": "سنسجّل التجاوز مع سببك في تقرير الفحص. الملاحظة: {gate}.",
+   "en": "We record the override and your reason in the check report. Note: {gate}."
+  },
+  "check.override.title": {
+   "eg": "تجاوز الملاحظة",
+   "gulf": "تجاوز الملاحظة",
+   "levant": "تجاوز الملاحظة",
+   "msa-white": "تجاوز الملاحظة",
+   "en": "Override this note"
+  },
+  "check.overrides": {
+   "eg": "الملاحظات المتجاوزة",
+   "gulf": "الملاحظات المتجاوزة",
+   "levant": "الملاحظات المتجاوزة",
+   "msa-white": "الملاحظات المتجاوزة",
+   "en": "Overridden notes"
+  },
+  "check.partial": {
+   "eg": "ده فحص النص بس. شغّل الفحص الكامل.",
+   "gulf": "هذا فحص النص فقط. شغّل الفحص الكامل.",
+   "levant": "هذا فحص النص فقط. شغّل الفحص الكامل.",
+   "msa-white": "هذا فحص النص فقط. شغّل الفحص الكامل.",
+   "en": "This is the text check only. Run the full check."
+  },
+  "check.run": {
+   "eg": "افحص دلوقتي",
+   "gulf": "افحص الآن",
+   "levant": "افحص الآن",
+   "msa-white": "افحص الآن",
+   "en": "Check now"
+  },
+  "check.run.failed": {
+   "eg": "ماقدرناش نكمّل الفحص. جرّب تاني.",
+   "gulf": "تعذّر إكمال الفحص. حاول مرة أخرى.",
+   "levant": "تعذّر إكمال الفحص. حاول مرة أخرى.",
+   "msa-white": "تعذّر إكمال الفحص. حاول مرة أخرى.",
+   "en": "The check could not finish. Try again."
+  },
+  "check.running": {
+   "eg": "بنفحص…",
+   "gulf": "نفحص…",
+   "levant": "نفحص…",
+   "msa-white": "نفحص…",
+   "en": "Checking…"
+  },
+  "check.running.hint": {
+   "eg": "بنرسم السلايدات ونقيس الوضوح والتباين.",
+   "gulf": "نرسم السلايدات ونقيس الوضوح والتباين.",
+   "levant": "نرسم السلايدات ونقيس الوضوح والتباين.",
+   "msa-white": "نرسم السلايدات ونقيس الوضوح والتباين.",
+   "en": "We render the slides and measure legibility and contrast."
+  },
+  "check.status.block": {
+   "eg": "فيه ملاحظات حاجبة",
+   "gulf": "هناك ملاحظات حاجبة",
+   "levant": "هناك ملاحظات حاجبة",
+   "msa-white": "هناك ملاحظات حاجبة",
+   "en": "There are blocking notes"
+  },
+  "check.status.fix": {
+   "eg": "فيه ملاحظات للمراجعة",
+   "gulf": "هناك ملاحظات للمراجعة",
+   "levant": "هناك ملاحظات للمراجعة",
+   "msa-white": "هناك ملاحظات للمراجعة",
+   "en": "There are notes to review"
+  },
+  "check.status.pass": {
+   "eg": "كله سليم",
+   "gulf": "كل شيء سليم",
+   "levant": "كل شيء سليم",
+   "msa-white": "كل شيء سليم",
+   "en": "Everything is clear"
+  },
+  "check.title": {
+   "eg": "الفحص",
+   "gulf": "الفحص",
+   "levant": "الفحص",
+   "msa-white": "الفحص",
+   "en": "Check"
+  },
+  "common.add": {
+   "eg": "إضافة",
+   "gulf": "إضافة",
+   "levant": "إضافة",
+   "msa-white": "إضافة",
+   "en": "Add"
+  },
+  "common.cancel": {
+   "eg": "إلغاء",
+   "gulf": "إلغاء",
+   "levant": "إلغاء",
+   "msa-white": "إلغاء",
+   "en": "Cancel"
+  },
+  "common.close": {
+   "eg": "إغلاق",
+   "gulf": "إغلاق",
+   "levant": "إغلاق",
+   "msa-white": "إغلاق",
+   "en": "Close"
+  },
+  "common.copied": {
+   "eg": "تم النسخ",
+   "gulf": "تم النسخ",
+   "levant": "تم النسخ",
+   "msa-white": "تم النسخ",
+   "en": "Copied"
+  },
+  "common.copy": {
+   "eg": "نسخ",
+   "gulf": "نسخ",
+   "levant": "نسخ",
+   "msa-white": "نسخ",
+   "en": "Copy"
+  },
+  "common.copy-manual": {
+   "eg": "المتصفح منع النسخ التلقائي. حدّد النص وانسخه بنفسك.",
+   "gulf": "منع المتصفح النسخ التلقائي. حدّد النص وانسخه بنفسك.",
+   "levant": "منع المتصفح النسخ التلقائي. حدّد النص وانسخه بنفسك.",
+   "msa-white": "منع المتصفح النسخ التلقائي. حدّد النص وانسخه بنفسك.",
+   "en": "Your browser blocked automatic copying. Select the text and copy it yourself."
+  },
+  "common.delete": {
+   "eg": "حذف",
+   "gulf": "حذف",
+   "levant": "حذف",
+   "msa-white": "حذف",
+   "en": "Delete"
+  },
+  "common.move-down": {
+   "eg": "حرّك لأسفل",
+   "gulf": "حرّك لأسفل",
+   "levant": "حرّك لأسفل",
+   "msa-white": "حرّك لأسفل",
+   "en": "Move down"
+  },
+  "common.move-up": {
+   "eg": "حرّك لأعلى",
+   "gulf": "حرّك لأعلى",
+   "levant": "حرّك لأعلى",
+   "msa-white": "حرّك لأعلى",
+   "en": "Move up"
+  },
+  "common.ok": {
+   "eg": "تمام",
+   "gulf": "تمام",
+   "levant": "تمام",
+   "msa-white": "تمام",
+   "en": "OK"
+  },
+  "common.save": {
+   "eg": "حفظ",
+   "gulf": "حفظ",
+   "levant": "حفظ",
+   "msa-white": "حفظ",
+   "en": "Save"
+  },
+  "common.undo": {
+   "eg": "تراجع",
+   "gulf": "تراجع",
+   "levant": "تراجع",
+   "msa-white": "تراجع",
+   "en": "Undo"
+  },
+  "copy.alt": {
+   "eg": "النص البديل",
+   "gulf": "النص البديل",
+   "levant": "النص البديل",
+   "msa-white": "النص البديل",
+   "en": "Alt text"
+  },
+  "copy.alt-all": {
+   "eg": "انسخ كل النص البديل",
+   "gulf": "انسخ كل النص البديل",
+   "levant": "انسخ كل النص البديل",
+   "msa-white": "انسخ كل النص البديل",
+   "en": "Copy all alt text"
+  },
+  "copy.body": {
+   "eg": "الجسم",
+   "gulf": "الجسم",
+   "levant": "الجسم",
+   "msa-white": "الجسم",
+   "en": "Body"
+  },
+  "copy.caption": {
+   "eg": "كابشن البوست",
+   "gulf": "كابشن البوست",
+   "levant": "كابشن البوست",
+   "msa-white": "كابشن البوست",
+   "en": "Post caption"
+  },
+  "copy.copy-all": {
+   "eg": "انسخ الكابشن كامل",
+   "gulf": "انسخ الكابشن كاملًا",
+   "levant": "انسخ الكابشن كاملًا",
+   "msa-white": "انسخ الكابشن كاملًا",
+   "en": "Copy the whole caption"
+  },
+  "copy.cta": {
+   "eg": "الدعوة للتصرف",
+   "gulf": "الدعوة للتصرف",
+   "levant": "الدعوة للتصرف",
+   "msa-white": "الدعوة للتصرف",
+   "en": "Call to action"
+  },
+  "copy.empty": {
+   "eg": "لسه مفيش كابشن. اكتب هنا أو اطلب من Claude.",
+   "gulf": "لا يوجد كابشن بعد. اكتب هنا أو اطلب من Claude.",
+   "levant": "لا يوجد كابشن بعد. اكتب هنا أو اطلب من Claude.",
+   "msa-white": "لا يوجد كابشن بعد. اكتب هنا أو اطلب من Claude.",
+   "en": "No caption yet. Write one here or ask Claude."
+  },
+  "copy.firstLine": {
+   "eg": "السطر الأول (الهوك)",
+   "gulf": "السطر الأول (الهوك)",
+   "levant": "السطر الأول (الهوك)",
+   "msa-white": "السطر الأول (الهوك)",
+   "en": "First line (the hook)"
+  },
+  "copy.firstLine.hint": {
+   "eg": {
+    "one": "قبل زرار «المزيد» بيظهر أول حرف واحد بس.",
+    "two": "قبل زرار «المزيد» بيظهر أول حرفين بس.",
+    "few": "قبل زرار «المزيد» بيظهر أول {n} حروف بس.",
+    "many": "قبل زرار «المزيد» بيظهر أول {n} حرف بس.",
+    "other": "قبل زرار «المزيد» بيظهر أول {n} حرف بس."
+   },
+   "gulf": {
+    "one": "قبل زر «المزيد» يظهر أول حرف واحد فقط.",
+    "two": "قبل زر «المزيد» يظهر أول حرفين فقط.",
+    "few": "قبل زر «المزيد» يظهر أول {n} حروف فقط.",
+    "many": "قبل زر «المزيد» يظهر أول {n} حرفًا فقط.",
+    "other": "قبل زر «المزيد» يظهر أول {n} حرفًا فقط."
+   },
+   "levant": {
+    "one": "قبل زر «المزيد» يظهر أول حرف واحد فقط.",
+    "two": "قبل زر «المزيد» يظهر أول حرفين فقط.",
+    "few": "قبل زر «المزيد» يظهر أول {n} حروف فقط.",
+    "many": "قبل زر «المزيد» يظهر أول {n} حرفًا فقط.",
+    "other": "قبل زر «المزيد» يظهر أول {n} حرفًا فقط."
+   },
+   "msa-white": {
+    "one": "قبل زر «المزيد» يظهر أول حرف واحد فقط.",
+    "two": "قبل زر «المزيد» يظهر أول حرفين فقط.",
+    "few": "قبل زر «المزيد» يظهر أول {n} حروف فقط.",
+    "many": "قبل زر «المزيد» يظهر أول {n} حرفًا فقط.",
+    "other": "قبل زر «المزيد» يظهر أول {n} حرفًا فقط."
+   },
+   "en": {
+    "one": "Only the first character shows before “more”.",
+    "other": "Only the first {n} characters show before “more”."
+   }
+  },
+  "copy.fold.mark": {
+   "eg": "المزيد",
+   "gulf": "المزيد",
+   "levant": "المزيد",
+   "msa-white": "المزيد",
+   "en": "more"
+  },
+  "copy.fold.title": {
+   "eg": "كده بيظهر في Instagram",
+   "gulf": "هكذا يظهر في Instagram",
+   "levant": "هكذا يظهر في Instagram",
+   "msa-white": "هكذا يظهر في Instagram",
+   "en": "How it shows on Instagram"
+  },
+  "copy.keywordLine": {
+   "eg": "سطر الكلمة المفتاحية",
+   "gulf": "سطر الكلمة المفتاحية",
+   "levant": "سطر الكلمة المفتاحية",
+   "msa-white": "سطر الكلمة المفتاحية",
+   "en": "Keyword line"
+  },
+  "copy.keywordLine.hint": {
+   "eg": "حط الكلمة اللي الناس بتبحث بيها في الجملة التانية.",
+   "gulf": "ضع الكلمة التي يبحث بها الناس في الجملة الثانية.",
+   "levant": "ضع الكلمة التي يبحث بها الناس في الجملة الثانية.",
+   "msa-white": "ضع الكلمة التي يبحث بها الناس في الجملة الثانية.",
+   "en": "Put the word people search for in the second sentence."
+  },
+  "copy.lede": {
+   "eg": "الكابشن والهاشتاجات ووصف كل سلايد والنص البديل. كل جزء ليه زرار نسخ.",
+   "gulf": "الكابشن والهاشتاجات ووصف كل سلايد والنص البديل. لكل جزء زر نسخ.",
+   "levant": "الكابشن والهاشتاجات ووصف كل سلايد والنص البديل. لكل جزء زر نسخ.",
+   "msa-white": "الكابشن والهاشتاجات ووصف كل سلايد والنص البديل. لكل جزء زر نسخ.",
+   "en": "The caption, hashtags, a line per slide and alt text. Every part has a copy button."
+  },
+  "copy.per": {
+   "eg": "وصف السلايد",
+   "gulf": "وصف السلايد",
+   "levant": "وصف السلايد",
+   "msa-white": "وصف السلايد",
+   "en": "Slide caption"
+  },
+  "copy.per-all": {
+   "eg": "انسخ كل الأوصاف",
+   "gulf": "انسخ كل الأوصاف",
+   "levant": "انسخ كل الأوصاف",
+   "msa-white": "انسخ كل الأوصاف",
+   "en": "Copy all captions"
+  },
+  "copy.persl": {
+   "eg": "وصف كل سلايد والنص البديل",
+   "gulf": "وصف كل سلايد والنص البديل",
+   "levant": "وصف كل سلايد والنص البديل",
+   "msa-white": "وصف كل سلايد والنص البديل",
+   "en": "Per-slide captions and alt text"
+  },
+  "copy.persl.hint": {
+   "eg": "Instagram بيسمح بوصف مستقل لكل سلايد. وصف السلايد اختياري، والنص البديل بيساعد القارئ الصوتي.",
+   "gulf": "يسمح Instagram بوصف مستقل لكل سلايد. وصف السلايد اختياري، والنص البديل يساعد القارئ الصوتي.",
+   "levant": "يسمح Instagram بوصف مستقل لكل سلايد. وصف السلايد اختياري، والنص البديل يساعد القارئ الصوتي.",
+   "msa-white": "يسمح Instagram بوصف مستقل لكل سلايد. وصف السلايد اختياري، والنص البديل يساعد القارئ الصوتي.",
+   "en": "Instagram allows a separate caption per slide. It is optional; alt text helps screen readers."
+  },
+  "copy.tags": {
+   "eg": "الهاشتاجات",
+   "gulf": "الهاشتاجات",
+   "levant": "الهاشتاجات",
+   "msa-white": "الهاشتاجات",
+   "en": "Hashtags"
+  },
+  "copy.tags.add": {
+   "eg": "أضف هاشتاج",
+   "gulf": "أضف هاشتاجًا",
+   "levant": "أضف هاشتاجًا",
+   "msa-white": "أضف هاشتاجًا",
+   "en": "Add a hashtag"
+  },
+  "copy.tags.duplicate": {
+   "eg": "الهاشتاج ده موجود.",
+   "gulf": "هذا الهاشتاج موجود.",
+   "levant": "هذا الهاشتاج موجود.",
+   "msa-white": "هذا الهاشتاج موجود.",
+   "en": "That hashtag is already there."
+  },
+  "copy.tags.hint": {
+   "eg": "لحد 5 هاشتاجات. الكلمات المفتاحية مكانها الكابشن.",
+   "gulf": "حتى 5 هاشتاجات. الكلمات المفتاحية مكانها الكابشن.",
+   "levant": "حتى 5 هاشتاجات. الكلمات المفتاحية مكانها الكابشن.",
+   "msa-white": "حتى 5 هاشتاجات. الكلمات المفتاحية مكانها الكابشن.",
+   "en": "Up to 5 hashtags. Keywords belong in the caption."
+  },
+  "copy.tags.invalid": {
+   "eg": "الهاشتاج مايحتويش مسافات.",
+   "gulf": "الهاشتاج لا يحتوي مسافات.",
+   "levant": "الهاشتاج لا يحتوي مسافات.",
+   "msa-white": "الهاشتاج لا يحتوي مسافات.",
+   "en": "A hashtag cannot contain spaces."
+  },
+  "copy.tags.max": {
+   "eg": {
+    "one": "الحد الأقصى هاشتاج واحد.",
+    "two": "الحد الأقصى هاشتاجين.",
+    "few": "الحد الأقصى {n} هاشتاجات.",
+    "many": "الحد الأقصى {n} هاشتاج.",
+    "other": "الحد الأقصى {n} هاشتاج."
+   },
+   "gulf": {
+    "one": "الحد الأقصى هاشتاج واحد.",
+    "two": "الحد الأقصى هاشتاجين.",
+    "few": "الحد الأقصى {n} هاشتاجات.",
+    "many": "الحد الأقصى {n} هاشتاج.",
+    "other": "الحد الأقصى {n} هاشتاج."
+   },
+   "levant": {
+    "one": "الحد الأقصى هاشتاج واحد.",
+    "two": "الحد الأقصى هاشتاجين.",
+    "few": "الحد الأقصى {n} هاشتاجات.",
+    "many": "الحد الأقصى {n} هاشتاج.",
+    "other": "الحد الأقصى {n} هاشتاج."
+   },
+   "msa-white": {
+    "one": "الحد الأقصى هاشتاج واحد.",
+    "two": "الحد الأقصى هاشتاجين.",
+    "few": "الحد الأقصى {n} هاشتاجات.",
+    "many": "الحد الأقصى {n} هاشتاج.",
+    "other": "الحد الأقصى {n} هاشتاج."
+   },
+   "en": {
+    "one": "The limit is 1 hashtag.",
+    "other": "The limit is {n} hashtags."
+   }
+  },
+  "copy.tags.none": {
+   "eg": "مفيش هاشتاجات.",
+   "gulf": "لا توجد هاشتاجات.",
+   "levant": "لا توجد هاشتاجات.",
+   "msa-white": "لا توجد هاشتاجات.",
+   "en": "No hashtags."
+  },
+  "copy.title": {
+   "eg": "الكابشن",
+   "gulf": "الكابشن",
+   "levant": "الكابشن",
+   "msa-white": "الكابشن",
+   "en": "Caption"
+  },
+  "copy.total": {
+   "eg": "طول الكابشن",
+   "gulf": "طول الكابشن",
+   "levant": "طول الكابشن",
+   "msa-white": "طول الكابشن",
+   "en": "Caption length"
+  },
+  "copy.total.hint": {
+   "eg": "المناسب من {lo} إلى {hi} حرف.",
+   "gulf": "المناسب من {lo} إلى {hi} حرفًا.",
+   "levant": "المناسب من {lo} إلى {hi} حرفًا.",
+   "msa-white": "المناسب من {lo} إلى {hi} حرفًا.",
+   "en": "A good length is {lo} to {hi} characters."
+  },
+  "cta.kind.follow": {
+   "eg": "تابع",
+   "gulf": "تابع",
+   "levant": "تابع",
+   "msa-white": "تابع",
+   "en": "Follow"
+  },
+  "cta.kind.keyword-dm": {
+   "eg": "كلمة مفتاحية في الرسائل",
+   "gulf": "كلمة مفتاحية في الرسائل",
+   "levant": "كلمة مفتاحية في الرسائل",
+   "msa-white": "كلمة مفتاحية في الرسائل",
+   "en": "Keyword in DMs"
+  },
+  "cta.kind.question": {
+   "eg": "سؤال",
+   "gulf": "سؤال",
+   "levant": "سؤال",
+   "msa-white": "سؤال",
+   "en": "Question"
+  },
+  "cta.kind.save": {
+   "eg": "احفظ",
+   "gulf": "احفظ",
+   "levant": "احفظ",
+   "msa-white": "احفظ",
+   "en": "Save"
+  },
+  "cta.kind.send": {
+   "eg": "أرسل",
+   "gulf": "أرسل",
+   "levant": "أرسل",
+   "msa-white": "أرسل",
+   "en": "Send"
+  },
+  "cue.arrow-ltr": {
+   "eg": "اسحب →",
+   "gulf": "اسحب →",
+   "levant": "اسحب →",
+   "msa-white": "اسحب →",
+   "en": "Swipe →"
+  },
+  "cue.arrow-ltr.sub": {
+   "eg": "لجمهور واجهته إنجليزي",
+   "gulf": "لجمهور واجهته إنجليزية",
+   "levant": "لجمهور واجهته إنجليزية",
+   "msa-white": "لجمهور واجهته إنجليزية",
+   "en": "For an English-interface audience"
+  },
+  "cue.arrow-rtl": {
+   "eg": "اسحب ←",
+   "gulf": "اسحب ←",
+   "levant": "اسحب ←",
+   "msa-white": "اسحب ←",
+   "en": "Swipe ←"
+  },
+  "cue.arrow-rtl.sub": {
+   "eg": "لجمهور واجهته عربي",
+   "gulf": "لجمهور واجهته عربية",
+   "levant": "لجمهور واجهته عربية",
+   "msa-white": "لجمهور واجهته عربية",
+   "en": "For an Arabic-interface audience"
+  },
+  "cue.mismatch": {
+   "eg": "الإشارة دي مش اللي بنختارها عادةً للغة الجمهور اللي حددتها. اتأكد إنه اختيارك.",
+   "gulf": "هذه الإشارة ليست ما نختاره عادةً للغة الجمهور المحددة. تأكد أنه اختيارك.",
+   "levant": "هذه الإشارة ليست ما نختاره عادةً للغة الجمهور المحددة. تأكد أنه اختيارك.",
+   "msa-white": "هذه الإشارة ليست ما نختاره عادةً للغة الجمهور المحددة. تأكد أنه اختيارك.",
+   "en": "This cue is not the usual choice for the audience language you picked. Make sure it is intentional."
+  },
+  "cue.neutral": {
+   "eg": "التالي",
+   "gulf": "التالي",
+   "levant": "التالي",
+   "msa-white": "التالي",
+   "en": "Next"
+  },
+  "cue.neutral.sub": {
+   "eg": "لجمهور مختلط، من غير سهم",
+   "gulf": "لجمهور مختلط، بلا سهم",
+   "levant": "لجمهور مختلط، بلا سهم",
+   "msa-white": "لجمهور مختلط، بلا سهم",
+   "en": "For a mixed audience, no arrow"
+  },
+  "cue.panorama": {
+   "eg": "طب البانوراما؟",
+   "gulf": "ماذا عن البانوراما؟",
+   "levant": "ماذا عن البانوراما؟",
+   "msa-white": "ماذا عن البانوراما؟",
+   "en": "What about panoramas?"
+  },
+  "cue.panorama.text": {
+   "eg": "البانوراما (رسمة متصلة بين السلايدات) اختيارية، ولازم تحدد اتجاهها بنفسك. افتكر إن جمهور الواجهة العربي بيشوف السلايد التاني على الشمال. التصميم الحالي شغال على سلايدات منفصلة.",
+   "gulf": "البانوراما (رسمة متصلة بين السلايدات) اختيارية، وعليك تحديد اتجاهها بنفسك. تذكّر أن جمهور الواجهة العربية يرى السلايد الثاني على اليسار. التصميم الحالي يعمل على سلايدات منفصلة.",
+   "levant": "البانوراما (رسمة متصلة بين السلايدات) اختيارية، وعليك تحديد اتجاهها بنفسك. تذكّر أن جمهور الواجهة العربية يرى السلايد الثاني على اليسار. التصميم الحالي يعمل على سلايدات منفصلة.",
+   "msa-white": "البانوراما (رسمة متصلة بين السلايدات) اختيارية، وعليك تحديد اتجاهها بنفسك. تذكّر أن جمهور الواجهة العربية يرى السلايد الثاني على اليسار. التصميم الحالي يعمل على سلايدات منفصلة.",
+   "en": "A panorama (one drawing across slides) is optional and you must choose its direction yourself. Remember that an Arabic-interface audience sees slide 2 on the left. The current design works with separate slides."
+  },
+  "cue.reason.arrow-ltr": {
+   "eg": "Instagram بالإنجليزي بيعرض السلايد التاني من اليمين، فالسهم بيشاور يمين.",
+   "gulf": "Instagram بالإنجليزية يعرض السلايد الثاني من اليمين، فيشير السهم إلى اليمين.",
+   "levant": "Instagram بالإنجليزية يعرض السلايد الثاني من اليمين، فيشير السهم إلى اليمين.",
+   "msa-white": "Instagram بالإنجليزية يعرض السلايد الثاني من اليمين، فيشير السهم إلى اليمين.",
+   "en": "Instagram in English shows slide 2 from the right, so the arrow points right."
+  },
+  "cue.reason.arrow-rtl": {
+   "eg": "Instagram بالعربي بيعكس اتجاه الكاروسيل، فالسلايد التاني بييجي من الشمال، والسهم بيشاور شمال.",
+   "gulf": "Instagram بالعربية يعكس اتجاه الكاروسيل، فيأتي السلايد الثاني من اليسار، ويشير السهم إلى اليسار.",
+   "levant": "Instagram بالعربية يعكس اتجاه الكاروسيل، فيأتي السلايد الثاني من اليسار، ويشير السهم إلى اليسار.",
+   "msa-white": "Instagram بالعربية يعكس اتجاه الكاروسيل، فيأتي السلايد الثاني من اليسار، ويشير السهم إلى اليسار.",
+   "en": "Instagram in Arabic mirrors the carousel, so slide 2 comes from the left and the arrow points left."
+  },
+  "cue.reason.neutral": {
+   "eg": "لما الجمهور مختلط ماعرفناش الاتجاه، فمن غير سهم: العداد وطرف السلايد اللي بعده بيدلوا على السحب.",
+   "gulf": "حين يكون الجمهور مختلطًا لا نعرف الاتجاه، فلا سهم هنا: العداد وحافة السلايد التالي يدلّان على السحب.",
+   "levant": "حين يكون الجمهور مختلطًا لا نعرف الاتجاه، فلا سهم هنا: العداد وحافة السلايد التالي يدلّان على السحب.",
+   "msa-white": "حين يكون الجمهور مختلطًا لا نعرف الاتجاه، فلا سهم هنا: العداد وحافة السلايد التالي يدلّان على السحب.",
+   "en": "With a mixed audience the direction is unknown, so there is no arrow: the counter and the edge of the next slide signal swiping."
+  },
+  "cue.verify": {
+   "eg": "اتجاه الكاروسيل في تطبيق الموبايل نفسه لسه ماتجرّبش على جهاز. اللي اتأكدنا منه هو Instagram على الويب.",
+   "gulf": "لم نجرّب اتجاه الكاروسيل في تطبيق الموبايل نفسه بعد. المؤكد هو Instagram على الويب.",
+   "levant": "لم نجرّب اتجاه الكاروسيل في تطبيق الموبايل نفسه بعد. المؤكد هو Instagram على الويب.",
+   "msa-white": "لم نجرّب اتجاه الكاروسيل في تطبيق الموبايل نفسه بعد. المؤكد هو Instagram على الويب.",
+   "en": "The carousel direction in the phone app itself is not tested on a device yet. What we confirmed is Instagram on the web."
+  },
+  "design.approve": {
+   "eg": "اعتمد التصميم",
+   "gulf": "اعتمد التصميم",
+   "levant": "اعتمد التصميم",
+   "msa-white": "اعتمد التصميم",
+   "en": "Approve design"
+  },
+  "design.approved": {
+   "eg": "التصميم معتمد",
+   "gulf": "التصميم معتمد",
+   "levant": "التصميم معتمد",
+   "msa-white": "التصميم معتمد",
+   "en": "Design approved"
+  },
+  "design.count": {
+   "eg": "{i} من {n}",
+   "gulf": "{i} من {n}",
+   "levant": "{i} من {n}",
+   "msa-white": "{i} من {n}",
+   "en": "{i} of {n}"
+  },
+  "design.editbar": {
+   "eg": "شريط تعديل النص",
+   "gulf": "شريط تعديل النص",
+   "levant": "شريط تعديل النص",
+   "msa-white": "شريط تعديل النص",
+   "en": "Text editing bar"
+  },
+  "design.film": {
+   "eg": "شريط السلايدات",
+   "gulf": "شريط السلايدات",
+   "levant": "شريط السلايدات",
+   "msa-white": "شريط السلايدات",
+   "en": "Slide strip"
+  },
+  "design.fit.floor": {
+   "eg": "{role} وصل لأصغر حجم مسموح. اختصره أو قسّم السلايد.",
+   "gulf": "{role} وصل لأصغر حجم مسموح. اختصره أو قسّم السلايد.",
+   "levant": "{role} وصل لأصغر حجم مسموح. اختصره أو قسّم السلايد.",
+   "msa-white": "{role} وصل لأصغر حجم مسموح. اختصره أو قسّم السلايد.",
+   "en": "{role} is at the smallest allowed size. Shorten it or split the slide."
+  },
+  "design.fit.overflow": {
+   "eg": "{role} أطول من المساحة. اختصره أو قسّم السلايد.",
+   "gulf": "{role} أطول من المساحة. اختصره أو قسّم السلايد.",
+   "levant": "{role} أطول من المساحة. اختصره أو قسّم السلايد.",
+   "msa-white": "{role} أطول من المساحة. اختصره أو قسّم السلايد.",
+   "en": "{role} is longer than the space. Shorten it or split the slide."
+  },
+  "design.guides": {
+   "eg": "الحدود",
+   "gulf": "الحدود",
+   "levant": "الحدود",
+   "msa-white": "الحدود",
+   "en": "Guides"
+  },
+  "design.hint": {
+   "eg": "اضغط على أي نص جوّه السلايد وعدّله مباشرة.",
+   "gulf": "اضغط على أي نص داخل السلايد وعدّله مباشرة.",
+   "levant": "اضغط على أي نص داخل السلايد وعدّله مباشرة.",
+   "msa-white": "اضغط على أي نص داخل السلايد وعدّله مباشرة.",
+   "en": "Tap any text on the slide and edit it right there."
+  },
+  "design.next": {
+   "eg": "السلايد التالي",
+   "gulf": "السلايد التالي",
+   "levant": "السلايد التالي",
+   "msa-white": "السلايد التالي",
+   "en": "Next slide"
+  },
+  "design.panel": {
+   "eg": "لوحة التصميم",
+   "gulf": "لوحة التصميم",
+   "levant": "لوحة التصميم",
+   "msa-white": "لوحة التصميم",
+   "en": "Design panel"
+  },
+  "design.prev": {
+   "eg": "السلايد السابق",
+   "gulf": "السلايد السابق",
+   "levant": "السلايد السابق",
+   "msa-white": "السلايد السابق",
+   "en": "Previous slide"
+  },
+  "design.shorten": {
+   "eg": "اختصر",
+   "gulf": "اختصر",
+   "levant": "اختصر",
+   "msa-white": "اختصر",
+   "en": "Shorten"
+  },
+  "design.title": {
+   "eg": "التصميم",
+   "gulf": "التصميم",
+   "levant": "التصميم",
+   "msa-white": "التصميم",
+   "en": "Design"
+  },
+  "design.to-export": {
+   "eg": "إلى التصدير",
+   "gulf": "إلى التصدير",
+   "levant": "إلى التصدير",
+   "msa-white": "إلى التصدير",
+   "en": "To export"
+  },
+  "digits.arabic-indic": {
+   "eg": "أرقام ١٢٣",
+   "gulf": "أرقام ١٢٣",
+   "levant": "أرقام ١٢٣",
+   "msa-white": "أرقام ١٢٣",
+   "en": "Digits ١٢٣"
+  },
+  "digits.western": {
+   "eg": "أرقام 123",
+   "gulf": "أرقام 123",
+   "levant": "أرقام 123",
+   "msa-white": "أرقام 123",
+   "en": "Digits 123"
+  },
+  "edit.bullet.add": {
+   "eg": "أضف نقطة",
+   "gulf": "أضف نقطة",
+   "levant": "أضف نقطة",
+   "msa-white": "أضف نقطة",
+   "en": "Add a point"
+  },
+  "edit.emphasis": {
+   "eg": "تمييز",
+   "gulf": "تمييز",
+   "levant": "تمييز",
+   "msa-white": "تمييز",
+   "en": "Highlight"
+  },
+  "edit.emphasis.hint": {
+   "eg": "ميّز كلمة بلون التمييز (كلمة واحدة بس في كل نص)",
+   "gulf": "ميّز كلمة بلون التمييز (كلمة واحدة فقط في كل نص)",
+   "levant": "ميّز كلمة بلون التمييز (كلمة واحدة فقط في كل نص)",
+   "msa-white": "ميّز كلمة بلون التمييز (كلمة واحدة فقط في كل نص)",
+   "en": "Highlight a word in the accent colour (one word per text)"
+  },
+  "edit.number.invalid": {
+   "eg": "اكتب رقم بالأرقام الإنجليزي، زي 5 أو 12.5",
+   "gulf": "اكتب رقمًا بالأرقام الإنجليزية، مثل 5 أو 12.5",
+   "levant": "اكتب رقمًا بالأرقام الإنجليزية، مثل 5 أو 12.5",
+   "msa-white": "اكتب رقمًا بالأرقام الإنجليزية، مثل 5 أو 12.5",
+   "en": "Type a number with Western digits, like 5 or 12.5"
+  },
+  "edit.source": {
+   "eg": "مصدر الرقم",
+   "gulf": "مصدر الرقم",
+   "levant": "مصدر الرقم",
+   "msa-white": "مصدر الرقم",
+   "en": "Source of the number"
+  },
+  "edit.source.none": {
+   "eg": "بدون مصدر",
+   "gulf": "بدون مصدر",
+   "levant": "بدون مصدر",
+   "msa-white": "بدون مصدر",
+   "en": "No source"
+  },
+  "export.anyway": {
+   "eg": "صدّر رغم ذلك",
+   "gulf": "صدّر رغم ذلك",
+   "levant": "صدّر رغم ذلك",
+   "msa-white": "صدّر رغم ذلك",
+   "en": "Export anyway"
+  },
+  "export.anyway.text": {
+   "eg": {
+    "one": "هنسجّل سببك ونتجاوز ملاحظة واحدة، وبعدها نجهّز الحزمة.",
+    "two": "هنسجّل سببك ونتجاوز ملاحظتين، وبعدها نجهّز الحزمة.",
+    "few": "هنسجّل سببك ونتجاوز {n} ملاحظات، وبعدها نجهّز الحزمة.",
+    "many": "هنسجّل سببك ونتجاوز {n} ملاحظة، وبعدها نجهّز الحزمة.",
+    "other": "هنسجّل سببك ونتجاوز {n} ملاحظة، وبعدها نجهّز الحزمة."
+   },
+   "gulf": {
+    "one": "سنسجّل سببك ونتجاوز ملاحظة واحدة، ثم نجهّز الحزمة.",
+    "two": "سنسجّل سببك ونتجاوز ملاحظتين، ثم نجهّز الحزمة.",
+    "few": "سنسجّل سببك ونتجاوز {n} ملاحظات، ثم نجهّز الحزمة.",
+    "many": "سنسجّل سببك ونتجاوز {n} ملاحظة، ثم نجهّز الحزمة.",
+    "other": "سنسجّل سببك ونتجاوز {n} ملاحظة، ثم نجهّز الحزمة."
+   },
+   "levant": {
+    "one": "سنسجّل سببك ونتجاوز ملاحظة واحدة، ثم نجهّز الحزمة.",
+    "two": "سنسجّل سببك ونتجاوز ملاحظتين، ثم نجهّز الحزمة.",
+    "few": "سنسجّل سببك ونتجاوز {n} ملاحظات، ثم نجهّز الحزمة.",
+    "many": "سنسجّل سببك ونتجاوز {n} ملاحظة، ثم نجهّز الحزمة.",
+    "other": "سنسجّل سببك ونتجاوز {n} ملاحظة، ثم نجهّز الحزمة."
+   },
+   "msa-white": {
+    "one": "سنسجّل سببك ونتجاوز ملاحظة واحدة، ثم نجهّز الحزمة.",
+    "two": "سنسجّل سببك ونتجاوز ملاحظتين، ثم نجهّز الحزمة.",
+    "few": "سنسجّل سببك ونتجاوز {n} ملاحظات، ثم نجهّز الحزمة.",
+    "many": "سنسجّل سببك ونتجاوز {n} ملاحظة، ثم نجهّز الحزمة.",
+    "other": "سنسجّل سببك ونتجاوز {n} ملاحظة، ثم نجهّز الحزمة."
+   },
+   "en": {
+    "one": "We record your reason, override {n} note and then build the kit.",
+    "other": "We record your reason, override {n} notes and then build the kit."
+   }
+  },
+  "export.anyway.title": {
+   "eg": "تصدير رغم الملاحظات",
+   "gulf": "تصدير رغم الملاحظات",
+   "levant": "تصدير رغم الملاحظات",
+   "msa-white": "تصدير رغم الملاحظات",
+   "en": "Export despite the notes"
+  },
+  "export.blocked": {
+   "eg": {
+    "one": "التصدير واقف: ملاحظة حاجبة واحدة.",
+    "two": "التصدير واقف: ملاحظتين حاجبتين.",
+    "few": "التصدير واقف: {n} ملاحظات حاجبة.",
+    "many": "التصدير واقف: {n} ملاحظة حاجبة.",
+    "other": "التصدير واقف: {n} ملاحظة حاجبة."
+   },
+   "gulf": {
+    "one": "التصدير متوقف: ملاحظة حاجبة واحدة.",
+    "two": "التصدير متوقف: ملاحظتان حاجبتان.",
+    "few": "التصدير متوقف: {n} ملاحظات حاجبة.",
+    "many": "التصدير متوقف: {n} ملاحظة حاجبة.",
+    "other": "التصدير متوقف: {n} ملاحظة حاجبة."
+   },
+   "levant": {
+    "one": "التصدير متوقف: ملاحظة حاجبة واحدة.",
+    "two": "التصدير متوقف: ملاحظتان حاجبتان.",
+    "few": "التصدير متوقف: {n} ملاحظات حاجبة.",
+    "many": "التصدير متوقف: {n} ملاحظة حاجبة.",
+    "other": "التصدير متوقف: {n} ملاحظة حاجبة."
+   },
+   "msa-white": {
+    "one": "التصدير متوقف: ملاحظة حاجبة واحدة.",
+    "two": "التصدير متوقف: ملاحظتان حاجبتان.",
+    "few": "التصدير متوقف: {n} ملاحظات حاجبة.",
+    "many": "التصدير متوقف: {n} ملاحظة حاجبة.",
+    "other": "التصدير متوقف: {n} ملاحظة حاجبة."
+   },
+   "en": {
+    "one": "Export is stopped: {n} blocking note.",
+    "other": "Export is stopped: {n} blocking notes."
+   }
+  },
+  "export.blocked.hard": {
+   "eg": {
+    "one": "فيه ملاحظة حاجبة واحدة لازم تتحل قبل التصدير.",
+    "two": "فيه ملاحظتين حاجبتين لازم تتحل قبل التصدير.",
+    "few": "فيه {n} ملاحظات حاجبة لازم تتحل قبل التصدير.",
+    "many": "فيه {n} ملاحظة حاجبة لازم تتحل قبل التصدير.",
+    "other": "فيه {n} ملاحظة حاجبة لازم تتحل قبل التصدير."
+   },
+   "gulf": {
+    "one": "هناك ملاحظة حاجبة واحدة يجب حلها قبل التصدير.",
+    "two": "هناك ملاحظتان حاجبتان يجب حلها قبل التصدير.",
+    "few": "هناك {n} ملاحظات حاجبة يجب حلها قبل التصدير.",
+    "many": "هناك {n} ملاحظة حاجبة يجب حلها قبل التصدير.",
+    "other": "هناك {n} ملاحظة حاجبة يجب حلها قبل التصدير."
+   },
+   "levant": {
+    "one": "هناك ملاحظة حاجبة واحدة يجب حلها قبل التصدير.",
+    "two": "هناك ملاحظتان حاجبتان يجب حلها قبل التصدير.",
+    "few": "هناك {n} ملاحظات حاجبة يجب حلها قبل التصدير.",
+    "many": "هناك {n} ملاحظة حاجبة يجب حلها قبل التصدير.",
+    "other": "هناك {n} ملاحظة حاجبة يجب حلها قبل التصدير."
+   },
+   "msa-white": {
+    "one": "هناك ملاحظة حاجبة واحدة يجب حلها قبل التصدير.",
+    "two": "هناك ملاحظتان حاجبتان يجب حلها قبل التصدير.",
+    "few": "هناك {n} ملاحظات حاجبة يجب حلها قبل التصدير.",
+    "many": "هناك {n} ملاحظة حاجبة يجب حلها قبل التصدير.",
+    "other": "هناك {n} ملاحظة حاجبة يجب حلها قبل التصدير."
+   },
+   "en": {
+    "one": "{n} blocking note must be fixed before exporting.",
+    "other": "{n} blocking notes must be fixed before exporting."
+   }
+  },
+  "export.blocked.soft": {
+   "eg": {
+    "one": "فيه ملاحظة حاجبة واحدة تقدر تتجاوزها بسبب مكتوب.",
+    "two": "فيه ملاحظتين حاجبتين تقدر تتجاوزها بسبب مكتوب.",
+    "few": "فيه {n} ملاحظات حاجبة تقدر تتجاوزها بسبب مكتوب.",
+    "many": "فيه {n} ملاحظة حاجبة تقدر تتجاوزها بسبب مكتوب.",
+    "other": "فيه {n} ملاحظة حاجبة تقدر تتجاوزها بسبب مكتوب."
+   },
+   "gulf": {
+    "one": "هناك ملاحظة حاجبة واحدة يمكن تجاوزها بسبب مكتوب.",
+    "two": "هناك ملاحظتان حاجبتان يمكن تجاوزها بسبب مكتوب.",
+    "few": "هناك {n} ملاحظات حاجبة يمكن تجاوزها بسبب مكتوب.",
+    "many": "هناك {n} ملاحظة حاجبة يمكن تجاوزها بسبب مكتوب.",
+    "other": "هناك {n} ملاحظة حاجبة يمكن تجاوزها بسبب مكتوب."
+   },
+   "levant": {
+    "one": "هناك ملاحظة حاجبة واحدة يمكن تجاوزها بسبب مكتوب.",
+    "two": "هناك ملاحظتان حاجبتان يمكن تجاوزها بسبب مكتوب.",
+    "few": "هناك {n} ملاحظات حاجبة يمكن تجاوزها بسبب مكتوب.",
+    "many": "هناك {n} ملاحظة حاجبة يمكن تجاوزها بسبب مكتوب.",
+    "other": "هناك {n} ملاحظة حاجبة يمكن تجاوزها بسبب مكتوب."
+   },
+   "msa-white": {
+    "one": "هناك ملاحظة حاجبة واحدة يمكن تجاوزها بسبب مكتوب.",
+    "two": "هناك ملاحظتان حاجبتان يمكن تجاوزها بسبب مكتوب.",
+    "few": "هناك {n} ملاحظات حاجبة يمكن تجاوزها بسبب مكتوب.",
+    "many": "هناك {n} ملاحظة حاجبة يمكن تجاوزها بسبب مكتوب.",
+    "other": "هناك {n} ملاحظة حاجبة يمكن تجاوزها بسبب مكتوب."
+   },
+   "en": {
+    "one": "{n} blocking note can be overridden with a written reason.",
+    "other": "{n} blocking notes can be overridden with a written reason."
+   }
+  },
+  "export.declined": {
+   "eg": "اتلغى الحفظ.",
+   "gulf": "تم إلغاء الحفظ.",
+   "levant": "تم إلغاء الحفظ.",
+   "msa-white": "تم إلغاء الحفظ.",
+   "en": "Saving was cancelled."
+  },
+  "export.err.E_DEP_LOAD": {
+   "eg": "ماقدرناش نحمّل مكتبة الفيديو. اتأكد من الإنترنت وجرّب تاني.",
+   "gulf": "تعذّر تحميل مكتبة الفيديو. تأكد من الإنترنت وحاول مرة أخرى.",
+   "levant": "تعذّر تحميل مكتبة الفيديو. تأكد من الإنترنت وحاول مرة أخرى.",
+   "msa-white": "تعذّر تحميل مكتبة الفيديو. تأكد من الإنترنت وحاول مرة أخرى.",
+   "en": "We could not load the video library. Check your connection and try again."
+  },
+  "export.err.E_ENCODER_UNSUPPORTED": {
+   "eg": "جهازك مابيدعمش تصدير الفيديو. صدّر باقي الملفات.",
+   "gulf": "جهازك لا يدعم تصدير الفيديو. صدّر باقي الملفات.",
+   "levant": "جهازك لا يدعم تصدير الفيديو. صدّر باقي الملفات.",
+   "msa-white": "جهازك لا يدعم تصدير الفيديو. صدّر باقي الملفات.",
+   "en": "Your device cannot export video. Export the other files."
+  },
+  "export.err.E_FIT_OVERFLOW": {
+   "eg": "فيه نص أطول من المساحة. اختصره وجرّب تاني.",
+   "gulf": "نص أطول من المساحة. اختصره وحاول مرة أخرى.",
+   "levant": "نص أطول من المساحة. اختصره وحاول مرة أخرى.",
+   "msa-white": "نص أطول من المساحة. اختصره وحاول مرة أخرى.",
+   "en": "Some text is longer than its space. Shorten it and try again."
+  },
+  "export.err.E_FONT_MISSING": {
+   "eg": "فيه خط ناقص. فعّل خطوط الستايل وجرّب تاني.",
+   "gulf": "خط ناقص. فعّل خطوط الستايل وحاول مرة أخرى.",
+   "levant": "خط ناقص. فعّل خطوط الستايل وحاول مرة أخرى.",
+   "msa-white": "خط ناقص. فعّل خطوط الستايل وحاول مرة أخرى.",
+   "en": "A font is missing. Enable the style's fonts and try again."
+  },
+  "export.err.E_PAINT_TAINTED": {
+   "eg": "المتصفح منع رسم الصور. جرّب نافذة تانية.",
+   "gulf": "منع المتصفح رسم الصور. جرّب نافذة أخرى.",
+   "levant": "منع المتصفح رسم الصور. جرّب نافذة أخرى.",
+   "msa-white": "منع المتصفح رسم الصور. جرّب نافذة أخرى.",
+   "en": "The browser blocked drawing the images. Try another window."
+  },
+  "export.err.E_PAINT_UNSUPPORTED": {
+   "eg": "المتصفح مابيدعمش رسم السلايدات بالطريقة دي.",
+   "gulf": "المتصفح لا يدعم رسم السلايدات بهذه الطريقة.",
+   "levant": "المتصفح لا يدعم رسم السلايدات بهذه الطريقة.",
+   "msa-white": "المتصفح لا يدعم رسم السلايدات بهذه الطريقة.",
+   "en": "This browser cannot draw the slides this way."
+  },
+  "export.err.generic": {
+   "eg": "حصلت مشكلة في التصدير. جرّب تاني.",
+   "gulf": "حدثت مشكلة في التصدير. حاول مرة أخرى.",
+   "levant": "حدثت مشكلة في التصدير. حاول مرة أخرى.",
+   "msa-white": "حدثت مشكلة في التصدير. حاول مرة أخرى.",
+   "en": "Something went wrong while exporting. Try again."
+  },
+  "export.failed": {
+   "eg": {
+    "one": "ماقدرناش نحفظ ملف واحد",
+    "two": "ماقدرناش نحفظ ملفين",
+    "few": "ماقدرناش نحفظ {n} ملفات",
+    "many": "ماقدرناش نحفظ {n} ملف",
+    "other": "ماقدرناش نحفظ {n} ملف"
+   },
+   "gulf": {
+    "one": "تعذّر حفظ ملف واحد",
+    "two": "تعذّر حفظ ملفين",
+    "few": "تعذّر حفظ {n} ملفات",
+    "many": "تعذّر حفظ {n} ملف",
+    "other": "تعذّر حفظ {n} ملف"
+   },
+   "levant": {
+    "one": "تعذّر حفظ ملف واحد",
+    "two": "تعذّر حفظ ملفين",
+    "few": "تعذّر حفظ {n} ملفات",
+    "many": "تعذّر حفظ {n} ملف",
+    "other": "تعذّر حفظ {n} ملف"
+   },
+   "msa-white": {
+    "one": "تعذّر حفظ ملف واحد",
+    "two": "تعذّر حفظ ملفين",
+    "few": "تعذّر حفظ {n} ملفات",
+    "many": "تعذّر حفظ {n} ملف",
+    "other": "تعذّر حفظ {n} ملف"
+   },
+   "en": {
+    "one": "{n} file could not be saved",
+    "other": "{n} files could not be saved"
+   }
+  },
+  "export.guide": {
+   "eg": "دليل النشر",
+   "gulf": "دليل النشر",
+   "levant": "دليل النشر",
+   "msa-white": "دليل النشر",
+   "en": "Posting guide"
+  },
+  "export.guide.files": {
+   "eg": "الملفات اللي في الحزمة",
+   "gulf": "الملفات داخل الحزمة",
+   "levant": "الملفات داخل الحزمة",
+   "msa-white": "الملفات داخل الحزمة",
+   "en": "Files inside the kit"
+  },
+  "export.job.jpeg": {
+   "eg": "بنصدّر نسخ 4:5…",
+   "gulf": "نصدّر نسخ 4:5…",
+   "levant": "نصدّر نسخ 4:5…",
+   "msa-white": "نصدّر نسخ 4:5…",
+   "en": "Exporting 4:5 copies…"
+  },
+  "export.job.kit": {
+   "eg": "بنجهّز الحزمة…",
+   "gulf": "نجهّز الحزمة…",
+   "levant": "نجهّز الحزمة…",
+   "msa-white": "نجهّز الحزمة…",
+   "en": "Building the kit…"
+  },
+  "export.job.mp4": {
+   "eg": "بنصدّر الفيديو…",
+   "gulf": "نصدّر الفيديو…",
+   "levant": "نصدّر الفيديو…",
+   "msa-white": "نصدّر الفيديو…",
+   "en": "Exporting the video…"
+  },
+  "export.job.mp4-4x5": {
+   "eg": "بنصدّر فيديو 4:5…",
+   "gulf": "نصدّر فيديو 4:5…",
+   "levant": "نصدّر فيديو 4:5…",
+   "msa-white": "نصدّر فيديو 4:5…",
+   "en": "Exporting the 4:5 video…"
+  },
+  "export.job.pdf": {
+   "eg": "بنجهّز ملف PDF…",
+   "gulf": "نجهّز ملف PDF…",
+   "levant": "نجهّز ملف PDF…",
+   "msa-white": "نجهّز ملف PDF…",
+   "en": "Building the PDF…"
+  },
+  "export.job.photos": {
+   "eg": "بنجهّز الصور…",
+   "gulf": "نجهّز الصور…",
+   "levant": "نجهّز الصور…",
+   "msa-white": "نجهّز الصور…",
+   "en": "Preparing the images…"
+  },
+  "export.job.png": {
+   "eg": "بنصدّر الصور…",
+   "gulf": "نصدّر الصور…",
+   "levant": "نصدّر الصور…",
+   "msa-white": "نصدّر الصور…",
+   "en": "Exporting images…"
+  },
+  "export.job.png-one": {
+   "eg": "بنصدّر السلايد…",
+   "gulf": "نصدّر السلايد…",
+   "levant": "نصدّر السلايد…",
+   "msa-white": "نصدّر السلايد…",
+   "en": "Exporting the slide…"
+  },
+  "export.job.save": {
+   "eg": "بنحفظ الملفات…",
+   "gulf": "نحفظ الملفات…",
+   "levant": "نحفظ الملفات…",
+   "msa-white": "نحفظ الملفات…",
+   "en": "Saving the files…"
+  },
+  "export.job.source": {
+   "eg": "بنجهّز ملفات المصدر…",
+   "gulf": "نجهّز ملفات المصدر…",
+   "levant": "نجهّز ملفات المصدر…",
+   "msa-white": "نجهّز ملفات المصدر…",
+   "en": "Building the source files…"
+  },
+  "export.job.text": {
+   "eg": "بنجهّز الملف…",
+   "gulf": "نجهّز الملف…",
+   "levant": "نجهّز الملف…",
+   "msa-white": "نجهّز الملف…",
+   "en": "Preparing the file…"
+  },
+  "export.kit.blocked": {
+   "eg": {
+    "one": "فحص الحزمة لقى ملاحظة حاجبة واحدة، فماحفظناش حاجة.",
+    "two": "فحص الحزمة لقى ملاحظتين حاجبتين، فماحفظناش حاجة.",
+    "few": "فحص الحزمة لقى {n} ملاحظات حاجبة، فماحفظناش حاجة.",
+    "many": "فحص الحزمة لقى {n} ملاحظة حاجبة، فماحفظناش حاجة.",
+    "other": "فحص الحزمة لقى {n} ملاحظة حاجبة، فماحفظناش حاجة."
+   },
+   "gulf": {
+    "one": "وجد فحص الحزمة ملاحظة حاجبة واحدة، فلم نحفظ شيئًا.",
+    "two": "وجد فحص الحزمة ملاحظتين حاجبتين، فلم نحفظ شيئًا.",
+    "few": "وجد فحص الحزمة {n} ملاحظات حاجبة، فلم نحفظ شيئًا.",
+    "many": "وجد فحص الحزمة {n} ملاحظة حاجبة، فلم نحفظ شيئًا.",
+    "other": "وجد فحص الحزمة {n} ملاحظة حاجبة، فلم نحفظ شيئًا."
+   },
+   "levant": {
+    "one": "وجد فحص الحزمة ملاحظة حاجبة واحدة، فلم نحفظ شيئًا.",
+    "two": "وجد فحص الحزمة ملاحظتين حاجبتين، فلم نحفظ شيئًا.",
+    "few": "وجد فحص الحزمة {n} ملاحظات حاجبة، فلم نحفظ شيئًا.",
+    "many": "وجد فحص الحزمة {n} ملاحظة حاجبة، فلم نحفظ شيئًا.",
+    "other": "وجد فحص الحزمة {n} ملاحظة حاجبة، فلم نحفظ شيئًا."
+   },
+   "msa-white": {
+    "one": "وجد فحص الحزمة ملاحظة حاجبة واحدة، فلم نحفظ شيئًا.",
+    "two": "وجد فحص الحزمة ملاحظتين حاجبتين، فلم نحفظ شيئًا.",
+    "few": "وجد فحص الحزمة {n} ملاحظات حاجبة، فلم نحفظ شيئًا.",
+    "many": "وجد فحص الحزمة {n} ملاحظة حاجبة، فلم نحفظ شيئًا.",
+    "other": "وجد فحص الحزمة {n} ملاحظة حاجبة، فلم نحفظ شيئًا."
+   },
+   "en": {
+    "one": "The kit check found {n} blocking note, so nothing was saved.",
+    "other": "The kit check found {n} blocking notes, so nothing was saved."
+   }
+  },
+  "export.kit.button": {
+   "eg": "جهّز الحزمة وحمّلها",
+   "gulf": "جهّز الحزمة وحمّلها",
+   "levant": "جهّز الحزمة وحمّلها",
+   "msa-white": "جهّز الحزمة وحمّلها",
+   "en": "Build and save the kit"
+  },
+  "export.kit.f.crop": {
+   "eg": "نسخة 4:5 للجدولة",
+   "gulf": "نسخة 4:5 للجدولة",
+   "levant": "نسخة 4:5 للجدولة",
+   "msa-white": "نسخة 4:5 للجدولة",
+   "en": "4:5 copies for schedulers"
+  },
+  "export.kit.f.guide": {
+   "eg": "دليل النشر",
+   "gulf": "دليل النشر",
+   "levant": "دليل النشر",
+   "msa-white": "دليل النشر",
+   "en": "Posting guide"
+  },
+  "export.kit.f.pdf": {
+   "eg": "ملف PDF",
+   "gulf": "ملف PDF",
+   "levant": "ملف PDF",
+   "msa-white": "ملف PDF",
+   "en": "PDF"
+  },
+  "export.kit.f.slides": {
+   "eg": "صور السلايدات PNG",
+   "gulf": "صور السلايدات PNG",
+   "levant": "صور السلايدات PNG",
+   "msa-white": "صور السلايدات PNG",
+   "en": "Slide images (PNG)"
+  },
+  "export.kit.f.source": {
+   "eg": "ملفات المصدر للتعديل",
+   "gulf": "ملفات المصدر للتعديل",
+   "levant": "ملفات المصدر للتعديل",
+   "msa-white": "ملفات المصدر للتعديل",
+   "en": "Editable source files"
+  },
+  "export.kit.f.text": {
+   "eg": "الكابشن والهاشتاجات والنص البديل",
+   "gulf": "الكابشن والهاشتاجات والنص البديل",
+   "levant": "الكابشن والهاشتاجات والنص البديل",
+   "msa-white": "الكابشن والهاشتاجات والنص البديل",
+   "en": "Caption, hashtags and alt text"
+  },
+  "export.kit.f.video": {
+   "eg": "فيديو الغلاف MP4",
+   "gulf": "فيديو الغلاف MP4",
+   "levant": "فيديو الغلاف MP4",
+   "msa-white": "فيديو الغلاف MP4",
+   "en": "Cover video (MP4)"
+  },
+  "export.kit.lede": {
+   "eg": "ملف ZIP واحد خفيف بكل اللي هتنشره، جاهز للنقل لموبايلك.",
+   "gulf": "ملف ZIP واحد خفيف بكل ما ستنشره، جاهز للنقل إلى هاتفك.",
+   "levant": "ملف ZIP واحد خفيف بكل ما ستنشره، جاهز للنقل إلى هاتفك.",
+   "msa-white": "ملف ZIP واحد خفيف بكل ما ستنشره، جاهز للنقل إلى هاتفك.",
+   "en": "One light ZIP with everything you post, ready to move to your phone."
+  },
+  "export.kit.title": {
+   "eg": "حزمة النشر",
+   "gulf": "حزمة النشر",
+   "levant": "حزمة النشر",
+   "msa-white": "حزمة النشر",
+   "en": "Publishing kit"
+  },
+  "export.lede": {
+   "eg": "حزمة النشر فيها كل اللي تحتاجه عشان تنشر: الصور والفيديو والكابشن ودليل النشر.",
+   "gulf": "حزمة النشر فيها كل ما تحتاجه للنشر: الصور والفيديو والكابشن ودليل النشر.",
+   "levant": "حزمة النشر فيها كل ما تحتاجه للنشر: الصور والفيديو والكابشن ودليل النشر.",
+   "msa-white": "حزمة النشر فيها كل ما تحتاجه للنشر: الصور والفيديو والكابشن ودليل النشر.",
+   "en": "The publishing kit has everything you need to post: images, video, caption and a posting guide."
+  },
+  "export.no-downloads": {
+   "eg": "الحفظ مش متاح في العرض ده. افتح الصفحة من Claude عشان تنزّل الملفات.",
+   "gulf": "الحفظ غير متاح في هذا العرض. افتح الصفحة من Claude لتنزيل الملفات.",
+   "levant": "الحفظ غير متاح في هذا العرض. افتح الصفحة من Claude لتنزيل الملفات.",
+   "msa-white": "الحفظ غير متاح في هذا العرض. افتح الصفحة من Claude لتنزيل الملفات.",
+   "en": "Saving is not available in this view. Open the page from Claude to download files."
+  },
+  "export.opt.crop": {
+   "eg": "نسخة 4:5",
+   "gulf": "نسخة 4:5",
+   "levant": "نسخة 4:5",
+   "msa-white": "نسخة 4:5",
+   "en": "4:5 copies"
+  },
+  "export.opt.crop.hint": {
+   "eg": "للجدولة والنشر بالـAPI. Instagram نفسه بيقبل 3:4.",
+   "gulf": "للجدولة والنشر عبر الـAPI. Instagram نفسه يقبل 3:4.",
+   "levant": "للجدولة والنشر عبر الـAPI. Instagram نفسه يقبل 3:4.",
+   "msa-white": "للجدولة والنشر عبر الـAPI. Instagram نفسه يقبل 3:4.",
+   "en": "For schedulers and API publishing. Instagram itself accepts 3:4."
+  },
+  "export.opt.pdf": {
+   "eg": "ملف PDF",
+   "gulf": "ملف PDF",
+   "levant": "ملف PDF",
+   "msa-white": "ملف PDF",
+   "en": "PDF"
+  },
+  "export.opt.source": {
+   "eg": "ملفات المصدر",
+   "gulf": "ملفات المصدر",
+   "levant": "ملفات المصدر",
+   "msa-white": "ملفات المصدر",
+   "en": "Source files"
+  },
+  "export.opt.source.hint": {
+   "eg": "للتعديل بعدين وإعادة رسم الغلاف. بتزوّد الحزمة أكتر من 10 ميجا، فسيبها مقفولة لو الحزمة رايحة موبايلك.",
+   "gulf": "للتعديل لاحقًا وإعادة رسم الغلاف. تزيد الحزمة بأكثر من 10 ميجابايت، فاتركها مغلقة إن كانت الحزمة لهاتفك.",
+   "levant": "للتعديل لاحقًا وإعادة رسم الغلاف. تزيد الحزمة بأكثر من 10 ميجابايت، فاتركها مغلقة إن كانت الحزمة لهاتفك.",
+   "msa-white": "للتعديل لاحقًا وإعادة رسم الغلاف. تزيد الحزمة بأكثر من 10 ميجابايت، فاتركها مغلقة إن كانت الحزمة لهاتفك.",
+   "en": "For editing later and re-rendering the cover. Adds over 10 MB, so leave it off when the kit is going to your phone."
+  },
+  "export.opt.video": {
+   "eg": "فيديو الغلاف",
+   "gulf": "فيديو الغلاف",
+   "levant": "فيديو الغلاف",
+   "msa-white": "فيديو الغلاف",
+   "en": "Cover video"
+  },
+  "export.opt.video.hint": {
+   "eg": "الغلاف بيتحول لفيديو بحركته.",
+   "gulf": "يتحول الغلاف إلى فيديو بحركته.",
+   "levant": "يتحول الغلاف إلى فيديو بحركته.",
+   "msa-white": "يتحول الغلاف إلى فيديو بحركته.",
+   "en": "The cover becomes a video with its motion."
+  },
+  "export.opt.video.no": {
+   "eg": "جهازك مابيدعمش تصدير الفيديو. صدّره من الكمبيوتر.",
+   "gulf": "جهازك لا يدعم تصدير الفيديو. صدّره من الكمبيوتر.",
+   "levant": "جهازك لا يدعم تصدير الفيديو. صدّره من الكمبيوتر.",
+   "msa-white": "جهازك لا يدعم تصدير الفيديو. صدّره من الكمبيوتر.",
+   "en": "Your device cannot export video. Export it from a computer."
+  },
+  "export.photos.button": {
+   "eg": "احفظ في الصور",
+   "gulf": "احفظ في الصور",
+   "levant": "احفظ في الصور",
+   "msa-white": "احفظ في الصور",
+   "en": "Save to Photos"
+  },
+  "export.photos.text": {
+   "eg": "بنحفظ الصور والغلاف منفصلين عشان يدخلوا ألبوم الصور.",
+   "gulf": "نحفظ الصور والغلاف منفصلة لتدخل ألبوم الصور.",
+   "levant": "نحفظ الصور والغلاف منفصلة لتدخل ألبوم الصور.",
+   "msa-white": "نحفظ الصور والغلاف منفصلة لتدخل ألبوم الصور.",
+   "en": "We save the images and cover separately so they land in your photo library."
+  },
+  "export.photos.title": {
+   "eg": "احفظ في الصور",
+   "gulf": "احفظ في الصور",
+   "levant": "احفظ في الصور",
+   "msa-white": "احفظ في الصور",
+   "en": "Save to Photos"
+  },
+  "export.ready": {
+   "eg": "قبل التصدير",
+   "gulf": "قبل التصدير",
+   "levant": "قبل التصدير",
+   "msa-white": "قبل التصدير",
+   "en": "Before exporting"
+  },
+  "export.result": {
+   "eg": "آخر عملية",
+   "gulf": "آخر عملية",
+   "levant": "آخر عملية",
+   "msa-white": "آخر عملية",
+   "en": "Last export"
+  },
+  "export.result.declined": {
+   "eg": "اتلغى",
+   "gulf": "أُلغي",
+   "levant": "أُلغي",
+   "msa-white": "أُلغي",
+   "en": "declined"
+  },
+  "export.result.next": {
+   "eg": "انقل الملفات لموبايلك واتبع ترتيب الملفات في دليل النشر.",
+   "gulf": "انقل الملفات إلى هاتفك واتبع ترتيب الملفات في دليل النشر.",
+   "levant": "انقل الملفات إلى هاتفك واتبع ترتيب الملفات في دليل النشر.",
+   "msa-white": "انقل الملفات إلى هاتفك واتبع ترتيب الملفات في دليل النشر.",
+   "en": "Move the files to your phone and follow the file order in the posting guide."
+  },
+  "export.saved": {
+   "eg": {
+    "one": "اتحفظ ملف واحد",
+    "two": "اتحفظ ملفين",
+    "few": "اتحفظ {n} ملفات",
+    "many": "اتحفظ {n} ملف",
+    "other": "اتحفظ {n} ملف"
+   },
+   "gulf": {
+    "one": "تم حفظ ملف واحد",
+    "two": "تم حفظ ملفين",
+    "few": "تم حفظ {n} ملفات",
+    "many": "تم حفظ {n} ملف",
+    "other": "تم حفظ {n} ملف"
+   },
+   "levant": {
+    "one": "تم حفظ ملف واحد",
+    "two": "تم حفظ ملفين",
+    "few": "تم حفظ {n} ملفات",
+    "many": "تم حفظ {n} ملف",
+    "other": "تم حفظ {n} ملف"
+   },
+   "msa-white": {
+    "one": "تم حفظ ملف واحد",
+    "two": "تم حفظ ملفين",
+    "few": "تم حفظ {n} ملفات",
+    "many": "تم حفظ {n} ملف",
+    "other": "تم حفظ {n} ملف"
+   },
+   "en": {
+    "one": "Saved {n} file",
+    "other": "Saved {n} files"
+   }
+  },
+  "export.single.alt": {
+   "eg": "النص البديل",
+   "gulf": "النص البديل",
+   "levant": "النص البديل",
+   "msa-white": "النص البديل",
+   "en": "Alt text"
+  },
+  "export.single.caption": {
+   "eg": "الكابشن",
+   "gulf": "الكابشن",
+   "levant": "الكابشن",
+   "msa-white": "الكابشن",
+   "en": "Caption"
+  },
+  "export.single.hashtags": {
+   "eg": "الهاشتاجات",
+   "gulf": "الهاشتاجات",
+   "levant": "الهاشتاجات",
+   "msa-white": "الهاشتاجات",
+   "en": "Hashtags"
+  },
+  "export.single.jpeg": {
+   "eg": "نسخ 4:5 JPEG",
+   "gulf": "نسخ 4:5 JPEG",
+   "levant": "نسخ 4:5 JPEG",
+   "msa-white": "نسخ 4:5 JPEG",
+   "en": "4:5 copies (JPEG)"
+  },
+  "export.single.mp4": {
+   "eg": "فيديو الغلاف MP4",
+   "gulf": "فيديو الغلاف MP4",
+   "levant": "فيديو الغلاف MP4",
+   "msa-white": "فيديو الغلاف MP4",
+   "en": "Cover video (MP4)"
+  },
+  "export.single.mp4-4x5": {
+   "eg": "فيديو الغلاف 4:5",
+   "gulf": "فيديو الغلاف 4:5",
+   "levant": "فيديو الغلاف 4:5",
+   "msa-white": "فيديو الغلاف 4:5",
+   "en": "Cover video 4:5"
+  },
+  "export.single.off": {
+   "eg": "الفيديو مش متاح هنا.",
+   "gulf": "الفيديو غير متاح هنا.",
+   "levant": "الفيديو غير متاح هنا.",
+   "msa-white": "الفيديو غير متاح هنا.",
+   "en": "Video is not available here."
+  },
+  "export.single.pdf": {
+   "eg": "ملف PDF",
+   "gulf": "ملف PDF",
+   "levant": "ملف PDF",
+   "msa-white": "ملف PDF",
+   "en": "PDF"
+  },
+  "export.single.png": {
+   "eg": "كل الصور PNG",
+   "gulf": "كل الصور PNG",
+   "levant": "كل الصور PNG",
+   "msa-white": "كل الصور PNG",
+   "en": "All images (PNG)"
+  },
+  "export.single.png-one": {
+   "eg": "السلايد الحالي PNG",
+   "gulf": "السلايد الحالي PNG",
+   "levant": "السلايد الحالي PNG",
+   "msa-white": "السلايد الحالي PNG",
+   "en": "This slide (PNG)"
+  },
+  "export.single.postingGuide": {
+   "eg": "دليل النشر",
+   "gulf": "دليل النشر",
+   "levant": "دليل النشر",
+   "msa-white": "دليل النشر",
+   "en": "Posting guide"
+  },
+  "export.single.slideCaptions": {
+   "eg": "وصف السلايدات",
+   "gulf": "وصف السلايدات",
+   "levant": "وصف السلايدات",
+   "msa-white": "وصف السلايدات",
+   "en": "Slide captions"
+  },
+  "export.single.source": {
+   "eg": "ملفات المصدر (ZIP)",
+   "gulf": "ملفات المصدر (ZIP)",
+   "levant": "ملفات المصدر (ZIP)",
+   "msa-white": "ملفات المصدر (ZIP)",
+   "en": "Source files (ZIP)"
+  },
+  "export.singles": {
+   "eg": "ملفات منفردة",
+   "gulf": "ملفات منفردة",
+   "levant": "ملفات منفردة",
+   "msa-white": "ملفات منفردة",
+   "en": "Single files"
+  },
+  "export.singles.hint": {
+   "eg": "لو محتاج ملف واحد بس.",
+   "gulf": "إن احتجت ملفًا واحدًا فقط.",
+   "levant": "إن احتجت ملفًا واحدًا فقط.",
+   "msa-white": "إن احتجت ملفًا واحدًا فقط.",
+   "en": "If you only need one file."
+  },
+  "export.source.partial": {
+   "eg": "بعض ملفات المصدر ماتعملتش، وهنحفظ الباقي.",
+   "gulf": "تعذّر إنشاء بعض ملفات المصدر، وسنحفظ الباقي.",
+   "levant": "تعذّر إنشاء بعض ملفات المصدر، وسنحفظ الباقي.",
+   "msa-white": "تعذّر إنشاء بعض ملفات المصدر، وسنحفظ الباقي.",
+   "en": "Some source files could not be made; the rest will be saved."
+  },
+  "export.step.design": {
+   "eg": "التصميم معتمد",
+   "gulf": "التصميم معتمد",
+   "levant": "التصميم معتمد",
+   "msa-white": "التصميم معتمد",
+   "en": "Design approved"
+  },
+  "export.step.design.todo": {
+   "eg": "اعتمد التصميم عشان نثبّت السطور.",
+   "gulf": "اعتمد التصميم لنثبّت السطور.",
+   "levant": "اعتمد التصميم لنثبّت السطور.",
+   "msa-white": "اعتمد التصميم لنثبّت السطور.",
+   "en": "Approve the design so we can lock the lines."
+  },
+  "export.step.done": {
+   "eg": "تمام",
+   "gulf": "تمام",
+   "levant": "تمام",
+   "msa-white": "تمام",
+   "en": "Done"
+  },
+  "export.step.go": {
+   "eg": "روح",
+   "gulf": "اذهب",
+   "levant": "اذهب",
+   "msa-white": "اذهب",
+   "en": "Go"
+  },
+  "export.step.qa": {
+   "eg": "الفحص",
+   "gulf": "الفحص",
+   "levant": "الفحص",
+   "msa-white": "الفحص",
+   "en": "Checks"
+  },
+  "export.step.qa.fix": {
+   "eg": {
+    "one": "سليم، ومعاه ملاحظة واحدة للمراجعة.",
+    "two": "سليم، ومعاه ملاحظتين للمراجعة.",
+    "few": "سليم، ومعاه {n} ملاحظات للمراجعة.",
+    "many": "سليم، ومعاه {n} ملاحظة للمراجعة.",
+    "other": "سليم، ومعاه {n} ملاحظة للمراجعة."
+   },
+   "gulf": {
+    "one": "سليم، ومعه ملاحظة واحدة للمراجعة.",
+    "two": "سليم، ومعه ملاحظتين للمراجعة.",
+    "few": "سليم، ومعه {n} ملاحظات للمراجعة.",
+    "many": "سليم، ومعه {n} ملاحظة للمراجعة.",
+    "other": "سليم، ومعه {n} ملاحظة للمراجعة."
+   },
+   "levant": {
+    "one": "سليم، ومعه ملاحظة واحدة للمراجعة.",
+    "two": "سليم، ومعه ملاحظتين للمراجعة.",
+    "few": "سليم، ومعه {n} ملاحظات للمراجعة.",
+    "many": "سليم، ومعه {n} ملاحظة للمراجعة.",
+    "other": "سليم، ومعه {n} ملاحظة للمراجعة."
+   },
+   "msa-white": {
+    "one": "سليم، ومعه ملاحظة واحدة للمراجعة.",
+    "two": "سليم، ومعه ملاحظتين للمراجعة.",
+    "few": "سليم، ومعه {n} ملاحظات للمراجعة.",
+    "many": "سليم، ومعه {n} ملاحظة للمراجعة.",
+    "other": "سليم، ومعه {n} ملاحظة للمراجعة."
+   },
+   "en": {
+    "one": "Clear, with {n} note to review.",
+    "other": "Clear, with {n} notes to review."
+   }
+  },
+  "export.step.qa.todo": {
+   "eg": {
+    "one": "فيه ملاحظة حاجبة واحدة.",
+    "two": "فيه ملاحظتين حاجبتين.",
+    "few": "فيه {n} ملاحظات حاجبة.",
+    "many": "فيه {n} ملاحظة حاجبة.",
+    "other": "فيه {n} ملاحظة حاجبة."
+   },
+   "gulf": {
+    "one": "هناك ملاحظة حاجبة واحدة.",
+    "two": "هناك ملاحظتان حاجبتان.",
+    "few": "هناك {n} ملاحظات حاجبة.",
+    "many": "هناك {n} ملاحظة حاجبة.",
+    "other": "هناك {n} ملاحظة حاجبة."
+   },
+   "levant": {
+    "one": "هناك ملاحظة حاجبة واحدة.",
+    "two": "هناك ملاحظتان حاجبتان.",
+    "few": "هناك {n} ملاحظات حاجبة.",
+    "many": "هناك {n} ملاحظة حاجبة.",
+    "other": "هناك {n} ملاحظة حاجبة."
+   },
+   "msa-white": {
+    "one": "هناك ملاحظة حاجبة واحدة.",
+    "two": "هناك ملاحظتان حاجبتان.",
+    "few": "هناك {n} ملاحظات حاجبة.",
+    "many": "هناك {n} ملاحظة حاجبة.",
+    "other": "هناك {n} ملاحظة حاجبة."
+   },
+   "en": {
+    "one": "{n} blocking note.",
+    "other": "{n} blocking notes."
+   }
+  },
+  "export.step.script": {
+   "eg": "النص معتمد",
+   "gulf": "النص معتمد",
+   "levant": "النص معتمد",
+   "msa-white": "النص معتمد",
+   "en": "Script approved"
+  },
+  "export.step.script.todo": {
+   "eg": "اعتمد النص الأول.",
+   "gulf": "اعتمد النص أولًا.",
+   "levant": "اعتمد النص أولًا.",
+   "msa-white": "اعتمد النص أولًا.",
+   "en": "Approve the script first."
+  },
+  "export.title": {
+   "eg": "التصدير",
+   "gulf": "التصدير",
+   "levant": "التصدير",
+   "msa-white": "التصدير",
+   "en": "Export"
+  },
+  "export.video.skipped": {
+   "eg": "جهازك مابيدعمش الفيديو، فالحزمة من غير MP4. صدّره من الكمبيوتر.",
+   "gulf": "جهازك لا يدعم الفيديو، فالحزمة بلا MP4. صدّره من الكمبيوتر.",
+   "levant": "جهازك لا يدعم الفيديو، فالحزمة بلا MP4. صدّره من الكمبيوتر.",
+   "msa-white": "جهازك لا يدعم الفيديو، فالحزمة بلا MP4. صدّره من الكمبيوتر.",
+   "en": "Your device cannot encode video, so the kit has no MP4. Export it from a computer."
+  },
+  "export.working": {
+   "eg": "شغّالين…",
+   "gulf": "جارٍ العمل…",
+   "levant": "جارٍ العمل…",
+   "msa-white": "جارٍ العمل…",
+   "en": "Working…"
+  },
+  "field.attribution": {
+   "eg": "المصدر",
+   "gulf": "المصدر",
+   "levant": "المصدر",
+   "msa-white": "المصدر",
+   "en": "Attribution"
+  },
+  "field.body": {
+   "eg": "الشرح",
+   "gulf": "الشرح",
+   "levant": "الشرح",
+   "msa-white": "الشرح",
+   "en": "Body"
+  },
+  "field.bridge": {
+   "eg": "جسر للسلايد التالي",
+   "gulf": "جسر للسلايد التالي",
+   "levant": "جسر للسلايد التالي",
+   "msa-white": "جسر للسلايد التالي",
+   "en": "Bridge to next slide"
+  },
+  "field.bullet": {
+   "eg": "نقطة",
+   "gulf": "نقطة",
+   "levant": "نقطة",
+   "msa-white": "نقطة",
+   "en": "Point"
+  },
+  "field.bullets": {
+   "eg": "النقاط",
+   "gulf": "النقاط",
+   "levant": "النقاط",
+   "msa-white": "النقاط",
+   "en": "Points"
+  },
+  "field.cta": {
+   "eg": "الدعوة للتصرف",
+   "gulf": "الدعوة للتصرف",
+   "levant": "الدعوة للتصرف",
+   "msa-white": "الدعوة للتصرف",
+   "en": "Call to action"
+  },
+  "field.cta-kind": {
+   "eg": "نوع الدعوة",
+   "gulf": "نوع الدعوة",
+   "levant": "نوع الدعوة",
+   "msa-white": "نوع الدعوة",
+   "en": "Call type"
+  },
+  "field.cta-text": {
+   "eg": "نص الدعوة",
+   "gulf": "نص الدعوة",
+   "levant": "نص الدعوة",
+   "msa-white": "نص الدعوة",
+   "en": "Call text"
+  },
+  "field.headline": {
+   "eg": "العنوان",
+   "gulf": "العنوان",
+   "levant": "العنوان",
+   "msa-white": "العنوان",
+   "en": "Headline"
+  },
+  "field.kicker": {
+   "eg": "سطر تمهيدي",
+   "gulf": "سطر تمهيدي",
+   "levant": "سطر تمهيدي",
+   "msa-white": "سطر تمهيدي",
+   "en": "Kicker"
+  },
+  "field.number": {
+   "eg": "الرقم",
+   "gulf": "الرقم",
+   "levant": "الرقم",
+   "msa-white": "الرقم",
+   "en": "Number"
+  },
+  "field.side-label": {
+   "eg": "التسمية",
+   "gulf": "التسمية",
+   "levant": "التسمية",
+   "msa-white": "التسمية",
+   "en": "Label"
+  },
+  "field.side-text": {
+   "eg": "النص",
+   "gulf": "النص",
+   "levant": "النص",
+   "msa-white": "النص",
+   "en": "Text"
+  },
+  "field.sides": {
+   "eg": "الجانبان",
+   "gulf": "الجانبان",
+   "levant": "الجانبان",
+   "msa-white": "الجانبان",
+   "en": "Both sides"
+  },
+  "field.sub": {
+   "eg": "سطر فرعي",
+   "gulf": "سطر فرعي",
+   "levant": "سطر فرعي",
+   "msa-white": "سطر فرعي",
+   "en": "Subline"
+  },
+  "field.title": {
+   "eg": "العنوان",
+   "gulf": "العنوان",
+   "levant": "العنوان",
+   "msa-white": "العنوان",
+   "en": "Title"
+  },
+  "field.unit": {
+   "eg": "الوحدة",
+   "gulf": "الوحدة",
+   "levant": "الوحدة",
+   "msa-white": "الوحدة",
+   "en": "Unit"
+  },
+  "format.carousel": {
+   "eg": "كاروسيل",
+   "gulf": "كاروسيل",
+   "levant": "كاروسيل",
+   "msa-white": "كاروسيل",
+   "en": "Carousel"
+  },
+  "format.single": {
+   "eg": "بوست واحد",
+   "gulf": "بوست واحد",
+   "levant": "بوست واحد",
+   "msa-white": "بوست واحد",
+   "en": "Single post"
+  },
+  "goal.clients": {
+   "eg": "عملاء",
+   "gulf": "عملاء",
+   "levant": "عملاء",
+   "msa-white": "عملاء",
+   "en": "Clients"
+  },
+  "goal.followers": {
+   "eg": "متابعين",
+   "gulf": "متابعين",
+   "levant": "متابعين",
+   "msa-white": "متابعين",
+   "en": "Followers"
+  },
+  "goal.sales": {
+   "eg": "مبيعات",
+   "gulf": "مبيعات",
+   "levant": "مبيعات",
+   "msa-white": "مبيعات",
+   "en": "Sales"
+  },
+  "guides.content": {
+   "eg": "حدود المحتوى",
+   "gulf": "حدود المحتوى",
+   "levant": "حدود المحتوى",
+   "msa-white": "حدود المحتوى",
+   "en": "Content box"
+  },
+  "guides.crop": {
+   "eg": "قص 4:5",
+   "gulf": "قص 4:5",
+   "levant": "قص 4:5",
+   "msa-white": "قص 4:5",
+   "en": "4:5 crop"
+  },
+  "guides.keepouts": {
+   "eg": "مناطق ممنوعة",
+   "gulf": "مناطق ممنوعة",
+   "levant": "مناطق ممنوعة",
+   "msa-white": "مناطق ممنوعة",
+   "en": "Keep-out zones"
+  },
+  "guides.lede": {
+   "eg": "السلايد {w}×{h}. النص لازم يفضل جوّه المنطقة الآمنة وبعيد عن أيقونات Instagram اللي في الأركان. القص 4:5 هو اللي بيظهر لو نشرت من أداة جدولة.",
+   "gulf": "السلايد {w}×{h}. يجب أن يبقى النص داخل المنطقة الآمنة وبعيدًا عن الأيقونات التي يضعها Instagram في الأركان. القص 4:5 هو ما يظهر عند النشر عبر جدولة.",
+   "levant": "السلايد {w}×{h}. يجب أن يبقى النص داخل المنطقة الآمنة وبعيدًا عن الأيقونات التي يضعها Instagram في الأركان. القص 4:5 هو ما يظهر عند النشر عبر جدولة.",
+   "msa-white": "السلايد {w}×{h}. يجب أن يبقى النص داخل المنطقة الآمنة وبعيدًا عن الأيقونات التي يضعها Instagram في الأركان. القص 4:5 هو ما يظهر عند النشر عبر جدولة.",
+   "en": "The slide is {w}×{h}. Keep text inside the safe zone and away from the icons Instagram puts in the corners. The 4:5 crop is what shows when a scheduler publishes."
+  },
+  "guides.safe": {
+   "eg": "المنطقة الآمنة",
+   "gulf": "المنطقة الآمنة",
+   "levant": "المنطقة الآمنة",
+   "msa-white": "المنطقة الآمنة",
+   "en": "Safe zone"
+  },
+  "guides.title": {
+   "eg": "حدود التصميم",
+   "gulf": "حدود التصميم",
+   "levant": "حدود التصميم",
+   "msa-white": "حدود التصميم",
+   "en": "Design guides"
+  },
+  "home.app": {
+   "eg": "كاروسيل ستوديو · البراند",
+   "gulf": "كاروسيل ستوديو · البراند",
+   "levant": "كاروسيل ستوديو · البراند",
+   "msa-white": "كاروسيل ستوديو · البراند",
+   "en": "Carousel Studio · Brand"
+  },
+  "home.approve": {
+   "eg": "اعتمد الكتاب",
+   "gulf": "اعتمد الكتاب",
+   "levant": "اعتمد الكتاب",
+   "msa-white": "اعتمد الكتاب",
+   "en": "Approve the book"
+  },
+  "home.approve.text": {
+   "eg": "هنسجّل تاريخ الاعتماد ونزوّد رقم النسخة. كل البوستات الجاية هتمشي على الكتاب ده.",
+   "gulf": "سنسجّل تاريخ الاعتماد ونزيد رقم النسخة. كل البوستات القادمة تسير على هذا الكتاب.",
+   "levant": "سنسجّل تاريخ الاعتماد ونزيد رقم النسخة. كل البوستات القادمة تسير على هذا الكتاب.",
+   "msa-white": "سنسجّل تاريخ الاعتماد ونزيد رقم النسخة. كل البوستات القادمة تسير على هذا الكتاب.",
+   "en": "We record the approval date and raise the version. Every future post follows this book."
+  },
+  "home.approve.title": {
+   "eg": "نعتمد كتاب البراند؟",
+   "gulf": "نعتمد كتاب البراند؟",
+   "levant": "نعتمد كتاب البراند؟",
+   "msa-white": "نعتمد كتاب البراند؟",
+   "en": "Approve the brand book?"
+  },
+  "home.approved": {
+   "eg": "معتمد · نسخة {v} · {date}",
+   "gulf": "معتمد · نسخة {v} · {date}",
+   "levant": "معتمد · نسخة {v} · {date}",
+   "msa-white": "معتمد · نسخة {v} · {date}",
+   "en": "Approved · version {v} · {date}"
+  },
+  "home.book.unavailable": {
+   "eg": "كتاب البراند مش محمّل.",
+   "gulf": "كتاب البراند غير محمّل.",
+   "levant": "كتاب البراند غير محمّل.",
+   "msa-white": "كتاب البراند غير محمّل.",
+   "en": "The brand book is not loaded."
+  },
+  "home.brand-json": {
+   "eg": "ملف البراند",
+   "gulf": "ملف البراند",
+   "levant": "ملف البراند",
+   "msa-white": "ملف البراند",
+   "en": "Brand file"
+  },
+  "home.capsule": {
+   "eg": "كارت البراند",
+   "gulf": "كارت البراند",
+   "levant": "كارت البراند",
+   "msa-white": "كارت البراند",
+   "en": "Brand card"
+  },
+  "home.capsule.copy": {
+   "eg": "انسخ كارت البراند",
+   "gulf": "انسخ كارت البراند",
+   "levant": "انسخ كارت البراند",
+   "msa-white": "انسخ كارت البراند",
+   "en": "Copy the brand card"
+  },
+  "home.draft": {
+   "eg": "مسودة",
+   "gulf": "مسودة",
+   "levant": "مسودة",
+   "msa-white": "مسودة",
+   "en": "Draft"
+  },
+  "home.ideas.all": {
+   "eg": "الكل",
+   "gulf": "الكل",
+   "levant": "الكل",
+   "msa-white": "الكل",
+   "en": "All"
+  },
+  "home.ideas.copy": {
+   "eg": "طلب جديد",
+   "gulf": "طلب جديد",
+   "levant": "طلب جديد",
+   "msa-white": "طلب جديد",
+   "en": "New request"
+  },
+  "home.ideas.empty": {
+   "eg": "مفيش أفكار لسه.",
+   "gulf": "لا توجد أفكار بعد.",
+   "levant": "لا توجد أفكار بعد.",
+   "msa-white": "لا توجد أفكار بعد.",
+   "en": "No ideas yet."
+  },
+  "home.ideas.empty.hint": {
+   "eg": "الأفكار بتتجمع هنا من المحادثات ومن الخطة.",
+   "gulf": "تتجمع الأفكار هنا من المحادثات ومن الخطة.",
+   "levant": "تتجمع الأفكار هنا من المحادثات ومن الخطة.",
+   "msa-white": "تتجمع الأفكار هنا من المحادثات ومن الخطة.",
+   "en": "Ideas collect here from your chats and from the plan."
+  },
+  "home.ideas.prompt": {
+   "eg": "اعمل كاروسيل عن: {idea}",
+   "gulf": "اعمل كاروسيل عن: {idea}",
+   "levant": "اعمل كاروسيل عن: {idea}",
+   "msa-white": "اعمل كاروسيل عن: {idea}",
+   "en": "Make a carousel about: {idea}"
+  },
+  "home.ideas.source": {
+   "eg": "المصدر",
+   "gulf": "المصدر",
+   "levant": "المصدر",
+   "msa-white": "المصدر",
+   "en": "Source"
+  },
+  "home.ideas.start": {
+   "eg": "ابدأ كاروسيل من الفكرة",
+   "gulf": "ابدأ كاروسيل من الفكرة",
+   "levant": "ابدأ كاروسيل من الفكرة",
+   "msa-white": "ابدأ كاروسيل من الفكرة",
+   "en": "Start a carousel from this idea"
+  },
+  "home.open-studio": {
+   "eg": "افتح الاستوديو",
+   "gulf": "افتح الاستوديو",
+   "levant": "افتح الاستوديو",
+   "msa-white": "افتح الاستوديو",
+   "en": "Open the Studio"
+  },
+  "home.plan.cadence": {
+   "eg": "الإيقاع",
+   "gulf": "الإيقاع",
+   "levant": "الإيقاع",
+   "msa-white": "الإيقاع",
+   "en": "Rhythm"
+  },
+  "home.plan.empty": {
+   "eg": "مفيش خطة لسه.",
+   "gulf": "لا توجد خطة بعد.",
+   "levant": "لا توجد خطة بعد.",
+   "msa-white": "لا توجد خطة بعد.",
+   "en": "No plan yet."
+  },
+  "home.plan.empty.hint": {
+   "eg": "اطلب من Claude «اعملّي خطة الشهر الجاي».",
+   "gulf": "اطلب من Claude «اعمل لي خطة الشهر القادم».",
+   "levant": "اطلب من Claude «اعمل لي خطة الشهر القادم».",
+   "msa-white": "اطلب من Claude «اعمل لي خطة الشهر القادم».",
+   "en": "Ask Claude to “plan next month”."
+  },
+  "home.plan.goal": {
+   "eg": "الهدف",
+   "gulf": "الهدف",
+   "levant": "الهدف",
+   "msa-white": "الهدف",
+   "en": "Goal"
+  },
+  "home.plan.noslots": {
+   "eg": "الخطة فاضية.",
+   "gulf": "الخطة فارغة.",
+   "levant": "الخطة فارغة.",
+   "msa-white": "الخطة فارغة.",
+   "en": "The plan is empty."
+  },
+  "home.plan.period": {
+   "eg": "الشهر",
+   "gulf": "الشهر",
+   "levant": "الشهر",
+   "msa-white": "الشهر",
+   "en": "Month"
+  },
+  "home.plan.perweek": {
+   "eg": {
+    "one": "بوست واحد في الأسبوع",
+    "two": "بوستين في الأسبوع",
+    "few": "{n} بوستات في الأسبوع",
+    "many": "{n} بوست في الأسبوع",
+    "other": "{n} بوست في الأسبوع"
+   },
+   "gulf": {
+    "one": "بوست واحد في الأسبوع",
+    "two": "بوستين في الأسبوع",
+    "few": "{n} بوستات في الأسبوع",
+    "many": "{n} بوست في الأسبوع",
+    "other": "{n} بوست في الأسبوع"
+   },
+   "levant": {
+    "one": "بوست واحد في الأسبوع",
+    "two": "بوستين في الأسبوع",
+    "few": "{n} بوستات في الأسبوع",
+    "many": "{n} بوست في الأسبوع",
+    "other": "{n} بوست في الأسبوع"
+   },
+   "msa-white": {
+    "one": "بوست واحد في الأسبوع",
+    "two": "بوستين في الأسبوع",
+    "few": "{n} بوستات في الأسبوع",
+    "many": "{n} بوست في الأسبوع",
+    "other": "{n} بوست في الأسبوع"
+   },
+   "en": {
+    "one": "1 post a week",
+    "other": "{n} posts a week"
+   }
+  },
+  "home.plan.tz": {
+   "eg": "المنطقة الزمنية",
+   "gulf": "المنطقة الزمنية",
+   "levant": "المنطقة الزمنية",
+   "msa-white": "المنطقة الزمنية",
+   "en": "Time zone"
+  },
+  "home.plan.untitled": {
+   "eg": "بوست",
+   "gulf": "بوست",
+   "levant": "بوست",
+   "msa-white": "بوست",
+   "en": "Post"
+  },
+  "home.posts.empty": {
+   "eg": "مفيش بوستات لسه.",
+   "gulf": "لا توجد بوستات بعد.",
+   "levant": "لا توجد بوستات بعد.",
+   "msa-white": "لا توجد بوستات بعد.",
+   "en": "No posts yet."
+  },
+  "home.posts.empty.hint": {
+   "eg": "كل بوست بتعمله بيظهر هنا برابط الاستوديو.",
+   "gulf": "كل بوست تصنعه يظهر هنا برابط الاستوديو.",
+   "levant": "كل بوست تصنعه يظهر هنا برابط الاستوديو.",
+   "msa-white": "كل بوست تصنعه يظهر هنا برابط الاستوديو.",
+   "en": "Every post you make appears here with its Studio link."
+  },
+  "home.print": {
+   "eg": "نزّل نسخة للطباعة",
+   "gulf": "نزّل نسخة للطباعة",
+   "levant": "نزّل نسخة للطباعة",
+   "msa-white": "نزّل نسخة للطباعة",
+   "en": "Download a printable copy"
+  },
+  "home.print.saved": {
+   "eg": "اتحفظت نسخة الطباعة. افتحها واطبعها PDF.",
+   "gulf": "حُفظت نسخة الطباعة. افتحها واطبعها PDF.",
+   "levant": "حُفظت نسخة الطباعة. افتحها واطبعها PDF.",
+   "msa-white": "حُفظت نسخة الطباعة. افتحها واطبعها PDF.",
+   "en": "Printable copy saved. Open it and print it to PDF."
+  },
+  "home.tab.book": {
+   "eg": "كتاب البراند",
+   "gulf": "كتاب البراند",
+   "levant": "كتاب البراند",
+   "msa-white": "كتاب البراند",
+   "en": "Brand book"
+  },
+  "home.tab.ideas": {
+   "eg": "الأفكار",
+   "gulf": "الأفكار",
+   "levant": "الأفكار",
+   "msa-white": "الأفكار",
+   "en": "Ideas"
+  },
+  "home.tab.plan": {
+   "eg": "الخطة",
+   "gulf": "الخطة",
+   "levant": "الخطة",
+   "msa-white": "الخطة",
+   "en": "Plan"
+  },
+  "home.tab.posts": {
+   "eg": "البوستات",
+   "gulf": "البوستات",
+   "levant": "البوستات",
+   "msa-white": "البوستات",
+   "en": "Posts"
+  },
+  "home.tab.team": {
+   "eg": "الفريق",
+   "gulf": "الفريق",
+   "levant": "الفريق",
+   "msa-white": "الفريق",
+   "en": "Team"
+  },
+  "home.tabs": {
+   "eg": "أقسام صفحة البراند",
+   "gulf": "أقسام صفحة البراند",
+   "levant": "أقسام صفحة البراند",
+   "msa-white": "أقسام صفحة البراند",
+   "en": "Brand sections"
+  },
+  "home.team.cta": {
+   "eg": "الدعوة الجاية تكون غير:",
+   "gulf": "ستكون الدعوة في المرة القادمة غير:",
+   "levant": "الدعوة الجاية بتكون غير:",
+   "msa-white": "ستكون الدعوة في المرة القادمة غير:",
+   "en": "The next call to action will differ from:"
+  },
+  "home.team.empty": {
+   "eg": "لسه مفيش بوستات في ذاكرة الفريق",
+   "gulf": "لا توجد منشورات في ذاكرة الفريق بعد",
+   "levant": "لا توجد منشورات في ذاكرة الفريق بعد",
+   "msa-white": "لا توجد منشورات في ذاكرة الفريق بعد",
+   "en": "No posts in the team's memory yet"
+  },
+  "home.team.empty.hint": {
+   "eg": "بعد ما تعتمد أول تصميم، الفريق بيسجّل هنا الفكرة والهوك والحركة.",
+   "gulf": "بعد اعتمادك أول تصميم يسجّل الفريق هنا الفكرة والهوك والحركة.",
+   "levant": "بعد اعتمادك أول تصميم يسجّل الفريق هنا الفكرة والهوك والحركة.",
+   "msa-white": "بعد اعتمادك أول تصميم يسجّل الفريق هنا الفكرة والهوك والحركة.",
+   "en": "After you approve your first design the team records the idea, the hook and the motion here."
+  },
+  "home.team.hint": {
+   "eg": "الفريق بيفتكر آخر {n} بوست: الفكرة والهوك والحركة، واللي حبّيته واللي رفضته. كده مابيكررش نفس الحاجة تلات مرات ورا بعض.",
+   "gulf": "يتذكر الفريق آخر {n} منشورًا: الفكرة والهوك والحركة، وما أعجبك وما رفضته. فلا يكرر الشيء نفسه ثلاث مرات متتالية.",
+   "levant": "يتذكر الفريق آخر {n} منشورًا: الفكرة والهوك والحركة، وما أعجبك وما رفضته. فلا يكرر الشيء نفسه ثلاث مرات متتالية.",
+   "msa-white": "يتذكر الفريق آخر {n} منشورًا: الفكرة والهوك والحركة، وما أعجبك وما رفضته. فلا يكرر الشيء نفسه ثلاث مرات متتالية.",
+   "en": "The team remembers the last {n} posts: the idea, the hook and the motion, and what you loved or rejected, so it does not repeat the same thing three times running."
+  },
+  "home.team.rest": {
+   "eg": "هنريّح المرة الجاية:",
+   "gulf": "سنريّح في المرة القادمة:",
+   "levant": "سنريّح في المرة القادمة:",
+   "msa-white": "سنريّح في المرة القادمة:",
+   "en": "To rest next time:"
+  },
+  "home.team.title": {
+   "eg": "ذاكرة الفريق الإبداعي",
+   "gulf": "ذاكرة الفريق الإبداعي",
+   "levant": "ذاكرة الفريق الإبداعي",
+   "msa-white": "ذاكرة الفريق الإبداعي",
+   "en": "Creative memory"
+  },
+  "home.title": {
+   "eg": "بيت",
+   "gulf": "بيت",
+   "levant": "بيت",
+   "msa-white": "بيت",
+   "en": "Home of"
+  },
+  "intent.reach": {
+   "eg": "انتشار",
+   "gulf": "انتشار",
+   "levant": "انتشار",
+   "msa-white": "انتشار",
+   "en": "Reach"
+  },
+  "intent.save": {
+   "eg": "حفظ",
+   "gulf": "حفظ",
+   "levant": "حفظ",
+   "msa-white": "حفظ",
+   "en": "Saves"
+  },
+  "intent.sell": {
+   "eg": "بيع",
+   "gulf": "بيع",
+   "levant": "بيع",
+   "msa-white": "بيع",
+   "en": "Sales"
+  },
+  "intent.send": {
+   "eg": "إرسال",
+   "gulf": "إرسال",
+   "levant": "إرسال",
+   "msa-white": "إرسال",
+   "en": "Sends"
+  },
+  "legal.build": {
+   "eg": "رقم البناء",
+   "gulf": "رقم البناء",
+   "levant": "رقم البناء",
+   "msa-white": "رقم البناء",
+   "en": "Build"
+  },
+  "legal.built": {
+   "eg": "تاريخ البناء",
+   "gulf": "تاريخ البناء",
+   "levant": "تاريخ البناء",
+   "msa-white": "تاريخ البناء",
+   "en": "Built on"
+  },
+  "legal.keys.esc": {
+   "eg": "قفل النافذة أو الخروج من التعديل",
+   "gulf": "إغلاق النافذة أو الخروج من التعديل",
+   "levant": "إغلاق النافذة أو الخروج من التعديل",
+   "msa-white": "إغلاق النافذة أو الخروج من التعديل",
+   "en": "Close a dialog or leave editing"
+  },
+  "legal.keys.redo": {
+   "eg": "إعادة",
+   "gulf": "إعادة",
+   "levant": "إعادة",
+   "msa-white": "إعادة",
+   "en": "Redo"
+  },
+  "legal.keys.save": {
+   "eg": "حفظ",
+   "gulf": "حفظ",
+   "levant": "حفظ",
+   "msa-white": "حفظ",
+   "en": "Save"
+  },
+  "legal.keys.title": {
+   "eg": "اختصارات لوحة المفاتيح",
+   "gulf": "اختصارات لوحة المفاتيح",
+   "levant": "اختصارات لوحة المفاتيح",
+   "msa-white": "اختصارات لوحة المفاتيح",
+   "en": "Keyboard shortcuts"
+  },
+  "legal.keys.undo": {
+   "eg": "تراجع",
+   "gulf": "تراجع",
+   "levant": "تراجع",
+   "msa-white": "تراجع",
+   "en": "Undo"
+  },
+  "legal.lede": {
+   "eg": "أداة مجانية مفتوحة المصدر لكتابة وتصميم كاروسيل Instagram بالعربي.",
+   "gulf": "أداة مجانية مفتوحة المصدر لكتابة وتصميم كاروسيل Instagram بالعربية.",
+   "levant": "أداة مجانية مفتوحة المصدر لكتابة وتصميم كاروسيل Instagram بالعربية.",
+   "msa-white": "أداة مجانية مفتوحة المصدر لكتابة وتصميم كاروسيل Instagram بالعربية.",
+   "en": "A free, open-source tool that writes and designs Instagram carousels, Arabic first."
+  },
+  "legal.license": {
+   "eg": "الأداة مرخّصة Apache-2.0. الخطوط تحت رخصة SIL OFL وبتتضمّن زي ما هي.",
+   "gulf": "الأداة مرخّصة Apache-2.0. الخطوط تحت رخصة SIL OFL وتُضمَّن كما هي.",
+   "levant": "الأداة مرخّصة Apache-2.0. الخطوط تحت رخصة SIL OFL وتُضمَّن كما هي.",
+   "msa-white": "الأداة مرخّصة Apache-2.0. الخطوط تحت رخصة SIL OFL وتُضمَّن كما هي.",
+   "en": "The tool is licensed Apache-2.0. Fonts are under the SIL OFL and are included unmodified."
+  },
+  "legal.license.title": {
+   "eg": "الرخصة",
+   "gulf": "الرخصة",
+   "levant": "الرخصة",
+   "msa-white": "الرخصة",
+   "en": "Licence"
+  },
+  "legal.own": {
+   "eg": "كل اللي بتعمله بكاروسيل ستوديو بتاعك.",
+   "gulf": "كل ما تصنعه بكاروسيل ستوديو ملكك.",
+   "levant": "كل ما تصنعه بكاروسيل ستوديو ملكك.",
+   "msa-white": "كل ما تصنعه بكاروسيل ستوديو ملكك.",
+   "en": "You own everything you create with Carousel Studio."
+  },
+  "legal.own.title": {
+   "eg": "ملكيتك",
+   "gulf": "ملكيتك",
+   "levant": "ملكيتك",
+   "msa-white": "ملكيتك",
+   "en": "You own it"
+  },
+  "legal.painter": {
+   "eg": "طريقة الرسم",
+   "gulf": "طريقة الرسم",
+   "levant": "طريقة الرسم",
+   "msa-white": "طريقة الرسم",
+   "en": "Painter"
+  },
+  "legal.privacy": {
+   "eg": "مفيش حاجة بتخرج من الصفحة غير اللي إنت بتطلبه: تنزيل ملف، أو طلب صياغة من Claude (لصاحب البوست بس). من غير تتبّع ولا إحصاءات. مكتبة الفيديو بتتحمّل من الإنترنت لما تصدّر فيديو بس.",
+   "gulf": "لا يخرج شيء من الصفحة إلا ما تطلبه: تنزيل ملف، أو طلب صياغة من Claude (لصاحب البوست فقط). لا تتبّع ولا إحصاءات. مكتبة الفيديو تُحمَّل من الإنترنت عند تصدير الفيديو فقط.",
+   "levant": "لا يخرج شيء من الصفحة إلا ما تطلبه: تنزيل ملف، أو طلب صياغة من Claude (لصاحب البوست فقط). لا تتبّع ولا إحصاءات. مكتبة الفيديو تُحمَّل من الإنترنت عند تصدير الفيديو فقط.",
+   "msa-white": "لا يخرج شيء من الصفحة إلا ما تطلبه: تنزيل ملف، أو طلب صياغة من Claude (لصاحب البوست فقط). لا تتبّع ولا إحصاءات. مكتبة الفيديو تُحمَّل من الإنترنت عند تصدير الفيديو فقط.",
+   "en": "Nothing leaves the page except what you ask for: a file download, or a rewrite request to Claude (post owner only). No tracking, no analytics. The video library loads from the internet only when you export a video."
+  },
+  "legal.privacy.title": {
+   "eg": "الخصوصية",
+   "gulf": "الخصوصية",
+   "levant": "الخصوصية",
+   "msa-white": "الخصوصية",
+   "en": "Privacy"
+  },
+  "legal.tagline": {
+   "eg": "بيخطط ويكتب ويصمم كاروسيل Instagram بالعربي",
+   "gulf": "يخطط ويكتب ويصمم كاروسيل Instagram بالعربية",
+   "levant": "يخطط ويكتب ويصمم كاروسيل Instagram بالعربية",
+   "msa-white": "يخطط ويكتب ويصمم كاروسيل Instagram بالعربية",
+   "en": "Plans, writes and designs Instagram carousels, Arabic first"
+  },
+  "legal.third.fonts": {
+   "eg": "الخطوط: SIL OFL 1.1 من أصحابها، من غير تعديل.",
+   "gulf": "الخطوط: SIL OFL 1.1 من أصحابها، دون تعديل.",
+   "levant": "الخطوط: SIL OFL 1.1 من أصحابها، دون تعديل.",
+   "msa-white": "الخطوط: SIL OFL 1.1 من أصحابها، دون تعديل.",
+   "en": "Fonts: SIL OFL 1.1, from their authors, unmodified."
+  },
+  "legal.third.icons": {
+   "eg": "الأيقونات: Lucide، رخصة ISC.",
+   "gulf": "الأيقونات: Lucide، رخصة ISC.",
+   "levant": "الأيقونات: Lucide، رخصة ISC.",
+   "msa-white": "الأيقونات: Lucide، رخصة ISC.",
+   "en": "Icons: Lucide, ISC licence."
+  },
+  "legal.third.mp4": {
+   "eg": "تجميع الفيديو: mediabunny، رخصة MPL-2.0، بتتحمّل لما تصدّر فيديو.",
+   "gulf": "تجميع الفيديو: mediabunny، رخصة MPL-2.0، تُحمَّل عند تصدير الفيديو.",
+   "levant": "تجميع الفيديو: mediabunny، رخصة MPL-2.0، تُحمَّل عند تصدير الفيديو.",
+   "msa-white": "تجميع الفيديو: mediabunny، رخصة MPL-2.0، تُحمَّل عند تصدير الفيديو.",
+   "en": "Video muxing: mediabunny, MPL-2.0, loaded when you export a video."
+  },
+  "legal.title": {
+   "eg": "عن كاروسيل ستوديو",
+   "gulf": "عن كاروسيل ستوديو",
+   "levant": "عن كاروسيل ستوديو",
+   "msa-white": "عن كاروسيل ستوديو",
+   "en": "About Carousel Studio"
+  },
+  "legal.version": {
+   "eg": "الإصدار",
+   "gulf": "الإصدار",
+   "levant": "الإصدار",
+   "msa-white": "الإصدار",
+   "en": "Version"
+  },
+  "media.slot.cutout": {
+   "eg": "صورة مقصوصة",
+   "gulf": "صورة مقصوصة",
+   "levant": "صورة مقصوصة",
+   "msa-white": "صورة مقصوصة",
+   "en": "Cutout"
+  },
+  "media.slot.icon": {
+   "eg": "أيقونة",
+   "gulf": "أيقونة",
+   "levant": "أيقونة",
+   "msa-white": "أيقونة",
+   "en": "Icon"
+  },
+  "media.slot.none": {
+   "eg": "بدون",
+   "gulf": "بدون",
+   "levant": "بدون",
+   "msa-white": "بدون",
+   "en": "None"
+  },
+  "media.slot.photo": {
+   "eg": "صورة",
+   "gulf": "صورة",
+   "levant": "صورة",
+   "msa-white": "صورة",
+   "en": "Photo"
+  },
+  "media.slot.plate": {
+   "eg": "خلفية",
+   "gulf": "خلفية",
+   "levant": "خلفية",
+   "msa-white": "خلفية",
+   "en": "Background"
+  },
+  "media.slot.screenshot": {
+   "eg": "لقطة شاشة",
+   "gulf": "لقطة شاشة",
+   "levant": "لقطة شاشة",
+   "msa-white": "لقطة شاشة",
+   "en": "Screenshot"
+  },
+  "media.slot.ui": {
+   "eg": "واجهة",
+   "gulf": "واجهة",
+   "levant": "واجهة",
+   "msa-white": "واجهة",
+   "en": "Interface"
+  },
+  "menu.about": {
+   "eg": "عن كاروسيل ستوديو",
+   "gulf": "عن كاروسيل ستوديو",
+   "levant": "عن كاروسيل ستوديو",
+   "msa-white": "عن كاروسيل ستوديو",
+   "en": "About Carousel Studio"
+  },
+  "menu.copy-patch": {
+   "eg": "انسخ التعديلات للمحادثة",
+   "gulf": "انسخ التعديلات للمحادثة",
+   "levant": "انسخ التعديلات للمحادثة",
+   "msa-white": "انسخ التعديلات للمحادثة",
+   "en": "Copy changes for the chat"
+  },
+  "menu.lang.ar": {
+   "eg": "العربية",
+   "gulf": "العربية",
+   "levant": "العربية",
+   "msa-white": "العربية",
+   "en": "العربية"
+  },
+  "menu.lang.en": {
+   "eg": "English",
+   "gulf": "English",
+   "levant": "English",
+   "msa-white": "English",
+   "en": "English"
+  },
+  "menu.theme": {
+   "eg": "المظهر: {mode}",
+   "gulf": "المظهر: {mode}",
+   "levant": "المظهر: {mode}",
+   "msa-white": "المظهر: {mode}",
+   "en": "Theme: {mode}"
+  },
+  "meta.architecture": {
+   "eg": "الشكل",
+   "gulf": "الشكل",
+   "levant": "الشكل",
+   "msa-white": "الشكل",
+   "en": "Format"
+  },
+  "meta.dialect": {
+   "eg": "اللهجة",
+   "gulf": "اللهجة",
+   "levant": "اللهجة",
+   "msa-white": "اللهجة",
+   "en": "Dialect"
+  },
+  "meta.digits": {
+   "eg": "الأرقام",
+   "gulf": "الأرقام",
+   "levant": "الأرقام",
+   "msa-white": "الأرقام",
+   "en": "Digits"
+  },
+  "meta.intent": {
+   "eg": "الهدف",
+   "gulf": "الهدف",
+   "levant": "الهدف",
+   "msa-white": "الهدف",
+   "en": "Goal"
+  },
+  "meter.words": {
+   "eg": {
+    "one": "كلمة واحدة، الحد {max}",
+    "two": "كلمتين، الحد {max}",
+    "few": "{n} كلمات، الحد {max}",
+    "many": "{n} كلمة، الحد {max}",
+    "other": "{n} كلمة، الحد {max}"
+   },
+   "gulf": {
+    "one": "كلمة واحدة، الحد {max}",
+    "two": "كلمتين، الحد {max}",
+    "few": "{n} كلمات، الحد {max}",
+    "many": "{n} كلمة، الحد {max}",
+    "other": "{n} كلمة، الحد {max}"
+   },
+   "levant": {
+    "one": "كلمة واحدة، الحد {max}",
+    "two": "كلمتين، الحد {max}",
+    "few": "{n} كلمات، الحد {max}",
+    "many": "{n} كلمة، الحد {max}",
+    "other": "{n} كلمة، الحد {max}"
+   },
+   "msa-white": {
+    "one": "كلمة واحدة، الحد {max}",
+    "two": "كلمتين، الحد {max}",
+    "few": "{n} كلمات، الحد {max}",
+    "many": "{n} كلمة، الحد {max}",
+    "other": "{n} كلمة، الحد {max}"
+   },
+   "en": {
+    "one": "{n} word, limit {max}",
+    "other": "{n} words, limit {max}"
+   }
+  },
+  "motion.failed": {
+   "eg": "ماقدرناش نجهّز الحركة للمعاينة.",
+   "gulf": "تعذّر تجهيز الحركة للمعاينة.",
+   "levant": "تعذّر تجهيز الحركة للمعاينة.",
+   "msa-white": "تعذّر تجهيز الحركة للمعاينة.",
+   "en": "We could not prepare the motion preview."
+  },
+  "motion.feel.calm": {
+   "eg": "هادئة",
+   "gulf": "هادئة",
+   "levant": "هادئة",
+   "msa-white": "هادئة",
+   "en": "Calm"
+  },
+  "motion.feel.none": {
+   "eg": "ثابت",
+   "gulf": "ثابت",
+   "levant": "ثابت",
+   "msa-white": "ثابت",
+   "en": "Still"
+  },
+  "motion.feel.story": {
+   "eg": "حكائية",
+   "gulf": "حكائية",
+   "levant": "حكائية",
+   "msa-white": "حكائية",
+   "en": "Story"
+  },
+  "motion.lede": {
+   "eg": "غلاف السلايد الأول بيتحرك 6 ثواني وبعدها يرجع لنفس شكله، فالمصغّر والجريد بيعرضوا الغلاف النهائي.",
+   "gulf": "غلاف السلايد الأول يتحرك ستّ ثوانٍ ثم يعود إلى شكله، فالمصغّر والجريد يعرضان الغلاف النهائي.",
+   "levant": "غلاف السلايد الأول يتحرك ستّ ثوانٍ ثم يعود إلى شكله، فالمصغّر والجريد يعرضان الغلاف النهائي.",
+   "msa-white": "غلاف السلايد الأول يتحرك ستّ ثوانٍ ثم يعود إلى شكله، فالمصغّر والجريد يعرضان الغلاف النهائي.",
+   "en": "The first slide moves for six seconds and returns to its poster, so the thumbnail and grid show the finished cover."
+  },
+  "motion.loop.bad": {
+   "eg": "فيه قفزة بين آخر إطار وأول إطار",
+   "gulf": "هناك قفزة بين آخر إطار وأول إطار",
+   "levant": "هناك قفزة بين آخر إطار وأول إطار",
+   "msa-white": "هناك قفزة بين آخر إطار وأول إطار",
+   "en": "There is a jump between the last and first frame"
+  },
+  "motion.loop.checking": {
+   "eg": "بنتأكد إن آخر إطار زي الأول…",
+   "gulf": "نتأكد أن آخر إطار يطابق الأول…",
+   "levant": "نتأكد أن آخر إطار يطابق الأول…",
+   "msa-white": "نتأكد أن آخر إطار يطابق الأول…",
+   "en": "Checking that the last frame matches the first…"
+  },
+  "motion.loop.ok": {
+   "eg": "الحلقة سليمة",
+   "gulf": "الحلقة سليمة",
+   "levant": "الحلقة سليمة",
+   "msa-white": "الحلقة سليمة",
+   "en": "The loop is clean"
+  },
+  "motion.loop.unavailable": {
+   "eg": "فحص الحلقة مش متاح هنا.",
+   "gulf": "فحص الحلقة غير متاح هنا.",
+   "levant": "فحص الحلقة غير متاح هنا.",
+   "msa-white": "فحص الحلقة غير متاح هنا.",
+   "en": "The loop check is not available here."
+  },
+  "motion.not-allowed": {
+   "eg": "الستايل ده مابيدعمش الحركة دي.",
+   "gulf": "هذا الستايل لا يدعم هذه الحركة.",
+   "levant": "هذا الستايل لا يدعم هذه الحركة.",
+   "msa-white": "هذا الستايل لا يدعم هذه الحركة.",
+   "en": "This style does not support this motion."
+  },
+  "motion.plate": {
+   "eg": "خلفية متحركة",
+   "gulf": "خلفية متحركة",
+   "levant": "خلفية متحركة",
+   "msa-white": "خلفية متحركة",
+   "en": "Moving background"
+  },
+  "motion.plate.text": {
+   "eg": "الحركة الخارجية متاحة في Claude Code.",
+   "gulf": "الحركة الخارجية متاحة في Claude Code.",
+   "levant": "الحركة الخارجية متاحة في Claude Code.",
+   "msa-white": "الحركة الخارجية متاحة في Claude Code.",
+   "en": "External motion is available in Claude Code."
+  },
+  "motion.play-pause": {
+   "eg": "تشغيل أو إيقاف",
+   "gulf": "تشغيل أو إيقاف",
+   "levant": "تشغيل أو إيقاف",
+   "msa-white": "تشغيل أو إيقاف",
+   "en": "Play or pause"
+  },
+  "motion.poster-first": {
+   "eg": "أول إطار وآخر إطار هما الغلاف نفسه، فالحلقة بتتكرر من غير قفزة.",
+   "gulf": "أول إطار وآخر إطار هما الغلاف نفسه، فتتكرر الحلقة بلا قفزة.",
+   "levant": "أول إطار وآخر إطار هما الغلاف نفسه، فتتكرر الحلقة بلا قفزة.",
+   "msa-white": "أول إطار وآخر إطار هما الغلاف نفسه، فتتكرر الحلقة بلا قفزة.",
+   "en": "The first and last frames are the cover itself, so the loop repeats without a jump."
+  },
+  "motion.recipes": {
+   "eg": "أسلوب الحركة",
+   "gulf": "أسلوب الحركة",
+   "levant": "أسلوب الحركة",
+   "msa-white": "أسلوب الحركة",
+   "en": "Motion style"
+  },
+  "motion.recommended": {
+   "eg": "مقترح",
+   "gulf": "مقترح",
+   "levant": "مقترح",
+   "msa-white": "مقترح",
+   "en": "Suggested"
+  },
+  "motion.reduced": {
+   "eg": "شغّل الحركة كاملة",
+   "gulf": "شغّل الحركة كاملة",
+   "levant": "شغّل الحركة كاملة",
+   "msa-white": "شغّل الحركة كاملة",
+   "en": "Play full motion"
+  },
+  "motion.reduced.hint": {
+   "eg": "جهازك مضبوط على حركة أقل، فالمعاينة هنا مخفّفة. التصدير دايمًا بالحركة الكاملة.",
+   "gulf": "جهازك مضبوط على حركة أقل، فالمعاينة هنا مخفّفة. التصدير دائمًا بالحركة الكاملة.",
+   "levant": "جهازك مضبوط على حركة أقل، فالمعاينة هنا مخفّفة. التصدير دائمًا بالحركة الكاملة.",
+   "msa-white": "جهازك مضبوط على حركة أقل، فالمعاينة هنا مخفّفة. التصدير دائمًا بالحركة الكاملة.",
+   "en": "Your device asks for less motion, so this preview is reduced. Exports always use full motion."
+  },
+  "motion.restart": {
+   "eg": "من البداية",
+   "gulf": "من البداية",
+   "levant": "من البداية",
+   "msa-white": "من البداية",
+   "en": "Restart"
+  },
+  "motion.scrub": {
+   "eg": "موضع التشغيل",
+   "gulf": "موضع التشغيل",
+   "levant": "موضع التشغيل",
+   "msa-white": "موضع التشغيل",
+   "en": "Playhead"
+  },
+  "motion.seconds": {
+   "eg": "المدة",
+   "gulf": "المدة",
+   "levant": "المدة",
+   "msa-white": "المدة",
+   "en": "Length"
+  },
+  "motion.seconds.n": {
+   "eg": {
+    "one": "ثانية واحدة",
+    "two": "ثانيتين",
+    "few": "{n} ثواني",
+    "many": "{n} ثانية",
+    "other": "{n} ثانية"
+   },
+   "gulf": {
+    "one": "ثانية واحدة",
+    "two": "ثانيتين",
+    "few": "{n} ثوانٍ",
+    "many": "{n} ثانية",
+    "other": "{n} ثانية"
+   },
+   "levant": {
+    "one": "ثانية واحدة",
+    "two": "ثانيتين",
+    "few": "{n} ثوانٍ",
+    "many": "{n} ثانية",
+    "other": "{n} ثانية"
+   },
+   "msa-white": {
+    "one": "ثانية واحدة",
+    "two": "ثانيتين",
+    "few": "{n} ثوانٍ",
+    "many": "{n} ثانية",
+    "other": "{n} ثانية"
+   },
+   "en": {
+    "one": "{n} second",
+    "other": "{n} seconds"
+   }
+  },
+  "motion.static": {
+   "eg": "الغلاف ثابت من غير حركة. اختار أسلوب لو عايز حركة.",
+   "gulf": "الغلاف ثابت بلا حركة. اختر أسلوبًا إن أردت حركة.",
+   "levant": "الغلاف ثابت بلا حركة. اختر أسلوبًا إن أردت حركة.",
+   "msa-white": "الغلاف ثابت بلا حركة. اختر أسلوبًا إن أردت حركة.",
+   "en": "The cover is still. Pick a style if you want motion."
+  },
+  "motion.title": {
+   "eg": "الحركة",
+   "gulf": "الحركة",
+   "levant": "الحركة",
+   "msa-white": "الحركة",
+   "en": "Motion"
+  },
+  "nav.about": {
+   "eg": "عن الأداة",
+   "gulf": "عن الأداة",
+   "levant": "عن الأداة",
+   "msa-white": "عن الأداة",
+   "en": "About"
+  },
+  "nav.check": {
+   "eg": "الفحص",
+   "gulf": "الفحص",
+   "levant": "الفحص",
+   "msa-white": "الفحص",
+   "en": "Check"
+  },
+  "nav.copy": {
+   "eg": "الكابشن",
+   "gulf": "الكابشن",
+   "levant": "الكابشن",
+   "msa-white": "الكابشن",
+   "en": "Caption"
+  },
+  "nav.design": {
+   "eg": "التصميم",
+   "gulf": "التصميم",
+   "levant": "التصميم",
+   "msa-white": "التصميم",
+   "en": "Design"
+  },
+  "nav.export": {
+   "eg": "التصدير",
+   "gulf": "التصدير",
+   "levant": "التصدير",
+   "msa-white": "التصدير",
+   "en": "Export"
+  },
+  "nav.label": {
+   "eg": "أقسام الاستوديو",
+   "gulf": "أقسام الاستوديو",
+   "levant": "أقسام الاستوديو",
+   "msa-white": "أقسام الاستوديو",
+   "en": "Studio sections"
+  },
+  "nav.more": {
+   "eg": "المزيد",
+   "gulf": "المزيد",
+   "levant": "المزيد",
+   "msa-white": "المزيد",
+   "en": "More"
+  },
+  "nav.motion": {
+   "eg": "الحركة",
+   "gulf": "الحركة",
+   "levant": "الحركة",
+   "msa-white": "الحركة",
+   "en": "Motion"
+  },
+  "nav.preview": {
+   "eg": "المعاينة",
+   "gulf": "المعاينة",
+   "levant": "المعاينة",
+   "msa-white": "المعاينة",
+   "en": "Preview"
+  },
+  "nav.script": {
+   "eg": "النص",
+   "gulf": "النص",
+   "levant": "النص",
+   "msa-white": "النص",
+   "en": "Script"
+  },
+  "preview.dir.ltr": {
+   "eg": "من اليسار إلى اليمين",
+   "gulf": "من اليسار إلى اليمين",
+   "levant": "من اليسار إلى اليمين",
+   "msa-white": "من اليسار إلى اليمين",
+   "en": "left to right"
+  },
+  "preview.dir.rtl": {
+   "eg": "من اليمين إلى اليسار",
+   "gulf": "من اليمين إلى اليسار",
+   "levant": "من اليمين إلى اليسار",
+   "msa-white": "من اليمين إلى اليسار",
+   "en": "right to left"
+  },
+  "preview.empty": {
+   "eg": "مفيش سلايدات للمعاينة.",
+   "gulf": "لا توجد سلايدات للمعاينة.",
+   "levant": "لا توجد سلايدات للمعاينة.",
+   "msa-white": "لا توجد سلايدات للمعاينة.",
+   "en": "There are no slides to preview."
+  },
+  "preview.feed": {
+   "eg": "الفيد",
+   "gulf": "الفيد",
+   "levant": "الفيد",
+   "msa-white": "الفيد",
+   "en": "Feed"
+  },
+  "preview.feed.note": {
+   "eg": "ترتيب السلايدات هنا {dir}، زي ما جمهورك هيشوفها.",
+   "gulf": "ترتيب السلايدات هنا {dir}، كما سيراها جمهورك.",
+   "levant": "ترتيب السلايدات هنا {dir}، كما سيراها جمهورك.",
+   "msa-white": "ترتيب السلايدات هنا {dir}، كما سيراها جمهورك.",
+   "en": "Slides run {dir} here, the way your audience will see them."
+  },
+  "preview.feed.scroll": {
+   "eg": "مرّر بين السلايدات",
+   "gulf": "مرّر بين السلايدات",
+   "levant": "مرّر بين السلايدات",
+   "msa-white": "مرّر بين السلايدات",
+   "en": "Scroll between slides"
+  },
+  "preview.fold": {
+   "eg": {
+    "one": "بعد حرف واحد بيظهر زرار «المزيد».",
+    "two": "بعد حرفين بيظهر زرار «المزيد».",
+    "few": "بعد {n} حروف بيظهر زرار «المزيد».",
+    "many": "بعد {n} حرف بيظهر زرار «المزيد».",
+    "other": "بعد {n} حرف بيظهر زرار «المزيد»."
+   },
+   "gulf": {
+    "one": "بعد حرف واحد يظهر زر «المزيد».",
+    "two": "بعد حرفين يظهر زر «المزيد».",
+    "few": "بعد {n} حروف يظهر زر «المزيد».",
+    "many": "بعد {n} حرفًا يظهر زر «المزيد».",
+    "other": "بعد {n} حرفًا يظهر زر «المزيد»."
+   },
+   "levant": {
+    "one": "بعد حرف واحد يظهر زر «المزيد».",
+    "two": "بعد حرفين يظهر زر «المزيد».",
+    "few": "بعد {n} حروف يظهر زر «المزيد».",
+    "many": "بعد {n} حرفًا يظهر زر «المزيد».",
+    "other": "بعد {n} حرفًا يظهر زر «المزيد»."
+   },
+   "msa-white": {
+    "one": "بعد حرف واحد يظهر زر «المزيد».",
+    "two": "بعد حرفين يظهر زر «المزيد».",
+    "few": "بعد {n} حروف يظهر زر «المزيد».",
+    "many": "بعد {n} حرفًا يظهر زر «المزيد».",
+    "other": "بعد {n} حرفًا يظهر زر «المزيد»."
+   },
+   "en": {
+    "one": "After 1 character Instagram shows “more”.",
+    "other": "After {n} characters Instagram shows “more”."
+   }
+  },
+  "preview.grid": {
+   "eg": "الجريد",
+   "gulf": "الجريد",
+   "levant": "الجريد",
+   "msa-white": "الجريد",
+   "en": "Grid"
+  },
+  "preview.grid.note": {
+   "eg": "الغلاف بيظهر في الجريد بمقاس 3:4.",
+   "gulf": "يظهر الغلاف في الجريد بمقاس 3:4.",
+   "levant": "يظهر الغلاف في الجريد بمقاس 3:4.",
+   "msa-white": "يظهر الغلاف في الجريد بمقاس 3:4.",
+   "en": "The cover shows in the grid at 3:4."
+  },
+  "preview.guides": {
+   "eg": "الحدود",
+   "gulf": "الحدود",
+   "levant": "الحدود",
+   "msa-white": "الحدود",
+   "en": "Guides"
+  },
+  "preview.lede": {
+   "eg": "شوف البوست زي ما هيظهر لجمهورك قبل ما تنشر.",
+   "gulf": "شاهد البوست كما سيظهر لجمهورك قبل النشر.",
+   "levant": "شاهد البوست كما سيظهر لجمهورك قبل النشر.",
+   "msa-white": "شاهد البوست كما سيظهر لجمهورك قبل النشر.",
+   "en": "See the post the way your audience will before you publish."
+  },
+  "preview.more": {
+   "eg": "المزيد",
+   "gulf": "المزيد",
+   "levant": "المزيد",
+   "msa-white": "المزيد",
+   "en": "more"
+  },
+  "preview.nocaption": {
+   "eg": "لسه ماكتبناش الكابشن.",
+   "gulf": "لم نكتب الكابشن بعد.",
+   "levant": "لم نكتب الكابشن بعد.",
+   "msa-white": "لم نكتب الكابشن بعد.",
+   "en": "No caption yet."
+  },
+  "preview.profile": {
+   "eg": "الصفحة الشخصية",
+   "gulf": "الصفحة الشخصية",
+   "levant": "الصفحة الشخصية",
+   "msa-white": "الصفحة الشخصية",
+   "en": "Profile"
+  },
+  "preview.sponsor": {
+   "eg": "معاينة",
+   "gulf": "معاينة",
+   "levant": "معاينة",
+   "msa-white": "معاينة",
+   "en": "Preview"
+  },
+  "preview.tile": {
+   "eg": "المصغّر",
+   "gulf": "المصغّر",
+   "levant": "المصغّر",
+   "msa-white": "المصغّر",
+   "en": "Thumbnail"
+  },
+  "preview.tile.checking": {
+   "eg": "بنفحص الوضوح…",
+   "gulf": "نفحص الوضوح…",
+   "levant": "نفحص الوضوح…",
+   "msa-white": "نفحص الوضوح…",
+   "en": "Checking legibility…"
+  },
+  "preview.tile.contrast": {
+   "eg": "التباين",
+   "gulf": "التباين",
+   "levant": "التباين",
+   "msa-white": "التباين",
+   "en": "Contrast"
+  },
+  "preview.tile.fix": {
+   "eg": "حسّن الغلاف",
+   "gulf": "حسّن الغلاف",
+   "levant": "حسّن الغلاف",
+   "msa-white": "حسّن الغلاف",
+   "en": "Improve the cover"
+  },
+  "preview.tile.hero": {
+   "eg": "مقاس العنوان",
+   "gulf": "مقاس العنوان",
+   "levant": "مقاس العنوان",
+   "msa-white": "مقاس العنوان",
+   "en": "Headline size"
+  },
+  "preview.tile.lede": {
+   "eg": "الغلاف بعرض {px} بكسل، تقريبًا حجمه في الجريد. لو العنوان لسه بيتقري هنا يبقى الغلاف ناجح.",
+   "gulf": "الغلاف بعرض {px} بكسل، وهو تقريبًا حجمه في الجريد. إن بقي العنوان مقروءًا هنا فالغلاف ناجح.",
+   "levant": "الغلاف بعرض {px} بكسل، وهو تقريبًا حجمه في الجريد. إن بقي العنوان مقروءًا هنا فالغلاف ناجح.",
+   "msa-white": "الغلاف بعرض {px} بكسل، وهو تقريبًا حجمه في الجريد. إن بقي العنوان مقروءًا هنا فالغلاف ناجح.",
+   "en": "The cover at {px} px wide is about its size in the grid. If the headline is still readable here, the cover works."
+  },
+  "preview.tile.title": {
+   "eg": "تقدر تقراها؟",
+   "gulf": "تقدر تقراها؟",
+   "levant": "بتقدر تقراها؟",
+   "msa-white": "هل تُقرأ؟",
+   "en": "Can you read it?"
+  },
+  "preview.tile.unavailable": {
+   "eg": "ماقدرناش نفحص الوضوح هنا.",
+   "gulf": "تعذّر فحص الوضوح هنا.",
+   "levant": "تعذّر فحص الوضوح هنا.",
+   "msa-white": "تعذّر فحص الوضوح هنا.",
+   "en": "We could not check legibility here."
+  },
+  "preview.tile.verdict.bad": {
+   "eg": "مش بيتقري",
+   "gulf": "غير مقروء",
+   "levant": "غير مقروء",
+   "msa-white": "غير مقروء",
+   "en": "Not readable"
+  },
+  "preview.tile.verdict.bad.text": {
+   "eg": "العنوان بيضيع في المقاس الصغير. اختصره عشان يكبر.",
+   "gulf": "يضيع العنوان بالمقاس الصغير. اختصره ليكبر.",
+   "levant": "يضيع العنوان بالمقاس الصغير. اختصره ليكبر.",
+   "msa-white": "يضيع العنوان بالمقاس الصغير. اختصره ليكبر.",
+   "en": "The headline gets lost at this size. Shorten it so it can grow."
+  },
+  "preview.tile.verdict.ok": {
+   "eg": "بيتقري",
+   "gulf": "مقروء",
+   "levant": "مقروء",
+   "msa-white": "مقروء",
+   "en": "Readable"
+  },
+  "preview.tile.verdict.ok.text": {
+   "eg": "العنوان واضح حتى بالمقاس الصغير.",
+   "gulf": "العنوان واضح حتى بالمقاس الصغير.",
+   "levant": "العنوان واضح حتى بالمقاس الصغير.",
+   "msa-white": "العنوان واضح حتى بالمقاس الصغير.",
+   "en": "The headline is clear even at this small size."
+  },
+  "preview.tile.verdict.warn": {
+   "eg": "بالعافية",
+   "gulf": "بصعوبة",
+   "levant": "بصعوبة",
+   "msa-white": "بصعوبة",
+   "en": "Barely"
+  },
+  "preview.tile.verdict.warn.text": {
+   "eg": "العنوان صغير شوية. كبّره أو اختصره.",
+   "gulf": "العنوان صغير قليلًا. كبّره أو اختصره.",
+   "levant": "العنوان صغير قليلًا. كبّره أو اختصره.",
+   "msa-white": "العنوان صغير قليلًا. كبّره أو اختصره.",
+   "en": "The headline is a little small. Enlarge or shorten it."
+  },
+  "preview.title": {
+   "eg": "المعاينة",
+   "gulf": "المعاينة",
+   "levant": "المعاينة",
+   "msa-white": "المعاينة",
+   "en": "Preview"
+  },
+  "regen.applied": {
+   "eg": "اتبدّلت الصياغة",
+   "gulf": "تم تبديل الصياغة",
+   "levant": "تم تبديل الصياغة",
+   "msa-white": "تم تبديل الصياغة",
+   "en": "Wording replaced"
+  },
+  "regen.chat.label": {
+   "eg": "طلب لـClaude",
+   "gulf": "طلب لـClaude",
+   "levant": "طلب لـClaude",
+   "msa-white": "طلب لـClaude",
+   "en": "Request for Claude"
+  },
+  "regen.chat.line": {
+   "eg": "اختصر نص السلايد {n} وخليه أقوى",
+   "gulf": "اختصر نص السلايد {n} وقوِّه",
+   "levant": "اختصر نص السلايد {n} وقوِّه",
+   "msa-white": "اختصر نص السلايد {n} وقوِّه",
+   "en": "Shorten the text of slide {n} and make it stronger"
+  },
+  "regen.err.cancelled": {
+   "eg": "تم إلغاء الطلب.",
+   "gulf": "تم إلغاء الطلب.",
+   "levant": "تم إلغاء الطلب.",
+   "msa-white": "تم إلغاء الطلب.",
+   "en": "Request cancelled."
+  },
+  "regen.err.empty": {
+   "eg": "ماطلعتش صياغة مناسبة. جرّب طريقة تانية.",
+   "gulf": "لم تظهر صياغة مناسبة. جرّب طريقة أخرى.",
+   "levant": "لم تظهر صياغة مناسبة. جرّب طريقة أخرى.",
+   "msa-white": "لم تظهر صياغة مناسبة. جرّب طريقة أخرى.",
+   "en": "No suitable wording came back. Try another way."
+  },
+  "regen.err.generic": {
+   "eg": "حصلت مشكلة وإحنا بنطلب الصياغات. جرّب تاني.",
+   "gulf": "حدثت مشكلة أثناء طلب الصياغات. حاول مرة أخرى.",
+   "levant": "حدثت مشكلة أثناء طلب الصياغات. حاول مرة أخرى.",
+   "msa-white": "حدثت مشكلة أثناء طلب الصياغات. حاول مرة أخرى.",
+   "en": "Something went wrong while asking for versions. Try again."
+  },
+  "regen.err.invalid_json": {
+   "eg": "Claude رد بشكل مانفعش نقراه. جرّب تاني.",
+   "gulf": "ردّ Claude بشكل لم نستطع قراءته. حاول مرة أخرى.",
+   "levant": "ردّ Claude بشكل لم نستطع قراءته. حاول مرة أخرى.",
+   "msa-white": "ردّ Claude بشكل لم نستطع قراءته. حاول مرة أخرى.",
+   "en": "Claude replied in a form we could not read. Try again."
+  },
+  "regen.err.not_granted": {
+   "eg": "ماوافقتش على استخدام Claude من الصفحة. تقدر تطلب نفس الحاجة في المحادثة.",
+   "gulf": "لم توافق على استخدام Claude من الصفحة. يمكنك طلب الشيء نفسه في المحادثة.",
+   "levant": "لم توافق على استخدام Claude من الصفحة. يمكنك طلب الشيء نفسه في المحادثة.",
+   "msa-white": "لم توافق على استخدام Claude من الصفحة. يمكنك طلب الشيء نفسه في المحادثة.",
+   "en": "You did not allow Claude to be used from the page. You can ask for the same thing in the chat."
+  },
+  "regen.err.rate_limited": {
+   "eg": "الطلبات كتير. استنى شوية وجرّب.",
+   "gulf": "الطلبات كثيرة. انتظر قليلًا ثم حاول.",
+   "levant": "الطلبات كثيرة. انتظر قليلًا ثم حاول.",
+   "msa-white": "الطلبات كثيرة. انتظر قليلًا ثم حاول.",
+   "en": "Too many requests. Wait a moment and try again."
+  },
+  "regen.err.unavailable": {
+   "eg": "الميزة دي مش متاحة في العرض ده.",
+   "gulf": "هذه الميزة غير متاحة في هذا العرض.",
+   "levant": "هذه الميزة غير متاحة في هذا العرض.",
+   "msa-white": "هذه الميزة غير متاحة في هذا العرض.",
+   "en": "This feature is not available in this view."
+  },
+  "regen.hint": {
+   "eg": "اختار طريقة وClaude هيقترح 3 صياغات. كل صياغة بتتفحص قبل ما تظهر.",
+   "gulf": "اختر طريقة وسيقترح Claude ثلاث صياغات. تُفحص كل صياغة قبل أن تظهر.",
+   "levant": "اختر طريقة وسيقترح Claude ثلاث صياغات. تُفحص كل صياغة قبل أن تظهر.",
+   "msa-white": "اختر طريقة وسيقترح Claude ثلاث صياغات. تُفحص كل صياغة قبل أن تظهر.",
+   "en": "Pick a way and Claude suggests three versions. Each one is checked before it appears."
+  },
+  "regen.hint.viewer": {
+   "eg": "التوليد من داخل الصفحة لصاحب البوست بس. اكتب الطلب لـClaude في المحادثة.",
+   "gulf": "الصياغة من داخل الصفحة لصاحب البوست. اكتب الطلب لـClaude في المحادثة.",
+   "levant": "الصياغة من داخل الصفحة لصاحب البوست. اكتب الطلب لـClaude في المحادثة.",
+   "msa-white": "الصياغة من داخل الصفحة لصاحب البوست. اكتب الطلب لـClaude في المحادثة.",
+   "en": "Rewriting from this page is for the post owner. Ask Claude in the chat instead."
+  },
+  "regen.loading": {
+   "eg": "Claude بيكتب 3 صياغات…",
+   "gulf": "يكتب Claude ثلاث صياغات…",
+   "levant": "يكتب Claude ثلاث صياغات…",
+   "msa-white": "يكتب Claude ثلاث صياغات…",
+   "en": "Claude is writing three versions…"
+  },
+  "regen.mode.example": {
+   "eg": "بمثال",
+   "gulf": "بمثال",
+   "levant": "بمثال",
+   "msa-white": "بمثال",
+   "en": "With an example"
+  },
+  "regen.mode.lighter-dialect": {
+   "eg": "لهجة أخف",
+   "gulf": "لهجة أخف",
+   "levant": "لهجة أخف",
+   "msa-white": "لهجة أخف",
+   "en": "Lighter dialect"
+  },
+  "regen.mode.number": {
+   "eg": "برقم",
+   "gulf": "برقم",
+   "levant": "برقم",
+   "msa-white": "برقم",
+   "en": "With a number"
+  },
+  "regen.mode.shorter": {
+   "eg": "أقصر",
+   "gulf": "أقصر",
+   "levant": "أقصر",
+   "msa-white": "أقصر",
+   "en": "Shorter"
+  },
+  "regen.mode.stronger": {
+   "eg": "أقوى",
+   "gulf": "أقوى",
+   "levant": "أقوى",
+   "msa-white": "أقوى",
+   "en": "Stronger"
+  },
+  "regen.use": {
+   "eg": "استخدم دي",
+   "gulf": "استخدم هذه",
+   "levant": "استخدم هذه",
+   "msa-white": "استخدم هذه",
+   "en": "Use this one"
+  },
+  "regen.variant.blocks": {
+   "eg": {
+    "one": "ملاحظة حاجبة واحدة",
+    "two": "ملاحظتين حاجبتين",
+    "few": "{n} ملاحظات حاجبة",
+    "many": "{n} ملاحظة حاجبة",
+    "other": "{n} ملاحظة حاجبة"
+   },
+   "gulf": {
+    "one": "ملاحظة حاجبة واحدة",
+    "two": "ملاحظتين حاجبتين",
+    "few": "{n} ملاحظات حاجبة",
+    "many": "{n} ملاحظة حاجبة",
+    "other": "{n} ملاحظة حاجبة"
+   },
+   "levant": {
+    "one": "ملاحظة حاجبة واحدة",
+    "two": "ملاحظتين حاجبتين",
+    "few": "{n} ملاحظات حاجبة",
+    "many": "{n} ملاحظة حاجبة",
+    "other": "{n} ملاحظة حاجبة"
+   },
+   "msa-white": {
+    "one": "ملاحظة حاجبة واحدة",
+    "two": "ملاحظتين حاجبتين",
+    "few": "{n} ملاحظات حاجبة",
+    "many": "{n} ملاحظة حاجبة",
+    "other": "{n} ملاحظة حاجبة"
+   },
+   "en": {
+    "one": "{n} blocking note",
+    "other": "{n} blocking notes"
+   }
+  },
+  "regen.variant.clean": {
+   "eg": "سليمة",
+   "gulf": "سليمة",
+   "levant": "سليمة",
+   "msa-white": "سليمة",
+   "en": "Clean"
+  },
+  "regen.variant.fixes": {
+   "eg": {
+    "one": "ملاحظة واحدة للمراجعة",
+    "two": "ملاحظتين للمراجعة",
+    "few": "{n} ملاحظات للمراجعة",
+    "many": "{n} ملاحظة للمراجعة",
+    "other": "{n} ملاحظة للمراجعة"
+   },
+   "gulf": {
+    "one": "ملاحظة واحدة للمراجعة",
+    "two": "ملاحظتين للمراجعة",
+    "few": "{n} ملاحظات للمراجعة",
+    "many": "{n} ملاحظة للمراجعة",
+    "other": "{n} ملاحظة للمراجعة"
+   },
+   "levant": {
+    "one": "ملاحظة واحدة للمراجعة",
+    "two": "ملاحظتين للمراجعة",
+    "few": "{n} ملاحظات للمراجعة",
+    "many": "{n} ملاحظة للمراجعة",
+    "other": "{n} ملاحظة للمراجعة"
+   },
+   "msa-white": {
+    "one": "ملاحظة واحدة للمراجعة",
+    "two": "ملاحظتين للمراجعة",
+    "few": "{n} ملاحظات للمراجعة",
+    "many": "{n} ملاحظة للمراجعة",
+    "other": "{n} ملاحظة للمراجعة"
+   },
+   "en": {
+    "one": "{n} note to review",
+    "other": "{n} notes to review"
+   }
+  },
+  "role.body": {
+   "eg": "الشرح",
+   "gulf": "الشرح",
+   "levant": "الشرح",
+   "msa-white": "الشرح",
+   "en": "The body text"
+  },
+  "role.h1": {
+   "eg": "العنوان",
+   "gulf": "العنوان",
+   "levant": "العنوان",
+   "msa-white": "العنوان",
+   "en": "The headline"
+  },
+  "role.h2": {
+   "eg": "العنوان الفرعي",
+   "gulf": "العنوان الفرعي",
+   "levant": "العنوان الفرعي",
+   "msa-white": "العنوان الفرعي",
+   "en": "The subheading"
+  },
+  "role.hero": {
+   "eg": "العنوان الكبير",
+   "gulf": "العنوان الكبير",
+   "levant": "العنوان الكبير",
+   "msa-white": "العنوان الكبير",
+   "en": "The big headline"
+  },
+  "role.micro": {
+   "eg": "النص الأصغر",
+   "gulf": "النص الأصغر",
+   "levant": "النص الأصغر",
+   "msa-white": "النص الأصغر",
+   "en": "The smallest text"
+  },
+  "role.number": {
+   "eg": "الرقم",
+   "gulf": "الرقم",
+   "levant": "الرقم",
+   "msa-white": "الرقم",
+   "en": "The number"
+  },
+  "role.small": {
+   "eg": "النص الصغير",
+   "gulf": "النص الصغير",
+   "levant": "النص الصغير",
+   "msa-white": "النص الصغير",
+   "en": "The small text"
+  },
+  "role.title": {
+   "eg": "العنوان",
+   "gulf": "العنوان",
+   "levant": "العنوان",
+   "msa-white": "العنوان",
+   "en": "The title"
+  },
+  "save.conflict.drop": {
+   "eg": "اترك تعديلاتي",
+   "gulf": "اترك تعديلاتي",
+   "levant": "اترك تعديلاتي",
+   "msa-white": "اترك تعديلاتي",
+   "en": "Discard my edits"
+  },
+  "save.conflict.failed": {
+   "eg": "شوية تعديلات ماانطبقتش على النسخة الجديدة. انسخ التعديلات وابعتها لـClaude.",
+   "gulf": "بعض التعديلات لم تنطبق على النسخة الجديدة. انسخ التعديلات وأرسلها إلى Claude.",
+   "levant": "بعض التعديلات لم تنطبق على النسخة الجديدة. انسخ التعديلات وأرسلها إلى Claude.",
+   "msa-white": "بعض التعديلات لم تنطبق على النسخة الجديدة. انسخ التعديلات وأرسلها إلى Claude.",
+   "en": "Some edits did not apply to the new version. Copy the changes and send them to Claude."
+  },
+  "save.conflict.restore": {
+   "eg": "أعد تعديلاتي",
+   "gulf": "أعد تعديلاتي",
+   "levant": "أعد تعديلاتي",
+   "msa-white": "أعد تعديلاتي",
+   "en": "Re-apply my edits"
+  },
+  "save.conflict.text": {
+   "eg": "نرجّع تعديلاتك فوق نسخته؟",
+   "gulf": "نرجّع تعديلاتك فوق نسخته؟",
+   "levant": "نرجّع تعديلاتك فوق نسخته؟",
+   "msa-white": "نعيد تعديلاتك فوق نسخته؟",
+   "en": "Re-apply your edits on top of its version?"
+  },
+  "save.conflict.title": {
+   "eg": "Claude عدّل البوست",
+   "gulf": "Claude عدّل البوست",
+   "levant": "Claude عدّل البوست",
+   "msa-white": "Claude عدّل البوست",
+   "en": "Claude edited the post"
+  },
+  "save.conflict.toast": {
+   "eg": "Claude عدّل البوست. حمّلنا نسخته، وتعديلاتك محفوظة وهترجعلك.",
+   "gulf": "عدّل Claude البوست. حمّلنا نسخته، وتعديلاتك محفوظة ومعروضة عليك.",
+   "levant": "عدّل Claude البوست. حمّلنا نسخته، وتعديلاتك محفوظة ومعروضة عليك.",
+   "msa-white": "عدّل Claude البوست. حمّلنا نسخته، وتعديلاتك محفوظة ومعروضة عليك.",
+   "en": "Claude edited the post. We loaded its version and kept your edits for you to re-apply."
+  },
+  "save.done": {
+   "eg": "تم الحفظ",
+   "gulf": "تم الحفظ",
+   "levant": "تم الحفظ",
+   "msa-white": "تم الحفظ",
+   "en": "Saved"
+  },
+  "save.failed": {
+   "eg": "ماقدرناش نحفظ. جرّب تاني.",
+   "gulf": "تعذّر الحفظ. حاول مرة ثانية.",
+   "levant": "ما قدرنا نحفظ. جرّب مرة تانية.",
+   "msa-white": "تعذّر الحفظ. حاول مرة أخرى.",
+   "en": "Saving failed. Try again."
+  },
+  "save.patch.label": {
+   "eg": "تعديلات البوست",
+   "gulf": "تعديلات البوست",
+   "levant": "تعديلات البوست",
+   "msa-white": "تعديلات البوست",
+   "en": "Post changes"
+  },
+  "save.restored": {
+   "eg": "رجّعنا تعديلاتك اللي ماتحفظتش.",
+   "gulf": "رجّعنا تعديلاتك اللي ما انحفظت.",
+   "levant": "رجّعنا تعديلاتك اللي ما انحفظت.",
+   "msa-white": "أعدنا تعديلاتك التي لم تُحفظ.",
+   "en": "We restored your unsaved edits."
+  },
+  "script.add": {
+   "eg": "أضف سلايد",
+   "gulf": "أضف سلايد",
+   "levant": "أضف سلايد",
+   "msa-white": "أضف سلايد",
+   "en": "Add a slide"
+  },
+  "script.approve": {
+   "eg": "تمام، صمّم",
+   "gulf": "تمام، صمّم",
+   "levant": "تمام، صمّم",
+   "msa-white": "تمام، صمّم",
+   "en": "Looks good, design it"
+  },
+  "script.approved": {
+   "eg": "النص معتمد",
+   "gulf": "النص معتمد",
+   "levant": "النص معتمد",
+   "msa-white": "النص معتمد",
+   "en": "Script approved"
+  },
+  "script.blocks": {
+   "eg": {
+    "one": "ملاحظة حاجبة واحدة",
+    "two": "ملاحظتين حاجبتين",
+    "few": "{n} ملاحظات حاجبة",
+    "many": "{n} ملاحظة حاجبة",
+    "other": "{n} ملاحظة حاجبة"
+   },
+   "gulf": {
+    "one": "ملاحظة حاجبة واحدة",
+    "two": "ملاحظتين حاجبتين",
+    "few": "{n} ملاحظات حاجبة",
+    "many": "{n} ملاحظة حاجبة",
+    "other": "{n} ملاحظة حاجبة"
+   },
+   "levant": {
+    "one": "ملاحظة حاجبة واحدة",
+    "two": "ملاحظتين حاجبتين",
+    "few": "{n} ملاحظات حاجبة",
+    "many": "{n} ملاحظة حاجبة",
+    "other": "{n} ملاحظة حاجبة"
+   },
+   "msa-white": {
+    "one": "ملاحظة حاجبة واحدة",
+    "two": "ملاحظتين حاجبتين",
+    "few": "{n} ملاحظات حاجبة",
+    "many": "{n} ملاحظة حاجبة",
+    "other": "{n} ملاحظة حاجبة"
+   },
+   "en": {
+    "one": "{n} blocking note",
+    "other": "{n} blocking notes"
+   }
+  },
+  "script.clean": {
+   "eg": "النص سليم",
+   "gulf": "النص سليم",
+   "levant": "النص سليم",
+   "msa-white": "النص سليم",
+   "en": "Script is clean"
+  },
+  "script.continue": {
+   "eg": "كمّل للتصميم",
+   "gulf": "كمّل للتصميم",
+   "levant": "كمّل للتصميم",
+   "msa-white": "كمّل للتصميم",
+   "en": "Continue to design"
+  },
+  "script.count": {
+   "eg": {
+    "one": "سلايد واحد",
+    "two": "سلايدين",
+    "few": "{n} سلايدات",
+    "many": "{n} سلايد",
+    "other": "{n} سلايد"
+   },
+   "gulf": {
+    "one": "سلايد واحد",
+    "two": "سلايدين",
+    "few": "{n} سلايدات",
+    "many": "{n} سلايد",
+    "other": "{n} سلايد"
+   },
+   "levant": {
+    "one": "سلايد واحد",
+    "two": "سلايدين",
+    "few": "{n} سلايدات",
+    "many": "{n} سلايد",
+    "other": "{n} سلايد"
+   },
+   "msa-white": {
+    "one": "سلايد واحد",
+    "two": "سلايدين",
+    "few": "{n} سلايدات",
+    "many": "{n} سلايد",
+    "other": "{n} سلايد"
+   },
+   "en": {
+    "one": "{n} slide",
+    "other": "{n} slides"
+   }
+  },
+  "script.fixes": {
+   "eg": {
+    "one": "ملاحظة واحدة للمراجعة",
+    "two": "ملاحظتين للمراجعة",
+    "few": "{n} ملاحظات للمراجعة",
+    "many": "{n} ملاحظة للمراجعة",
+    "other": "{n} ملاحظة للمراجعة"
+   },
+   "gulf": {
+    "one": "ملاحظة واحدة للمراجعة",
+    "two": "ملاحظتين للمراجعة",
+    "few": "{n} ملاحظات للمراجعة",
+    "many": "{n} ملاحظة للمراجعة",
+    "other": "{n} ملاحظة للمراجعة"
+   },
+   "levant": {
+    "one": "ملاحظة واحدة للمراجعة",
+    "two": "ملاحظتين للمراجعة",
+    "few": "{n} ملاحظات للمراجعة",
+    "many": "{n} ملاحظة للمراجعة",
+    "other": "{n} ملاحظة للمراجعة"
+   },
+   "msa-white": {
+    "one": "ملاحظة واحدة للمراجعة",
+    "two": "ملاحظتين للمراجعة",
+    "few": "{n} ملاحظات للمراجعة",
+    "many": "{n} ملاحظة للمراجعة",
+    "other": "{n} ملاحظة للمراجعة"
+   },
+   "en": {
+    "one": "{n} note to review",
+    "other": "{n} notes to review"
+   }
+  },
+  "script.hook": {
+   "eg": "هوك الغلاف",
+   "gulf": "هوك الغلاف",
+   "levant": "هوك الغلاف",
+   "msa-white": "هوك الغلاف",
+   "en": "Cover hook"
+  },
+  "script.hook.alternates": {
+   "eg": "بدائل",
+   "gulf": "بدائل",
+   "levant": "بدائل",
+   "msa-white": "بدائل",
+   "en": "Alternatives"
+  },
+  "script.hook.swapped": {
+   "eg": "غيّرنا هوك الغلاف",
+   "gulf": "غيّرنا هوك الغلاف",
+   "levant": "غيّرنا هوك الغلاف",
+   "msa-white": "غيّرنا هوك الغلاف",
+   "en": "Cover hook swapped"
+  },
+  "script.hook.use": {
+   "eg": "استخدمه",
+   "gulf": "استخدمه",
+   "levant": "استخدمه",
+   "msa-white": "استخدمه",
+   "en": "Use it"
+  },
+  "script.lede": {
+   "eg": "راجع النص سلايد بسلايد قبل التصميم. اللي هنا هو اللي هيتحول لتصميم.",
+   "gulf": "راجع النص سلايدًا بسلايد قبل التصميم. ما تكتبه هنا هو ما سيتحول إلى تصميم.",
+   "levant": "راجع النص سلايدًا بسلايد قبل التصميم. ما تكتبه هنا هو ما سيتحول إلى تصميم.",
+   "msa-white": "راجع النص سلايدًا بسلايد قبل التصميم. ما تكتبه هنا هو ما سيتحول إلى تصميم.",
+   "en": "Read the script slide by slide before design. What you write here is what gets designed."
+  },
+  "script.open-design": {
+   "eg": "صمّم",
+   "gulf": "صمّم",
+   "levant": "صمّم",
+   "msa-white": "صمّم",
+   "en": "Design"
+  },
+  "script.score.hint": {
+   "eg": "تقييم الهوك: قواعد (R) · تقدير (J) · أداء سابق (P)",
+   "gulf": "تقييم الهوك: قواعد (R) · تقدير (J) · أداء سابق (P)",
+   "levant": "تقييم الهوك: قواعد (R) · تقدير (J) · أداء سابق (P)",
+   "msa-white": "تقييم الهوك: قواعد (R) · تقدير (J) · أداء سابق (P)",
+   "en": "Hook score: rules (R) · judgement (J) · past performance (P)"
+  },
+  "script.title": {
+   "eg": "النص",
+   "gulf": "النص",
+   "levant": "النص",
+   "msa-white": "النص",
+   "en": "Script"
+  },
+  "script.topic": {
+   "eg": "الموضوع",
+   "gulf": "الموضوع",
+   "levant": "الموضوع",
+   "msa-white": "الموضوع",
+   "en": "Topic"
+  },
+  "script.words.hint": {
+   "eg": "كلمات السلايد والحد المناسب",
+   "gulf": "كلمات السلايد والحد المناسب",
+   "levant": "كلمات السلايد والحد المناسب",
+   "msa-white": "كلمات السلايد والحد المناسب",
+   "en": "Words on the slide and the recommended limit"
+  },
+  "sev.BLOCK": {
+   "eg": "حاجبة",
+   "gulf": "حاجبة",
+   "levant": "حاجبة",
+   "msa-white": "حاجبة",
+   "en": "Blocking"
+  },
+  "sev.FIX": {
+   "eg": "للمراجعة",
+   "gulf": "للمراجعة",
+   "levant": "للمراجعة",
+   "msa-white": "للمراجعة",
+   "en": "To review"
+  },
+  "sev.NOTE": {
+   "eg": "ملاحظة",
+   "gulf": "ملاحظة",
+   "levant": "ملاحظة",
+   "msa-white": "ملاحظة",
+   "en": "Note"
+  },
+  "slide.add-after": {
+   "eg": "أضف بعدها",
+   "gulf": "أضف بعدها",
+   "levant": "أضف بعدها",
+   "msa-white": "أضف بعدها",
+   "en": "Add after"
+  },
+  "slide.added": {
+   "eg": "اتضاف سلايد",
+   "gulf": "تمت إضافة سلايد",
+   "levant": "تمت إضافة سلايد",
+   "msa-white": "تمت إضافة سلايد",
+   "en": "Slide added"
+  },
+  "slide.arrange": {
+   "eg": "الترتيب",
+   "gulf": "الترتيب",
+   "levant": "الترتيب",
+   "msa-white": "الترتيب",
+   "en": "Arrange"
+  },
+  "slide.delete.text": {
+   "eg": "السلايد رقم {n} هيتحذف. تقدر ترجّعه بزرار التراجع.",
+   "gulf": "سيُحذف السلايد رقم {n}. يمكنك استرجاعه بزر التراجع.",
+   "levant": "سيُحذف السلايد رقم {n}. يمكنك استرجاعه بزر التراجع.",
+   "msa-white": "سيُحذف السلايد رقم {n}. يمكنك استرجاعه بزر التراجع.",
+   "en": "Slide {n} will be deleted. You can bring it back with Undo."
+  },
+  "slide.delete.title": {
+   "eg": "نحذف السلايد؟",
+   "gulf": "نحذف السلايد؟",
+   "levant": "نحذف السلايد؟",
+   "msa-white": "نحذف السلايد؟",
+   "en": "Delete this slide?"
+  },
+  "slide.deleted": {
+   "eg": "اتحذف السلايد",
+   "gulf": "تم حذف السلايد",
+   "levant": "تم حذف السلايد",
+   "msa-white": "تم حذف السلايد",
+   "en": "Slide deleted"
+  },
+  "slide.duplicate": {
+   "eg": "كرّرها",
+   "gulf": "كرّرها",
+   "levant": "كرّرها",
+   "msa-white": "كرّرها",
+   "en": "Duplicate"
+  },
+  "slide.menu": {
+   "eg": "خيارات السلايد",
+   "gulf": "خيارات السلايد",
+   "levant": "خيارات السلايد",
+   "msa-white": "خيارات السلايد",
+   "en": "Slide options"
+  },
+  "slide.move-down": {
+   "eg": "حرّكها بعد",
+   "gulf": "حرّكها بعد",
+   "levant": "حرّكها بعد",
+   "msa-white": "حرّكها بعد",
+   "en": "Move later"
+  },
+  "slide.move-earlier": {
+   "eg": "قدّمها",
+   "gulf": "قدّمها",
+   "levant": "قدّمها",
+   "msa-white": "قدّمها",
+   "en": "Move earlier"
+  },
+  "slide.move-later": {
+   "eg": "أخّرها",
+   "gulf": "أخّرها",
+   "levant": "أخّرها",
+   "msa-white": "أخّرها",
+   "en": "Move later"
+  },
+  "slide.move-up": {
+   "eg": "حرّكها قبل",
+   "gulf": "حرّكها قبل",
+   "levant": "حرّكها قبل",
+   "msa-white": "حرّكها قبل",
+   "en": "Move earlier"
+  },
+  "slide.n": {
+   "eg": "السلايد {n}",
+   "gulf": "السلايد {n}",
+   "levant": "السلايد {n}",
+   "msa-white": "السلايد {n}",
+   "en": "Slide {n}"
+  },
+  "slide.notes": {
+   "eg": "ملاحظة",
+   "gulf": "ملاحظة",
+   "levant": "ملاحظة",
+   "msa-white": "ملاحظة",
+   "en": "Note"
+  },
+  "slide.notes.hint": {
+   "eg": "ملاحظة ليك لوحدك. مابتظهرش على السلايد ولا في الملفات.",
+   "gulf": "ملاحظة لك وحدك. لا تظهر على السلايد ولا في الملفات.",
+   "levant": "ملاحظة لك وحدك. لا تظهر على السلايد ولا في الملفات.",
+   "msa-white": "ملاحظة لك وحدك. لا تظهر على السلايد ولا في الملفات.",
+   "en": "A note for yourself. It never appears on the slide or in the files."
+  },
+  "slide.notes.ph": {
+   "eg": "مثال: أضيف هنا مثال من تجربتي",
+   "gulf": "مثال: أضيف هنا مثالًا من تجربتي",
+   "levant": "مثال: أضيف هنا مثالًا من تجربتي",
+   "msa-white": "مثال: أضيف هنا مثالًا من تجربتي",
+   "en": "Example: add one of my own examples here"
+  },
+  "slide.regen": {
+   "eg": "صياغة أخرى",
+   "gulf": "صياغة أخرى",
+   "levant": "صياغة أخرى",
+   "msa-white": "صياغة أخرى",
+   "en": "Another wording"
+  },
+  "slide.split": {
+   "eg": "قسّمه لسلايدين",
+   "gulf": "قسّمه لسلايدين",
+   "levant": "قسّمه لسلايدين",
+   "msa-white": "قسّمه لسلايدين",
+   "en": "Split into two slides"
+  },
+  "slide.split.done": {
+   "eg": "اتقسم لسلايدين",
+   "gulf": "تم تقسيمه إلى سلايدين",
+   "levant": "تم تقسيمه إلى سلايدين",
+   "msa-white": "تم تقسيمه إلى سلايدين",
+   "en": "Split into two slides"
+  },
+  "slide.split.none": {
+   "eg": "السلايد قصير، مفيش حاجة تتقسم.",
+   "gulf": "السلايد قصير، لا يوجد ما يُقسَّم.",
+   "levant": "السلايد قصير، لا يوجد ما يُقسَّم.",
+   "msa-white": "السلايد قصير، لا يوجد ما يُقسَّم.",
+   "en": "This slide is short, there is nothing to split."
+  },
+  "slide.variant": {
+   "eg": "شكل السلايد",
+   "gulf": "شكل السلايد",
+   "levant": "شكل السلايد",
+   "msa-white": "شكل السلايد",
+   "en": "Slide layout"
+  },
+  "slide.variant.hint": {
+   "eg": "أشكال مختلفة لنفس النوع في الستايل الحالي.",
+   "gulf": "أشكال مختلفة للنوع نفسه في الستايل الحالي.",
+   "levant": "أشكال مختلفة للنوع نفسه في الستايل الحالي.",
+   "msa-white": "أشكال مختلفة للنوع نفسه في الستايل الحالي.",
+   "en": "Different layouts of the same slide type in this style."
+  },
+  "social.facebook": {
+   "eg": "فيسبوك",
+   "gulf": "فيسبوك",
+   "levant": "فيسبوك",
+   "msa-white": "فيسبوك",
+   "en": "Facebook"
+  },
+  "social.instagram": {
+   "eg": "Instagram",
+   "gulf": "Instagram",
+   "levant": "Instagram",
+   "msa-white": "Instagram",
+   "en": "Instagram"
+  },
+  "social.linkedin": {
+   "eg": "لينكدإن",
+   "gulf": "لينكدإن",
+   "levant": "لينكدإن",
+   "msa-white": "لينكدإن",
+   "en": "LinkedIn"
+  },
+  "social.store": {
+   "eg": "المتجر",
+   "gulf": "المتجر",
+   "levant": "المتجر",
+   "msa-white": "المتجر",
+   "en": "Store"
+  },
+  "social.tiktok": {
+   "eg": "تيك توك",
+   "gulf": "تيك توك",
+   "levant": "تيك توك",
+   "msa-white": "تيك توك",
+   "en": "TikTok"
+  },
+  "social.youtube": {
+   "eg": "يوتيوب",
+   "gulf": "يوتيوب",
+   "levant": "يوتيوب",
+   "msa-white": "يوتيوب",
+   "en": "YouTube"
+  },
+  "source.audience-faq": {
+   "eg": "أسئلة الجمهور",
+   "gulf": "أسئلة الجمهور",
+   "levant": "أسئلة الجمهور",
+   "msa-white": "أسئلة الجمهور",
+   "en": "Audience questions"
+  },
+  "source.claude": {
+   "eg": "اقتراح Claude",
+   "gulf": "اقتراح Claude",
+   "levant": "اقتراح Claude",
+   "msa-white": "اقتراح Claude",
+   "en": "Claude's idea"
+  },
+  "source.occasion": {
+   "eg": "مناسبة",
+   "gulf": "مناسبة",
+   "levant": "مناسبة",
+   "msa-white": "مناسبة",
+   "en": "Occasion"
+  },
+  "source.repurposed": {
+   "eg": "محتوى معاد",
+   "gulf": "محتوى معاد",
+   "levant": "محتوى معاد",
+   "msa-white": "محتوى معاد",
+   "en": "Repurposed"
+  },
+  "source.user": {
+   "eg": "منك",
+   "gulf": "منك",
+   "levant": "منك",
+   "msa-white": "منك",
+   "en": "You"
+  },
+  "state.angle": {
+   "eg": "زاوية الموضوع",
+   "gulf": "زاوية الموضوع",
+   "levant": "زاوية الموضوع",
+   "msa-white": "زاوية الموضوع",
+   "en": "Angle"
+  },
+  "state.design": {
+   "eg": "التصميم قيد العمل",
+   "gulf": "التصميم قيد العمل",
+   "levant": "التصميم قيد العمل",
+   "msa-white": "التصميم قيد العمل",
+   "en": "Design in progress"
+  },
+  "state.exported": {
+   "eg": "تم التصدير",
+   "gulf": "تم التصدير",
+   "levant": "تم التصدير",
+   "msa-white": "تم التصدير",
+   "en": "Exported"
+  },
+  "state.ready": {
+   "eg": "جاهز للنشر",
+   "gulf": "جاهز للنشر",
+   "levant": "جاهز للنشر",
+   "msa-white": "جاهز للنشر",
+   "en": "Ready to post"
+  },
+  "state.script": {
+   "eg": "النص قيد المراجعة",
+   "gulf": "النص قيد المراجعة",
+   "levant": "النص قيد المراجعة",
+   "msa-white": "النص قيد المراجعة",
+   "en": "Script in review"
+  },
+  "status.angled": {
+   "eg": "زاوية",
+   "gulf": "زاوية",
+   "levant": "زاوية",
+   "msa-white": "زاوية",
+   "en": "Angle"
+  },
+  "status.designed": {
+   "eg": "تصميم",
+   "gulf": "تصميم",
+   "levant": "تصميم",
+   "msa-white": "تصميم",
+   "en": "Design"
+  },
+  "status.exported": {
+   "eg": "تم التصدير",
+   "gulf": "تم التصدير",
+   "levant": "تم التصدير",
+   "msa-white": "تم التصدير",
+   "en": "Exported"
+  },
+  "status.idea": {
+   "eg": "فكرة",
+   "gulf": "فكرة",
+   "levant": "فكرة",
+   "msa-white": "فكرة",
+   "en": "Idea"
+  },
+  "status.posted": {
+   "eg": "تم النشر",
+   "gulf": "تم النشر",
+   "levant": "تم النشر",
+   "msa-white": "تم النشر",
+   "en": "Posted"
+  },
+  "status.scripted": {
+   "eg": "نص",
+   "gulf": "نص",
+   "levant": "نص",
+   "msa-white": "نص",
+   "en": "Script"
+  },
+  "style.accent": {
+   "eg": "اللون المميز",
+   "gulf": "اللون المميز",
+   "levant": "اللون المميز",
+   "msa-white": "اللون المميز",
+   "en": "Accent colour"
+  },
+  "style.accent.adjusted": {
+   "eg": "تعديلات لتحسين القراءة",
+   "gulf": "تعديلات لتحسين القراءة",
+   "levant": "تعديلات لتحسين القراءة",
+   "msa-white": "تعديلات لتحسين القراءة",
+   "en": "Adjustments for readability"
+  },
+  "style.accent.brand": {
+   "eg": "لون البراند",
+   "gulf": "لون البراند",
+   "levant": "لون البراند",
+   "msa-white": "لون البراند",
+   "en": "Brand colour"
+  },
+  "style.accent.brand2": {
+   "eg": "لون البراند الثاني",
+   "gulf": "لون البراند الثاني",
+   "levant": "لون البراند الثاني",
+   "msa-white": "لون البراند الثاني",
+   "en": "Second brand colour"
+  },
+  "style.accent.custom": {
+   "eg": "لون آخر",
+   "gulf": "لون آخر",
+   "levant": "لون آخر",
+   "msa-white": "لون آخر",
+   "en": "Another colour"
+  },
+  "style.accent.ink": {
+   "eg": "لون الحبر",
+   "gulf": "لون الحبر",
+   "levant": "لون الحبر",
+   "msa-white": "لون الحبر",
+   "en": "Ink colour"
+  },
+  "style.accent.locked": {
+   "eg": "اللون ده مقفول من البراند.",
+   "gulf": "هذا اللون مقفل من البراند.",
+   "levant": "هذا اللون مقفل من البراند.",
+   "msa-white": "هذا اللون مقفل من البراند.",
+   "en": "This colour is locked by the brand."
+  },
+  "style.accent.preset": {
+   "eg": "لون الستايل",
+   "gulf": "لون الستايل",
+   "levant": "لون الستايل",
+   "msa-white": "لون الستايل",
+   "en": "Style colour"
+  },
+  "style.accent.reset": {
+   "eg": "ارجع للون الستايل",
+   "gulf": "ارجع للون الستايل",
+   "levant": "ارجع للون الستايل",
+   "msa-white": "ارجع للون الستايل",
+   "en": "Back to the style colour"
+  },
+  "style.accent.why": {
+   "eg": "ليه اللون ده؟",
+   "gulf": "ليش هذا اللون؟",
+   "levant": "ليش هاللون؟",
+   "msa-white": "لماذا هذا اللون؟",
+   "en": "Why this colour?"
+  },
+  "style.accent.why.none": {
+   "eg": "اللون ده من الستايل زي ما هو ومفيش تعديل عليه.",
+   "gulf": "اللون من الستايل كما هو ولم نعدّله.",
+   "levant": "اللون من الستايل كما هو ولم نعدّله.",
+   "msa-white": "اللون من الستايل كما هو ولم نعدّله.",
+   "en": "The colour comes from the style as is, with no adjustment."
+  },
+  "style.applang": {
+   "eg": "لغة Instagram عند الجمهور",
+   "gulf": "لغة Instagram عند الجمهور",
+   "levant": "لغة Instagram عند الجمهور",
+   "msa-white": "لغة Instagram عند الجمهور",
+   "en": "Audience's Instagram language"
+  },
+  "style.cue": {
+   "eg": "إشارة السحب",
+   "gulf": "إشارة السحب",
+   "levant": "إشارة السحب",
+   "msa-white": "إشارة السحب",
+   "en": "Swipe cue"
+  },
+  "style.cue.hint": {
+   "eg": "السهم بيتحدد حسب لغة Instagram عند جمهورك.",
+   "gulf": "يتحدد السهم حسب لغة Instagram عند جمهورك.",
+   "levant": "يتحدد السهم حسب لغة Instagram عند جمهورك.",
+   "msa-white": "يتحدد السهم حسب لغة Instagram عند جمهورك.",
+   "en": "The arrow follows the Instagram language of your audience."
+  },
+  "style.cue.pick": {
+   "eg": "الإشارة على السلايد",
+   "gulf": "الإشارة على السلايد",
+   "levant": "الإشارة على السلايد",
+   "msa-white": "الإشارة على السلايد",
+   "en": "Cue on the slide"
+  },
+  "style.fonts": {
+   "eg": "الخطوط",
+   "gulf": "الخطوط",
+   "levant": "الخطوط",
+   "msa-white": "الخطوط",
+   "en": "Fonts"
+  },
+  "style.fonts.hint": {
+   "eg": "تركيبات الخطوط معروضة على جملة غلافك. اختار اللي يعجبك.",
+   "gulf": "تركيبات الخطوط معروضة على جملة غلافك. اختر ما يعجبك.",
+   "levant": "تركيبات الخطوط معروضة على جملة غلافك. اختر ما يعجبك.",
+   "msa-white": "تركيبات الخطوط معروضة على جملة غلافك. اختر ما يعجبك.",
+   "en": "Font pairings shown on your own cover line. Pick the one you like."
+  },
+  "style.fonts.locked": {
+   "eg": "الخط مقفول في البراند.",
+   "gulf": "الخط مقفول في البراند.",
+   "levant": "الخط مقفول في البراند.",
+   "msa-white": "الخط مقفول في البراند.",
+   "en": "The brand locks the font."
+  },
+  "style.fonts.own": {
+   "eg": "خط الستايل",
+   "gulf": "خط الستايل",
+   "levant": "خط الستايل",
+   "msa-white": "خط الستايل",
+   "en": "The style's own"
+  },
+  "style.fonts.reset": {
+   "eg": "ارجع لخط الستايل",
+   "gulf": "ارجع لخط الستايل",
+   "levant": "ارجع لخط الستايل",
+   "msa-white": "ارجع لخط الستايل",
+   "en": "Back to the style font"
+  },
+  "style.meta": {
+   "eg": "نص الركن العلوي",
+   "gulf": "نص الركن العلوي",
+   "levant": "نص الركن العلوي",
+   "msa-white": "نص الركن العلوي",
+   "en": "Top corner label"
+  },
+  "style.meta.hint": {
+   "eg": "اسم سلسلة أو موضوع بيظهر في ركن كل سلايد. سيبه فاضي لو مش محتاجه.",
+   "gulf": "اسم سلسلة أو موضوع يظهر في ركن كل سلايد. اتركه فارغًا إن لم تحتجه.",
+   "levant": "اسم سلسلة أو موضوع يظهر في ركن كل سلايد. اتركه فارغًا إن لم تحتجه.",
+   "msa-white": "اسم سلسلة أو موضوع يظهر في ركن كل سلايد. اتركه فارغًا إن لم تحتجه.",
+   "en": "A series or topic name shown in the corner of every slide. Leave it empty if you do not need it."
+  },
+  "style.meta.ph": {
+   "eg": "مثال: أدوات الأسبوع",
+   "gulf": "مثال: أدوات الأسبوع",
+   "levant": "مثال: أدوات الأسبوع",
+   "msa-white": "مثال: أدوات الأسبوع",
+   "en": "Example: Tools of the week"
+  },
+  "style.occasion": {
+   "eg": "المناسبة",
+   "gulf": "المناسبة",
+   "levant": "المناسبة",
+   "msa-white": "المناسبة",
+   "en": "Occasion"
+  },
+  "style.occasion.hint": {
+   "eg": "طبقة ألوان موسمية فوق الستايل.",
+   "gulf": "طبقة ألوان موسمية فوق الستايل.",
+   "levant": "طبقة ألوان موسمية فوق الستايل.",
+   "msa-white": "طبقة ألوان موسمية فوق الستايل.",
+   "en": "A seasonal colour layer on top of the style."
+  },
+  "style.occasion.none": {
+   "eg": "بدون مناسبة",
+   "gulf": "بدون مناسبة",
+   "levant": "بدون مناسبة",
+   "msa-white": "بدون مناسبة",
+   "en": "No occasion"
+  },
+  "style.preset.applied": {
+   "eg": "طبّقنا ستايل {name}",
+   "gulf": "طبّقنا ستايل {name}",
+   "levant": "طبّقنا ستايل {name}",
+   "msa-white": "طبّقنا ستايل {name}",
+   "en": "Applied the {name} style"
+  },
+  "style.presets": {
+   "eg": "الستايل",
+   "gulf": "الستايل",
+   "levant": "الستايل",
+   "msa-white": "الستايل",
+   "en": "Style"
+  },
+  "style.presets.hint": {
+   "eg": "كل ستايل معروض بغلافك إنت.",
+   "gulf": "كل ستايل معروض بغلافك أنت.",
+   "levant": "كل ستايل معروض بغلافك أنت.",
+   "msa-white": "كل ستايل معروض بغلافك أنت.",
+   "en": "Every style is shown with your own cover."
+  },
+  "tab.slide": {
+   "eg": "السلايد",
+   "gulf": "السلايد",
+   "levant": "السلايد",
+   "msa-white": "السلايد",
+   "en": "Slide"
+  },
+  "tab.style": {
+   "eg": "الستايل",
+   "gulf": "الستايل",
+   "levant": "الستايل",
+   "msa-white": "الستايل",
+   "en": "Style"
+  },
+  "tab.text": {
+   "eg": "النص",
+   "gulf": "النص",
+   "levant": "النص",
+   "msa-white": "النص",
+   "en": "Text"
+  },
+  "tab.visual": {
+   "eg": "الصورة",
+   "gulf": "الصورة",
+   "levant": "الصورة",
+   "msa-white": "الصورة",
+   "en": "Image"
+  },
+  "team.hook": {
+   "eg": "الغلاف",
+   "gulf": "الغلاف",
+   "levant": "الغلاف",
+   "msa-white": "الغلاف",
+   "en": "Cover"
+  },
+  "team.k.cta": {
+   "eg": "الدعوة",
+   "gulf": "الدعوة",
+   "levant": "الدعوة",
+   "msa-white": "الدعوة",
+   "en": "Call to action"
+  },
+  "team.k.family": {
+   "eg": "عائلة الهوك",
+   "gulf": "عائلة الهوك",
+   "levant": "عائلة الهوك",
+   "msa-white": "عائلة الهوك",
+   "en": "Hook family"
+  },
+  "team.k.intent": {
+   "eg": "الهدف",
+   "gulf": "الهدف",
+   "levant": "الهدف",
+   "msa-white": "الهدف",
+   "en": "Goal"
+  },
+  "team.k.motion": {
+   "eg": "حركة الغلاف",
+   "gulf": "حركة الغلاف",
+   "levant": "حركة الغلاف",
+   "msa-white": "حركة الغلاف",
+   "en": "Cover motion"
+  },
+  "team.k.move": {
+   "eg": "الحركة الإبداعية",
+   "gulf": "الحركة الإبداعية",
+   "levant": "الحركة الإبداعية",
+   "msa-white": "الحركة الإبداعية",
+   "en": "Creative move"
+  },
+  "team.k.panel": {
+   "eg": "اللجنة",
+   "gulf": "اللجنة",
+   "levant": "اللجنة",
+   "msa-white": "اللجنة",
+   "en": "Panel"
+  },
+  "team.k.pitch": {
+   "eg": "الاتجاه",
+   "gulf": "الاتجاه",
+   "levant": "الاتجاه",
+   "msa-white": "الاتجاه",
+   "en": "Direction"
+  },
+  "team.k.preset": {
+   "eg": "الستايل",
+   "gulf": "الستايل",
+   "levant": "الستايل",
+   "msa-white": "الستايل",
+   "en": "Style"
+  },
+  "team.k.series": {
+   "eg": "السلسلة",
+   "gulf": "السلسلة",
+   "levant": "السلسلة",
+   "msa-white": "السلسلة",
+   "en": "Series"
+  },
+  "team.log.design": {
+   "eg": "التصميم",
+   "gulf": "التصميم",
+   "levant": "التصميم",
+   "msa-white": "التصميم",
+   "en": "Design"
+  },
+  "team.log.director": {
+   "eg": "المدير الإبداعي",
+   "gulf": "المدير الإبداعي",
+   "levant": "المدير الإبداعي",
+   "msa-white": "المدير الإبداعي",
+   "en": "Creative Director"
+  },
+  "team.log.duel": {
+   "eg": "مبارزة الهوكات",
+   "gulf": "مبارزة الهوكات",
+   "levant": "مبارزة الهوكات",
+   "msa-white": "مبارزة الهوكات",
+   "en": "Hook duel"
+  },
+  "team.log.editor": {
+   "eg": "المدقق",
+   "gulf": "المدقق",
+   "levant": "المدقق",
+   "msa-white": "المدقق",
+   "en": "Arabic editor"
+  },
+  "team.log.pitch": {
+   "eg": "البيتش",
+   "gulf": "البيتش",
+   "levant": "البيتش",
+   "msa-white": "البيتش",
+   "en": "Pitch"
+  },
+  "team.log.swipe": {
+   "eg": "اختبار السحب",
+   "gulf": "اختبار السحب",
+   "levant": "اختبار السحب",
+   "msa-white": "اختبار السحب",
+   "en": "Swipe test"
+  },
+  "team.log.title": {
+   "eg": "الفريق قرر إيه؟",
+   "gulf": "ماذا قرر الفريق؟",
+   "levant": "شو قرر الفريق؟",
+   "msa-white": "ماذا قرر الفريق؟",
+   "en": "What the team decided"
+  },
+  "team.loved": {
+   "eg": "اتحبّ",
+   "gulf": "أعجبك",
+   "levant": "أعجبك",
+   "msa-white": "أعجبك",
+   "en": "Loved"
+  },
+  "team.move.before-after": {
+   "eg": "قبل وبعد",
+   "gulf": "قبل وبعد",
+   "levant": "قبل وبعد",
+   "msa-white": "قبل وبعد",
+   "en": "Before and after"
+  },
+  "team.move.big-number": {
+   "eg": "الرقم الكبير",
+   "gulf": "الرقم الكبير",
+   "levant": "الرقم الكبير",
+   "msa-white": "الرقم الكبير",
+   "en": "The big number"
+  },
+  "team.move.cheat-sheet": {
+   "eg": "ورقة الغش",
+   "gulf": "الورقة المختصرة",
+   "levant": "الورقة المختصرة",
+   "msa-white": "الورقة المختصرة",
+   "en": "The cheat sheet"
+  },
+  "team.move.confession": {
+   "eg": "الاعتراف",
+   "gulf": "الاعتراف",
+   "levant": "الاعتراف",
+   "msa-white": "الاعتراف",
+   "en": "The confession"
+  },
+  "team.move.countdown": {
+   "eg": "العدّ التنازلي",
+   "gulf": "العدّ التنازلي",
+   "levant": "العدّ التنازلي",
+   "msa-white": "العدّ التنازلي",
+   "en": "The countdown"
+  },
+  "team.move.enemy": {
+   "eg": "العدو",
+   "gulf": "العدو",
+   "levant": "العدو",
+   "msa-white": "العدو",
+   "en": "The enemy"
+  },
+  "team.move.free-vs-paid": {
+   "eg": "ببلاش ولا مدفوع",
+   "gulf": "مجاني أم مدفوع",
+   "levant": "مجاني أم مدفوع",
+   "msa-white": "مجاني أم مدفوع",
+   "en": "Free versus paid"
+  },
+  "team.move.insider-leak": {
+   "eg": "التسريب",
+   "gulf": "التسريب",
+   "levant": "التسريب",
+   "msa-white": "التسريب",
+   "en": "The insider leak"
+  },
+  "team.move.mirror": {
+   "eg": "المرآة",
+   "gulf": "المرآة",
+   "levant": "المرآة",
+   "msa-white": "المرآة",
+   "en": "The mirror"
+  },
+  "team.move.reveal": {
+   "eg": "الكشف",
+   "gulf": "الكشف",
+   "levant": "الكشف",
+   "msa-white": "الكشف",
+   "en": "The reveal"
+  },
+  "team.panel": {
+   "eg": "{n} من 3 وقفوا",
+   "gulf": "{n} من 3 توقفوا",
+   "levant": "{n} من 3 وقفوا",
+   "msa-white": "{n} من 3 توقفوا",
+   "en": "{n} of 3 stopped"
+  },
+  "team.panel.depth": {
+   "eg": "وصلوا لسلايد {d} من {n}",
+   "gulf": "وصلوا إلى السلايد {d} من {n}",
+   "levant": "وصلوا لسلايد {d} من {n}",
+   "msa-white": "وصلوا إلى السلايد {d} من {n}",
+   "en": "reached slide {d} of {n}"
+  },
+  "team.pitch.bold": {
+   "eg": "جريء",
+   "gulf": "جريء",
+   "levant": "جريء",
+   "msa-white": "جريء",
+   "en": "Bold"
+  },
+  "team.pitch.merged": {
+   "eg": "دمج",
+   "gulf": "دمج",
+   "levant": "دمج",
+   "msa-white": "دمج",
+   "en": "Merged"
+  },
+  "team.pitch.safe": {
+   "eg": "آمن",
+   "gulf": "آمن",
+   "levant": "آمن",
+   "msa-white": "آمن",
+   "en": "Safe"
+  },
+  "team.rejected": {
+   "eg": "اتشال",
+   "gulf": "رفضته",
+   "levant": "رفضته",
+   "msa-white": "رفضته",
+   "en": "Rejected"
+  },
+  "team.verdict.killed": {
+   "eg": "اتلغى",
+   "gulf": "أُلغي",
+   "levant": "أُلغي",
+   "msa-white": "أُلغي",
+   "en": "Killed"
+  },
+  "team.verdict.revised": {
+   "eg": "اتعدّل",
+   "gulf": "عُدّل",
+   "levant": "عُدّل",
+   "msa-white": "عُدّل",
+   "en": "Revised"
+  },
+  "team.verdict.ship": {
+   "eg": "جاهز",
+   "gulf": "جاهز",
+   "levant": "جاهز",
+   "msa-white": "جاهز",
+   "en": "Shipped"
+  },
+  "text.dialect": {
+   "eg": "لهجة البوست",
+   "gulf": "لهجة البوست",
+   "levant": "لهجة البوست",
+   "msa-white": "لهجة البوست",
+   "en": "Post dialect"
+  },
+  "text.dialect.changed": {
+   "eg": "غيّرنا لهجة البوست. راجع النص.",
+   "gulf": "غيّرنا لهجة البوست. راجع النص.",
+   "levant": "غيّرنا لهجة البوست. راجع النص.",
+   "msa-white": "غيّرنا لهجة البوست. راجع النص.",
+   "en": "Post dialect changed. Review the text."
+  },
+  "text.dialect.hint": {
+   "eg": "بتغيّر اللهجة النصوص الجاهزة على السلايدات وطريقة الفحص. راجع نصك بعد التغيير.",
+   "gulf": "تغيّر اللهجة النصوص الجاهزة على السلايدات وطريقة الفحص. راجع نصك بعد التغيير.",
+   "levant": "تغيّر اللهجة النصوص الجاهزة على السلايدات وطريقة الفحص. راجع نصك بعد التغيير.",
+   "msa-white": "تغيّر اللهجة النصوص الجاهزة على السلايدات وطريقة الفحص. راجع نصك بعد التغيير.",
+   "en": "The dialect sets the built-in slide wording and how the copy is checked. Review your text after changing it."
+  },
+  "text.digits": {
+   "eg": "الأرقام",
+   "gulf": "الأرقام",
+   "levant": "الأرقام",
+   "msa-white": "الأرقام",
+   "en": "Digits"
+  },
+  "text.digits.changed": {
+   "eg": "حوّلنا الأرقام إلى {system}",
+   "gulf": "حوّلنا الأرقام إلى {system}",
+   "levant": "حوّلنا الأرقام إلى {system}",
+   "msa-white": "حوّلنا الأرقام إلى {system}",
+   "en": "Converted the digits to {system}"
+  },
+  "text.digits.evidence": {
+   "eg": "كل الأرقام على أغلفة الكاروسيل العربي الناجحة اللي حلّلناها كانت 123.",
+   "gulf": "كل الأرقام على أغلفة الكاروسيل العربي الناجحة التي حلّلناها كانت 123.",
+   "levant": "كل الأرقام على أغلفة الكاروسيل العربي الناجحة التي حلّلناها كانت 123.",
+   "msa-white": "كل الأرقام على أغلفة الكاروسيل العربي الناجحة التي حلّلناها كانت 123.",
+   "en": "Every number on the successful Arabic carousel covers we analysed was written 123."
+  },
+  "text.digits.hint": {
+   "eg": "نظام أرقام واحد في التصميم كله. بنحوّل كل الأرقام لما تغيّر.",
+   "gulf": "نظام أرقام واحد في التصميم كله. نحوّل كل الأرقام عندما تغيّر.",
+   "levant": "نظام أرقام واحد في التصميم كله. نحوّل كل الأرقام عندما تغيّر.",
+   "msa-white": "نظام أرقام واحد في التصميم كله. نحوّل كل الأرقام عندما تغيّر.",
+   "en": "One digit system across the design. We convert every number when you switch."
+  },
+  "text.kashida": {
+   "eg": "التطويل",
+   "gulf": "التطويل",
+   "levant": "التطويل",
+   "msa-white": "التطويل",
+   "en": "Kashida"
+  },
+  "text.kashida.hint": {
+   "eg": "ينفع تطويل كلمة واحدة بس في العنوان.",
+   "gulf": "يمكن تطويل كلمة واحدة فقط في العنوان.",
+   "levant": "يمكن تطويل كلمة واحدة فقط في العنوان.",
+   "msa-white": "يمكن تطويل كلمة واحدة فقط في العنوان.",
+   "en": "Only one word of the headline can be stretched."
+  },
+  "text.kashida.none": {
+   "eg": "مفيش كلمة في العنوان تصلح للتطويل.",
+   "gulf": "لا توجد كلمة في العنوان تصلح للتطويل.",
+   "levant": "لا توجد كلمة في العنوان تصلح للتطويل.",
+   "msa-white": "لا توجد كلمة في العنوان تصلح للتطويل.",
+   "en": "No word in the headline is suitable for kashida."
+  },
+  "text.kashida.none-pick": {
+   "eg": "بدون تطويل",
+   "gulf": "بدون تطويل",
+   "levant": "بدون تطويل",
+   "msa-white": "بدون تطويل",
+   "en": "No kashida"
+  },
+  "text.kashida.off": {
+   "eg": "التطويل متاح في الستايل التراثي بس. غيّر الستايل لو عايزه.",
+   "gulf": "التطويل متاح في الستايل التراثي فقط. غيّر الستايل إن أردته.",
+   "levant": "التطويل متاح في الستايل التراثي فقط. غيّر الستايل إن أردته.",
+   "msa-white": "التطويل متاح في الستايل التراثي فقط. غيّر الستايل إن أردته.",
+   "en": "Kashida is only available in the Heritage style. Change the style if you want it."
+  },
+  "text.slide": {
+   "eg": "نص السلايد {n}: {type}",
+   "gulf": "نص السلايد {n}: {type}",
+   "levant": "نص السلايد {n}: {type}",
+   "msa-white": "نص السلايد {n}: {type}",
+   "en": "Text of slide {n}: {type}"
+  },
+  "text.slide.hint": {
+   "eg": "نفس التعديل اللي على السلايد، بس في خانات. مفيد على الموبايل.",
+   "gulf": "التعديل نفسه الذي على السلايد، لكن في خانات. مفيد على الموبايل.",
+   "levant": "التعديل نفسه الذي على السلايد، لكن في خانات. مفيد على الموبايل.",
+   "msa-white": "التعديل نفسه الذي على السلايد، لكن في خانات. مفيد على الموبايل.",
+   "en": "The same edit as on the slide, in fields. Handy on a phone."
+  },
+  "theme.auto": {
+   "eg": "تلقائي",
+   "gulf": "تلقائي",
+   "levant": "تلقائي",
+   "msa-white": "تلقائي",
+   "en": "Auto"
+  },
+  "theme.dark": {
+   "eg": "داكن",
+   "gulf": "داكن",
+   "levant": "داكن",
+   "msa-white": "داكن",
+   "en": "Dark"
+  },
+  "theme.light": {
+   "eg": "فاتح",
+   "gulf": "فاتح",
+   "levant": "فاتح",
+   "msa-white": "فاتح",
+   "en": "Light"
+  },
+  "top.copy-changes": {
+   "eg": "انسخ التعديلات",
+   "gulf": "انسخ التعديلات",
+   "levant": "انسخ التعديلات",
+   "msa-white": "انسخ التعديلات",
+   "en": "Copy changes"
+  },
+  "top.menu": {
+   "eg": "المزيد",
+   "gulf": "المزيد",
+   "levant": "المزيد",
+   "msa-white": "المزيد",
+   "en": "More"
+  },
+  "top.qa.block": {
+   "eg": "حاجبة: {n}",
+   "gulf": "حاجبة: {n}",
+   "levant": "حاجبة: {n}",
+   "msa-white": "حاجبة: {n}",
+   "en": "Blocking: {n}"
+  },
+  "top.qa.fix": {
+   "eg": "للمراجعة: {n}",
+   "gulf": "للمراجعة: {n}",
+   "levant": "للمراجعة: {n}",
+   "msa-white": "للمراجعة: {n}",
+   "en": "To review: {n}"
+  },
+  "top.qa.open": {
+   "eg": "افتح الفحص",
+   "gulf": "افتح الفحص",
+   "levant": "افتح الفحص",
+   "msa-white": "افتح الفحص",
+   "en": "Open checks"
+  },
+  "top.qa.pass": {
+   "eg": "سليم",
+   "gulf": "سليم",
+   "levant": "سليم",
+   "msa-white": "سليم",
+   "en": "All clear"
+  },
+  "top.redo": {
+   "eg": "إعادة",
+   "gulf": "إعادة",
+   "levant": "إعادة",
+   "msa-white": "إعادة",
+   "en": "Redo"
+  },
+  "top.save": {
+   "eg": "حفظ",
+   "gulf": "حفظ",
+   "levant": "حفظ",
+   "msa-white": "حفظ",
+   "en": "Save"
+  },
+  "top.undo": {
+   "eg": "تراجع",
+   "gulf": "تراجع",
+   "levant": "تراجع",
+   "msa-white": "تراجع",
+   "en": "Undo"
+  },
+  "top.unsaved": {
+   "eg": "لسه ما اتحفظش",
+   "gulf": "لم يُحفظ",
+   "levant": "لم يُحفظ",
+   "msa-white": "لم يُحفظ",
+   "en": "Unsaved"
+  },
+  "type.checklist": {
+   "eg": "قائمة تحقق",
+   "gulf": "قائمة تحقق",
+   "levant": "قائمة تحقق",
+   "msa-white": "قائمة تحقق",
+   "en": "Checklist"
+  },
+  "type.compare": {
+   "eg": "مقارنة",
+   "gulf": "مقارنة",
+   "levant": "مقارنة",
+   "msa-white": "مقارنة",
+   "en": "Comparison"
+  },
+  "type.cover": {
+   "eg": "الغلاف",
+   "gulf": "الغلاف",
+   "levant": "الغلاف",
+   "msa-white": "الغلاف",
+   "en": "Cover"
+  },
+  "type.cta": {
+   "eg": "دعوة للتصرف",
+   "gulf": "دعوة للتصرف",
+   "levant": "دعوة للتصرف",
+   "msa-white": "دعوة للتصرف",
+   "en": "Call to action"
+  },
+  "type.grid": {
+   "eg": "شبكة",
+   "gulf": "شبكة",
+   "levant": "شبكة",
+   "msa-white": "شبكة",
+   "en": "Grid"
+  },
+  "type.item": {
+   "eg": "نقطة",
+   "gulf": "نقطة",
+   "levant": "نقطة",
+   "msa-white": "نقطة",
+   "en": "Point"
+  },
+  "type.myth-fact": {
+   "eg": "خرافة وحقيقة",
+   "gulf": "خرافة وحقيقة",
+   "levant": "خرافة وحقيقة",
+   "msa-white": "خرافة وحقيقة",
+   "en": "Myth and fact"
+  },
+  "type.offer": {
+   "eg": "عرض",
+   "gulf": "عرض",
+   "levant": "عرض",
+   "msa-white": "عرض",
+   "en": "Offer"
+  },
+  "type.poster": {
+   "eg": "بوستر",
+   "gulf": "بوستر",
+   "levant": "بوستر",
+   "msa-white": "بوستر",
+   "en": "Poster"
+  },
+  "type.proof": {
+   "eg": "إثبات",
+   "gulf": "إثبات",
+   "levant": "إثبات",
+   "msa-white": "إثبات",
+   "en": "Proof"
+  },
+  "type.quote": {
+   "eg": "اقتباس",
+   "gulf": "اقتباس",
+   "levant": "اقتباس",
+   "msa-white": "اقتباس",
+   "en": "Quote"
+  },
+  "type.rehook": {
+   "eg": "السلايد الثاني",
+   "gulf": "السلايد الثاني",
+   "levant": "السلايد الثاني",
+   "msa-white": "السلايد الثاني",
+   "en": "Second slide"
+  },
+  "type.setup": {
+   "eg": "المتطلبات",
+   "gulf": "المتطلبات",
+   "levant": "المتطلبات",
+   "msa-white": "المتطلبات",
+   "en": "Requirements"
+  },
+  "type.share": {
+   "eg": "شارك",
+   "gulf": "شارك",
+   "levant": "شارك",
+   "msa-white": "شارك",
+   "en": "Share"
+  },
+  "type.stat": {
+   "eg": "رقم",
+   "gulf": "رقم",
+   "levant": "رقم",
+   "msa-white": "رقم",
+   "en": "Number"
+  },
+  "type.step": {
+   "eg": "خطوة",
+   "gulf": "خطوة",
+   "levant": "خطوة",
+   "msa-white": "خطوة",
+   "en": "Step"
+  },
+  "type.story-beat": {
+   "eg": "مشهد",
+   "gulf": "مشهد",
+   "levant": "مشهد",
+   "msa-white": "مشهد",
+   "en": "Story beat"
+  },
+  "type.summary": {
+   "eg": "الخلاصة",
+   "gulf": "الخلاصة",
+   "levant": "الخلاصة",
+   "msa-white": "الخلاصة",
+   "en": "Summary"
+  },
+  "type.testimonial": {
+   "eg": "تجربة عميل",
+   "gulf": "تجربة عميل",
+   "levant": "تجربة عميل",
+   "msa-white": "تجربة عميل",
+   "en": "Testimonial"
+  },
+  "type.timeline": {
+   "eg": "خط زمني",
+   "gulf": "خط زمني",
+   "levant": "خط زمني",
+   "msa-white": "خط زمني",
+   "en": "Timeline"
+  },
+  "variant.bar": {
+   "eg": "شريط",
+   "gulf": "شريط",
+   "levant": "شريط",
+   "msa-white": "شريط",
+   "en": "Bar"
+  },
+  "variant.base": {
+   "eg": "أساسي",
+   "gulf": "أساسي",
+   "levant": "أساسي",
+   "msa-white": "أساسي",
+   "en": "Base"
+  },
+  "variant.bento": {
+   "eg": "بنتو",
+   "gulf": "بنتو",
+   "levant": "بنتو",
+   "msa-white": "بنتو",
+   "en": "Bento"
+  },
+  "variant.big-number": {
+   "eg": "رقم كبير",
+   "gulf": "رقم كبير",
+   "levant": "رقم كبير",
+   "msa-white": "رقم كبير",
+   "en": "Big number"
+  },
+  "variant.big-word": {
+   "eg": "كلمة كبيرة",
+   "gulf": "كلمة كبيرة",
+   "levant": "كلمة كبيرة",
+   "msa-white": "كلمة كبيرة",
+   "en": "Big word"
+  },
+  "variant.boxes": {
+   "eg": "مربعات",
+   "gulf": "مربعات",
+   "levant": "مربعات",
+   "msa-white": "مربعات",
+   "en": "Boxes"
+  },
+  "variant.card": {
+   "eg": "بطاقة",
+   "gulf": "بطاقة",
+   "levant": "بطاقة",
+   "msa-white": "بطاقة",
+   "en": "Card"
+  },
+  "variant.cards": {
+   "eg": "بطاقات",
+   "gulf": "بطاقات",
+   "levant": "بطاقات",
+   "msa-white": "بطاقات",
+   "en": "Cards"
+  },
+  "variant.center": {
+   "eg": "وسط",
+   "gulf": "وسط",
+   "levant": "وسط",
+   "msa-white": "وسط",
+   "en": "Centre"
+  },
+  "variant.columns": {
+   "eg": "عمودان",
+   "gulf": "عمودان",
+   "levant": "عمودان",
+   "msa-white": "عمودان",
+   "en": "Columns"
+  },
+  "variant.ghost-number": {
+   "eg": "رقم شفاف",
+   "gulf": "رقم شفاف",
+   "levant": "رقم شفاف",
+   "msa-white": "رقم شفاف",
+   "en": "Ghost number"
+  },
+  "variant.grid": {
+   "eg": "شبكة",
+   "gulf": "شبكة",
+   "levant": "شبكة",
+   "msa-white": "شبكة",
+   "en": "Grid"
+  },
+  "variant.keyword": {
+   "eg": "كلمة مفتاحية",
+   "gulf": "كلمة مفتاحية",
+   "levant": "كلمة مفتاحية",
+   "msa-white": "كلمة مفتاحية",
+   "en": "Keyword"
+  },
+  "variant.list": {
+   "eg": "قائمة",
+   "gulf": "قائمة",
+   "levant": "قائمة",
+   "msa-white": "قائمة",
+   "en": "List"
+  },
+  "variant.mark": {
+   "eg": "علامة اقتباس",
+   "gulf": "علامة اقتباس",
+   "levant": "علامة اقتباس",
+   "msa-white": "علامة اقتباس",
+   "en": "Quote mark"
+  },
+  "variant.media": {
+   "eg": "بوسائط",
+   "gulf": "بوسائط",
+   "levant": "بوسائط",
+   "msa-white": "بوسائط",
+   "en": "Media"
+  },
+  "variant.number": {
+   "eg": "برقم",
+   "gulf": "برقم",
+   "levant": "برقم",
+   "msa-white": "برقم",
+   "en": "Number"
+  },
+  "variant.panel": {
+   "eg": "لوحة",
+   "gulf": "لوحة",
+   "levant": "لوحة",
+   "msa-white": "لوحة",
+   "en": "Panel"
+  },
+  "variant.photo": {
+   "eg": "بصورة",
+   "gulf": "بصورة",
+   "levant": "بصورة",
+   "msa-white": "بصورة",
+   "en": "Photo"
+  },
+  "variant.pill": {
+   "eg": "كبسولة",
+   "gulf": "كبسولة",
+   "levant": "كبسولة",
+   "msa-white": "كبسولة",
+   "en": "Pill"
+  },
+  "variant.rail": {
+   "eg": "مسار",
+   "gulf": "مسار",
+   "levant": "مسار",
+   "msa-white": "مسار",
+   "en": "Rail"
+  },
+  "variant.ruled": {
+   "eg": "بخطوط",
+   "gulf": "بخطوط",
+   "levant": "بخطوط",
+   "msa-white": "بخطوط",
+   "en": "Ruled"
+  },
+  "variant.screenshot": {
+   "eg": "لقطة",
+   "gulf": "لقطة",
+   "levant": "لقطة",
+   "msa-white": "لقطة",
+   "en": "Screenshot"
+  },
+  "variant.side-number": {
+   "eg": "رقم جانبي",
+   "gulf": "رقم جانبي",
+   "levant": "رقم جانبي",
+   "msa-white": "رقم جانبي",
+   "en": "Side number"
+  },
+  "variant.split": {
+   "eg": "مقسوم",
+   "gulf": "مقسوم",
+   "levant": "مقسوم",
+   "msa-white": "مقسوم",
+   "en": "Split"
+  },
+  "variant.stacked": {
+   "eg": "فوق بعض",
+   "gulf": "فوق بعض",
+   "levant": "فوق بعض",
+   "msa-white": "فوق بعض",
+   "en": "Stacked"
+  },
+  "variant.stamp": {
+   "eg": "ختم",
+   "gulf": "ختم",
+   "levant": "ختم",
+   "msa-white": "ختم",
+   "en": "Stamp"
+  },
+  "variant.top": {
+   "eg": "أعلى",
+   "gulf": "أعلى",
+   "levant": "أعلى",
+   "msa-white": "أعلى",
+   "en": "Top"
+  },
+  "variant.versus": {
+   "eg": "مقابل",
+   "gulf": "مقابل",
+   "levant": "مقابل",
+   "msa-white": "مقابل",
+   "en": "Versus"
+  },
+  "visual.ai": {
+   "eg": "الصورة مولّدة بالذكاء الاصطناعي",
+   "gulf": "الصورة مولّدة بالذكاء الاصطناعي",
+   "levant": "الصورة مولّدة بالذكاء الاصطناعي",
+   "msa-white": "الصورة مولّدة بالذكاء الاصطناعي",
+   "en": "This image is AI-generated"
+  },
+  "visual.ai.hint": {
+   "eg": "بنعلّم الصورة عشان نفكّرك تفعّل علامة الذكاء الاصطناعي في Instagram.",
+   "gulf": "نعلّم الصورة لنذكّرك بتفعيل علامة الذكاء الاصطناعي في Instagram.",
+   "levant": "نعلّم الصورة لنذكّرك بتفعيل علامة الذكاء الاصطناعي في Instagram.",
+   "msa-white": "نعلّم الصورة لنذكّرك بتفعيل علامة الذكاء الاصطناعي في Instagram.",
+   "en": "We flag it to remind you to switch on Instagram's AI label."
+  },
+  "visual.ai.label": {
+   "eg": "في البوست صور مولّدة بالذكاء الاصطناعي. فعّل علامة الذكاء الاصطناعي لما تنشر.",
+   "gulf": "في البوست صور مولّدة بالذكاء الاصطناعي. فعّل علامة الذكاء الاصطناعي عند النشر.",
+   "levant": "في البوست صور مولّدة بالذكاء الاصطناعي. فعّل علامة الذكاء الاصطناعي عند النشر.",
+   "msa-white": "في البوست صور مولّدة بالذكاء الاصطناعي. فعّل علامة الذكاء الاصطناعي عند النشر.",
+   "en": "The post has AI-generated images. Switch on the AI label when you publish."
+  },
+  "visual.alt": {
+   "eg": "وصف الصورة",
+   "gulf": "وصف الصورة",
+   "levant": "وصف الصورة",
+   "msa-white": "وصف الصورة",
+   "en": "Image description"
+  },
+  "visual.alt.hint": {
+   "eg": "بيدخل في النص البديل للسلايد.",
+   "gulf": "يدخل في النص البديل للسلايد.",
+   "levant": "يدخل في النص البديل للسلايد.",
+   "msa-white": "يدخل في النص البديل للسلايد.",
+   "en": "It goes into the slide's alt text."
+  },
+  "visual.alt.ph": {
+   "eg": "صِف الصورة لمن مايشوفهاش",
+   "gulf": "صِف الصورة لمن لا يراها",
+   "levant": "صِف الصورة لمن لا يراها",
+   "msa-white": "صِف الصورة لمن لا يراها",
+   "en": "Describe the image for someone who cannot see it"
+  },
+  "visual.asset": {
+   "eg": "الملف",
+   "gulf": "الملف",
+   "levant": "الملف",
+   "msa-white": "الملف",
+   "en": "File"
+  },
+  "visual.attached": {
+   "eg": "ضفنا الملف",
+   "gulf": "أضفنا الملف",
+   "levant": "أضفنا الملف",
+   "msa-white": "أضفنا الملف",
+   "en": "File added"
+  },
+  "visual.calm": {
+   "eg": "المنطقة الهادئة",
+   "gulf": "المنطقة الهادئة",
+   "levant": "المنطقة الهادئة",
+   "msa-white": "المنطقة الهادئة",
+   "en": "Calm zone"
+  },
+  "visual.calm.hint": {
+   "eg": "فين الفراغ في الصورة، عشان النص مايغطيش التفاصيل.",
+   "gulf": "أين يتركز الفراغ في الصورة، لئلا يغطي النص التفاصيل.",
+   "levant": "أين يتركز الفراغ في الصورة، لئلا يغطي النص التفاصيل.",
+   "msa-white": "أين يتركز الفراغ في الصورة، لئلا يغطي النص التفاصيل.",
+   "en": "Where the image is quiet, so the text does not cover details."
+  },
+  "visual.empty": {
+   "eg": "مفيش ملف",
+   "gulf": "لا يوجد ملف",
+   "levant": "لا يوجد ملف",
+   "msa-white": "لا يوجد ملف",
+   "en": "No file"
+  },
+  "visual.hint": {
+   "eg": "ضيف صورة أو أيقونة للسلايد.",
+   "gulf": "أضف صورة أو أيقونة للسلايد.",
+   "levant": "أضف صورة أو أيقونة للسلايد.",
+   "msa-white": "أضف صورة أو أيقونة للسلايد.",
+   "en": "Add an image or icon to the slide."
+  },
+  "visual.no-ai-text": {
+   "eg": "منكتبش نص عربي جوّه صور مولّدة. كل النص بيتكتب من الاستوديو.",
+   "gulf": "لا نكتب نصًا عربيًا داخل صور مولّدة. كل النص يُكتب من الاستوديو.",
+   "levant": "لا نكتب نصًا عربيًا داخل صور مولّدة. كل النص يُكتب من الاستوديو.",
+   "msa-white": "لا نكتب نصًا عربيًا داخل صور مولّدة. كل النص يُكتب من الاستوديو.",
+   "en": "We never put Arabic text inside generated images. All text is typeset by the Studio."
+  },
+  "visual.remove": {
+   "eg": "شيل الصورة",
+   "gulf": "أزل الصورة",
+   "levant": "أزل الصورة",
+   "msa-white": "أزل الصورة",
+   "en": "Remove the image"
+  },
+  "visual.replace": {
+   "eg": "بدّل الملف",
+   "gulf": "بدّل الملف",
+   "levant": "بدّل الملف",
+   "msa-white": "بدّل الملف",
+   "en": "Replace the file"
+  },
+  "visual.slot": {
+   "eg": "نوع الصورة",
+   "gulf": "نوع الصورة",
+   "levant": "نوع الصورة",
+   "msa-white": "نوع الصورة",
+   "en": "Image type"
+  },
+  "visual.textcheck": {
+   "eg": "تأكدت: مفيش حروف ولا علامة مائية في الصورة",
+   "gulf": "تأكدت أن الصورة خالية من الحروف والعلامة المائية",
+   "levant": "تأكدت إنو الصورة بلا حروف ولا علامة مائية",
+   "msa-white": "تأكدت من خلو الصورة من الحروف والعلامة المائية",
+   "en": "I checked: no letters and no watermark in the image"
+  },
+  "visual.textcheck.hint": {
+   "eg": "افتح الصورة وراجعها بنفسك. الأداة مابتقدرش تقرا الصورة بدالك، والتصدير بيفضل مقفول لحد ما تأكّد.",
+   "gulf": "افتح الصورة وراجعها بنفسك. الأداة لا تستطيع قراءة الصورة بدلًا عنك، ويبقى التصدير مغلقًا حتى تؤكد.",
+   "levant": "افتح الصورة وراجعها بنفسك. الأداة ما بتقدر تقرا الصورة عنك، والتصدير بيضل مقفول لحد ما تأكد.",
+   "msa-white": "افتح الصورة وراجعها بنفسك. لا تستطيع الأداة قراءة الصورة بدلًا عنك، ويبقى التصدير مغلقًا حتى تؤكد.",
+   "en": "Open the image and look at it yourself. The tool cannot read it for you, and export stays locked until you confirm."
+  },
+  "visual.title": {
+   "eg": "صورة السلايد {n}",
+   "gulf": "صورة السلايد {n}",
+   "levant": "صورة السلايد {n}",
+   "msa-white": "صورة السلايد {n}",
+   "en": "Image of slide {n}"
+  },
+  "visual.too-large": {
+   "eg": "الملف كبير على الحفظ جوّه الصفحة.",
+   "gulf": "الملف كبير على الحفظ داخل الصفحة.",
+   "levant": "الملف كبير على الحفظ داخل الصفحة.",
+   "msa-white": "الملف كبير على الحفظ داخل الصفحة.",
+   "en": "The file is too large to keep inside the page."
+  },
+  "visual.type.unsupported": {
+   "eg": "النوع ده مش مدعوم. استخدم صورة أو فيديو.",
+   "gulf": "هذا النوع غير مدعوم. استخدم صورة أو فيديو.",
+   "levant": "هذا النوع غير مدعوم. استخدم صورة أو فيديو.",
+   "msa-white": "هذا النوع غير مدعوم. استخدم صورة أو فيديو.",
+   "en": "This type is not supported. Use an image or a video."
+  },
+  "visual.upload": {
+   "eg": "ارفع ملف",
+   "gulf": "ارفع ملفًا",
+   "levant": "ارفع ملفًا",
+   "msa-white": "ارفع ملفًا",
+   "en": "Upload a file"
+  },
+  "visual.upload.failed": {
+   "eg": "ماقدرناش نرفع الملف. جرّب ملف أصغر.",
+   "gulf": "تعذّر رفع الملف. جرّب ملفًا أصغر.",
+   "levant": "تعذّر رفع الملف. جرّب ملفًا أصغر.",
+   "msa-white": "تعذّر رفع الملف. جرّب ملفًا أصغر.",
+   "en": "The upload failed. Try a smaller file."
+  },
+  "visual.video.needs-assets": {
+   "eg": "رفع الفيديو محتاج ميزة التخزين، وهي مش متاحة هنا.",
+   "gulf": "رفع الفيديو يحتاج ميزة التخزين، وهي غير متاحة هنا.",
+   "levant": "رفع الفيديو يحتاج ميزة التخزين، وهي غير متاحة هنا.",
+   "msa-white": "رفع الفيديو يحتاج ميزة التخزين، وهي غير متاحة هنا.",
+   "en": "Uploading video needs the storage feature, which is not available here."
+  }
+ }
+}

@@ -1,0 +1,349 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "1.1.0",
+  "service": "instagram",
+  "verifiedAt": "2026-10-22",
+  "description": "Instagram facts (section 'platform') and Carousel Studio policy (section 'plugin') for 1080x1440 carousels and single posts. Read by CS.core, CS.qa, _cs.rules and build_studio.py. qa-rules.json refers to values here with {\"$platform\": \"dot.path\"}; never duplicate a number.",
+  "sources": [
+    "research/01-research-digest.md section 2 (Instagram, Oct 2026)",
+    "research/03-visual-analysis.md (engine rules from 40 covers)",
+    "research/04-copy-playbook.md (limits)",
+    "research/00-decisions.md Q23, Q39, Q40 and the round-5 changes"
+  ],
+
+  "defaultCanvas": "ig-3x4",
+  "canvases": {
+    "ig-3x4": {
+      "w": 1080, "h": 1440, "ratio": "3:4", "exportAs": "png", "dpr": 2,
+      "role": "design canvas and in-app export (Instagram has shown 3:4 natively since May 2025, carousels included)"
+    },
+    "ig-4x5": {
+      "w": 1080, "h": 1350, "ratio": "4:5", "exportAs": "jpeg",
+      "role": "API / scheduler export (centre crop of ig-3x4). Not needed as a video fallback: SP6 passed, Instagram takes the 3:4 MP4 as the first carousel item"
+    }
+  },
+  "futureCanvases": {
+    "_note": "Not used in v1. Listed so canvas presets can be added without touching engine code.",
+    "ig-story": {"w": 1080, "h": 1920, "ratio": "9:16", "clear": {"topPct": 14, "bottomPct": 35, "sidesPct": 6}},
+    "linkedin-pdf": {"w": 1080, "h": 1350, "ratio": "4:5", "exportAs": "pdf"},
+    "tiktok-photo": {"w": 1080, "h": 1920, "ratio": "9:16", "maxItems": 35}
+  },
+
+  "geometry": {
+    "_note": "All boxes are {x, y, w, h} in canvas px for ig-3x4. Right edge = x + w; bottom edge = y + h. Keep-outs are measured from the SAFE-BOX corners (x 34 / 1046, y 45 / 1395), so the same chrome clears Instagram's counter pill and tag icon in the 3:4 view and in the 4:5 crop (y 45-1395): the header starts below the top zone (y 155) and the footer ends above the bottom zone (y 1255). Source: research/10-structure-draft.md section 9.1.",
+    "safeBox": {"x": 34, "y": 45, "w": 1012, "h": 1350},
+    "crop4x5": {"x": 0, "y": 45, "w": 1080, "h": 1350},
+    "gridCrop4x5": {"x": 34, "y": 45, "w": 1012, "h": 1350, "note": "A 4:5 post shows its central 1013x1350 in the 3:4 profile grid (about 34 px lost per side). Essential elements must live inside safeBox."},
+    "contentBox": {"x": 114, "y": 125, "w": 852, "h": 1190},
+    "minEdgeMarginPx": 80,
+    "bands": {
+      "header": {"x": 114, "y": 165, "w": 852, "h": 80, "holds": ["handle", "meta"]},
+      "footer": {"x": 114, "y": 1165, "w": 852, "h": 80, "itemMaxHeightPx": 49, "itemsAlign": "top", "holds": ["savePill", "counter", "swipe"]}
+    },
+    "keepOuts": [
+      {"id": "top-left", "x": 34, "y": 45, "w": 200, "h": 110, "reason": "counter pill / mute and tag overlays (top pill zone y 45-155)"},
+      {"id": "top-right", "x": 846, "y": 45, "w": 200, "h": 110, "reason": "counter pill (1/N) (top pill zone y 45-155)"},
+      {"id": "bottom-left", "x": 34, "y": 1255, "w": 140, "h": 140, "reason": "tag icon (bottom tag zone y 1255-1395)"},
+      {"id": "bottom-right", "x": 906, "y": 1255, "w": 140, "h": 140, "reason": "video mute icon (bottom tag zone y 1255-1395)"}
+    ],
+    "grid": {"columns": 12, "columnWidthPx": 56, "gutterPx": 16, "widthPx": 848, "baselinePx": 8, "mirrorForRtl": true, "note": "848 px, centred in the 852 px content box."},
+    "bodyArea": {"x": 114, "y": 261, "w": 852, "h": 888, "note": "Between header band + 16 px and footer band - 16 px. Archetype partials lay out inside it."},
+    "inner": {
+      "_note": "S-1 (round 3). On a slide that is not a cover or poster the footer band is inset by footerPadX on both sides and moved down 110 px, and the body area grows by the same 110 px; the keys below replace the same keys above on those slides. Header, content box, safe box and keep-outs do not change, the cover keeps the band above, and the band stays clear of the corner keep-outs (x 174 to 906). The band ends 85 px above the canvas bottom. footerPadX is the value of --cs-footer-pad-x.",
+      "footerPadX": 60,
+      "bands": {"footer": {"x": 174, "y": 1275, "w": 732, "h": 80, "itemMaxHeightPx": 49, "itemsAlign": "top", "holds": ["savePill", "counter", "swipe"]}},
+      "bodyArea": {"x": 114, "y": 261, "w": 852, "h": 998, "note": "Header band + 16 px to the inner footer band - 16 px."}
+    }
+  },
+
+  "platform": {
+    "carousel": {
+      "minItems": 2, "maxItems": 20,
+      "mixedMedia": true,
+      "firstItemRatioCropsAll": true,
+      "reelsAllowedInCarousel": false,
+      "coverPickerForVideoSlides": false,
+      "reorderAfterPosting": true,
+      "addSlideAfterPosting": false,
+      "deleteSlideAfterPostingIfAtLeast": 2,
+      "perSlideCaptions": {"available": true, "since": "2026-06-18", "maxCharsKnown": false}
+    },
+    "image": {"inApp": ["png", "jpeg"], "colorSpace": "sRGB", "alpha": false, "storedMaxWidthPx": 1080},
+    "video": {
+      "container": ["mp4", "mov"], "codecs": ["h264", "hevc"], "pixelFormat": "yuv420p", "moovAtFront": true, "closedGop": true,
+      "fps": {"min": 23, "max": 60}, "minSeconds": 3, "maxSecondsPerCarouselVideoApprox": 60,
+      "audioRequired": "unverified (SP7)", "threeByFourInCarousel": "verified 2026-10-22 (SP6): Instagram accepted the 1080x1440 MP4 as the first carousel item without cropping; keep 3:4, no 4:5 video fallback"
+    },
+    "caption": {"maxChars": 2200, "visibleCharsApprox": 125},
+    "hashtags": {"max": 5, "since": "2025-12", "note": "Mosseri: tags categorise, they do not add reach. Keywords belong in the caption."},
+    "altText": {"maxCharsApi": 1000},
+    "grid": {"thumbnailRatio": "3:4", "since": "2025-01"},
+    "api": {
+      "imageFormat": "JPEG",
+      "imageMaxBytes": 8000000,
+      "aspectRatio": {"min": 0.8, "max": 1.91, "note": "4:5 to 1.91:1 in Meta's spec; some schedulers publish 3:4 (0.75) at its own ratio (checked Oct 2026), so read the connected tool's photo requirements"},
+      "widthPx": {"min": 320, "max": 1440},
+      "carouselMaxItems": 20,
+      "isAiGeneratedFlag": true,
+      "reelsInCarousel": false
+    },
+    "ranking": {"signals": ["watch time", "likes per reach", "sends per reach"], "commentBaitPenalty": true},
+    "unverified": [
+      "A carousel video needs an audio track (SP7)",
+      "The native phone apps mirror swipe direction in an Arabic UI the way Instagram web does (SP8: web-verified, not device-tested; the cue is a per-brand setting, so it is right either way)",
+      "Character limit of a per-slide caption"
+    ]
+  },
+
+  "facts": {
+    "_note": "The platform claims a cover or a slide may rest on, one entry each, with where they come from and when they were last checked. status: verified (a primary source or dated reports, read by someone on the team), owner-tested (tried on a real device), derived (our own measurement or design rule, not an Instagram statement), unverified (heard, not checked). A fact is open when its status is not verified or owner-tested, or when verifiedAt is older than staleAfterDays on the day of the post. The strategist checks an open fact with a web search when a search tool exists; otherwise it goes at the top of the message to the creator and the Proof lens stays at 3 or below (team/charter.md, board_check.py). Brief lines name facts by id.",
+    "items": [
+      {
+        "id": "reserve-from-slide-2",
+        "claim": {
+          "ar": "قد يعيد Instagram عرض الكاروسيل لمن لم يسحب، فيبدأ من السلايد الثاني.",
+          "en": "Instagram may show a carousel again to people who did not swipe, starting at slide 2."
+        },
+        "status": "verified",
+        "verifiedAt": "2026-10-22",
+        "staleAfterDays": 365,
+        "sources": ["Mosseri, Oct 2024 (research/04-copy-playbook.md, Second chance)"],
+        "backs": ["slide2.standsAlone", "C3.words", "C6.slide2-promise"]
+      },
+      {
+        "id": "edit-after-publish",
+        "claim": {
+          "ar": "بعد النشر يمكن حذف سلايد (بشرط بقاء سلايدين) وإعادة ترتيب السلايدات منذ مارس 2026، ولا يمكن إضافة سلايد ولا تعديل محتوى سلايد، والتعديل يخص الكابشن فقط.",
+          "en": "After publishing you can delete a slide (while at least two remain) and reorder slides (since March 2026); you cannot add a slide or edit a slide's content, only the caption."
+        },
+        "status": "verified",
+        "verifiedAt": "2026-10-22",
+        "staleAfterDays": 120,
+        "sources": ["research/01-research-digest.md section 2 (reorder, Mar 2026)", "2026 reports by Kapwing and Croma, read by the independent creative director on 2026-10-22"],
+        "backs": ["platform.carousel.reorderAfterPosting", "platform.carousel.addSlideAfterPosting", "platform.carousel.deleteSlideAfterPostingIfAtLeast"]
+      },
+      {
+        "id": "counter-pill-and-icons",
+        "claim": {
+          "ar": "يرسم Instagram عدّاد السلايدات في أعلى الكاروسيل وأيقونتي الوسم والصوت في أسفله، فلا يلمسها نص السلايد.",
+          "en": "Instagram draws a slide counter at the top of a carousel and the tag and mute icons at the bottom, so slide text stays clear of them."
+        },
+        "status": "derived",
+        "verifiedAt": "2026-10-22",
+        "staleAfterDays": 180,
+        "sources": ["research/10-structure-draft.md section 9.1 (measured on the app, not an Instagram statement)"],
+        "backs": ["geometry.keepOuts", "D2.keep-out"]
+      },
+      {
+        "id": "three-by-four-carousel",
+        "claim": {
+          "ar": "قبل Instagram ملف MP4 بمقاس 1080×1440 كأول عنصر في كاروسيل دون قص.",
+          "en": "Instagram accepted a 1080x1440 MP4 as the first carousel item without cropping."
+        },
+        "status": "owner-tested",
+        "verifiedAt": "2026-10-22",
+        "staleAfterDays": 365,
+        "sources": ["research/00-decisions.md, prototype results (owner test, iPhone and Windows)"],
+        "backs": ["platform.video.threeByFourInCarousel"]
+      },
+      {
+        "id": "swipe-mirrors-app-language",
+        "claim": {
+          "ar": "يعكس Instagram اتجاه السحب حسب لغة التطبيق، فالواجهة العربية تضع السلايد الثاني على اليسار.",
+          "en": "Instagram mirrors the swipe direction by the app language, so an Arabic interface puts slide 2 on the left."
+        },
+        "status": "unverified",
+        "verifiedAt": "2026-10-22",
+        "staleAfterDays": 365,
+        "sources": ["web finding (SP8); the owner marked the phone test done without a device test"],
+        "backs": ["platform.unverified", "locale.swipeCue"]
+      },
+      {
+        "id": "per-slide-captions",
+        "claim": {
+          "ar": "تتيح Instagram كابشن مستقلًا لكل سلايد منذ 18 يونيو 2026، وحدّه الأقصى غير معروف.",
+          "en": "Instagram offers a separate caption per slide since 18 June 2026; its character limit is not known."
+        },
+        "status": "verified",
+        "verifiedAt": "2026-10-22",
+        "staleAfterDays": 180,
+        "sources": ["research/01-research-digest.md section 2 (Multiple captions, 18 Jun 2026)"],
+        "backs": ["platform.carousel.perSlideCaptions"]
+      },
+      {
+        "id": "max-five-hashtags",
+        "claim": {
+          "ar": "الحد الأقصى خمسة وسوم منذ ديسمبر 2025، والوسوم تصنّف المحتوى ولا تزيد الوصول.",
+          "en": "At most five hashtags since December 2025; tags categorise a post, they do not add reach."
+        },
+        "status": "verified",
+        "verifiedAt": "2026-10-22",
+        "staleAfterDays": 365,
+        "sources": ["research/04-copy-playbook.md (Hashtags); Mosseri"],
+        "backs": ["platform.hashtags.max", "C9.hashtags"]
+      },
+      {
+        "id": "carousel-video-audio",
+        "claim": {
+          "ar": "لا يُعرف إن كان الفيديو داخل الكاروسيل يحتاج مسار صوت.",
+          "en": "It is not known whether a video inside a carousel needs an audio track."
+        },
+        "status": "unverified",
+        "verifiedAt": "2026-10-22",
+        "staleAfterDays": 365,
+        "sources": ["SP7, still open"],
+        "backs": ["platform.video.audioRequired", "V1.audio"]
+      }
+    ]
+  },
+
+  "plugin": {
+    "_note": "Carousel Studio policy. Source: 00-decisions.md (Q23, Q39, Q40, round-5 changes) and 10-structure-draft.md sections 8-10. Change a number here and every package follows.",
+    "slides": {"hardMin": 2, "warnBelow": 6, "recommendedMin": 8, "recommendedMax": 12, "hardMax": 20},
+    "cover": {
+      "heroMaxWords": 6, "totalMaxWords": 12, "maxLines": 3, "maxRows": 8,
+      "heroPx": {"floor": 96, "target": 150, "autoFitMin": 120, "autoFitMax": 180},
+      "widthRatio": {"min": 0.65, "max": 0.85}
+    },
+    "thumbnail": {"widthPx": 130, "heightPx": 173, "heroPassPx": 14, "heroFixMinPx": 11.5, "localContrastMin": 3.0},
+    "slide2": {"maxWords": 12, "maxLines": 4},
+    "text": {
+      "titleMaxWords": 6, "bodyMaxWords": 25, "bodyHardMaxWords": 35,
+      "bulletsMax": 4, "denseBulletsMax": 8, "denseTypes": ["checklist", "summary"], "denseMaxWords": 45,
+      "slideMaxWords": 50, "bridgeMaxWords": 8, "shareMaxWords": 12, "ctaMaxWords": 12
+    },
+    "type": {
+      "bodyFloorPx": 42, "bodyMinPx": 44, "bodyMaxPx": 48, "smallPx": 34, "metaFloorPx": 30,
+      "lineHeight": {"display": 1.3, "heading": 1.35, "body": 1.6, "tashkeelBonusDisplay": 0.15, "tashkeelBonusBody": 0.2},
+      "maxFamilies": 2
+    },
+    "contrast": {"body": 4.5, "large": 3.0, "largeMinPx": 66, "largeBoldMinPx": 52, "hardBlockBelow": 3.0},
+    "caption": {
+      "defaultChars": [300, 900],
+      "fastChars": [100, 300],
+      "fastCharsAssumption": "Q40 says 'short captions in fast mode' without a number; [100,300] is a builder assumption the owner can change here.",
+      "firstLineMaxChars": 125,
+      "firstLineMaxSimilarityToCover": 0.6,
+      "keywordInSentence": 2,
+      "charCounting": "Unicode code points after NFC: an emoji outside the BMP counts as 1, a joined sequence (a family or flag emoji) counts each of its parts"
+    },
+    "hashtags": {"max": 5},
+    "perSlideCaption": {"maxChars": 100, "required": true},
+    "alt": {"targetMaxChars": 300, "hardMaxChars": 1000, "required": true},
+    "cta": {
+      "maxPerPost": 1,
+      "allowedByIntent": {
+        "save": ["save", "follow", "question"],
+        "send": ["send", "question"],
+        "reach": ["send", "follow", "question"],
+        "sell": ["keyword-dm", "follow", "question", "save"]
+      },
+      "keywordDmRequiresInstantAsset": true,
+      "ctaTypes": ["cta", "offer", "poster"]
+    },
+    "similarity": {"hookReuseMax": 0.8, "algorithm": "dice-trigram-skeleton (CONTRACT section 3.3)"},
+    "voice": {"driftIqr": 1.5},
+    "history": {"ctaRepeatWindow": 2, "familyRepeatWindow": 2, "wildcardWindow": 10},
+    "motion": {
+      "defaultSeconds": 6, "minSeconds": 5, "maxSeconds": 6, "fps": 30,
+      "holdInSeconds": 0.4, "resetEndSeconds": 0.75, "settleBySeconds": 5.6,
+      "loopSsimMin": 0.995, "loopPsnrMinDb": 45, "maxFlashesPerSecond": 3,
+      "posterSsimMin": 0.99, "posterPsnrMinDb": 32,
+      "stillMaxShare": 0.6, "stillDeltaLuma": 0.03, "thinShare": 0.25, "thinMaxSeconds": 0.6,
+      "stillNote": "Frame metrics on a 108x144 grey copy of every frame. A frame is still when its mean change from the frame before is under stillDeltaLuma levels (the frames of a truly held picture; the six shipped example covers hold 49 to 59% of the loop, the dogfood stamp cover 64%); a frame is thin between the hold-in and settle times when it holds under thinShare of the content (pixels off the median) of frame 0. Both are NOTEs: a held poster is part of the loop on purpose, but more than half of the loop held, or a long stretch with nothing but the chrome on screen, means the story is thin.",
+      "posterNote": "Two bars for the loop. The loop bar (loopSsimMin / loopPsnrMinDb, 0.995 / 45 dB) binds the lossless comparisons: the last frame against frame 0 of the same encode (check_video.mjs), and the Studio's painted frames before encoding (frame 0 against the poster, the last frame against frame 0). Frame 0 of the encoded MP4 against the lossless poster PNG (check_video.mjs only) has its own lower floor, posterSsimMin / posterPsnrMinDb (0.99 / 32 dB), because 4:2:0 H.264 loses colour detail on red-on-white text edges (about 33 dB on the shipped example) and so can never reach the loop bar."
+    },
+    "export": {
+      "png": {"w": 1080, "h": 1440, "paintScale": 2},
+      "jpeg4x5": {"w": 1080, "h": 1350, "cropY": 45, "quality": 0.92, "maxBytes": 8000000},
+      "mp4": {"codec": "avc1.640028", "profile": "High", "level": "4.0", "maxLevel": "4.1", "pixelFormat": "yuv420p", "range": "tv", "matrix": "bt709", "bitrate": 8000000, "fps": 30, "gopSeconds": 1, "audio": "none", "faststart": true},
+      "kitFolder": "carousel-kit"
+    },
+    "painter": {"parityMinSsim": 0.98, "goldenMinSsim": 0.995},
+    "visual": {
+      "_note": "Round 3 visual language (spec 7.3-7.4, plan IS-8 and r2 1.2). Percent keys are 0-100, px keys are px. qa-rules.json reads each key as {\"$platform\": \"plugin.visual.<key>\"}. CS.visual.deadSpace takes grid (cols, rows), halo (text, ink, owner) and owner (min, big, bigShare, fill, border) as its nested options, grid.occ as occ and zone.canvasH as canvasH. Band, rect and fill read the working row for peak types; a pause (visual.pause, or a type-led proof) uses the pause row and a photo plate uses plate, whatever the type. Every number of a visual check lives here and a rule reads it by key, never inline: rhythm (D8.anchor-run, D8.tone-run, VA1, VA5, VA6), plan (VA3, VA4, VA7, RX1), craft (D10) and continuity (D11, D2.chrome-drift) hold the limits that have no table of their own, one object per check, and each rule param carries the name of its key. tones (D8.tone-flat: inner slides needed before the rule applies, non-base slides needed) and wordEcho (C2.word-echo: times the anchor word may show in titles and CTA text) are the limits of the two checks added after the slice verdict. These are starting values: Q8 calibrates them on real copy, and they change here only.",
+      "zone": {"canvasH": 1440, "padEnd": {"poster": 48, "heritage": 44, "posterType": 24}, "_note": "The body zone is computed: geometry.bodyArea (geometry.inner.bodyArea on a slide that is not a cover or poster) minus the preset's own end padding; padEnd is that padding in px."},
+      "grid": {"cols": 36, "rows": 37, "occ": 30},
+      "halo": {"text": 16, "ink": 32, "owner": 0},
+      "owner": {"min": 65, "big": 80, "bigShare": 60, "fill": 35, "border": 3, "fixBelow": 50},
+      "classes": {
+        "cover": ["cover", "poster"],
+        "peak": ["rehook", "stat", "share", "cta", "offer"],
+        "working": ["item", "step", "compare", "myth-fact", "quote", "story-beat", "checklist", "summary", "setup", "proof", "testimonial", "grid", "timeline"]
+      },
+      "band": {"working": {"note": 8, "fix": 12, "block": 22}, "cover": {"note": 10, "fix": 15, "block": 25}, "pause": {"note": 18, "fix": 24, "block": null}},
+      "rect": {"working": {"note": 15, "fix": 20, "block": 34}, "cover": {"note": 20, "fix": 24, "block": 38}, "pause": {"note": 30, "fix": 40, "block": null}},
+      "fill": {"working": {"note": 40, "fix": 50}, "pause": {"note": 60, "fix": 70}},
+      "plate": {"bandMax": 20, "rectMax": 25, "subjectMin": 20},
+      "anchorShare": {
+        "fixFactor": 80, "peakMin": 35, "minGlyphPx": 160, "minMockWidth": 60, "compareSideCanvas": 12,
+        "cover": {"bandMax": 12, "rectMax": 15},
+        "types": {
+          "rehook": {"min": 35, "target": 45}, "item": {"min": 24, "target": 32}, "step": {"min": 28, "target": 38}, "stat": {"min": 38, "target": 50},
+          "myth-fact": {"min": 28, "target": 40}, "quote": {"min": 28, "target": 36}, "story-beat": {"min": 28, "target": 40},
+          "checklist": {"min": 30, "target": 45}, "summary": {"min": 30, "target": 45}, "setup": {"min": 30, "target": 45},
+          "proof": {"min": 35, "target": 50}, "share": {"min": 35, "target": 50}, "cta": {"min": 35, "target": 55}, "offer": {"min": 35, "target": 50},
+          "testimonial": {"min": 30, "target": 45}, "grid": {"min": 40, "target": 60}, "timeline": {"min": 40, "target": 60}
+        },
+        "_note": "Share of the body zone (union of anchor boxes, container in, halo out); NOTE below min, FIX below fixFactor percent of it. A compare slide gives each side compareSideCanvas percent of the whole canvas; a cover or poster follows the canvas rules in cover."
+      },
+      "artLabel": {
+        "arabic": 36, "latin": 34, "digits": 34, "chart": 38, "tool": 30, "numeral": 200, "word": 220,
+        "roles": {"small": "text", "body": "text", "title": "text", "chip": "text", "chart": "chart", "tool": "tool", "numeral": "numeral", "word": "word"},
+        "_note": "Floors in px. A label with Arabic letters takes arabic, any other text label takes latin or digits; chart data takes chart; only a Latin tool-name chip takes tool. compose.label stamps the floor as data-floor."
+      },
+      "strokeFeed": {"minFeedPx": 1.4, "scale": 0.36, "minFullPx": 4},
+      "smell": {"noteBelow": 55, "showcaseMin": 60, "weights": {"kinds": 25, "recipes": 20, "scales": 15, "tones": 15, "primitives": 15, "variants": 10}, "caps": {"kinds": 6, "recipes": 5, "tones": 3, "primitives": 8, "scaleSd": 15}},
+      "words": {
+        "bodyWithArt": 15, "figureRepeatMax": 2,
+        "art": {"perSlide": 24, "chartLabel": 3, "rowText": 8, "cardTitle": 3, "cardText": 8, "bubble": 12},
+        "demo": {"lines": 3, "lineWords": 12, "lineChars": 90, "captionWords": 8, "captionChars": 60, "duplicateShare": 50}
+      },
+      "rhythm": {
+        "_note": "Spec-scope run and spacing limits. anchorRun and toneRun: D8.anchor-run, D8.tone-run (toneBias is the share of non-base slides per world, percent, equal to art-direction.json tones.toneBias); anchorPresent: VA1; variety and relaxed: VA5; pause: VA6.",
+        "anchorRun": {"run": 3, "altWindow": 6},
+        "toneRun": {"maxRun": 2, "toneBias": {"calm": 20, "balanced": 40, "drenched": 50}},
+        "anchorPresent": {"runMin": 3},
+        "variety": {"kindRun": 3, "minKinds": 3, "minInner": 6, "iconUses": 1},
+        "relaxed": {"max": 0},
+        "pause": {"per": 5, "max": 1, "adjacent": 0, "beforeCta": 0, "statementWords": 12}
+      },
+      "plan": {
+        "_note": "Limits of the stored visual plan. valid: VA3 (itemsByType and chartValues are [min, max] counts); chartHonesty: VA4; agreement: VA7; distance: RX1 (percent).",
+        "valid": {
+          "itemsMax": 6, "itemsByType": {"grid": [3, 6], "timeline": [3, 5]}, "rowIconsMax": 8,
+          "chartValues": {"bars-h": [1, 7], "columns": [1, 7], "donut": [1, 5], "ring": [1, 1], "meter": [1, 1], "line": [4, 8], "waffle": [1, 3], "pictogram": [1, 3], "funnel": [3, 5], "compare-bars": [2, 8], "icon-bars": [4, 6], "delta": [1, 1]},
+          "donutMinGapPct": 5, "pictogramMaxIcons": 10
+        },
+        "chartHonesty": {"tagMinPx": 34},
+        "agreement": {"topN": 5},
+        "distance": {"kindShare": 60, "recipeShare": 50}
+      },
+      "craft": {
+        "_note": "Rendered icon and art system limits, one object per D10 check: nesting, iconTileStack, sideBorder, iconSystem (sizes is the icon size ladder in px), squint (weights and pixel are the OKLab mass model of spec 7.4).",
+        "nesting": {"maxDepth": 2},
+        "iconTileStack": {"minSiblings": 3},
+        "sideBorder": {"minPx": 4},
+        "iconSystem": {"families": 1, "sizes": [40, 64, 96, 160, 240, 320]},
+        "squint": {"mergePx": 24, "anchorOverlapPct": 60, "thirdMaxPct": 60, "weights": {"text": 35, "anchor": 50}, "pixel": {"cols": 54, "rows": 72, "minDeltaL": 18}}
+      },
+      "continuity": {
+        "_note": "Cross-slide limits. tokens, threadDrift, seam: D11 (of is the number of continuity tokens in the rule); chromeDrift: D2.chrome-drift, the spread of a chrome element's offset inside its own band (S-1), px.",
+        "tokens": {"minShared": 3, "of": 4},
+        "threadDrift": {"maxPx": 2},
+        "seam": {"tolerancePx": 2},
+        "chromeDrift": {"maxPx": 2}
+      },
+      "tones": {"minInner": 6, "min": 2},
+      "wordEcho": {"max": 3},
+      "block": {
+        "_note": "BLOCK switches (spec 7.3, S-24): all off until Q8 has calibrated the thresholds on real copy. A block threshold in band or rect, and the run case of VA1, count only while their switch is enabled.",
+        "band": {"enabled": false}, "rect": {"enabled": false}, "anchorRun": {"enabled": false}
+      },
+      "rollout": {
+        "stage": 0, "stage0Sev": "NOTE",
+        "stages": {"0": "the capped visual checks (D9.*, VA1, VA2, VA9, D8.anchor-run, D8.tone-run, D8.tone-flat) ship at stage0Sev and their findings carry prospect, the severity they would have", "1": "promote the capped checks to their own severity when the preset matrix is clean on the rebuilt examples", "2": "BLOCK switches may be enabled after the calibration run finds no false BLOCK on the clean corpus"}
+      }
+    }
+  }
+}

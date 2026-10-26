@@ -1,0 +1,116 @@
+{
+  "slides": [
+    {
+      "id": "s02",
+      "visual": {
+        "anchor": {
+          "kind": "numeral",
+          "value": "5",
+          "unit": "أخطاء"
+        },
+        "recipe": "over",
+        "tone": "base",
+        "field": true,
+        "bleed": "both",
+        "marks": [
+          "circle"
+        ],
+        "why": "الرقم 5 هو الفكرة، فكبرناه",
+        "alt": "الرقم 5 أخطاء"
+      }
+    },
+    {
+      "id": "s03",
+      "visual": {
+        "anchor": {
+          "kind": "icon",
+          "object": "phone",
+          "size": "hero"
+        },
+        "recipe": "under",
+        "tone": "base",
+        "field": true,
+        "why": "اخترنا الموبايل لأن الكلام عن الموبايل",
+        "alt": "رسم الموبايل"
+      }
+    },
+    {
+      "id": "s04",
+      "visual": {
+        "anchor": {
+          "kind": "field",
+          "icon": "circle-user-round"
+        },
+        "recipe": "under",
+        "tone": "field",
+        "field": true,
+        "why": "اخترنا بروفايل لأن الكلام عن للبروفايل",
+        "alt": "أيقونة بروفايل"
+      }
+    },
+    {
+      "id": "s05",
+      "visual": {
+        "anchor": {
+          "kind": "icon",
+          "object": "lightbulb",
+          "size": "hero"
+        },
+        "recipe": "under",
+        "tone": "base",
+        "field": true,
+        "why": "اخترنا فكرة لأن الكلام عن فكرة",
+        "alt": "رسم فكرة"
+      }
+    },
+    {
+      "id": "s06",
+      "visual": {
+        "anchor": {
+          "kind": "field",
+          "icon": "bookmark"
+        },
+        "recipe": "under",
+        "tone": "invert",
+        "field": true,
+        "why": "اخترنا حفظ لأن الكلام عن احفظ",
+        "alt": "أيقونة حفظ"
+      }
+    },
+    {
+      "id": "s07",
+      "visual": {
+        "anchor": {
+          "kind": "numeral",
+          "value": "5"
+        },
+        "recipe": "under",
+        "tone": "base",
+        "why": "الرقم 5 هو الفكرة، فكبرناه",
+        "alt": "الرقم 5"
+      },
+      "variant": "numeral"
+    },
+    {
+      "id": "s08",
+      "visual": {
+        "anchor": {
+          "kind": "word",
+          "word": "تيجي",
+          "wordStyle": "sticker"
+        },
+        "recipe": "center",
+        "tone": "base",
+        "field": true,
+        "why": "مفيش صورة تقول الكلام ده بصدق، فخلينا الكلمة هي الصورة",
+        "alt": "الكلمة «تيجي» بحجم كبير"
+      },
+      "variant": "action"
+    }
+  ],
+  "style": {
+    "planV": "1.1.0+e7d18307+5a1ce000",
+    "motif": "circle-x"
+  },
+  "notes": []
+}

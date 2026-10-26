@@ -1,0 +1,864 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "1.0.0",
+  "range": {"from": "2026-01-01", "to": "2028-12-31"},
+  "description": "MENA occasion calendar for 2026-2028. Each series lists its dates explicitly; calendar.py and plan.py read them and never compute a date. Hijri-based series take their dates from hijri-ummalqura.json.",
+  "defaults": {
+    "windows": {"plan": -28, "pre": -7, "post": 3},
+    "note": "Days relative to the occasion start: plan = start planning, pre = teaser window opens, post = days after the end during which a thank-you or recap still fits."
+  },
+  "rules": {
+    "fixed": "Same Gregorian date every year.",
+    "hijri": "Dates looked up in the Umm al-Qura table; the declared date can differ by one day per country after moon sighting.",
+    "nth-weekday": "A weekday fixed by its position in a month (the second Tuesday of February; the Friday after the fourth Thursday of November), expanded to explicit dates.",
+    "easter-orthodox": "Offsets from Orthodox Easter (Coptic Easter), expanded to explicit dates."
+  },
+  "confidence": {
+    "exact": "Fixed by law or rule; plan on the date.",
+    "±1d": "Hijri-based. The declared date can be a day earlier or later than the table in any country; confirm after the official announcement."
+  },
+  "countries": "ISO 3166-1 alpha-2 codes as in locale-defaults.json. A series with \"*\" applies to every country in that file (minus \"exclude\").",
+  "fields": {
+    "importance": "3 = plan a post by default, 2 = suggest, 1 = list only.",
+    "tone": "reverent | solemn | festive | patriotic | respectful | commercial. 'solemn' means nothing promotional.",
+    "suggestedIntent": "Intent a plan slot should take on this occasion (reach, save, send or sell).",
+    "moonCheck": "Evening (29th day of the previous Hijri month) when the new moon is looked for.",
+    "tagAllSlots": "Every plan slot inside the occasion carries its occasionId (Ramadan).",
+    "partOf": "The occasion belongs to a longer one (the last ten nights belong to Ramadan); it gets no slot of its own.",
+    "pack": "planned = the data pack ships in that plugin version; absent = brand styling only."
+  },
+  "series": [
+    {
+      "key": "ashura",
+      "kind": "religious",
+      "rule": "hijri",
+      "names": {"ar": "عاشوراء", "en": "Ashura"},
+      "countries": "*",
+      "importance": 1,
+      "tone": "solemn",
+      "suggestedIntent": "reach",
+      "hijri": {
+        "from": [1, 10],
+        "to": [1, 10]
+      },
+      "sensitivities": {"noQuranOnPromo": true, "noShahada": true, "noKaabaForSelling": true},
+      "note": {
+        "ar": "يُحيا بصور مختلفة بين الطوائف (صيام أو حزن). لا محتوى ترويجي.",
+        "en": "Observed differently across communities (fasting or mourning). Nothing promotional."
+      },
+      "instances": [
+        {"year": 2026, "start": "2026-06-25", "end": "2026-06-25", "hijriYear": 1448},
+        {"year": 2027, "start": "2027-06-15", "end": "2027-06-15", "hijriYear": 1449},
+        {"year": 2028, "start": "2028-06-03", "end": "2028-06-03", "hijriYear": 1450}
+      ]
+    },
+    {
+      "key": "christmas",
+      "kind": "religious",
+      "rule": "fixed",
+      "names": {"ar": "عيد الميلاد المجيد", "en": "Christmas"},
+      "countries": ["AE", "IQ", "JO", "LB", "PS"],
+      "importance": 1,
+      "tone": "respectful",
+      "suggestedIntent": "send",
+      "note": {"ar": "تهنئة محترمة فقط، بلا ترويج.", "en": "A respectful greeting only, nothing promotional."},
+      "instances": [
+        {"year": 2026, "start": "2026-12-25", "end": "2026-12-25"},
+        {"year": 2027, "start": "2027-12-25", "end": "2027-12-25"},
+        {"year": 2028, "start": "2028-12-25", "end": "2028-12-25"}
+      ]
+    },
+    {
+      "key": "coptic-christmas",
+      "kind": "religious",
+      "rule": "fixed",
+      "names": {"ar": "عيد الميلاد المجيد (الأقباط)", "en": "Coptic Christmas"},
+      "countries": ["EG"],
+      "importance": 2,
+      "tone": "respectful",
+      "suggestedIntent": "send",
+      "note": {"ar": "تهنئة محترمة فقط، بلا ترويج.", "en": "A respectful greeting only, nothing promotional."},
+      "instances": [
+        {"year": 2026, "start": "2026-01-07", "end": "2026-01-07"},
+        {"year": 2027, "start": "2027-01-07", "end": "2027-01-07"},
+        {"year": 2028, "start": "2028-01-07", "end": "2028-01-07"}
+      ]
+    },
+    {
+      "key": "coptic-easter",
+      "kind": "religious",
+      "rule": "easter-orthodox",
+      "names": {"ar": "عيد القيامة المجيد (الأقباط)", "en": "Coptic Easter"},
+      "countries": ["EG"],
+      "importance": 1,
+      "tone": "respectful",
+      "suggestedIntent": "send",
+      "instances": [
+        {"year": 2026, "start": "2026-04-12", "end": "2026-04-12"},
+        {"year": 2027, "start": "2027-05-02", "end": "2027-05-02"},
+        {"year": 2028, "start": "2028-04-16", "end": "2028-04-16"}
+      ]
+    },
+    {
+      "key": "day-of-arafah",
+      "kind": "religious",
+      "rule": "hijri",
+      "names": {"ar": "يوم عرفة", "en": "Day of Arafah"},
+      "countries": "*",
+      "importance": 2,
+      "tone": "reverent",
+      "suggestedIntent": "send",
+      "hijri": {
+        "from": [12, 9],
+        "to": [12, 9]
+      },
+      "sensitivities": {"noQuranOnPromo": true, "noShahada": true, "noKaabaForSelling": true},
+      "instances": [
+        {"year": 2026, "start": "2026-05-26", "end": "2026-05-26", "hijriYear": 1447},
+        {"year": 2027, "start": "2027-05-15", "end": "2027-05-15", "hijriYear": 1448},
+        {"year": 2028, "start": "2028-05-04", "end": "2028-05-04", "hijriYear": 1449}
+      ]
+    },
+    {
+      "key": "eid-al-adha",
+      "kind": "religious",
+      "rule": "hijri",
+      "names": {"ar": "عيد الأضحى", "en": "Eid al-Adha"},
+      "countries": "*",
+      "importance": 3,
+      "tone": "festive",
+      "suggestedIntent": "send",
+      "hijri": {
+        "from": [12, 10],
+        "to": [12, 13],
+        "moonCheck": true
+      },
+      "sensitivities": {"noQuranOnPromo": true, "noShahada": true, "noKaabaForSelling": true},
+      "note": {
+        "ar": "الإجازة في الخليج غالبًا تبدأ من يوم عرفة، وطولها يختلف بين الدول.",
+        "en": "Holidays in the Gulf often start on the Day of Arafah; the length differs by country."
+      },
+      "instances": [
+        {"year": 2026, "start": "2026-05-27", "end": "2026-05-30", "moonCheck": "2026-05-16", "hijriYear": 1447},
+        {"year": 2027, "start": "2027-05-16", "end": "2027-05-19", "moonCheck": "2027-05-06", "hijriYear": 1448},
+        {"year": 2028, "start": "2028-05-05", "end": "2028-05-08", "moonCheck": "2028-04-24", "hijriYear": 1449}
+      ]
+    },
+    {
+      "key": "eid-al-fitr",
+      "kind": "religious",
+      "rule": "hijri",
+      "names": {"ar": "عيد الفطر", "en": "Eid al-Fitr"},
+      "countries": "*",
+      "importance": 3,
+      "tone": "festive",
+      "suggestedIntent": "send",
+      "hijri": {
+        "from": [10, 1],
+        "to": [10, 3],
+        "moonCheck": true
+      },
+      "sensitivities": {"noQuranOnPromo": true, "noShahada": true, "noKaabaForSelling": true},
+      "note": {"ar": "طول الإجازة الرسمية يختلف بين الدول.", "en": "The length of the official holiday differs by country."},
+      "instances": [
+        {"year": 2026, "start": "2026-03-20", "end": "2026-03-22", "moonCheck": "2026-03-18", "hijriYear": 1447},
+        {"year": 2027, "start": "2027-03-09", "end": "2027-03-11", "moonCheck": "2027-03-08", "hijriYear": 1448},
+        {"year": 2028, "start": "2028-02-26", "end": "2028-02-28", "moonCheck": "2028-02-25", "hijriYear": 1449}
+      ]
+    },
+    {
+      "key": "islamic-new-year",
+      "kind": "religious",
+      "rule": "hijri",
+      "names": {"ar": "رأس السنة الهجرية", "en": "Islamic New Year"},
+      "countries": "*",
+      "importance": 2,
+      "tone": "reverent",
+      "suggestedIntent": "send",
+      "hijri": {
+        "from": [1, 1],
+        "to": [1, 1],
+        "moonCheck": true
+      },
+      "sensitivities": {"noQuranOnPromo": true, "noShahada": true, "noKaabaForSelling": true},
+      "instances": [
+        {"year": 2026, "start": "2026-06-16", "end": "2026-06-16", "moonCheck": "2026-06-15", "hijriYear": 1448},
+        {"year": 2027, "start": "2027-06-06", "end": "2027-06-06", "moonCheck": "2027-06-04", "hijriYear": 1449},
+        {"year": 2028, "start": "2028-05-25", "end": "2028-05-25", "moonCheck": "2028-05-24", "hijriYear": 1450}
+      ]
+    },
+    {
+      "key": "last-ten-nights",
+      "kind": "religious",
+      "rule": "hijri",
+      "names": {"ar": "العشر الأواخر من رمضان", "en": "Last ten nights of Ramadan"},
+      "countries": "*",
+      "importance": 2,
+      "tone": "reverent",
+      "suggestedIntent": "save",
+      "hijri": {
+        "from": [9, 21],
+        "to": [9, "last"]
+      },
+      "partOf": "ramadan",
+      "sensitivities": {"noQuranOnPromo": true, "noShahada": true, "noKaabaForSelling": true},
+      "note": {"ar": "تبدأ مساء اليوم السابق لهذا التاريخ.", "en": "Begins the evening before this date."},
+      "instances": [
+        {"year": 2026, "start": "2026-03-10", "end": "2026-03-19", "hijriYear": 1447},
+        {"year": 2027, "start": "2027-02-28", "end": "2027-03-08", "hijriYear": 1448},
+        {"year": 2028, "start": "2028-02-17", "end": "2028-02-25", "hijriYear": 1449}
+      ]
+    },
+    {
+      "key": "laylat-al-qadr",
+      "kind": "religious",
+      "rule": "hijri",
+      "names": {"ar": "ليلة القدر", "en": "Laylat al-Qadr"},
+      "countries": "*",
+      "importance": 2,
+      "tone": "reverent",
+      "suggestedIntent": "send",
+      "hijri": {
+        "from": [9, 27],
+        "to": [9, 27]
+      },
+      "partOf": "ramadan",
+      "sensitivities": {"noQuranOnPromo": true, "noShahada": true, "noKaabaForSelling": true},
+      "note": {
+        "ar": "ليلتها هي مساء اليوم السابق لهذا التاريخ، وتُطلب في العشر الأواخر.",
+        "en": "The night is the evening before this date; it is sought across the last ten nights."
+      },
+      "instances": [
+        {"year": 2026, "start": "2026-03-16", "end": "2026-03-16", "hijriYear": 1447},
+        {"year": 2027, "start": "2027-03-06", "end": "2027-03-06", "hijriYear": 1448},
+        {"year": 2028, "start": "2028-02-23", "end": "2028-02-23", "hijriYear": 1449}
+      ]
+    },
+    {
+      "key": "mawlid",
+      "kind": "religious",
+      "rule": "hijri",
+      "names": {"ar": "المولد النبوي", "en": "Mawlid (the Prophet's birthday)"},
+      "countries": "*",
+      "exclude": ["SA"],
+      "importance": 2,
+      "tone": "reverent",
+      "suggestedIntent": "send",
+      "hijri": {
+        "from": [3, 12],
+        "to": [3, 12],
+        "moonCheck": true
+      },
+      "sensitivities": {"noQuranOnPromo": true, "noShahada": true, "noKaabaForSelling": true},
+      "note": {
+        "ar": "ليس مناسبة رسمية في السعودية؛ اتركه خارج خطط الجمهور السعودي.",
+        "en": "Not an official occasion in Saudi Arabia; leave it out of plans for a Saudi-only audience."
+      },
+      "instances": [
+        {"year": 2026, "start": "2026-08-25", "end": "2026-08-25", "moonCheck": "2026-08-12", "hijriYear": 1448},
+        {"year": 2027, "start": "2027-08-14", "end": "2027-08-14", "moonCheck": "2027-08-02", "hijriYear": 1449},
+        {"year": 2028, "start": "2028-08-03", "end": "2028-08-03", "moonCheck": "2028-07-22", "hijriYear": 1450}
+      ]
+    },
+    {
+      "key": "ramadan",
+      "kind": "religious",
+      "rule": "hijri",
+      "names": {"ar": "رمضان", "en": "Ramadan"},
+      "countries": "*",
+      "importance": 3,
+      "tone": "reverent",
+      "suggestedIntent": "save",
+      "hijri": {
+        "from": [9, 1],
+        "to": [9, "last"],
+        "moonCheck": true
+      },
+      "timing": {"shift": "after-iftar"},
+      "tagAllSlots": true,
+      "sensitivities": {"noQuranOnPromo": true, "noShahada": true, "noKaabaForSelling": true},
+      "pack": {"planned": "1.1"},
+      "note": {
+        "ar": "يبدأ الشهر بعد رؤية الهلال وقد يختلف يومًا بين الدول؛ ثبّت الموعد بعد الإعلان. يتحرك وقت النشر إلى ما بعد الإفطار.",
+        "en": "The month starts after moon sighting and can differ by a day between countries; confirm after the announcement. Posting moves to after iftar."
+      },
+      "instances": [
+        {"year": 2026, "start": "2026-02-18", "end": "2026-03-19", "moonCheck": "2026-02-17", "hijriYear": 1447},
+        {"year": 2027, "start": "2027-02-08", "end": "2027-03-08", "moonCheck": "2027-02-06", "hijriYear": 1448},
+        {"year": 2028, "start": "2028-01-28", "end": "2028-02-25", "moonCheck": "2028-01-26", "hijriYear": 1449}
+      ]
+    },
+    {
+      "key": "algeria-independence-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "عيد استقلال الجزائر", "en": "Algeria Independence Day"},
+      "countries": ["DZ"],
+      "importance": 3,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true},
+      "instances": [
+        {"year": 2026, "start": "2026-07-05", "end": "2026-07-05"},
+        {"year": 2027, "start": "2027-07-05", "end": "2027-07-05"},
+        {"year": 2028, "start": "2028-07-05", "end": "2028-07-05"}
+      ]
+    },
+    {
+      "key": "algeria-revolution-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "ذكرى اندلاع الثورة الجزائرية", "en": "Algeria Revolution Anniversary"},
+      "countries": ["DZ"],
+      "importance": 2,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true},
+      "instances": [
+        {"year": 2026, "start": "2026-11-01", "end": "2026-11-01"},
+        {"year": 2027, "start": "2027-11-01", "end": "2027-11-01"},
+        {"year": 2028, "start": "2028-11-01", "end": "2028-11-01"}
+      ]
+    },
+    {
+      "key": "amazigh-new-year-morocco",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "رأس السنة الأمازيغية (المغرب)", "en": "Amazigh New Year (Morocco)"},
+      "countries": ["MA"],
+      "importance": 1,
+      "tone": "festive",
+      "suggestedIntent": "send",
+      "instances": [
+        {"year": 2026, "start": "2026-01-14", "end": "2026-01-14"},
+        {"year": 2027, "start": "2027-01-14", "end": "2027-01-14"},
+        {"year": 2028, "start": "2028-01-14", "end": "2028-01-14"}
+      ]
+    },
+    {
+      "key": "bahrain-national-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "اليوم الوطني البحريني", "en": "Bahrain National Day"},
+      "countries": ["BH"],
+      "importance": 3,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true, "term": "الخليج العربي"},
+      "note": {
+        "ar": "اليوم الوطني 16 ديسمبر ويوم الجلوس 17 ديسمبر.",
+        "en": "National Day on 16 December and Accession Day on 17 December."
+      },
+      "instances": [
+        {"year": 2026, "start": "2026-12-16", "end": "2026-12-17"},
+        {"year": 2027, "start": "2027-12-16", "end": "2027-12-17"},
+        {"year": 2028, "start": "2028-12-16", "end": "2028-12-17"}
+      ]
+    },
+    {
+      "key": "egypt-armed-forces-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "عيد القوات المسلحة (6 أكتوبر)", "en": "Egypt Armed Forces Day"},
+      "countries": ["EG"],
+      "importance": 2,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true},
+      "instances": [
+        {"year": 2026, "start": "2026-10-06", "end": "2026-10-06"},
+        {"year": 2027, "start": "2027-10-06", "end": "2027-10-06"},
+        {"year": 2028, "start": "2028-10-06", "end": "2028-10-06"}
+      ]
+    },
+    {
+      "key": "egypt-revolution-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "ذكرى ثورة 23 يوليو", "en": "Egypt 23 July Revolution Day"},
+      "countries": ["EG"],
+      "importance": 2,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true},
+      "instances": [
+        {"year": 2026, "start": "2026-07-23", "end": "2026-07-23"},
+        {"year": 2027, "start": "2027-07-23", "end": "2027-07-23"},
+        {"year": 2028, "start": "2028-07-23", "end": "2028-07-23"}
+      ]
+    },
+    {
+      "key": "egypt-sinai-liberation-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "عيد تحرير سيناء", "en": "Egypt Sinai Liberation Day"},
+      "countries": ["EG"],
+      "importance": 2,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true},
+      "instances": [
+        {"year": 2026, "start": "2026-04-25", "end": "2026-04-25"},
+        {"year": 2027, "start": "2027-04-25", "end": "2027-04-25"},
+        {"year": 2028, "start": "2028-04-25", "end": "2028-04-25"}
+      ]
+    },
+    {
+      "key": "jordan-independence-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "عيد استقلال الأردن", "en": "Jordan Independence Day"},
+      "countries": ["JO"],
+      "importance": 3,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true},
+      "instances": [
+        {"year": 2026, "start": "2026-05-25", "end": "2026-05-25"},
+        {"year": 2027, "start": "2027-05-25", "end": "2027-05-25"},
+        {"year": 2028, "start": "2028-05-25", "end": "2028-05-25"}
+      ]
+    },
+    {
+      "key": "kuwait-liberation-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "يوم التحرير الكويتي", "en": "Kuwait Liberation Day"},
+      "countries": ["KW"],
+      "importance": 2,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true, "term": "الخليج العربي"},
+      "instances": [
+        {"year": 2026, "start": "2026-02-26", "end": "2026-02-26"},
+        {"year": 2027, "start": "2027-02-26", "end": "2027-02-26"},
+        {"year": 2028, "start": "2028-02-26", "end": "2028-02-26"}
+      ]
+    },
+    {
+      "key": "kuwait-national-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "اليوم الوطني الكويتي", "en": "Kuwait National Day"},
+      "countries": ["KW"],
+      "importance": 3,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true, "term": "الخليج العربي"},
+      "instances": [
+        {"year": 2026, "start": "2026-02-25", "end": "2026-02-25"},
+        {"year": 2027, "start": "2027-02-25", "end": "2027-02-25"},
+        {"year": 2028, "start": "2028-02-25", "end": "2028-02-25"}
+      ]
+    },
+    {
+      "key": "labour-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "عيد العمال", "en": "Labour Day"},
+      "countries": ["BH", "DZ", "EG", "IQ", "JO", "LB", "MA", "MR", "PS", "SD", "TN"],
+      "importance": 1,
+      "tone": "festive",
+      "suggestedIntent": "send",
+      "instances": [
+        {"year": 2026, "start": "2026-05-01", "end": "2026-05-01"},
+        {"year": 2027, "start": "2027-05-01", "end": "2027-05-01"},
+        {"year": 2028, "start": "2028-05-01", "end": "2028-05-01"}
+      ]
+    },
+    {
+      "key": "lebanon-army-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "عيد الجيش اللبناني", "en": "Lebanese Army Day"},
+      "countries": ["LB"],
+      "importance": 1,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true},
+      "instances": [
+        {"year": 2026, "start": "2026-08-01", "end": "2026-08-01"},
+        {"year": 2027, "start": "2027-08-01", "end": "2027-08-01"},
+        {"year": 2028, "start": "2028-08-01", "end": "2028-08-01"}
+      ]
+    },
+    {
+      "key": "lebanon-independence-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "عيد الاستقلال اللبناني", "en": "Lebanon Independence Day"},
+      "countries": ["LB"],
+      "importance": 3,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true},
+      "instances": [
+        {"year": 2026, "start": "2026-11-22", "end": "2026-11-22"},
+        {"year": 2027, "start": "2027-11-22", "end": "2027-11-22"},
+        {"year": 2028, "start": "2028-11-22", "end": "2028-11-22"}
+      ]
+    },
+    {
+      "key": "mauritania-independence-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "عيد استقلال موريتانيا", "en": "Mauritania Independence Day"},
+      "countries": ["MR"],
+      "importance": 2,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true},
+      "instances": [
+        {"year": 2026, "start": "2026-11-28", "end": "2026-11-28"},
+        {"year": 2027, "start": "2027-11-28", "end": "2027-11-28"},
+        {"year": 2028, "start": "2028-11-28", "end": "2028-11-28"}
+      ]
+    },
+    {
+      "key": "morocco-green-march",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "ذكرى المسيرة الخضراء", "en": "Morocco Green March Anniversary"},
+      "countries": ["MA"],
+      "importance": 2,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true},
+      "instances": [
+        {"year": 2026, "start": "2026-11-06", "end": "2026-11-06"},
+        {"year": 2027, "start": "2027-11-06", "end": "2027-11-06"},
+        {"year": 2028, "start": "2028-11-06", "end": "2028-11-06"}
+      ]
+    },
+    {
+      "key": "morocco-independence-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "عيد الاستقلال المغربي", "en": "Morocco Independence Day"},
+      "countries": ["MA"],
+      "importance": 2,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true},
+      "instances": [
+        {"year": 2026, "start": "2026-11-18", "end": "2026-11-18"},
+        {"year": 2027, "start": "2027-11-18", "end": "2027-11-18"},
+        {"year": 2028, "start": "2028-11-18", "end": "2028-11-18"}
+      ]
+    },
+    {
+      "key": "morocco-throne-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "عيد العرش المغربي", "en": "Morocco Throne Day"},
+      "countries": ["MA"],
+      "importance": 3,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true},
+      "instances": [
+        {"year": 2026, "start": "2026-07-30", "end": "2026-07-30"},
+        {"year": 2027, "start": "2027-07-30", "end": "2027-07-30"},
+        {"year": 2028, "start": "2028-07-30", "end": "2028-07-30"}
+      ]
+    },
+    {
+      "key": "oman-national-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "اليوم الوطني العُماني", "en": "Oman National Day"},
+      "countries": ["OM"],
+      "importance": 3,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true, "term": "الخليج العربي"},
+      "note": {
+        "ar": "أيام الإجازة الرسمية تُعلن كل عام (غالبًا 20–21 نوفمبر).",
+        "en": "The official holiday days are announced each year (often 20-21 November)."
+      },
+      "instances": [
+        {"year": 2026, "start": "2026-11-18", "end": "2026-11-18"},
+        {"year": 2027, "start": "2027-11-18", "end": "2027-11-18"},
+        {"year": 2028, "start": "2028-11-18", "end": "2028-11-18"}
+      ]
+    },
+    {
+      "key": "qatar-national-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "اليوم الوطني القطري", "en": "Qatar National Day"},
+      "countries": ["QA"],
+      "importance": 3,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true, "term": "الخليج العربي"},
+      "instances": [
+        {"year": 2026, "start": "2026-12-18", "end": "2026-12-18"},
+        {"year": 2027, "start": "2027-12-18", "end": "2027-12-18"},
+        {"year": 2028, "start": "2028-12-18", "end": "2028-12-18"}
+      ]
+    },
+    {
+      "key": "qatar-sports-day",
+      "kind": "national",
+      "rule": "nth-weekday",
+      "names": {"ar": "اليوم الرياضي للدولة (قطر)", "en": "Qatar National Sport Day"},
+      "countries": ["QA"],
+      "importance": 1,
+      "tone": "festive",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true, "term": "الخليج العربي"},
+      "note": {"ar": "ثاني ثلاثاء من فبراير.", "en": "The second Tuesday of February."},
+      "instances": [
+        {"year": 2026, "start": "2026-02-10", "end": "2026-02-10"},
+        {"year": 2027, "start": "2027-02-09", "end": "2027-02-09"},
+        {"year": 2028, "start": "2028-02-08", "end": "2028-02-08"}
+      ]
+    },
+    {
+      "key": "saudi-flag-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "يوم العلم السعودي", "en": "Saudi Flag Day"},
+      "countries": ["SA"],
+      "importance": 1,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noSaudiFlagOnPromo": true, "noShahada": true, "noDisputedMaps": true, "term": "الخليج العربي"},
+      "instances": [
+        {"year": 2026, "start": "2026-03-11", "end": "2026-03-11"},
+        {"year": 2027, "start": "2027-03-11", "end": "2027-03-11"},
+        {"year": 2028, "start": "2028-03-11", "end": "2028-03-11"}
+      ]
+    },
+    {
+      "key": "saudi-founding-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "يوم التأسيس السعودي", "en": "Saudi Founding Day"},
+      "countries": ["SA"],
+      "importance": 3,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noSaudiFlagOnPromo": true, "noShahada": true, "noDisputedMaps": true, "term": "الخليج العربي"},
+      "instances": [
+        {"year": 2026, "start": "2026-02-22", "end": "2026-02-22"},
+        {"year": 2027, "start": "2027-02-22", "end": "2027-02-22"},
+        {"year": 2028, "start": "2028-02-22", "end": "2028-02-22"}
+      ]
+    },
+    {
+      "key": "saudi-national-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "اليوم الوطني السعودي", "en": "Saudi National Day"},
+      "countries": ["SA"],
+      "importance": 3,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noSaudiFlagOnPromo": true, "noShahada": true, "noDisputedMaps": true, "term": "الخليج العربي"},
+      "note": {
+        "ar": "لا يُستخدم العلم السعودي (يحمل الشهادة) في المحتوى الترويجي.",
+        "en": "Do not put the Saudi flag (it carries the Shahada) on promotional content."
+      },
+      "instances": [
+        {"year": 2026, "start": "2026-09-23", "end": "2026-09-23"},
+        {"year": 2027, "start": "2027-09-23", "end": "2027-09-23"},
+        {"year": 2028, "start": "2028-09-23", "end": "2028-09-23"}
+      ]
+    },
+    {
+      "key": "sham-el-nessim",
+      "kind": "national",
+      "rule": "easter-orthodox",
+      "names": {"ar": "شم النسيم", "en": "Sham El-Nessim"},
+      "countries": ["EG"],
+      "importance": 2,
+      "tone": "festive",
+      "suggestedIntent": "send",
+      "note": {
+        "ar": "عيد قومي مصري يحتفل به المصريون جميعًا، يأتي الاثنين التالي لعيد القيامة الأرثوذكسي.",
+        "en": "An Egyptian national spring festival celebrated by everyone, on the Monday after Orthodox Easter."
+      },
+      "instances": [
+        {"year": 2026, "start": "2026-04-13", "end": "2026-04-13"},
+        {"year": 2027, "start": "2027-05-03", "end": "2027-05-03"},
+        {"year": 2028, "start": "2028-04-17", "end": "2028-04-17"}
+      ]
+    },
+    {
+      "key": "tunisia-independence-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "عيد استقلال تونس", "en": "Tunisia Independence Day"},
+      "countries": ["TN"],
+      "importance": 3,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true},
+      "instances": [
+        {"year": 2026, "start": "2026-03-20", "end": "2026-03-20"},
+        {"year": 2027, "start": "2027-03-20", "end": "2027-03-20"},
+        {"year": 2028, "start": "2028-03-20", "end": "2028-03-20"}
+      ]
+    },
+    {
+      "key": "tunisia-republic-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "عيد الجمهورية التونسية", "en": "Tunisia Republic Day"},
+      "countries": ["TN"],
+      "importance": 2,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true},
+      "instances": [
+        {"year": 2026, "start": "2026-07-25", "end": "2026-07-25"},
+        {"year": 2027, "start": "2027-07-25", "end": "2027-07-25"},
+        {"year": 2028, "start": "2028-07-25", "end": "2028-07-25"}
+      ]
+    },
+    {
+      "key": "uae-commemoration-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "يوم الشهيد (يوم التذكار)", "en": "UAE Commemoration Day"},
+      "countries": ["AE"],
+      "importance": 2,
+      "tone": "solemn",
+      "suggestedIntent": "reach",
+      "sensitivities": {"noDisputedMaps": true, "term": "الخليج العربي"},
+      "note": {"ar": "يوم تذكّر الشهداء: نبرة هادئة بلا ترويج.", "en": "A day of remembrance: quiet tone, nothing promotional."},
+      "instances": [
+        {"year": 2026, "start": "2026-11-30", "end": "2026-11-30"},
+        {"year": 2027, "start": "2027-11-30", "end": "2027-11-30"},
+        {"year": 2028, "start": "2028-11-30", "end": "2028-11-30"}
+      ]
+    },
+    {
+      "key": "uae-flag-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "يوم العلم الإماراتي", "en": "UAE Flag Day"},
+      "countries": ["AE"],
+      "importance": 1,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true, "term": "الخليج العربي"},
+      "instances": [
+        {"year": 2026, "start": "2026-11-03", "end": "2026-11-03"},
+        {"year": 2027, "start": "2027-11-03", "end": "2027-11-03"},
+        {"year": 2028, "start": "2028-11-03", "end": "2028-11-03"}
+      ]
+    },
+    {
+      "key": "uae-national-day",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "اليوم الوطني الإماراتي (عيد الاتحاد)", "en": "UAE National Day"},
+      "countries": ["AE"],
+      "importance": 3,
+      "tone": "patriotic",
+      "suggestedIntent": "send",
+      "sensitivities": {"noDisputedMaps": true, "term": "الخليج العربي"},
+      "note": {"ar": "الإجازة الرسمية يومان (2–3 ديسمبر).", "en": "A two-day official holiday (2-3 December)."},
+      "instances": [
+        {"year": 2026, "start": "2026-12-02", "end": "2026-12-03"},
+        {"year": 2027, "start": "2027-12-02", "end": "2027-12-03"},
+        {"year": 2028, "start": "2028-12-02", "end": "2028-12-03"}
+      ]
+    },
+    {
+      "key": "yennayer-algeria",
+      "kind": "national",
+      "rule": "fixed",
+      "names": {"ar": "رأس السنة الأمازيغية (الجزائر)", "en": "Yennayer (Algeria)"},
+      "countries": ["DZ"],
+      "importance": 1,
+      "tone": "festive",
+      "suggestedIntent": "send",
+      "instances": [
+        {"year": 2026, "start": "2026-01-12", "end": "2026-01-12"},
+        {"year": 2027, "start": "2027-01-12", "end": "2027-01-12"},
+        {"year": 2028, "start": "2028-01-12", "end": "2028-01-12"}
+      ]
+    },
+    {
+      "key": "mothers-day",
+      "kind": "commercial",
+      "rule": "fixed",
+      "names": {"ar": "عيد الأم", "en": "Mother's Day"},
+      "countries": ["AE", "BH", "EG", "IQ", "JO", "KW", "LB", "OM", "PS", "QA", "SA", "SD", "SY", "YE"],
+      "importance": 3,
+      "tone": "festive",
+      "suggestedIntent": "send",
+      "note": {
+        "ar": "21 مارس في مصر والخليج وبلاد الشام واليمن والسودان والعراق.",
+        "en": "21 March in Egypt, the Gulf, the Levant, Iraq, Yemen and Sudan."
+      },
+      "instances": [
+        {"year": 2026, "start": "2026-03-21", "end": "2026-03-21"},
+        {"year": 2027, "start": "2027-03-21", "end": "2027-03-21"},
+        {"year": 2028, "start": "2028-03-21", "end": "2028-03-21"}
+      ]
+    },
+    {
+      "key": "new-year",
+      "kind": "commercial",
+      "rule": "fixed",
+      "names": {"ar": "رأس السنة الميلادية", "en": "New Year"},
+      "countries": "*",
+      "importance": 2,
+      "tone": "festive",
+      "suggestedIntent": "send",
+      "note": {
+        "ar": "ليلة 31 ديسمبر مناسبة لمحتوى الحصاد والأهداف.",
+        "en": "The evening of 31 December suits year-in-review and goals content."
+      },
+      "instances": [
+        {"year": 2026, "start": "2026-01-01", "end": "2026-01-01"},
+        {"year": 2027, "start": "2027-01-01", "end": "2027-01-01"},
+        {"year": 2028, "start": "2028-01-01", "end": "2028-01-01"}
+      ]
+    },
+    {
+      "key": "valentines-day",
+      "kind": "commercial",
+      "rule": "fixed",
+      "names": {"ar": "عيد الحب", "en": "Valentine's Day"},
+      "countries": ["AE", "BH", "DZ", "EG", "IQ", "JO", "LB", "MA", "QA", "TN"],
+      "importance": 1,
+      "tone": "festive",
+      "suggestedIntent": "send",
+      "note": {
+        "ar": "مناسبة تجارية يعترض عليها بعض الجمهور؛ اتبع ذوق جمهور البراند.",
+        "en": "A commercial occasion some audiences object to; follow your own audience."
+      },
+      "instances": [
+        {"year": 2026, "start": "2026-02-14", "end": "2026-02-14"},
+        {"year": 2027, "start": "2027-02-14", "end": "2027-02-14"},
+        {"year": 2028, "start": "2028-02-14", "end": "2028-02-14"}
+      ]
+    },
+    {
+      "key": "white-friday",
+      "kind": "commercial",
+      "rule": "nth-weekday",
+      "names": {"ar": "الجمعة البيضاء", "en": "White Friday"},
+      "countries": ["AE", "BH", "EG", "JO", "KW", "OM", "QA", "SA"],
+      "importance": 3,
+      "tone": "commercial",
+      "suggestedIntent": "sell",
+      "sensitivities": {"noQuranOnPromo": true, "noShahada": true, "noKaabaForSelling": true, "noSaudiFlagOnPromo": true},
+      "note": {
+        "ar": "حملات التخفيضات تبدأ عادة قبلها بأسبوعين إلى ثلاثة؛ ابدأ التشويق مبكرًا. الجمعة التي تلي عيد الشكر الأمريكي.",
+        "en": "Retail campaigns usually start two to three weeks ahead; start teasers early. It is the Friday after US Thanksgiving."
+      },
+      "instances": [
+        {"year": 2026, "start": "2026-11-27", "end": "2026-11-27"},
+        {"year": 2027, "start": "2027-11-26", "end": "2027-11-26"},
+        {"year": 2028, "start": "2028-11-24", "end": "2028-11-24"}
+      ]
+    }
+  ]
+}

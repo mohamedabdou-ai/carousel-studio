@@ -1,0 +1,354 @@
+{
+  "schemaVersion": 1,
+  "id": "creator",
+  "version": "1.0",
+  "name": {
+    "ar": "صانع المحتوى",
+    "en": "Creator"
+  },
+  "description": {
+    "ar": "بطاقات بيضاء بحدود سميكة وظل صلب، وكلمة مظلّلة بالأصفر، وشارات وأزرار حفظ بارزة. للعلامات الشخصية.",
+    "en": "White sticker cards with heavy borders and hard shadows, a yellow-highlighted keyword and bold save chips. Made for personal brands."
+  },
+  "bestFor": [
+    "personal brands",
+    "careers",
+    "ai tools",
+    "finance tips",
+    "number-led lists"
+  ],
+  "ships": "1.0",
+  "paintable": true,
+  "roles": {
+    "bg": "#F6F2EA",
+    "surface": "#FFFFFF",
+    "ink": "#14120F",
+    "inkMuted": "#5B554B",
+    "accent": "#FFD23F"
+  },
+  "brandBindings": [
+    "bg",
+    "surface",
+    "ink",
+    "inkMuted",
+    "accent",
+    "fonts"
+  ],
+  "type": {
+    "display": {
+      "family": "alexandria",
+      "wght": 800,
+      "lh": 1.3
+    },
+    "heading": {
+      "family": "alexandria",
+      "wght": 700,
+      "lh": 1.35
+    },
+    "body": {
+      "family": "readex-pro",
+      "wght": 400,
+      "lh": 1.6
+    },
+    "latin": {
+      "family": "alexandria",
+      "wght": 800
+    },
+    "scale": {
+      "hero": [
+        120,
+        180
+      ],
+      "heroTarget": 156,
+      "h1": 88,
+      "h2": 72,
+      "title": [
+        64,
+        72
+      ],
+      "body": [
+        44,
+        48
+      ],
+      "small": 34,
+      "micro": 30
+    }
+  },
+  "layout": {
+    "align": "start",
+    "coverAnchor": "top",
+    "headlineWidth": [
+      0.65,
+      0.85
+    ]
+  },
+  "background": {
+    "kind": "solid",
+    "params": {
+      "role": "bg"
+    }
+  },
+  "decor": {
+    "highlight": "marker",
+    "numbering": "pill",
+    "texture": "grain",
+    "kashida": {
+      "allowed": false
+    }
+  },
+  "chrome": {
+    "handle": {
+      "slot": "header-start",
+      "logo": "auto"
+    },
+    "meta": {
+      "slot": "header-end"
+    },
+    "counter": {
+      "slot": "footer-center",
+      "format": "{i} من {n}"
+    },
+    "swipe": {
+      "slot": "footer-end",
+      "style": "label+chevron"
+    },
+    "savePill": {
+      "slot": "footer-start",
+      "showOn": [
+        "cta"
+      ]
+    }
+  },
+  "variants": {
+    "cover": [
+      "top",
+      "photo",
+      "split",
+      "number"
+    ],
+    "rehook": [
+      "base",
+      "split",
+      "big-number",
+      "statement"
+    ],
+    "item": [
+      "side-number",
+      "base",
+      "ghost-number",
+      "media",
+      "numeral"
+    ],
+    "step": [
+      "pill",
+      "base",
+      "ghost-number",
+      "track"
+    ],
+    "stat": [
+      "bar",
+      "base",
+      "icon",
+      "chart"
+    ],
+    "compare": [
+      "versus",
+      "columns",
+      "stacked",
+      "table",
+      "before-after"
+    ],
+    "myth-fact": [
+      "stamp",
+      "stacked",
+      "columns"
+    ],
+    "quote": [
+      "photo",
+      "mark",
+      "base",
+      "statement"
+    ],
+    "story-beat": [
+      "panel",
+      "base",
+      "media"
+    ],
+    "checklist": [
+      "boxes",
+      "base",
+      "ruled"
+    ],
+    "summary": [
+      "list",
+      "grid"
+    ],
+    "setup": [
+      "cards",
+      "base"
+    ],
+    "proof": [
+      "screenshot",
+      "base"
+    ],
+    "share": [
+      "big-word",
+      "base"
+    ],
+    "cta": [
+      "keyword",
+      "pill",
+      "base",
+      "action"
+    ],
+    "offer": [
+      "card",
+      "base"
+    ],
+    "testimonial": [
+      "photo",
+      "card",
+      "base"
+    ],
+    "poster": [
+      "top",
+      "photo",
+      "split",
+      "center"
+    ],
+    "grid": [
+      "bento"
+    ],
+    "timeline": [
+      "rail"
+    ]
+  },
+  "motion": {
+    "default": "highlight-sweep",
+    "allowed": [
+      "calm",
+      "counter",
+      "highlight-sweep",
+      "stamp",
+      "story",
+      "map-dots",
+      "drop-clock"
+    ]
+  },
+  "floors": {
+    "hero": 96,
+    "body": 42,
+    "meta": 30,
+    "contrastBody": 4.5,
+    "contrastLarge": 3.0
+  },
+  "art": {
+    "stroke": 2.5,
+    "cap": "round",
+    "join": "round",
+    "container": "disc",
+    "radius": {
+      "chip": 999,
+      "tile": 28,
+      "card": 36,
+      "panel": 36,
+      "window": 36
+    },
+    "shadow": {
+      "kind": "hard",
+      "dx": 6,
+      "dy": 6
+    },
+    "outline": 4,
+    "objectOutline": 0.035,
+    "outlineColor": "ink",
+    "fill": "flat",
+    "wobble": 0.2,
+    "tilt": 6,
+    "texture": "grain",
+    "doodle": "marker",
+    "colors": {
+      "note": "#FFE88A",
+      "support": [
+        "#FF8FB1",
+        "#6EC6FF"
+      ]
+    },
+    "mark": "outline",
+    "badge": "star",
+    "fills": {
+      "giant": "surface"
+    },
+    "hand": {
+      "family": "playpen-sans-arabic",
+      "wght": 700
+    },
+    "chipOffset": 0,
+    "templates": [
+      "pile",
+      "trio",
+      "duo-stack",
+      "versus"
+    ],
+    "affinity": {
+      "icon": 0.8,
+      "scene": 0.6,
+      "rows": 0.5,
+      "numeral": 0.8,
+      "chart": 0.5,
+      "mock": 0.8,
+      "photo": 0.7,
+      "field": 0.7,
+      "word": 0.9,
+      "pattern": 0.4
+    },
+    "marks": [
+      "arrow",
+      "circle",
+      "underline",
+      "strike",
+      "doodle"
+    ],
+    "rail": {
+      "style": "dots"
+    },
+    "thread": {
+      "style": "none"
+    },
+    "motif": "corner-sticker"
+  },
+  "tones": {
+    "invert": {
+      "roles": {
+        "bg": {
+          "mix": [
+            "ink",
+            "bg",
+            0.005
+          ]
+        },
+        "surface": {
+          "mix": [
+            "ink",
+            "bg",
+            0.03
+          ]
+        },
+        "ink": "bg",
+        "inkMuted": {
+          "muted": 4.7
+        },
+        "accent": "accent"
+      }
+    },
+    "field": {
+      "roles": {
+        "bg": "bg",
+        "surface": "accent",
+        "ink": "ink",
+        "inkMuted": "ink",
+        "accent": "surface"
+      }
+    }
+  }
+}

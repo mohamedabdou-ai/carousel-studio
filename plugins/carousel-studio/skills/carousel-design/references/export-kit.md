@@ -1,0 +1,63 @@
+# Export: files, formats and the publishing kit
+
+Everything is exported from the user's own browser (Studio) or locally (Claude Code lane). The exporter derives every file from `spec.json`, rendering the deck itself with the frozen layout, so exports never depend on what is on screen.
+
+## 1. File specifications
+| File | Spec |
+|---|---|
+| `3x4/NN.png` | 1080×1440, sRGB, no alpha, painted at 2× and downscaled; `NN` is the two-digit slide position |
+| `4x5/NN.jpg` | 1080×1350 (rows 45–1395 of the design), quality 0.92 stepped down until it is at most 8,000,000 bytes; for schedulers and the API only |
+| `3x4/01-cover.mp4` | 1080×1440, H.264 High at level 4.0 (`avc1.640028`), yuv420p, **limited (TV) range, BT.709** primaries, transfer and matrix, 30 fps constant, 6 s (5–6), no audio, `moov` before `mdat`, keyframe at 0 and at least every 30 frames, 8 Mbit/s; the Studio and HyperFrames lanes write the same facts (`ffprobe` shows `yuv420p`, `tv`, `bt709`, level 40) |
+| `4x5/01-cover.mp4` | the same frames cropped to 1080×1350 |
+| `carousel.pdf` | one page per slide, 1080×1440, each page one JPEG, producer "Carousel Studio", no author |
+| `caption.txt` | firstLine + keywordLine, body, cta, hashtags, separated by blank lines; exactly what the user pastes: the AI-label reminder is never written into it, it lives in `posting-guide.md` |
+| `hashtags.txt`, `slide-captions.txt`, `alt-text.txt` | one item per line; slide labels are `NN: text` with Western digits |
+| `posting-guide.md` | the per-dialect posting guide built from `data/posting-guide.json` |
+| `spec.json`, `cover.hf.html`, `studio-source.html` | the editable source files, **opt-in** (section 2); the last two are built credit-free, and `cover.hf.html` opens with a licence header (Apache-2.0, the HyperFrames format, the embedded OFL fonts by name) |
+| `qa-report.md`, `qa-report.json` | the gate results, bilingual |
+
+Single posts (`format: "single"`) use `3x4/post.png` and `4x5/post.jpg` instead of numbered slides and have no video.
+
+## 2. The kit («حزمة النشر»)
+A ZIP named `<spec.id>-kit.zip`, rooted at `carousel-kit/`. The default kit is the **light** one, made to move to a phone and save through the share sheet: **about 3 MB for eight slides** (target ≤ 4 MB; measured 2.78 MB on the 8-slide Egyptian fixture: PNGs 0.52, JPEGs 0.53, both MP4s 1.19, PDF 0.52, text 0.01). It was 14.4 MiB when the source files travelled with it.
+
+```
+carousel-kit/
+  3x4/   01-cover.mp4  01-cover.png  02.png … NN.png
+  4x5/   01-cover.mp4  01-cover.jpg  02.jpg … NN.jpg
+  caption.txt  hashtags.txt  slide-captions.txt  alt-text.txt  posting-guide.md
+  carousel.pdf  qa-report.md  qa-report.json
+```
+**Source files («ملفات المصدر»), opt-in.** `spec.json`, `cover.hf.html` (carousels with motion) and `studio-source.html` add more than 10 MB, nearly all of it embedded fonts, so they are never in the default kit. Ask for them with the **source files** switch on the Export screen (they then sit in the kit between `carousel.pdf` and the QA report), with the single export «ملفات المصدر (ZIP)» (a `<spec.id>-source.zip` rooted at `carousel-source/`), or in Claude Code with `--formats …,source`. They are what lets you reopen the post in the Studio or re-render the cover with HyperFrames later; the PNG, JPEG, MP4 and PDF are all you need to post.
+
+The kit is the default save because `downloads` prompts once per file. Files the browser could not produce (no H.264 encoder) are listed in `skipped`, never silently dropped; the guide then carries the note «صدّر الفيديو من الكمبيوتر».
+
+## 3. What «export» means for the gates
+- **D1** exact sizes, one ratio, sRGB, no alpha, JPEG ≤ 8 MB. **V1** the video spec and the loop. **X1** the clean-export gate.
+- **X1** covers every file inside the ZIP and every standalone file the Studio saves. It fails the export if any file contains the tool's credit text, the author's name in either spelling, or a social handle; if a PNG, JPEG, PDF or MP4 carries personal metadata; or if a file the kit should hold is missing and not listed in `skipped`. Metadata is stripped by construction (canvas encoders add none; the PDF producer is the project name).
+- `studio-source.html` and `cover.hf.html` are built **credit-free**: no About panel, no credit strings, no socials. Their licence headers name the project, Apache-2.0 and the third-party notices only (`cover.hf.html`: the HyperFrames format and the embedded OFL fonts, listed by family).
+- **Fonts**: OFL fonts are embedded. A font the user uploaded (for example Thmanyah) is embedded only in the live page and in rasterised outputs (PNG, JPEG, MP4, PDF); `studio-source.html`, `cover.hf.html` and the ZIP reference it by family name and show a one-time note asking the user to re-attach their own copy. No non-OFL font file ever travels in the kit.
+- **A1**: every AI asset is listed with `aiGenerated: true`; export stays blocked until the no-text check is done (`visual-prompts/references/ingress.md`).
+- Users own everything they export.
+
+## 4. How the user saves
+Save order (automatic): **Web Share with files** on a touch device after a tap → the page's `downloads` capability (one ZIP when there are more than three files) → a plain download link. A declined prompt is not an error. If `downloads` is not enabled the files are offered one by one.
+
+On a phone the fastest path is «احفظ في الصور» (share sheet → Save to Photos), then the posting steps in `posting-guide.md`. On a computer download the ZIP.
+
+## 5. Claude Code lane
+`render.mjs --spec spec.json --out DIR --formats png,jpeg,pdf,zip,qa --variants 3x4,4x5` writes the same tree and runs the export-scope QA (add `source` to `--formats` for the three source files); its exit code is the QA exit code (0 pass, 1 FIX pending, 2 BLOCK). `--video internal` uses the Studio exporter instead of HyperFrames; `--video none` skips the cover video. Details and preflight: `lanes.md`.
+
+## 6. What to say after exporting
+Three lines in the user's dialect: where the files are, whether anything was skipped or is still a FIX, and the first posting step. Do not repeat the file list; point to `posting-guide.md`. If the post uses AI imagery, add the AI-label step. Add no credit or promotional line.
+
+## 7. Troubleshooting
+| Symptom | Cause and fix |
+|---|---|
+| «حزمة النشر» is disabled | an unresolved BLOCK; open the Check screen, run «صلّح تلقائياً», or override an overridable copy gate with «صدّر رغم ذلك» |
+| X1 fails | a credit or a handle slipped into copy, alt text or a filename, or a non-OFL font is embedded: remove it and re-export |
+| JPEG over 8 MB | the exporter lowers quality in 0.02 steps; if it still fails the background is too noisy: simplify or use a plain background |
+| video skipped | no H.264 in this browser: export from a recent Chrome or Edge on a computer, or post the static cover |
+| `V1.range` or `V1.pixfmt` BLOCK on a video | the file is full range (`yuvj420p`) or not 8-bit 4:2:0: the Studio's exporter converts its frames itself and never produces this, so it comes from another encoder or an older export; export the cover again |
+| `V1.level` FIX | the encoder wrote H.264 level 4.2 or higher and the stream did not fit level 4.0 well enough to lower it; advice only, current phones play it |
+| fonts look different in the PNG | the live page used a font the export could not embed: re-run after `document.fonts.ready`; check the font is a registry font or a re-attached upload |

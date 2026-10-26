@@ -1,0 +1,168 @@
+{
+  "slides": [
+    {
+      "id": "s02",
+      "visual": {
+        "anchor": {
+          "kind": "numeral",
+          "value": "6",
+          "unit": "خطوات"
+        },
+        "recipe": "over",
+        "tone": "base",
+        "field": true,
+        "bleed": "both",
+        "why": "الرقم 6 هو الفكرة، فكبرناه",
+        "alt": "الرقم 6 خطوات"
+      }
+    },
+    {
+      "id": "s03",
+      "visual": {
+        "anchor": {
+          "kind": "field",
+          "icon": "target"
+        },
+        "recipe": "under",
+        "tone": "base",
+        "field": true,
+        "why": "اخترنا هدف لأنو الحكي عن بالنتيجة",
+        "alt": "أيقونة هدف"
+      }
+    },
+    {
+      "id": "s04",
+      "visual": {
+        "anchor": {
+          "kind": "numeral",
+          "icon": "user-round",
+          "value": "2",
+          "companion": "icon"
+        },
+        "recipe": "under",
+        "tone": "invert",
+        "why": "الرقم 2 هو الفكرة، فكبرناه",
+        "alt": "الرقم 2"
+      }
+    },
+    {
+      "id": "s05",
+      "visual": {
+        "anchor": {
+          "kind": "field",
+          "icon": "download"
+        },
+        "recipe": "under",
+        "tone": "base",
+        "field": true,
+        "why": "اخترنا تحميل لأنو الحكي عن تنزل",
+        "alt": "أيقونة تحميل"
+      }
+    },
+    {
+      "id": "s06",
+      "visual": {
+        "anchor": {
+          "kind": "numeral",
+          "icon": "search",
+          "value": "4",
+          "companion": "icon"
+        },
+        "recipe": "under",
+        "tone": "base",
+        "why": "الرقم 4 هو الفكرة، فكبرناه",
+        "alt": "الرقم 4"
+      }
+    },
+    {
+      "id": "s07",
+      "visual": {
+        "anchor": {
+          "kind": "field",
+          "icon": "share-2"
+        },
+        "recipe": "under",
+        "tone": "invert",
+        "field": true,
+        "why": "اخترنا مشاركه لأنو الحكي عن ابعت",
+        "alt": "أيقونة مشاركه"
+      }
+    },
+    {
+      "id": "s08",
+      "visual": {
+        "anchor": {
+          "kind": "numeral",
+          "object": "book",
+          "value": "6",
+          "companion": "icon"
+        },
+        "recipe": "under",
+        "tone": "base",
+        "why": "الرقم 6 هو الفكرة، فكبرناه",
+        "alt": "الرقم 6"
+      }
+    },
+    {
+      "id": "s09",
+      "visual": {
+        "anchor": {
+          "kind": "mock",
+          "mock": {
+            "kind": "notes"
+          }
+        },
+        "recipe": "full",
+        "tone": "base",
+        "why": "حطينا كلام السلايد نفسه جوا ملاحظات",
+        "alt": "ملاحظات: ابدأ بالنتيجة"
+      }
+    },
+    {
+      "id": "s10",
+      "visual": {
+        "anchor": {
+          "kind": "word",
+          "word": "البوست",
+          "wordStyle": "sticker"
+        },
+        "recipe": "center",
+        "tone": "field",
+        "field": true,
+        "why": "ما في صورة بتقول هالحكي بصدق، فخلينا الكلمة هي الصورة",
+        "alt": "الكلمة «البوست» بحجم كبير"
+      },
+      "variant": "action"
+    }
+  ],
+  "style": {
+    "planV": "1.1.0+e7d18307+5a1ce000",
+    "motif": "footprints"
+  },
+  "notes": [
+    {
+      "slide": "s03",
+      "code": "C2.demo-missing"
+    },
+    {
+      "slide": "s04",
+      "code": "C2.demo-missing"
+    },
+    {
+      "slide": "s05",
+      "code": "C2.demo-missing"
+    },
+    {
+      "slide": "s06",
+      "code": "C2.demo-missing"
+    },
+    {
+      "slide": "s07",
+      "code": "C2.demo-missing"
+    },
+    {
+      "slide": "s08",
+      "code": "C2.demo-missing"
+    }
+  ]
+}

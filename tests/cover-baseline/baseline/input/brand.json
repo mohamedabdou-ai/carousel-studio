@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "id": "brand-content-workshop-0001",
+  "slug": "content-workshop",
+  "name": "ورشة المحتوى",
+  "handle": "@content.workshop.demo",
+  "kind": "creator",
+  "version": 2,
+  "approvedAt": "2026-10-20T09:00:00Z",
+  "locale": {
+    "dialect": "eg",
+    "register": "dialect",
+    "digits": "western",
+    "digitsReason": "الافتراضي: كل أغلفة الكاروسيل العربي الناجحة اللي حلّلناها بأرقام 123",
+    "countries": [
+      "EG",
+      "SA"
+    ],
+    "appLanguage": "ar",
+    "swipeCue": "arrow-rtl",
+    "latinTerms": [
+      "Instagram",
+      "ChatGPT",
+      "Canva",
+      "Notion"
+    ]
+  },
+  "identity": {
+    "who": "مدرّب سوشيال ميديا بيساعد صنّاع المحتوى المبتدئين",
+    "niche": "كتابة وتصميم الكاروسيل على Instagram",
+    "offer": "ورش ومراجعات للصفحات",
+    "goal": "followers"
+  },
+  "audience": {
+    "persona": "صانع محتوى مبتدئ بينزل بوستات كتير ومحدش بيحفظها",
+    "pains": [
+      "الناس بتعدّي الكاروسيل من أول سلايد",
+      "مش عارف أكتب هوك"
+    ],
+    "desires": [
+      "بوستات تتحفظ وتتبعت",
+      "وقت أقل في التصميم"
+    ],
+    "objections": [
+      "مفيش وقت",
+      "مش مصمم"
+    ],
+    "faq": [
+      "أكتب كام سلايد؟",
+      "أحط كام هاشتاج؟"
+    ],
+    "awareness": "problem"
+  },
+  "voice": {
+    "tone": {
+      "formalFriendly": 4,
+      "seriousPlayful": 3,
+      "calmEnergetic": 4
+    },
+    "use": [
+      "ببلاش",
+      "جرّب",
+      "خطوة خطوة"
+    ],
+    "avoid": [
+      "ثورة",
+      "سر",
+      "احترافية"
+    ],
+    "allow": [],
+    "ctaStyle": "دعوة واحدة محددة من غير إلحاح",
+    "samples": [
+      "جرّبت أغيّر أول سلايد في كل بوست لمدة أسبوعين. الفرق في الحفظ كان واضح. احفظ البوست ده لو لسه بتكتب الغلاف في آخر لحظة.",
+      "مش لازم تبقى مصمم عشان تعمل كاروسيل محترف. ابدأ بفكرة واحدة في كل سلايد، وبعدين شوف إيه اللي بيتحفظ.",
+      "أكتر سؤال بوصلني: أكتب كام سلايد؟ الإجابة ببساطة: اللي يكفي الفكرة. لو خلصت قبل الثامنة، وقّف.",
+      "الكابشن الطويل مش عيب لو كل سطر فيه فايدة. جرّب تكتب أول سطر لواحد مش متابعك وشوف هيكمل ولا لأ."
+    ],
+    "fingerprint": {
+      "sentLen": {
+        "p25": 5.2,
+        "p50": 8.5,
+        "p75": 9.8,
+        "p90": 11.0
+      },
+      "emojiPer100w": 0,
+      "emojiSet": [],
+      "latinMixPct": 0.0,
+      "ellipsisRate": 0.0,
+      "questionBangRate": 0.1,
+      "person": "ana",
+      "openers": [
+        "جرّبت أغيّر أول",
+        "مش لازم تبقى",
+        "أكتر سؤال بوصلني:",
+        "الكابشن الطويل مش"
+      ],
+      "dialectMarkers": {
+        "مش": 3,
+        "ده": 1,
+        "إيه": 1,
+        "لسه": 1
+      },
+      "captionLenBand": [
+        95,
+        119
+      ],
+      "signatures": [],
+      "computedAt": "2026-10-20T09:00:00Z",
+      "sampleCount": 4
+    }
+  },
+  "visual": {
+    "palette": {
+      "bg": "#F4F4F2",
+      "surface": "#FFFFFF",
+      "ink": "#111111",
+      "inkMuted": "#5A5A5A",
+      "accent": "#E3262B"
+    },
+    "fonts": {
+      "display": "ibm-plex-sans-arabic",
+      "body": "readex-pro",
+      "latin": "inter"
+    },
+    "presetId": "swiss",
+    "presetAlternates": [
+      "poster",
+      "creator"
+    ],
+    "locks": []
+  },
+  "strategy": {
+    "pillars": [
+      {
+        "id": "writing",
+        "name": "كتابة الكاروسيل",
+        "share": 0.4,
+        "intents": [
+          "save",
+          "send"
+        ]
+      },
+      {
+        "id": "design",
+        "name": "تصميم بسيط",
+        "share": 0.3,
+        "intents": [
+          "save"
+        ]
+      },
+      {
+        "id": "growth",
+        "name": "نمو الصفحة",
+        "share": 0.3,
+        "intents": [
+          "reach",
+          "send"
+        ]
+      }
+    ],
+    "postsPerWeek": 4,
+    "intentMix": {
+      "save": 0.4,
+      "send": 0.25,
+      "reach": 0.25,
+      "sell": 0.1
+    },
+    "bestHours": {
+      "tz": "Africa/Cairo",
+      "slots": [
+        {
+          "day": "any",
+          "from": "20:00",
+          "to": "23:00"
+        }
+      ]
+    }
+  },
+  "tools": {
+    "detectedAt": "2026-10-20T09:00:00Z",
+    "caps": {},
+    "consent": "ask-each-post"
+  },
+  "hooks": {
+    "packs": [],
+    "familyPriors": {
+      "P1": {
+        "metric": "median-saves",
+        "value": 9,
+        "baseline": 6,
+        "n": 8
+      },
+      "F17": {
+        "metric": "median-saves",
+        "value": 11,
+        "baseline": 6,
+        "n": 6
+      }
+    },
+    "history": [
+      {
+        "postId": "post-20261012-0001",
+        "date": "2026-10-12",
+        "family": "P11",
+        "hookId": "P11-PACK-prompts",
+        "cta": "save",
+        "architecture": "framework"
+      },
+      {
+        "postId": "post-20261016-0001",
+        "date": "2026-10-16",
+        "family": "F17",
+        "hookId": "F17-REFRAME-relocate",
+        "cta": "question",
+        "architecture": "opinion"
+      },
+      {
+        "postId": "post-20261019-0001",
+        "date": "2026-10-19",
+        "family": "P15",
+        "hookId": "P15-RANKED-tested",
+        "cta": "send",
+        "architecture": "comparison"
+      }
+    ]
+  },
+  "onboarding": {
+    "sections": {
+      "identity": "done",
+      "audience": "done",
+      "voice": "done",
+      "visual": "done",
+      "strategy": "done",
+      "tools": "skipped"
+    },
+    "current": "close",
+    "bookApprovedAt": "2026-10-20T09:00:00Z"
+  },
+  "createdAt": "2026-10-18T09:00:00Z",
+  "updatedAt": "2026-10-20T09:00:00Z"
+}

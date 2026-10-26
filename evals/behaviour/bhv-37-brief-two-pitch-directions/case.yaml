@@ -1,0 +1,69 @@
+schema_version: "1.0"
+name: bhv-37-brief-two-pitch-directions
+description: "The Creative Director opens a guided post with a brief that holds one big idea and exactly two pitch directions, one safe and one bold, from different hook families and moves, reacted to by the audience panel, and shows both at checkpoint 1 with a recommendation."
+tags: [behaviour, needs-bash, carousel-create, creative-team, pitch-two-directions]
+plugins: ["../../../plugins/carousel-studio"]
+execution:
+  prompt: |
+    ده كابسول البراند بتاعي (ملف المشروع):
+
+        [Carousel Studio brand capsule v1]
+        brand: ورشة المحتوى (content-workshop) | dialect: eg | register: dialect | digits: western | swipe: arrow-rtl
+        voice: ودود وعملي، جمل قصيرة. نستخدم «ببلاش» و«جرّب». لا نستخدم «ثورة» ولا «سر».
+        palette: bg #F4F4F2 ink #111111 accent #E3262B | fonts: ibm-plex-sans-arabic / readex-pro / inter | preset: swiss
+        home: -
+
+    اعملي كاروسيل عن إن أغلب الناس بتكتب برومبتات طويلة ومحدش بيستفيد منها. أنا عايز أشوف الاتجاهات قبل ما نكتب حاجة.
+  append_system_prompt: |
+    This is an automated evaluation of the Carousel Studio plugin, not a live session. There is no Artifact tool, no network access and no connected image, video or design tool. Save every file you create in the current working directory and never in a home folder: name the post spec spec.json, the production board board.md, a brand profile brand.json and a plan plan-YYYY-MM.json, and when a script offers a workspace or root option (for example brand_io.py --dir) point it at the current directory. Subagents may be unavailable: when they are, run each team role as an explicit role pass, as the skill says. Otherwise answer the user exactly as you normally would.
+  max_turns: 80
+  timeout_seconds: 1800
+  allowed_tools: [Skill, Read, Write, Edit, Bash, Glob, Grep, Agent]
+runs: 2
+graders:
+  - type: tool_used
+    name: uses-carousel-create
+    tool: Skill
+    input_match: 'carousel-create'
+    min: 1
+  - type: file_exists
+    name: board-written
+    path: "**/board.md"
+  - type: regex
+    name: safe-direction
+    pattern: 'آمن'
+    match: contains
+    weight: 2
+  - type: regex
+    name: bold-direction
+    pattern: 'جريء'
+    match: contains
+    weight: 2
+  - type: regex
+    name: pitch-section-on-the-board
+    pattern: '\{#pitch\}'
+    match: contains
+    target: {source: file, path: board.md}
+    weight: 2
+  - type: tool_used
+    name: runs-the-board-checker
+    tool: Bash
+    input_match: 'board_check\.py'
+    min: 1
+    weight: 2
+  - type: llm
+    name: brief-has-one-idea-and-two-directions
+    criteria: |
+      The reply (or board.md) holds a creative brief with ONE big idea written as a single sentence, a named enemy (something a person could be angry at, not a topic), and exactly TWO pitch directions: one safe and one bold, each with a cover line of at most 6 hero words. The two directions come from different hook families and use different creative moves, and the bold one names its risk.
+    weight: 2
+  - type: llm
+    name: panel-reacted-and-the-user-chooses
+    criteria: |
+      The recommendation cites the audience panel's reaction (how many of three personas stopped for each direction), gives the reason in a sentence, and still shows the option it did not recommend. The run stops at checkpoint 1 and asks the user to choose (a number), instead of writing the script.
+    weight: 2
+  - type: regex
+    name: no-author-credit
+    pattern: 'محمد عبده|Mohamed Abdou'
+    match: not_contains
+    weight: 2
+expected_outcome: "A brief with one big idea and two pitch directions (safe and bold, different families and moves), the panel's stops and a recommendation; the run waits for the user."

@@ -1,0 +1,25 @@
+{
+  "module": "ui",
+  "chunk": "cs-ui.js",
+  "order": 0,
+  "files": [
+    "util.js",
+    "strings.js",
+    "overlay.js",
+    "caps.js",
+    "serialize.js",
+    "state.js",
+    "render.js",
+    "qa.js",
+    "persist.js",
+    "regen.js",
+    "actions.js",
+    "editors.js",
+    "screen-script.js",
+    "design-tabs.js",
+    "screen-design.js",
+    "screen-check.js",
+    "studio.js",
+    "index.js"
+  ]
+}

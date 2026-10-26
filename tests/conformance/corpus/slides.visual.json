@@ -1,0 +1,488 @@
+{
+ "schemaVersion": 1,
+ "description": "Synthetic slides for the text model of the visual language. For each one both engines print the visible additions (visualFields / visual_fields), slideText in three digit modes, the keyed QA fields (slideFields / slide_fields) and the word counts (wordCounts / word_counts). Included on purpose: every field kind, every slide-type order that matters, instructions that never count (visual.idea, why, alt, a demo line's who), numeric data that never counts (anchor.value, chart values), empty and whitespace-only strings, values of the wrong type (skipped, the index of the next one kept), a slide with no id or no type. The values of the wrong type are outside the schema; they pin that both engines skip them the same way.",
+ "slides": [
+  {
+   "id": "s01",
+   "n": 1,
+   "type": "grid",
+   "title": "3 أدوات مجانية",
+   "variant": "bento",
+   "bridge": "والرابعة أهم",
+   "items": [
+    {
+     "title": "Canva",
+     "text": "تصميم سريع",
+     "value": "0$",
+     "hi": true
+    },
+    {
+     "title": "CapCut",
+     "text": "مونتاج من الموبايل",
+     "value": "2,500",
+     "icon": "scissors",
+     "mark": "tick"
+    },
+    {
+     "title": "Notion",
+     "text": "خطة المحتوى في مكان واحد"
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "n": 2,
+   "type": "timeline",
+   "title": "رحلة شهر",
+   "items": [
+    {
+     "title": "الأسبوع الأول",
+     "text": "ابدأ بسيط",
+     "value": "7 أيام"
+    },
+    {
+     "title": "الأسبوع الثاني",
+     "text": "ثبّت العادة",
+     "value": "14 يوم",
+     "hi": true
+    },
+    {
+     "title": "آخر الشهر",
+     "value": "30 يوم"
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "n": 3,
+   "type": "step",
+   "ord": 2,
+   "title": "ابدأ بسؤال",
+   "body": "اسأل سؤال واحد بس.",
+   "bridge": "وبعدها الرد",
+   "demo": {
+    "lines": [
+     {
+      "who": "me",
+      "text": "5 نصايح للكتابة"
+     },
+     {
+      "who": "them",
+      "text": "ليه محدش بيكمّل بوستك؟",
+      "hi": true
+     },
+     {
+      "who": "sys",
+      "text": "تم الإرسال"
+     }
+    ],
+    "caption": "ده اللي بيوقّف الإبهام"
+   }
+  },
+  {
+   "id": "s04",
+   "n": 4,
+   "type": "share",
+   "headline": "ابعتها لصاحبك",
+   "sub": "اللي بيكتب كتير",
+   "visual": {
+    "idea": "ignored instruction",
+    "why": "ignored reason",
+    "alt": "ignored alt",
+    "anchor": {
+     "kind": "mock",
+     "mock": {
+      "kind": "chat",
+      "title": "محادثة",
+      "lines": [
+       {
+        "who": "them",
+        "text": "شفت ده؟"
+       },
+       {
+        "who": "me",
+        "text": "أيوه، بعتهالك"
+       }
+      ],
+      "items": [
+       "أيوه",
+       "لا"
+      ],
+      "caption": "رد سريع",
+      "stamp": "جديد"
+     }
+    }
+   }
+  },
+  {
+   "id": "s05",
+   "n": 5,
+   "type": "stat",
+   "title": "الأغلبية بتعدّي الغلاف",
+   "number": {
+    "value": "74",
+    "unit": "%"
+   },
+   "visual": {
+    "anchor": {
+     "kind": "chart",
+     "value": "74",
+     "unit": "من كل 100",
+     "word": "قبل",
+     "captions": [
+      "مشاهد",
+      "ثانية"
+     ],
+     "chart": {
+      "kind": "bars-h",
+      "values": [
+       {
+        "label": "بيكمّلوا",
+        "value": 26
+       },
+       {
+        "label": "بيعدّوا",
+        "value": 74,
+        "hi": true
+       }
+      ],
+      "unit": "%"
+     }
+    }
+   }
+  },
+  {
+   "id": "s06",
+   "n": 6,
+   "type": "quote",
+   "body": "الكلمة الأولى هي الغلاف",
+   "attribution": "مدير تحرير",
+   "demo": {
+    "lines": [
+     {
+      "text": "اقتباس"
+     }
+    ],
+    "caption": "من تجربة"
+   }
+  },
+  {
+   "id": "s07",
+   "n": 7,
+   "type": "offer",
+   "title": "حزمة القوالب",
+   "number": {
+    "value": "49",
+    "unit": "$"
+   },
+   "bullets": [
+    "20 قالب",
+    "تحديث مجاني"
+   ],
+   "cta": {
+    "kind": "keyword-dm",
+    "text": "اكتب قوالب"
+   },
+   "items": [
+    {
+     "title": "قوالب",
+     "text": "20 قالب",
+     "value": "49$"
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "n": 8,
+   "type": "testimonial",
+   "body": "زادت تفاعلاتي",
+   "attribution": "سارة",
+   "number": {
+    "value": "3",
+    "unit": "أضعاف"
+   },
+   "demo": {
+    "lines": [
+     {
+      "who": "them",
+      "text": "النتيجة مذهلة"
+     }
+    ]
+   }
+  },
+  {
+   "id": "s09",
+   "n": 9,
+   "type": "cover",
+   "kicker": "دليل",
+   "headline": "5 أخطاء\nبتموّت ==الكاروسيل==",
+   "visual": {
+    "idea": "ignored",
+    "anchor": {
+     "kind": "word",
+     "word": "كاروسيل",
+     "wordStyle": "solid"
+    }
+   }
+  },
+  {
+   "id": "s10",
+   "n": 10,
+   "type": "grid",
+   "title": "فاضي",
+   "items": [
+    {
+     "title": "",
+     "text": "   ",
+     "value": ""
+    },
+    {
+     "title": "واحد"
+    }
+   ],
+   "demo": {
+    "lines": [
+     {
+      "text": ""
+     }
+    ],
+    "caption": ""
+   }
+  },
+  {
+   "id": "s11",
+   "n": 11,
+   "type": "grid",
+   "title": "أنواع غريبة",
+   "items": [
+    {
+     "title": "سليم",
+     "value": 5
+    },
+    {
+     "title": 7
+    },
+    {
+     "text": "نص بلا عنوان"
+    }
+   ],
+   "demo": {
+    "caption": 7,
+    "lines": [
+     "oops",
+     {
+      "text": "السطر السليم"
+     }
+    ]
+   },
+   "visual": {
+    "anchor": {
+     "word": null,
+     "unit": 3,
+     "captions": [
+      1,
+      "ok",
+      null
+     ],
+     "chart": {
+      "values": [
+       {
+        "value": 1
+       },
+       {
+        "label": 4
+       },
+       {
+        "label": "تسمية"
+       }
+      ]
+     },
+     "mock": {
+      "title": 9,
+      "lines": [
+       3,
+       {
+        "who": "me"
+       },
+       {
+        "text": "سطر"
+       }
+      ],
+      "items": [
+       8,
+       "اختيار"
+      ],
+      "caption": null,
+      "stamp": 0
+     }
+    }
+   }
+  },
+  {
+   "id": "s12",
+   "n": 12,
+   "type": "item",
+   "title": "قاعدة",
+   "body": "للنص",
+   "items": [
+    {
+     "title": "==٣== أدوات",
+     "text": "سطر\nتحته سطر",
+     "value": "٢٬٥٠٠"
+    }
+   ],
+   "demo": {
+    "lines": [
+     {
+      "text": "خطوة ١ ثم ٢"
+     }
+    ],
+    "caption": "٥ دقايق بس"
+   }
+  },
+  {
+   "id": "s13",
+   "n": 13,
+   "type": "step",
+   "title": "Hook first",
+   "body": "Write one line.",
+   "items": [
+    {
+     "title": "Canva Pro",
+     "text": "Free for 30 days",
+     "value": "$12"
+    }
+   ],
+   "demo": {
+    "lines": [
+     {
+      "who": "me",
+      "text": "3 tools, 0 budget"
+     }
+    ],
+    "caption": "A/B test it"
+   }
+  },
+  {
+   "id": "s14",
+   "n": 14,
+   "type": "item",
+   "title": "قديمة",
+   "body": "سلايد من النسخة الأولى بلا حقول جديدة",
+   "bridge": "اسحب"
+  },
+  {
+   "id": "s15",
+   "n": 15,
+   "type": "item",
+   "title": "فيجوال بلا مرساة",
+   "body": "نص",
+   "visual": {
+    "idea": "فكرة",
+    "recipe": "under",
+    "tone": "base"
+   }
+  },
+  {
+   "id": "s16",
+   "n": 16,
+   "type": "compare",
+   "sides": [
+    {
+     "label": "قبل",
+     "text": "بطيء"
+    },
+    {
+     "label": "بعد",
+     "text": "سريع"
+    }
+   ],
+   "demo": {
+    "lines": [
+     {
+      "text": "قبل وبعد"
+     }
+    ]
+   },
+   "visual": {
+    "anchor": {
+     "kind": "numeral",
+     "value": "3",
+     "unit": "أضعاف",
+     "companion": "bar"
+    }
+   }
+  },
+  {
+   "id": "s17",
+   "n": 17,
+   "type": "checklist",
+   "title": "قائمة",
+   "bullets": [
+    "أول",
+    "تاني"
+   ],
+   "items": [
+    {
+     "title": "أول",
+     "icon": "check"
+    },
+    {
+     "title": "تاني"
+    }
+   ],
+   "visual": {
+    "rowIcons": [
+     "check",
+     "check"
+    ],
+    "anchor": {
+     "kind": "rows"
+    }
+   }
+  },
+  {
+   "id": "s18",
+   "n": 18,
+   "type": "poster",
+   "headline": "كلمة واحدة",
+   "visual": {
+    "anchor": {
+     "kind": "icon",
+     "icon": "star",
+     "captions": [
+      "مميز"
+     ]
+    }
+   }
+  },
+  {
+   "n": 19,
+   "type": "item",
+   "title": "من غير معرّف",
+   "items": [
+    {
+     "title": "بند"
+    }
+   ],
+   "demo": {
+    "lines": [
+     {
+      "text": "سطر"
+     }
+    ]
+   }
+  },
+  {
+   "id": "s20",
+   "n": 20,
+   "title": "من غير نوع",
+   "body": "نص",
+   "items": [
+    {
+     "title": "بند"
+    }
+   ]
+  }
+ ]
+}

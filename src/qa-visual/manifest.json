@@ -1,0 +1,6 @@
+{
+  "module": "qa-visual",
+  "chunk": "cs-qa-visual.js",
+  "order": 0,
+  "files": ["register.js", "deadspace-gates.js", "text-integrity.js", "d10.js", "d11.js", "squint.js", "spec-gates.js"]
+}

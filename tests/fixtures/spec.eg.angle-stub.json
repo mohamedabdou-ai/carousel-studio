@@ -1,0 +1,77 @@
+{
+  "specVersion": 1,
+  "id": "post-20261022-0002",
+  "rev": 1,
+  "brand": {
+    "slug": "content-workshop",
+    "snapshotHash": "14976278932d0a11"
+  },
+  "brief": {
+    "topic": "أخطاء الكاروسيل اللي بتخلي الناس تعدّي",
+    "input": "idea"
+  },
+  "format": "carousel",
+  "mode": "guided",
+  "checkpoint": "angle",
+  "canvas": {
+    "preset": "ig-3x4",
+    "w": 1080,
+    "h": 1440,
+    "safe": [
+      34,
+      45,
+      1012,
+      1350
+    ],
+    "exports": [
+      "3x4",
+      "4x5"
+    ]
+  },
+  "locale": {
+    "dialect": "eg",
+    "register": "dialect",
+    "digits": "western",
+    "appLanguage": "ar",
+    "swipeCue": "arrow-rtl"
+  },
+  "intent": "save",
+  "awareness": "problem",
+  "contentType": "value",
+  "angle": {
+    "id": "a2",
+    "title": "5\u00a0أخطاء بتموّت الكاروسيل",
+    "lens": "costly-mistake",
+    "score": 82,
+    "why": "الغلطة المكلّفة مع رقم في أول سطر، وقائمة بتتحفظ"
+  },
+  "style": {
+    "presetId": "swiss@1.0"
+  },
+  "compat": {
+    "paint": "auto",
+    "mp4": "auto",
+    "hfRuntime": "auto"
+  },
+  "slides": [],
+  "sources": [],
+  "assets": [],
+  "qa": {
+    "status": "pass",
+    "results": []
+  },
+  "approvals": {
+    "angle": {
+      "at": "2026-10-22T09:04:00Z"
+    }
+  },
+  "meta": {
+    "createdAt": "2026-10-22T09:00:00Z",
+    "updatedAt": "2026-10-22T09:04:00Z",
+    "updatedBy": "claude",
+    "generator": {
+      "skill": "carousel-create",
+      "version": "1.0.0"
+    }
+  }
+}

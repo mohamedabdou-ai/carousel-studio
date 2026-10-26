@@ -1,0 +1,631 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "1.0.0",
+  "description": "Seed priors for scoring angles (content-angles) and, through the hook library, hook families. First-party numbers come from one reference account (an Arabic AI and business creator writing Egyptian dialect, May to October 2026); they are correlational and the samples are small. A brand's own hooks.familyPriors with n >= 5 replace the seed for that family. Scores are model parameters derived by the stated method, not measurements.",
+  "method": {
+    "lift": "value / baseline, both medians of the same metric",
+    "tiers": {
+      "A": {
+        "minLift": 2.0,
+        "score": 85
+      },
+      "B": {
+        "minLift": 1.5,
+        "score": 70
+      },
+      "C": {
+        "minLift": 0.8,
+        "score": 50
+      },
+      "D": {
+        "minLift": 0.0,
+        "score": 25
+      }
+    },
+    "neutralScore": 50,
+    "minSample": 5,
+    "rules": [
+      "Only first-party (D-own) evidence with n >= minSample sets a tier; anything thinner stays neutral and is shown as a hint.",
+      "A lens score is the best score among its families for the intent; no family is credited for evidence on another intent.",
+      "Evidence rank when sources disagree: D-own > D > O > EC > SE."
+    ],
+    "tags": {
+      "D-own": "first-party account insights",
+      "D": "published data or peer-reviewed study",
+      "O": "platform statement",
+      "EC": "three or more practitioners agree",
+      "SE": "single expert"
+    }
+  },
+  "reference": {
+    "account": "reference account (Arabic AI and business creator, Egyptian dialect)",
+    "window": "May to October 2026",
+    "baseline": {
+      "medianViews": 601.5,
+      "medianSaves": 7,
+      "n": 52,
+      "window": "August to October 2026"
+    },
+    "last60Days": {
+      "carousels": {
+        "medianViews": 677,
+        "medianSaves": 7,
+        "savesPer1kViews": 11.3,
+        "n": 39
+      },
+      "reels": {
+        "medianViews": 746.5,
+        "medianSaves": 6,
+        "savesPer1kViews": 7.8,
+        "n": 240
+      }
+    },
+    "reading": "carousels on this account are saved more than they are watched",
+    "topCarousel": {
+      "views": 5371,
+      "saves": 699,
+      "shares": 492,
+      "family": "P2"
+    },
+    "typicalSlides": {
+      "median": 8,
+      "n": 29
+    },
+    "bestHours": {
+      "tz": "Asia/Dubai",
+      "from": "20:00",
+      "to": "23:00"
+    },
+    "audienceQuestions": [
+      "how to set it up",
+      "free or paid",
+      "does it work on Mac"
+    ],
+    "deliveryGap": "23 comments in nineteen days said a keyword DM never arrived: promise a keyword-to-DM asset only when delivery is instant"
+  },
+  "families": {
+    "P1": {
+      "name": "N + thing + outcome (number-led list)",
+      "lenses": [
+        "framework",
+        "tested-ranked"
+      ],
+      "save": {
+        "score": 70,
+        "tier": "B",
+        "basis": "D-own lift 1.86, n=12",
+        "evidence": [
+          {
+            "tag": "D-own",
+            "metric": "median-saves",
+            "value": 13,
+            "baseline": 7,
+            "n": 12,
+            "lift": 1.86,
+            "note": "number-led list carousels"
+          }
+        ]
+      },
+      "reach": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "send": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "sell": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      }
+    },
+    "P2": {
+      "name": "X vs Y (free vs paid)",
+      "lenses": [
+        "free-vs-paid"
+      ],
+      "save": {
+        "score": 85,
+        "tier": "A",
+        "basis": "D-own lift 2.14, n=9",
+        "evidence": [
+          {
+            "tag": "D-own",
+            "metric": "median-saves",
+            "value": 15,
+            "baseline": 7,
+            "n": 9,
+            "lift": 2.14,
+            "note": "free-vs-paid carousels"
+          }
+        ]
+      },
+      "reach": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "send": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral",
+        "hint": "the top carousel (a six-tool free-vs-paid comparison) drew 492 shares; one post, so not scored"
+      },
+      "sell": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      }
+    },
+    "P3": {
+      "name": "Costly mistake",
+      "lenses": [
+        "costly-mistake"
+      ],
+      "save": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral",
+        "hint": "not measured; each negative word added 2.3% CTR in headline tests (D), avoid stacking fear"
+      },
+      "reach": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "send": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "sell": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      }
+    },
+    "P4": {
+      "name": "Contrarian flip",
+      "lenses": [
+        "contrarian",
+        "myth"
+      ],
+      "save": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "reach": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral",
+        "hint": "not measured on carousels; the bank leans on this family"
+      },
+      "send": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "sell": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      }
+    },
+    "P6": {
+      "name": "Specific question",
+      "lenses": [],
+      "save": {
+        "score": 50,
+        "tier": "C",
+        "basis": "D-own lift 0.86, n=11",
+        "evidence": [
+          {
+            "tag": "D-own",
+            "metric": "median-saves",
+            "value": 6,
+            "baseline": 7,
+            "n": 11,
+            "lift": 0.86,
+            "note": "question carousels"
+          }
+        ]
+      },
+      "reach": {
+        "score": 85,
+        "tier": "A",
+        "basis": "D-own lift 2.45, n=59",
+        "evidence": [
+          {
+            "tag": "D-own",
+            "metric": "median-views",
+            "value": 1172,
+            "baseline": 479,
+            "n": 59,
+            "lift": 2.45,
+            "note": "question openers with direct address vs the rest (n = 59 vs 33; formats mixed)"
+          }
+        ]
+      },
+      "send": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "sell": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      }
+    },
+    "P9": {
+      "name": "Cold-open story",
+      "lenses": [
+        "story"
+      ],
+      "save": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral",
+        "hint": "conflict: cold-open covers rank among the reference account's top, but no story carousel was in the top 30 of 488 Arabic carousels"
+      },
+      "reach": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "send": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "sell": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      }
+    },
+    "P11": {
+      "name": "Pack / checklist / steal my checklist",
+      "lenses": [
+        "framework"
+      ],
+      "save": {
+        "score": 85,
+        "tier": "A",
+        "basis": "D-own lift 3.14, n=11",
+        "evidence": [
+          {
+            "tag": "D-own",
+            "metric": "median-saves",
+            "value": 22,
+            "baseline": 7,
+            "n": 11,
+            "lift": 3.14,
+            "note": "prompt, command and tool packs"
+          }
+        ]
+      },
+      "reach": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "send": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "sell": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      }
+    },
+    "P12": {
+      "name": "Dated news",
+      "lenses": [
+        "news"
+      ],
+      "save": {
+        "score": 50,
+        "tier": "C",
+        "basis": "D-own lift 1.00, n=10",
+        "evidence": [
+          {
+            "tag": "D-own",
+            "metric": "median-saves",
+            "value": 7,
+            "baseline": 7,
+            "n": 10,
+            "lift": 1.0,
+            "note": "news and launch carousels"
+          }
+        ]
+      },
+      "reach": {
+        "score": 85,
+        "tier": "A",
+        "basis": "D-own lift 2.27, n=10",
+        "evidence": [
+          {
+            "tag": "D-own",
+            "metric": "median-views",
+            "value": 1366.5,
+            "baseline": 601.5,
+            "n": 10,
+            "lift": 2.27,
+            "note": "news and launch carousels"
+          }
+        ]
+      },
+      "send": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral",
+        "hint": "launch carousels rank among the most shared (qualitative)"
+      },
+      "sell": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      }
+    },
+    "P13": {
+      "name": "Imagine",
+      "lenses": [
+        "imagine"
+      ],
+      "save": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "reach": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "send": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral",
+        "hint": "second by shares on the reference account (qualitative, n not recorded)"
+      },
+      "sell": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      }
+    },
+    "P15": {
+      "name": "Tested and ranked",
+      "lenses": [
+        "tested-ranked"
+      ],
+      "save": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "reach": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "send": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "sell": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      }
+    },
+    "F17": {
+      "name": "Reframe (not X, it is Y)",
+      "lenses": [
+        "contrarian",
+        "myth"
+      ],
+      "save": {
+        "score": 70,
+        "tier": "B",
+        "basis": "D-own lift 1.79, n=10",
+        "evidence": [
+          {
+            "tag": "D-own",
+            "metric": "median-saves",
+            "value": 12.5,
+            "baseline": 7,
+            "n": 10,
+            "lift": 1.79,
+            "note": "contrast covers"
+          }
+        ]
+      },
+      "reach": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "send": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      },
+      "sell": {
+        "score": 50,
+        "tier": null,
+        "basis": "neutral"
+      }
+    }
+  },
+  "lenses": {
+    "contrarian": {
+      "families": [
+        "P4",
+        "F17"
+      ],
+      "save": 70,
+      "reach": 50,
+      "send": 50,
+      "sell": 50
+    },
+    "costly-mistake": {
+      "families": [
+        "P3"
+      ],
+      "save": 50,
+      "reach": 50,
+      "send": 50,
+      "sell": 50
+    },
+    "free-vs-paid": {
+      "families": [
+        "P2"
+      ],
+      "save": 85,
+      "reach": 50,
+      "send": 50,
+      "sell": 50
+    },
+    "tested-ranked": {
+      "families": [
+        "P15",
+        "P1"
+      ],
+      "save": 70,
+      "reach": 50,
+      "send": 50,
+      "sell": 50
+    },
+    "identity": {
+      "families": [],
+      "save": 50,
+      "reach": 50,
+      "send": 50,
+      "sell": 50
+    },
+    "before-after": {
+      "families": [],
+      "save": 50,
+      "reach": 50,
+      "send": 50,
+      "sell": 50
+    },
+    "myth": {
+      "families": [
+        "P4",
+        "F17"
+      ],
+      "save": 70,
+      "reach": 50,
+      "send": 50,
+      "sell": 50
+    },
+    "story": {
+      "families": [
+        "P9"
+      ],
+      "save": 50,
+      "reach": 50,
+      "send": 50,
+      "sell": 50
+    },
+    "framework": {
+      "families": [
+        "P11",
+        "P1"
+      ],
+      "save": 85,
+      "reach": 50,
+      "send": 50,
+      "sell": 50
+    },
+    "news": {
+      "families": [
+        "P12"
+      ],
+      "save": 50,
+      "reach": 85,
+      "send": 50,
+      "sell": 50
+    },
+    "setup": {
+      "families": [],
+      "save": 50,
+      "reach": 50,
+      "send": 50,
+      "sell": 50
+    },
+    "imagine": {
+      "families": [
+        "P13"
+      ],
+      "save": 50,
+      "reach": 50,
+      "send": 50,
+      "sell": 50
+    }
+  },
+  "modifiers": {
+    "numeralInLine1": {
+      "tag": "D",
+      "source": "488 Arabic carousels from 157 creators",
+      "beatCreatorMedianPct": 64,
+      "withoutNumeralPct": 46,
+      "lift": 1.83,
+      "n": 22,
+      "appliesTo": [
+        "listicle",
+        "steps",
+        "framework",
+        "comparison"
+      ],
+      "effect": "add 10 to the hook-potential part (H) when the angle supports a numeral in line 1"
+    },
+    "slideCount": {
+      "tag": "D",
+      "source": "Arabic and global carousel samples",
+      "arabic": "9 or more slides beat the creator median 51 to 52 percent of the time against 42 to 45 percent for fewer",
+      "global": {
+        "2-5": 0.89,
+        "6-8": 0.96,
+        "9-10": 1.05,
+        "11-14": 1.13,
+        "15-20": 1.46
+      },
+      "globalUnit": "engagement vs the creator's own median",
+      "noneUnder6InTop30": true
+    },
+    "templatesInTop30Arabic": {
+      "listResourceCheatSheet": 15,
+      "framework": 6,
+      "steps": 3,
+      "newsOrStory": 0
+    },
+    "sharesToLikes": {
+      "tag": "D",
+      "value": 1.19,
+      "reading": "winning Arabic carousels were shared more than liked"
+    },
+    "setupInterest": {
+      "tag": "D-own",
+      "effect": "for a tool or software topic always add the setup lens as a candidate and add 10 to its save prior: the audience asks how to set it up, whether it is free, and whether it runs on Mac"
+    },
+    "povScenario": {
+      "tag": "D-own",
+      "metric": "median-saves",
+      "value": 3,
+      "baseline": 7,
+      "n": 9,
+      "effect": "generic 'you' scenarios saved worst; never offer them as the default angle for a save goal"
+    }
+  }
+}

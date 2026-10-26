@@ -1,0 +1,2989 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "1.0.0",
+  "description": "Copy rules for Carousel Studio (CONTRACT 7.4). Word lists read by the Python engine (_cs.qa, _cs.lint) and the browser engine (CS.qa) with identical results. Entries are written without diacritics or tatweel because matching strips both from the text first. Arabic entries apply to every dialect unless 'dialects' narrows them; English entries are marked ['en'].",
+  "lists": {
+    "aiWords": {
+      "description": "Words and phrases that make copy read as machine-written (Arabic and English). C8.ai-words, FIX; voice_check.py flags them too.",
+      "entries": [
+        {
+          "id": "AI-001",
+          "text": "أطلق العنان",
+          "match": "phrase"
+        },
+        {
+          "id": "AI-002",
+          "text": "نقلة نوعية",
+          "match": "phrase"
+        },
+        {
+          "id": "AI-003",
+          "text": "حلول مبتكرة",
+          "match": "phrase"
+        },
+        {
+          "id": "AI-004",
+          "text": "التطورات المتسارعة",
+          "match": "phrase"
+        },
+        {
+          "id": "AI-005",
+          "text": "عالم متسارع",
+          "match": "phrase"
+        },
+        {
+          "id": "AI-006",
+          "text": "عالمنا المتسارع",
+          "match": "phrase"
+        },
+        {
+          "id": "AI-007",
+          "text": "تجدر الإشارة",
+          "match": "phrase"
+        },
+        {
+          "id": "AI-008",
+          "text": "من الجدير بالذكر",
+          "match": "phrase"
+        },
+        {
+          "id": "AI-009",
+          "text": "لا يخفى على أحد",
+          "match": "phrase"
+        },
+        {
+          "id": "AI-010",
+          "text": "في نهاية المطاف",
+          "match": "phrase"
+        },
+        {
+          "id": "AI-011",
+          "text": "يعد من أهم",
+          "match": "phrase"
+        },
+        {
+          "id": "AI-012",
+          "text": "يعتبر من أهم",
+          "match": "phrase"
+        },
+        {
+          "id": "AI-013",
+          "text": "لنغوص في",
+          "match": "phrase"
+        },
+        {
+          "id": "AI-014",
+          "text": "المشهد الرقمي",
+          "match": "phrase"
+        },
+        {
+          "id": "AI-015",
+          "text": "تسخير قوة",
+          "match": "phrase"
+        },
+        {
+          "id": "AI-016",
+          "text": "ارتق",
+          "match": "word",
+          "sev": "NOTE",
+          "note": {
+            "ar": "فعل أمر شائع في نصوص الذكاء الاصطناعي (ارتق بمحتواك).",
+            "en": "Imperative favoured by machine-written copy."
+          }
+        },
+        {
+          "id": "AI-017",
+          "text": "بسلاسة",
+          "match": "word",
+          "clitics": true,
+          "sev": "NOTE"
+        },
+        {
+          "id": "AI-018",
+          "text": "في الختام",
+          "match": "phrase",
+          "sev": "NOTE"
+        },
+        {
+          "id": "AI-019",
+          "text": "بلا شك",
+          "match": "phrase",
+          "sev": "NOTE"
+        },
+        {
+          "id": "AI-020",
+          "text": "لا شك أن",
+          "match": "phrase",
+          "sev": "NOTE"
+        },
+        {
+          "id": "AI-021",
+          "text": "delve",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-022",
+          "text": "delves",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-023",
+          "text": "delving",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-024",
+          "text": "crucial",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-025",
+          "text": "realm",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-026",
+          "text": "leverage",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-027",
+          "text": "leveraging",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-028",
+          "text": "utilize",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-029",
+          "text": "utilizing",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-030",
+          "text": "tapestry",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-031",
+          "text": "foster",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-032",
+          "text": "fostering",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-033",
+          "text": "moreover",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-034",
+          "text": "furthermore",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-035",
+          "text": "seamless",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-036",
+          "text": "seamlessly",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-037",
+          "text": "robust",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-038",
+          "text": "holistic",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-039",
+          "text": "revolutionize",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-040",
+          "text": "cutting-edge",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-041",
+          "text": "ever-evolving",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-042",
+          "text": "unleash",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-043",
+          "text": "game-changer",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-044",
+          "text": "landscape",
+          "match": "word",
+          "dialects": [
+            "en"
+          ],
+          "sev": "NOTE"
+        },
+        {
+          "id": "AI-045",
+          "text": "navigate",
+          "match": "word",
+          "dialects": [
+            "en"
+          ],
+          "sev": "NOTE"
+        },
+        {
+          "id": "AI-046",
+          "text": "navigating",
+          "match": "word",
+          "dialects": [
+            "en"
+          ],
+          "sev": "NOTE"
+        },
+        {
+          "id": "AI-047",
+          "text": "game changer",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-048",
+          "text": "unlock the power",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-049",
+          "text": "elevate your",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-050",
+          "text": "deep dive",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-051",
+          "text": "dive into",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-052",
+          "text": "testament to",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AI-053",
+          "text": "in conclusion",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        }
+      ]
+    },
+    "stockOpeners": {
+      "description": "Dead openers for a cover, a first caption line or a first slide sentence. C8.stock-opener, FIX. Dialect-specific entries only fire in that dialect.",
+      "entries": [
+        {
+          "id": "SO-001",
+          "text": "هل تساءلت يوما",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-002",
+          "text": "هل سبق لك أن",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-003",
+          "text": "هل فكرت يوما",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-004",
+          "text": "هل تعلم",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-005",
+          "text": "في عالمنا اليوم",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-006",
+          "text": "في عالم اليوم",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-007",
+          "text": "مع تسارع وتيرة الحياة",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-008",
+          "text": "كلنا نعلم أن",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-009",
+          "text": "تعرف على",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-010",
+          "text": "إليك بعض النصائح",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-011",
+          "text": "إليك أهم",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-012",
+          "text": "في هذا المنشور",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-013",
+          "text": "في هذا الكاروسيل",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-014",
+          "text": "في هذا البوست",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-015",
+          "text": "أهلا بكم",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-016",
+          "text": "مرحبا بكم",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-017",
+          "text": "سنتعرف اليوم",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-018",
+          "text": "اليوم سنتحدث",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-019",
+          "text": "اليوم سأحدثكم",
+          "match": "phrase"
+        },
+        {
+          "id": "SO-020",
+          "text": "أهلا بيكم",
+          "match": "phrase",
+          "dialects": [
+            "eg"
+          ]
+        },
+        {
+          "id": "SO-021",
+          "text": "النهارده هنتكلم عن",
+          "match": "phrase",
+          "dialects": [
+            "eg"
+          ]
+        },
+        {
+          "id": "SO-022",
+          "text": "النهاردة هنتكلم عن",
+          "match": "phrase",
+          "dialects": [
+            "eg"
+          ]
+        },
+        {
+          "id": "SO-023",
+          "text": "النهارده هنعرف",
+          "match": "phrase",
+          "dialects": [
+            "eg"
+          ]
+        },
+        {
+          "id": "SO-024",
+          "text": "النهاردة هنعرف",
+          "match": "phrase",
+          "dialects": [
+            "eg"
+          ]
+        },
+        {
+          "id": "SO-025",
+          "text": "تعالوا نتكلم عن",
+          "match": "phrase",
+          "dialects": [
+            "eg"
+          ]
+        },
+        {
+          "id": "SO-026",
+          "text": "اليوم بنتكلم عن",
+          "match": "phrase",
+          "dialects": [
+            "gulf"
+          ]
+        },
+        {
+          "id": "SO-027",
+          "text": "اليوم راح نتكلم عن",
+          "match": "phrase",
+          "dialects": [
+            "gulf"
+          ]
+        },
+        {
+          "id": "SO-028",
+          "text": "اليوم رح نحكي عن",
+          "match": "phrase",
+          "dialects": [
+            "levant"
+          ]
+        },
+        {
+          "id": "SO-029",
+          "text": "اليوم رح نتكلم عن",
+          "match": "phrase",
+          "dialects": [
+            "levant"
+          ]
+        },
+        {
+          "id": "SO-030",
+          "text": "اليوم رح احكيلكن",
+          "match": "phrase",
+          "dialects": [
+            "levant"
+          ]
+        },
+        {
+          "id": "SO-031",
+          "text": "أهلا فيكن",
+          "match": "phrase",
+          "dialects": [
+            "levant"
+          ]
+        },
+        {
+          "id": "SO-032",
+          "text": "did you know",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "SO-033",
+          "text": "have you ever wondered",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "SO-034",
+          "text": "in today's world",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "SO-035",
+          "text": "in today’s world",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "SO-036",
+          "text": "in today's fast-paced world",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "SO-037",
+          "text": "in today’s fast-paced world",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "SO-038",
+          "text": "let's dive in",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "SO-039",
+          "text": "let’s dive in",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "SO-040",
+          "text": "welcome to",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "SO-041",
+          "text": "here are some tips",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "SO-042",
+          "text": "in this post",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "SO-043",
+          "text": "in this carousel",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        }
+      ]
+    },
+    "hypeWords": {
+      "description": "Empty-slot hype: intensity with no specific fact behind it. C8.hype, FIX. Single adjectives are NOTE-level because they can be legitimate next to a real fact.",
+      "entries": [
+        {
+          "id": "HY-001",
+          "text": "الحقيقة الصادمة",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-002",
+          "text": "سر خطير",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-003",
+          "text": "حقيقة صادمة",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-004",
+          "text": "أسرار خطيرة",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-005",
+          "text": "سر رهيب",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-006",
+          "text": "سر مدفون",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-007",
+          "text": "لن تصدق",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-008",
+          "text": "مش هتصدق",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-009",
+          "text": "ما راح تصدق",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-010",
+          "text": "ما رح تصدق",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-011",
+          "text": "هتتصدم",
+          "match": "word"
+        },
+        {
+          "id": "HY-012",
+          "text": "ستصدم",
+          "match": "word"
+        },
+        {
+          "id": "HY-013",
+          "text": "راح تنصدم",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-014",
+          "text": "ثورة حقيقية",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-015",
+          "text": "غير حياتك",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-016",
+          "text": "هيغير حياتك",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-017",
+          "text": "سيغير حياتك",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-018",
+          "text": "راح يغير حياتك",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-019",
+          "text": "رح يغير حياتك",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-020",
+          "text": "صادم",
+          "match": "word",
+          "sev": "NOTE"
+        },
+        {
+          "id": "HY-021",
+          "text": "صادمة",
+          "match": "word",
+          "sev": "NOTE"
+        },
+        {
+          "id": "HY-022",
+          "text": "صادما",
+          "match": "word",
+          "sev": "NOTE"
+        },
+        {
+          "id": "HY-023",
+          "text": "مرعب",
+          "match": "word",
+          "sev": "NOTE"
+        },
+        {
+          "id": "HY-024",
+          "text": "مرعبة",
+          "match": "word",
+          "sev": "NOTE"
+        },
+        {
+          "id": "HY-025",
+          "text": "جنوني",
+          "match": "word",
+          "sev": "NOTE"
+        },
+        {
+          "id": "HY-026",
+          "text": "shocking truth",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "HY-027",
+          "text": "dangerous secret",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "HY-028",
+          "text": "you won't believe",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "HY-029",
+          "text": "you won’t believe",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "HY-030",
+          "text": "life-changing",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "HY-031",
+          "text": "mind-blowing",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "HY-032",
+          "text": "jaw-dropping",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "HY-033",
+          "text": "رح تنصدم",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-034",
+          "text": "هتنصدم",
+          "match": "word"
+        },
+        {
+          "id": "HY-035",
+          "text": "رح تتصدم",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-036",
+          "text": "ما رح تنسى",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-037",
+          "text": "راح تتفاجأ",
+          "match": "phrase"
+        },
+        {
+          "id": "HY-038",
+          "text": "رح تتفاجأ",
+          "match": "phrase"
+        }
+      ]
+    },
+    "abstractWords": {
+      "description": "Abstract nouns that say nothing a reader can picture. C8.abstract, NOTE; the hook score takes 5 points off per word. Replace with a concrete noun, a named tool, a number or a time.",
+      "entries": [
+        {
+          "id": "AB-001",
+          "text": "نجاح",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-002",
+          "text": "حياتك",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-003",
+          "text": "سر",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-004",
+          "text": "أسرار",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-005",
+          "text": "رحلة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-006",
+          "text": "شغف",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-007",
+          "text": "طموح",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-008",
+          "text": "احتراف",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-009",
+          "text": "احترافية",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-010",
+          "text": "تميز",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-011",
+          "text": "إبداع",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-012",
+          "text": "إمكانات",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-013",
+          "text": "إمكانيات",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-014",
+          "text": "مستقبل",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-015",
+          "text": "أحلام",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-016",
+          "text": "حلم",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-017",
+          "text": "عقلية",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-018",
+          "text": "بصمة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-019",
+          "text": "سعادة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "AB-020",
+          "text": "أفضل نسخة منك",
+          "match": "phrase"
+        },
+        {
+          "id": "AB-021",
+          "text": "أسلوب حياة",
+          "match": "phrase"
+        },
+        {
+          "id": "AB-022",
+          "text": "success",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AB-023",
+          "text": "journey",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AB-024",
+          "text": "passion",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AB-025",
+          "text": "mindset",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AB-026",
+          "text": "potential",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AB-027",
+          "text": "excellence",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AB-028",
+          "text": "transformation",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AB-029",
+          "text": "empowerment",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "AB-030",
+          "text": "synergy",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        }
+      ]
+    },
+    "fearWords": {
+      "description": "Fear and loss vocabulary. One negative word is fine (costly-mistake hooks use one); fear STACKING means several distinct entries in the same hook, slide or caption (SEN1.fear-stacking, threshold in qa-rules.json; hook gate HG5).",
+      "entries": [
+        {
+          "id": "FR-001",
+          "text": "كارثة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "FR-002",
+          "text": "كارثي",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "FR-003",
+          "text": "كارثية",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "FR-004",
+          "text": "خطر",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "FR-005",
+          "text": "خطير",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "FR-006",
+          "text": "خطيرة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "FR-007",
+          "text": "مخاطر",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "FR-008",
+          "text": "تحذير",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "FR-009",
+          "text": "احذر",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "FR-010",
+          "text": "إفلاس",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "FR-011",
+          "text": "انهيار",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "FR-012",
+          "text": "دمار",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "FR-013",
+          "text": "فضيحة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "FR-014",
+          "text": "خسارة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "FR-015",
+          "text": "فشل",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "FR-016",
+          "text": "تهديد",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "FR-017",
+          "text": "قاتل",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "FR-018",
+          "text": "موت",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "FR-019",
+          "pattern": "(^|[^\\u0621-\\u064A])[هبح]?[يتن]خسر[\\u0621-\\u064A]{0,3}($|[^\\u0621-\\u064A])",
+          "flags": "u",
+          "match": "regex"
+        },
+        {
+          "id": "FR-020",
+          "pattern": "(^|[^\\u0621-\\u064A])[هبح]?[يتن]فشل[\\u0621-\\u064A]{0,2}($|[^\\u0621-\\u064A])",
+          "flags": "u",
+          "match": "regex"
+        },
+        {
+          "id": "FR-021",
+          "pattern": "(^|[^\\u0621-\\u064A])[هبح]?[يتن]ضيع[\\u0621-\\u064A]{0,2}($|[^\\u0621-\\u064A])",
+          "flags": "u",
+          "match": "regex"
+        },
+        {
+          "id": "FR-022",
+          "pattern": "(^|[^\\u0621-\\u064A])[هبح]?[يتن]دمر[\\u0621-\\u064A]{0,2}($|[^\\u0621-\\u064A])",
+          "flags": "u",
+          "match": "regex"
+        },
+        {
+          "id": "FR-023",
+          "pattern": "(^|[^\\u0621-\\u064A])[هبح]?[يتن]موت[\\u0621-\\u064A]{0,2}($|[^\\u0621-\\u064A])",
+          "flags": "u",
+          "match": "regex"
+        },
+        {
+          "id": "FR-024",
+          "pattern": "(^|[^\\u0621-\\u064A])[هبح]?[يتن]قتل[\\u0621-\\u064A]{0,2}($|[^\\u0621-\\u064A])",
+          "flags": "u",
+          "match": "regex"
+        },
+        {
+          "id": "FR-025",
+          "text": "disaster",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "FR-026",
+          "text": "danger",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "FR-027",
+          "text": "dangerous",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "FR-028",
+          "text": "warning",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "FR-029",
+          "text": "bankrupt",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "FR-030",
+          "text": "collapse",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "FR-031",
+          "text": "destroy",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "FR-032",
+          "text": "devastating",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "FR-033",
+          "text": "you will lose",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        }
+      ]
+    },
+    "conspiracy": {
+      "description": "Conspiracy and suppression framing: someone is hiding the truth from you. SEN1, BLOCK.",
+      "entries": [
+        {
+          "id": "CO-001",
+          "text": "بيخبوه عنك",
+          "match": "phrase",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-002",
+          "text": "يخفونه عنك",
+          "match": "phrase",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-003",
+          "text": "يخفيه عنك",
+          "match": "phrase",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-004",
+          "text": "يخفوه عنك",
+          "match": "phrase",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-005",
+          "text": "اللي مش عايزينك تعرفه",
+          "match": "phrase",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-006",
+          "text": "ما لا يريدونك أن تعرفه",
+          "match": "phrase",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-007",
+          "text": "ما لا يريدك أحد أن تعرفه",
+          "match": "phrase",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-008",
+          "text": "الحقيقة المخفية",
+          "match": "phrase",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-009",
+          "text": "الحقيقة اللي بيخبوها",
+          "match": "phrase",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-010",
+          "text": "الحكومات تخفي",
+          "match": "phrase",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-011",
+          "text": "الشركات الكبرى تخفي",
+          "match": "phrase",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-012",
+          "text": "شاركه قبل ما يتحذف",
+          "match": "phrase",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-013",
+          "text": "قبل أن يحذفوه",
+          "match": "phrase",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-014",
+          "text": "هيمسحوا الفيديو",
+          "match": "phrase",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-015",
+          "text": "ممنوع من النشر",
+          "match": "phrase",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-016",
+          "text": "الإعلام لا يقول",
+          "match": "phrase",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-017",
+          "text": "يخبوه عنك",
+          "match": "phrase",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-018",
+          "text": "بخبوه عنك",
+          "match": "phrase",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-019",
+          "text": "they don't want you to know",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ],
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-020",
+          "text": "they don’t want you to know",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ],
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-021",
+          "text": "what they hide",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ],
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-022",
+          "text": "hidden truth",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ],
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-023",
+          "text": "the truth they hide",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ],
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-024",
+          "text": "share before it gets deleted",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ],
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-025",
+          "text": "banned video",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ],
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-026",
+          "text": "mainstream media won't tell you",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ],
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-027",
+          "text": "mainstream media won’t tell you",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ],
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-028",
+          "pattern": "(^|[^\\u0621-\\u064A])(بي|ب|ه|ي)?خب(ون|وا|و)(ه|ها|هم)?[ \\t\\n]+عن(ك|كم)($|[^\\u0621-\\u064A])",
+          "flags": "u",
+          "match": "regex",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-029",
+          "pattern": "(^|[^\\u0621-\\u064A])ما[ \\t\\n]+يبون(ك|كم)[ \\t\\n]+تعرف(ه|ها|ون)?($|[^\\u0621-\\u064A])",
+          "flags": "u",
+          "match": "regex",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-030",
+          "pattern": "(^|[^\\u0621-\\u064A])ما[ \\t\\n]+بدهم[ \\t\\n]+ي(اك|اكم)[ \\t\\n]+تعرف(و|ه|ها|وا)?($|[^\\u0621-\\u064A])",
+          "flags": "u",
+          "match": "regex",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-031",
+          "pattern": "(^|[^\\u0621-\\u064A])(مش|ما|مو)[ \\t\\n]+(عايزينك|عايزينكم|عاوزينك|عاوزينكم|عايزاك|عاوزاك)[ \\t\\n]+تعرف(ه|ها|وا)?($|[^\\u0621-\\u064A])",
+          "flags": "u",
+          "match": "regex",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-032",
+          "pattern": "(^|[^\\u0621-\\u064A])(محدش|ما[ \\t\\n]+حدا|ما[ \\t\\n]+احد|ما[ \\t\\n]+أحد)[ \\t\\n]+(بي|ه|ي)?قول(ك|[ \\t\\n]+لك)($|[^\\u0621-\\u064A])",
+          "flags": "u",
+          "match": "regex",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-033",
+          "pattern": "(^|[^\\u0621-\\u064A])(محدش|ما[ \\t\\n]+حدا)[ \\t\\n]+بيقلك($|[^\\u0621-\\u064A])",
+          "flags": "u",
+          "match": "regex",
+          "sev": "BLOCK"
+        },
+        {
+          "id": "CO-034",
+          "pattern": "(^|[^\\u0621-\\u064A])قبل[ \\t\\n]+(ما|لا|أن|ان)[ \\t\\n]+(يتحذف|ينحذف|يتمسح|ينمسح|يحذف|يحذفون|يحذفوه|يحذفونه|يحذفها|يمسح|يمسحون|يمسحوه|يمسحونه|يشيل|يشيلون|يشيلوه|يشيلونه)($|[^\\u0621-\\u064A])",
+          "flags": "u",
+          "match": "regex",
+          "sev": "BLOCK"
+        }
+      ]
+    },
+    "overclaim": {
+      "description": "Guarantees, effortless-result promises and unprovable absolutes. Describe what the thing does, not what will happen to the reader. Superlatives like 'best' are NOT listed: they are normal in 'best 5 tools' posts.",
+      "entries": [
+        {
+          "id": "OV-001",
+          "text": "نتيجة مضمونة",
+          "match": "phrase"
+        },
+        {
+          "id": "OV-002",
+          "text": "نتائج مضمونة",
+          "match": "phrase"
+        },
+        {
+          "id": "OV-003",
+          "text": "نجاح مضمون",
+          "match": "phrase"
+        },
+        {
+          "id": "OV-004",
+          "text": "ضمان النتيجة",
+          "match": "phrase"
+        },
+        {
+          "id": "OV-005",
+          "text": "ضمان الربح",
+          "match": "phrase"
+        },
+        {
+          "id": "OV-006",
+          "text": "ربح مضمون",
+          "match": "phrase"
+        },
+        {
+          "id": "OV-007",
+          "text": "دخل مضمون",
+          "match": "phrase"
+        },
+        {
+          "id": "OV-008",
+          "text": "بدون أي مجهود",
+          "match": "phrase"
+        },
+        {
+          "id": "OV-009",
+          "text": "من غير أي مجهود",
+          "match": "phrase"
+        },
+        {
+          "id": "OV-010",
+          "text": "من غير تعب",
+          "match": "phrase"
+        },
+        {
+          "id": "OV-011",
+          "text": "بدون تعب",
+          "match": "phrase"
+        },
+        {
+          "id": "OV-012",
+          "text": "يضمن لك",
+          "match": "phrase"
+        },
+        {
+          "id": "OV-013",
+          "text": "نتائج فورية",
+          "match": "phrase"
+        },
+        {
+          "id": "OV-014",
+          "text": "علاج نهائي",
+          "match": "phrase"
+        },
+        {
+          "id": "OV-015",
+          "text": "يشفي من",
+          "match": "phrase"
+        },
+        {
+          "id": "OV-016",
+          "text": "بدون خبرة",
+          "match": "phrase",
+          "sev": "NOTE",
+          "note": {
+            "ar": "ادعاء قد يكون صحيحا؛ تأكد من أن المصدر أو المستخدم يؤكده.",
+            "en": "May be true; confirm the user or a source backs it."
+          }
+        },
+        {
+          "id": "OV-017",
+          "text": "مليونير",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "OV-018",
+          "text": "مليونيرا",
+          "match": "word"
+        },
+        {
+          "id": "OV-019",
+          "text": "guaranteed",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "OV-020",
+          "text": "risk-free",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "OV-021",
+          "text": "get rich quick",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "OV-022",
+          "text": "no effort",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "OV-023",
+          "text": "overnight success",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "OV-024",
+          "text": "100% guaranteed",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        }
+      ]
+    },
+    "commentBait": {
+      "description": "Engagement bait: asks for a like, a tag, an emoji or an arbitrary word with nothing delivered in return. C4.bait, BLOCK. A keyword the reader types to RECEIVE a real asset is not listed here; that case is governed by C4.keyword-asset (instant delivery).",
+      "entries": [
+        {
+          "id": "CB-001",
+          "text": "اكتب نعم",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-002",
+          "text": "اكتب أنا",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-003",
+          "text": "اكتب 1 لو",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-004",
+          "text": "اكتب ١ لو",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-005",
+          "text": "علق بقلب",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-006",
+          "text": "علق بإيموجي",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-007",
+          "text": "علقوا بإيموجي",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-008",
+          "text": "ضع إيموجي",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-009",
+          "text": "اكتب إيموجي",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-010",
+          "text": "لايك لو",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-011",
+          "text": "اعمل لايك",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-012",
+          "text": "دبل تاب",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-013",
+          "text": "اضغط لايك",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-014",
+          "text": "اضغط إعجاب",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-015",
+          "text": "منشن 3",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-016",
+          "text": "تاج 3",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-017",
+          "text": "شارك لتكسب",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-018",
+          "text": "شارك لتفوز",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-019",
+          "text": "علق لتفوز",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-020",
+          "text": "علق لتكسب",
+          "match": "phrase"
+        },
+        {
+          "id": "CB-021",
+          "text": "comment yes if",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "CB-022",
+          "text": "type 1 if",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "CB-023",
+          "text": "like if you agree",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "CB-024",
+          "text": "double tap if",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "CB-025",
+          "text": "tag 3 friends",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "CB-026",
+          "text": "tag a friend to",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "CB-027",
+          "text": "share to win",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        }
+      ]
+    },
+    "introPhrases": {
+      "description": "Intro, agenda and bio phrases. Slide 2 is a second cover that pays off at once, so any of these there is a C3.intro BLOCK (overridable).",
+      "entries": [
+        {
+          "id": "IN-001",
+          "text": "قبل ما نبدأ",
+          "match": "phrase"
+        },
+        {
+          "id": "IN-002",
+          "text": "قبل أن نبدأ",
+          "match": "phrase"
+        },
+        {
+          "id": "IN-003",
+          "text": "قبل البدء",
+          "match": "phrase"
+        },
+        {
+          "id": "IN-004",
+          "text": "خلينا نبدأ",
+          "match": "phrase"
+        },
+        {
+          "id": "IN-005",
+          "text": "تعالوا نبدأ",
+          "match": "phrase"
+        },
+        {
+          "id": "IN-006",
+          "text": "نبذة عني",
+          "match": "phrase"
+        },
+        {
+          "id": "IN-007",
+          "text": "من أنا",
+          "match": "phrase"
+        },
+        {
+          "id": "IN-008",
+          "text": "أنا اسمي",
+          "match": "phrase"
+        },
+        {
+          "id": "IN-009",
+          "text": "أهلا بيكم",
+          "match": "phrase"
+        },
+        {
+          "id": "IN-010",
+          "text": "أهلا بكم",
+          "match": "phrase"
+        },
+        {
+          "id": "IN-011",
+          "text": "مرحبا بكم",
+          "match": "phrase"
+        },
+        {
+          "id": "IN-012",
+          "text": "جدول المحتوى",
+          "match": "phrase"
+        },
+        {
+          "id": "IN-013",
+          "text": "في هذا الكاروسيل",
+          "match": "phrase"
+        },
+        {
+          "id": "IN-014",
+          "text": "هنتكلم عن",
+          "match": "phrase"
+        },
+        {
+          "id": "IN-015",
+          "text": "سنتحدث عن",
+          "match": "phrase"
+        },
+        {
+          "id": "IN-016",
+          "text": "رح نحكي عن",
+          "match": "phrase"
+        },
+        {
+          "id": "IN-017",
+          "text": "اليوم هنعرف",
+          "match": "phrase"
+        },
+        {
+          "id": "IN-018",
+          "text": "سنتعرف على",
+          "match": "phrase"
+        },
+        {
+          "id": "IN-019",
+          "text": "لنبدأ",
+          "match": "word"
+        },
+        {
+          "id": "IN-020",
+          "text": "المحتويات",
+          "match": "word"
+        },
+        {
+          "id": "IN-021",
+          "text": "الفهرس",
+          "match": "word"
+        },
+        {
+          "id": "IN-022",
+          "text": "before we start",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "IN-023",
+          "text": "let's get started",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "IN-024",
+          "text": "let’s get started",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "IN-025",
+          "text": "about me",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "IN-026",
+          "text": "welcome to",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "IN-027",
+          "text": "in this carousel",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "IN-028",
+          "text": "today we will",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "IN-029",
+          "text": "table of contents",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "IN-030",
+          "text": "my name is",
+          "match": "phrase",
+          "dialects": [
+            "en"
+          ]
+        }
+      ]
+    },
+    "stiffMsa": {
+      "description": "Chancellery and letter-writing Arabic that no creator speaks. C8.stiff-msa, FIX. 'White' MSA keeps the grammar but drops these formulas.",
+      "entries": [
+        {
+          "id": "SM-001",
+          "text": "عزيزي العميل",
+          "match": "phrase"
+        },
+        {
+          "id": "SM-002",
+          "text": "عزيزي المتابع",
+          "match": "phrase"
+        },
+        {
+          "id": "SM-003",
+          "text": "عزيزي القارئ",
+          "match": "phrase"
+        },
+        {
+          "id": "SM-004",
+          "text": "نحيطكم علما",
+          "match": "phrase"
+        },
+        {
+          "id": "SM-005",
+          "text": "نتقدم لكم بخالص",
+          "match": "phrase"
+        },
+        {
+          "id": "SM-006",
+          "text": "تفضلوا بقبول",
+          "match": "phrase"
+        },
+        {
+          "id": "SM-007",
+          "text": "وتفضلوا بقبول",
+          "match": "phrase"
+        },
+        {
+          "id": "SM-008",
+          "text": "بناء على ما سبق",
+          "match": "phrase"
+        },
+        {
+          "id": "SM-009",
+          "text": "في ضوء ما تقدم",
+          "match": "phrase"
+        },
+        {
+          "id": "SM-010",
+          "text": "حيث أنه",
+          "match": "phrase"
+        },
+        {
+          "id": "SM-011",
+          "text": "حيث إنه",
+          "match": "phrase"
+        },
+        {
+          "id": "SM-012",
+          "text": "لا يخفى عليكم",
+          "match": "phrase"
+        },
+        {
+          "id": "SM-013",
+          "text": "نود إعلامكم",
+          "match": "phrase"
+        },
+        {
+          "id": "SM-014",
+          "text": "نرجو منكم",
+          "match": "phrase"
+        },
+        {
+          "id": "SM-015",
+          "text": "المذكور أعلاه",
+          "match": "phrase"
+        },
+        {
+          "id": "SM-016",
+          "text": "سالف الذكر",
+          "match": "phrase"
+        },
+        {
+          "id": "SM-017",
+          "text": "على النحو التالي",
+          "match": "phrase"
+        },
+        {
+          "id": "SM-018",
+          "text": "إنه ليسعدنا",
+          "match": "phrase"
+        },
+        {
+          "id": "SM-019",
+          "text": "يرجى",
+          "match": "word",
+          "suggest": "من فضلك"
+        },
+        {
+          "id": "SM-020",
+          "text": "نتشرف",
+          "match": "word"
+        },
+        {
+          "id": "SM-021",
+          "text": "بصدد",
+          "match": "word"
+        },
+        {
+          "id": "SM-022",
+          "text": "وعليه",
+          "match": "word"
+        }
+      ]
+    },
+    "translationese": {
+      "description": "Arabic words arranged in English order. The test is the sentence, not the word: restructure rather than swap. C8.translationese, FIX (NOTE where the phrase is often legitimate).",
+      "entries": [
+        {
+          "id": "TR-001",
+          "pattern": "(^|[^\\u0621-\\u064A])قم[ \\t\\n]+ب[\\u0621-\\u064A]+($|[^\\u0621-\\u064A])",
+          "flags": "u",
+          "match": "regex",
+          "note": {
+            "ar": "قم بـ + مصدر ترجمة حرفية؛ استعمل الفعل مباشرة.",
+            "en": "'قم بـ' + noun is a calque of 'do the X-ing'; use the verb itself."
+          },
+          "suggest": "ابدأ بالفعل مباشرة: اضغط، افتح، أضف، حمّل"
+        },
+        {
+          "id": "TR-002",
+          "pattern": "(^|[^\\u0621-\\u064A])يتم[ \\t\\n]+ال[\\u0621-\\u064A]+($|[^\\u0621-\\u064A])",
+          "flags": "u",
+          "match": "regex",
+          "note": {
+            "ar": "المبني للمجهول المترجم يخفي الفاعل؛ سمّه.",
+            "en": "Calqued passive hides the doer; name it."
+          },
+          "suggest": "سمّ الفاعل: يصلك، تحصل على، نرسل"
+        },
+        {
+          "id": "TR-003",
+          "pattern": "(^|[^\\u0621-\\u064A])[يتن]قوم[ \\t\\n]+ب[\\u0621-\\u064A]+($|[^\\u0621-\\u064A])",
+          "flags": "u",
+          "match": "regex",
+          "sev": "NOTE",
+          "suggest": "استعمل الفعل نفسه بدل يقوم بـ + مصدر"
+        },
+        {
+          "id": "TR-004",
+          "text": "وذلك من خلال",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-005",
+          "text": "الخاص بك",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-006",
+          "text": "الخاصة بك",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-007",
+          "text": "الخاص بكم",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-008",
+          "text": "الخاصة بكم",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-009",
+          "text": "لا تتردد في",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-010",
+          "text": "لا تترددوا في",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-011",
+          "text": "انقر هنا",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-012",
+          "text": "للمزيد من المعلومات",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-013",
+          "text": "اعرف المزيد",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-014",
+          "text": "حلول متكاملة",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-015",
+          "text": "تجربة فريدة من نوعها",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-016",
+          "text": "نسعى جاهدين",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-017",
+          "text": "حان الوقت",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-018",
+          "text": "مصمم خصيصا",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-019",
+          "text": "بنقرة واحدة",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-020",
+          "text": "نحن هنا من أجلك",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-021",
+          "text": "أنت تستحق",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-022",
+          "text": "ابدأ رحلتك",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-023",
+          "text": "ما يميزنا",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-024",
+          "text": "بأسعار تنافسية",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-025",
+          "text": "للاستفسار يرجى",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-026",
+          "text": "بشكل فعال",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-027",
+          "text": "في نهاية اليوم",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-028",
+          "text": "سواء كنت",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-029",
+          "text": "بالإضافة إلى ذلك",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-030",
+          "text": "علاوة على ذلك",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-031",
+          "text": "علاوة على ما سبق",
+          "match": "phrase"
+        },
+        {
+          "id": "TR-032",
+          "text": "احصل على",
+          "match": "phrase",
+          "sev": "NOTE",
+          "note": {
+            "ar": "ترجمة حرفية للفعل الإنجليزي؛ قل ما سيفعله القارئ فعلا (افتح، جرّب، حمّل).",
+            "en": "Calque of 'get'; say what the reader actually does."
+          }
+        },
+        {
+          "id": "TR-033",
+          "text": "من قبل",
+          "match": "phrase",
+          "sev": "NOTE",
+          "note": {
+            "ar": "سليمة بمعنى «سابقا»، وترجمة حرفية حين تدل على الفاعل (تم تصميمه من قبل).",
+            "en": "Fine as 'before'; a calque when it marks the agent of a passive."
+          }
+        }
+      ]
+    },
+    "bindLabels": {
+      "description": "Nouns that name a numbered thing (step 3, tip 5). When one is followed by a number the pair is joined with U+00A0 so it never splits across lines. Matching uses proclitics, so 'الخطوة' and 'للخطوة' are covered by 'خطوة'.",
+      "entries": [
+        {
+          "id": "BL-001",
+          "text": "خطوة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-002",
+          "text": "رقم",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-003",
+          "text": "نصيحة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-004",
+          "text": "جزء",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-005",
+          "text": "حلقة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-006",
+          "text": "فكرة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-007",
+          "text": "أداة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-008",
+          "text": "مرحلة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-009",
+          "text": "درس",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-010",
+          "text": "قاعدة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-011",
+          "text": "فصل",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-012",
+          "text": "سلايد",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-013",
+          "text": "صفحة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-014",
+          "text": "خيار",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-015",
+          "text": "طريقة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-016",
+          "text": "غلطة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-017",
+          "text": "خطأ",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-018",
+          "text": "مثال",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-019",
+          "text": "نسخة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-020",
+          "text": "إصدار",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-021",
+          "text": "يوم",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-022",
+          "text": "أسبوع",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-023",
+          "text": "مستوى",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-024",
+          "text": "مرتبة",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-025",
+          "text": "ترتيب",
+          "match": "word",
+          "clitics": true
+        },
+        {
+          "id": "BL-026",
+          "text": "step",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "BL-027",
+          "text": "tip",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "BL-028",
+          "text": "part",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "BL-029",
+          "text": "no",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "BL-030",
+          "text": "number",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "BL-031",
+          "text": "episode",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "BL-032",
+          "text": "day",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "BL-033",
+          "text": "week",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "BL-034",
+          "text": "level",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "BL-035",
+          "text": "rule",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        },
+        {
+          "id": "BL-036",
+          "text": "mistake",
+          "match": "word",
+          "dialects": [
+            "en"
+          ]
+        }
+      ]
+    },
+    "numberWords": {
+      "description": "Spelled-out numbers. A cover uses digits, so a hit inside cover text is C1.number-words (FIX); keep the words for speech. 'value' is the digit to use instead.",
+      "entries": [
+        {
+          "id": "NW-001",
+          "text": "واحد",
+          "match": "word",
+          "clitics": true,
+          "value": 1
+        },
+        {
+          "id": "NW-002",
+          "text": "واحدة",
+          "match": "word",
+          "clitics": true,
+          "value": 1
+        },
+        {
+          "id": "NW-003",
+          "text": "اثنين",
+          "match": "word",
+          "clitics": false,
+          "value": 2
+        },
+        {
+          "id": "NW-004",
+          "text": "اتنين",
+          "match": "word",
+          "clitics": false,
+          "value": 2
+        },
+        {
+          "id": "NW-005",
+          "text": "اثنان",
+          "match": "word",
+          "clitics": false,
+          "value": 2
+        },
+        {
+          "id": "NW-006",
+          "text": "اثنتين",
+          "match": "word",
+          "clitics": false,
+          "value": 2
+        },
+        {
+          "id": "NW-007",
+          "text": "ثلاثة",
+          "match": "word",
+          "clitics": true,
+          "value": 3
+        },
+        {
+          "id": "NW-008",
+          "text": "ثلاث",
+          "match": "word",
+          "clitics": true,
+          "value": 3
+        },
+        {
+          "id": "NW-009",
+          "text": "تلاتة",
+          "match": "word",
+          "clitics": true,
+          "value": 3
+        },
+        {
+          "id": "NW-010",
+          "text": "تلات",
+          "match": "word",
+          "clitics": true,
+          "value": 3
+        },
+        {
+          "id": "NW-011",
+          "text": "أربعة",
+          "match": "word",
+          "clitics": true,
+          "value": 4
+        },
+        {
+          "id": "NW-012",
+          "text": "أربع",
+          "match": "word",
+          "clitics": true,
+          "value": 4
+        },
+        {
+          "id": "NW-013",
+          "text": "خمسة",
+          "match": "word",
+          "clitics": true,
+          "value": 5
+        },
+        {
+          "id": "NW-014",
+          "text": "خمس",
+          "match": "word",
+          "clitics": true,
+          "value": 5
+        },
+        {
+          "id": "NW-015",
+          "text": "ستة",
+          "match": "word",
+          "clitics": true,
+          "value": 6
+        },
+        {
+          "id": "NW-016",
+          "text": "سبعة",
+          "match": "word",
+          "clitics": true,
+          "value": 7
+        },
+        {
+          "id": "NW-017",
+          "text": "سبع",
+          "match": "word",
+          "clitics": true,
+          "value": 7
+        },
+        {
+          "id": "NW-018",
+          "text": "ثمانية",
+          "match": "word",
+          "clitics": true,
+          "value": 8
+        },
+        {
+          "id": "NW-019",
+          "text": "ثماني",
+          "match": "word",
+          "clitics": true,
+          "value": 8
+        },
+        {
+          "id": "NW-020",
+          "text": "ثمان",
+          "match": "word",
+          "clitics": true,
+          "value": 8
+        },
+        {
+          "id": "NW-021",
+          "text": "تمانية",
+          "match": "word",
+          "clitics": true,
+          "value": 8
+        },
+        {
+          "id": "NW-022",
+          "text": "تمان",
+          "match": "word",
+          "clitics": true,
+          "value": 8
+        },
+        {
+          "id": "NW-023",
+          "text": "تسعة",
+          "match": "word",
+          "clitics": true,
+          "value": 9
+        },
+        {
+          "id": "NW-024",
+          "text": "تسع",
+          "match": "word",
+          "clitics": true,
+          "value": 9
+        },
+        {
+          "id": "NW-025",
+          "text": "عشرة",
+          "match": "word",
+          "clitics": true,
+          "value": 10
+        },
+        {
+          "id": "NW-026",
+          "text": "عشر",
+          "match": "word",
+          "clitics": true,
+          "value": 10
+        },
+        {
+          "id": "NW-027",
+          "text": "عشرين",
+          "match": "word",
+          "clitics": true,
+          "value": 20
+        },
+        {
+          "id": "NW-028",
+          "text": "ثلاثين",
+          "match": "word",
+          "clitics": true,
+          "value": 30
+        },
+        {
+          "id": "NW-029",
+          "text": "تلاتين",
+          "match": "word",
+          "clitics": true,
+          "value": 30
+        },
+        {
+          "id": "NW-030",
+          "text": "أربعين",
+          "match": "word",
+          "clitics": true,
+          "value": 40
+        },
+        {
+          "id": "NW-031",
+          "text": "خمسين",
+          "match": "word",
+          "clitics": true,
+          "value": 50
+        },
+        {
+          "id": "NW-032",
+          "text": "ستين",
+          "match": "word",
+          "clitics": true,
+          "value": 60
+        },
+        {
+          "id": "NW-033",
+          "text": "سبعين",
+          "match": "word",
+          "clitics": true,
+          "value": 70
+        },
+        {
+          "id": "NW-034",
+          "text": "ثمانين",
+          "match": "word",
+          "clitics": true,
+          "value": 80
+        },
+        {
+          "id": "NW-035",
+          "text": "تمانين",
+          "match": "word",
+          "clitics": true,
+          "value": 80
+        },
+        {
+          "id": "NW-036",
+          "text": "تسعين",
+          "match": "word",
+          "clitics": true,
+          "value": 90
+        },
+        {
+          "id": "NW-037",
+          "text": "مئة",
+          "match": "word",
+          "clitics": true,
+          "value": 100
+        },
+        {
+          "id": "NW-038",
+          "text": "مائة",
+          "match": "word",
+          "clitics": true,
+          "value": 100
+        },
+        {
+          "id": "NW-039",
+          "text": "ألف",
+          "match": "word",
+          "clitics": true,
+          "value": 1000
+        },
+        {
+          "id": "NW-040",
+          "text": "الف",
+          "match": "word",
+          "clitics": true,
+          "value": 1000
+        },
+        {
+          "id": "NW-041",
+          "text": "one",
+          "match": "word",
+          "dialects": [
+            "en"
+          ],
+          "value": 1
+        },
+        {
+          "id": "NW-042",
+          "text": "two",
+          "match": "word",
+          "dialects": [
+            "en"
+          ],
+          "value": 2
+        },
+        {
+          "id": "NW-043",
+          "text": "three",
+          "match": "word",
+          "dialects": [
+            "en"
+          ],
+          "value": 3
+        },
+        {
+          "id": "NW-044",
+          "text": "four",
+          "match": "word",
+          "dialects": [
+            "en"
+          ],
+          "value": 4
+        },
+        {
+          "id": "NW-045",
+          "text": "five",
+          "match": "word",
+          "dialects": [
+            "en"
+          ],
+          "value": 5
+        },
+        {
+          "id": "NW-046",
+          "text": "six",
+          "match": "word",
+          "dialects": [
+            "en"
+          ],
+          "value": 6
+        },
+        {
+          "id": "NW-047",
+          "text": "seven",
+          "match": "word",
+          "dialects": [
+            "en"
+          ],
+          "value": 7
+        },
+        {
+          "id": "NW-048",
+          "text": "eight",
+          "match": "word",
+          "dialects": [
+            "en"
+          ],
+          "value": 8
+        },
+        {
+          "id": "NW-049",
+          "text": "nine",
+          "match": "word",
+          "dialects": [
+            "en"
+          ],
+          "value": 9
+        },
+        {
+          "id": "NW-050",
+          "text": "ten",
+          "match": "word",
+          "dialects": [
+            "en"
+          ],
+          "value": 10
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,50 @@
+schema_version: "1.0"
+name: bhv-01-guided-stops-at-checkpoint-1
+description: "Guided mode (the default) stops at checkpoint 1: angles in chat, one recommended, a question, nothing more."
+tags: [behaviour, chat-only, carousel-create, content-angles, guided-checkpoint-1, flow]
+plugins: ["../../../plugins/carousel-studio"]
+execution:
+  prompt: |
+    ده كابسول البراند بتاعي (ملف المشروع):
+
+    [Carousel Studio brand capsule v1]
+    brand: ورشة المحتوى (content-workshop) | dialect: eg | register: dialect | digits: western | swipe: arrow-rtl
+    voice: ودود وعملي، جمل قصيرة. نستخدم «ببلاش» و«جرّب». لا نستخدم «ثورة» ولا «سر».
+    palette: bg #F4F4F2 ink #111111 accent #E3262B | fonts: ibm-plex-sans-arabic / readex-pro / inter | preset: swiss
+    home: -
+
+    اعملي كاروسيل عن 5 أخطاء بتموّت الكاروسيل. جمهوري صنّاع محتوى مبتدئين.
+  append_system_prompt: |
+    This is an automated evaluation of the Carousel Studio plugin, not a live session. There is no Artifact tool, no network access and no connected image, video or design tool. Save every file you create in the current working directory and never in a home folder: name the post spec spec.json, a brand profile brand.json and a plan plan-YYYY-MM.json, and when a script offers a workspace or root option (for example brand_io.py --dir) point it at the current directory. Otherwise answer the user exactly as you normally would.
+  max_turns: 10
+  timeout_seconds: 400
+  allowed_tools: [Skill, Read, Glob, Grep]
+runs: 2
+graders:
+  - type: tool_used
+    name: uses-carousel-create
+    tool: Skill
+    input_match: 'carousel-create'
+    min: 1
+  - type: llm
+    name: stops-after-the-angle-list
+    criteria: |
+      The reply stops at checkpoint 1 of guided mode. It lists at least 5 numbered angles, each with a short reason or a score, marks one as the recommendation (a star or the words رأيي), and ends by asking the user to answer with a number. It contains NO slide-by-slide script, NO caption, NO hashtags and NO list of hooks, and it does not claim to have designed or published anything.
+    weight: 3
+  - type: tool_used
+    name: does-not-open-the-studio
+    tool: Skill
+    input_match: 'carousel-design'
+    min: 0
+    max: 0
+    arm: both
+    weight: 2
+  - type: regex
+    name: no-hashtags-in-the-reply
+    pattern: '(?<![\w&])#[^\s#\d]+'
+    match: not_contains
+  - type: llm
+    name: answers-in-the-users-dialect
+    criteria: |
+      The reply is written in the user's own dialect rather than in formal Arabic or in English (tool, font and file names may stay Latin) and does not paste a whole slide script or a whole caption into the chat.
+expected_outcome: "Five or more scored angles, a recommendation and a question; no script, caption or hooks yet."

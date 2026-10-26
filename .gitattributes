@@ -1,0 +1,20 @@
+# Nothing here rewrites file contents (no text=auto, no eol): the directory portal stops on attributes that do.
+# The project keeps LF in the repository (CONTRIBUTING.md: set core.autocrlf=input on Windows). tools/build.mjs --check ignores
+# line endings, and tools/sync_shared.py compares a copy with its source, which a checkout converts in the same way.
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+*.mp4 binary
+*.pdf binary
+*.zip binary
+
+# Generated runtime chunks: collapse in diffs and keep out of language statistics.
+plugins/carousel-studio/skills/carousel-design/runtime/cs-*.js linguist-generated=true

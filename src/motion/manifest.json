@@ -1,0 +1,6 @@
+{
+  "module": "motion",
+  "chunk": "cs-motion.js",
+  "order": 0,
+  "files": ["util.js", "topics.js", "metaphors.js", "recipes.js", "build.js", "player.js", "api.js"]
+}

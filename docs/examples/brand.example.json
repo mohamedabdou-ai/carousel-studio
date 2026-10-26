@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "id": "brand-demo-0001",
+  "slug": "demo-brand",
+  "name": "براند تجريبي",
+  "handle": "@yourbrand",
+  "kind": "creator",
+  "version": 1,
+  "locale": {
+    "dialect": "eg",
+    "register": "dialect",
+    "digits": "western",
+    "digitsReason": "الافتراضي: كل أغلفة الكاروسيل العربي الناجحة بأرقام 123",
+    "countries": [
+      "EG",
+      "AE"
+    ],
+    "appLanguage": "ar",
+    "swipeCue": "arrow-rtl",
+    "latinTerms": [
+      "ChatGPT",
+      "Claude"
+    ]
+  },
+  "identity": {
+    "who": "صانع محتوى",
+    "niche": "الذكاء الاصطناعي للشغل",
+    "offer": "كورسات ونصايح",
+    "goal": "followers"
+  },
+  "audience": {
+    "persona": "موظف عايز يوفّر وقت",
+    "pains": [
+      "الوقت"
+    ],
+    "awareness": "problem"
+  },
+  "voice": {
+    "tone": {
+      "formalFriendly": 4,
+      "seriousPlayful": 3,
+      "calmEnergetic": 4
+    },
+    "use": [
+      "ببلاش"
+    ],
+    "avoid": [
+      "ثورة"
+    ],
+    "allow": [],
+    "samples": [
+      "جرّبت الأداة دي وفرقت معايا."
+    ]
+  },
+  "visual": {
+    "palette": {
+      "bg": "#F4F4F2",
+      "ink": "#111111",
+      "inkMuted": "#5A5A5A",
+      "accent": "#E3262B"
+    },
+    "fonts": {
+      "display": "ibm-plex-sans-arabic",
+      "body": "readex-pro",
+      "latin": "inter"
+    },
+    "presetId": "swiss",
+    "presetAlternates": [
+      "poster",
+      "creator"
+    ],
+    "locks": []
+  },
+  "strategy": {
+    "pillars": [
+      {
+        "id": "tools",
+        "name": "أدوات",
+        "share": 0.5,
+        "intents": [
+          "save"
+        ]
+      }
+    ],
+    "postsPerWeek": 4,
+    "intentMix": {
+      "save": 0.4,
+      "send": 0.25,
+      "reach": 0.25,
+      "sell": 0.1
+    },
+    "bestHours": {
+      "tz": "Asia/Dubai",
+      "slots": [
+        {
+          "day": "any",
+          "from": "20:00",
+          "to": "23:00"
+        }
+      ]
+    }
+  },
+  "tools": {
+    "detectedAt": "2026-10-22T10:00:00Z",
+    "caps": {
+      "image.generate": [
+        "magnific:generate"
+      ]
+    },
+    "consent": "ask-each-post"
+  },
+  "hooks": {
+    "packs": [],
+    "familyPriors": {
+      "F17": {
+        "metric": "median-saves",
+        "value": 12.5,
+        "baseline": 7,
+        "n": 10
+      }
+    },
+    "history": []
+  },
+  "onboarding": {
+    "sections": {
+      "identity": "done",
+      "audience": "done",
+      "voice": "done",
+      "visual": "done",
+      "strategy": "skipped",
+      "tools": "todo"
+    },
+    "current": "strategy"
+  }
+}

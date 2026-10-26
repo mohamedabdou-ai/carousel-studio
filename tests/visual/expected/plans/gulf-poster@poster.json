@@ -1,0 +1,102 @@
+{
+  "slides": [
+    {
+      "id": "s02",
+      "visual": {
+        "anchor": {
+          "kind": "numeral",
+          "value": "1"
+        },
+        "recipe": "under",
+        "tone": "base",
+        "why": "الرقم 1 هو الفكرة، فكبرناه",
+        "alt": "الرقم 1"
+      },
+      "variant": "numeral"
+    },
+    {
+      "id": "s03",
+      "visual": {
+        "anchor": {
+          "kind": "field",
+          "icon": "signpost"
+        },
+        "recipe": "under",
+        "tone": "base",
+        "field": true,
+        "why": "اخترنا لافته لأن الموضوع عن اختيار",
+        "alt": "أيقونة لافته"
+      }
+    },
+    {
+      "id": "s04",
+      "visual": {
+        "anchor": {
+          "kind": "rows"
+        },
+        "recipe": "full",
+        "tone": "invert",
+        "rowIcons": [
+          "bean",
+          "truck",
+          "tag"
+        ],
+        "why": "حطينا أيقونة جنب كل نقطة عشان تنقرا بسرعة",
+        "alt": "قائمة فيها 3 نقاط، لكل نقطة أيقونة"
+      }
+    },
+    {
+      "id": "s05",
+      "visual": {
+        "anchor": {
+          "kind": "mock",
+          "mock": {
+            "kind": "chat"
+          }
+        },
+        "recipe": "under",
+        "tone": "base",
+        "why": "حطينا كلام السلايد نفسه داخل محادثة",
+        "alt": "محادثة: أول مرة أشرب قهوة بهالطعم في بيتي."
+      }
+    },
+    {
+      "id": "s06",
+      "visual": {
+        "anchor": {
+          "kind": "rows"
+        },
+        "recipe": "full",
+        "tone": "base",
+        "rowIcons": [
+          "truck",
+          "truck",
+          "clock"
+        ],
+        "why": "حطينا أيقونة جنب كل نقطة عشان تنقرا بسرعة",
+        "alt": "قائمة فيها 3 نقاط، لكل نقطة أيقونة"
+      }
+    },
+    {
+      "id": "s07",
+      "visual": {
+        "anchor": {
+          "kind": "mock",
+          "mock": {
+            "kind": "chat"
+          }
+        },
+        "recipe": "under",
+        "tone": "field",
+        "why": "حطينا كلام السلايد نفسه داخل محادثة",
+        "alt": "محادثة: اشتراك"
+      },
+      "variant": "action"
+    }
+  ],
+  "style": {
+    "planV": "1.1.0+e7d18307+5a1ce000",
+    "motif": "coffee-cup"
+  },
+  "notes": []
+}

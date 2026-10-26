@@ -1,0 +1,9 @@
+{
+  "module": "art",
+  "chunk": "cs-art.js",
+  "order": 0,
+  "files": [
+    "root.js", "kit.js", "icon.js", "object.js", "anchor-icon.js", "index.js", "scene.js", "scene-more.js", "diagram.js", "mock.js", "mock-more.js",
+    "artefact.js", "chart.js", "numeral.js", "chart-more.js", "rows.js", "field.js", "marks.js", "word.js", "frames.js", "pattern.js", "bg.js"
+  ]
+}

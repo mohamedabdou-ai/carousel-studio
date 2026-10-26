@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "1.0.0",
+  "triggers": [
+    {
+      "id": "pattern-break",
+      "label": {"ar": "كسر التوقع", "en": "Pattern break"},
+      "description": "The line breaks an assumption the reader holds, so the eye stops and a question forms."
+    },
+    {
+      "id": "problem-naming",
+      "label": {"ar": "تسمية المشكلة", "en": "Problem naming"},
+      "description": "Names the exact pain in the reader's own words so they feel recognised before any solution appears."
+    },
+    {
+      "id": "loss-aversion",
+      "label": {"ar": "تجنّب الخسارة", "en": "Loss aversion"},
+      "description": "Frames what the reader loses by waiting or repeating a habit. Use one loss at a time and never stack fears."
+    },
+    {
+      "id": "ease",
+      "label": {"ar": "السهولة", "en": "Ease"},
+      "description": "Promises a short, doable path (few steps, little time, no special tool) and removes effort from the first move."
+    },
+    {
+      "id": "bundling",
+      "label": {"ar": "التجميع", "en": "Bundling"},
+      "description": "Packs several useful things into one reusable asset (a pack, a checklist, a stack) so saving it feels efficient."
+    },
+    {
+      "id": "real-scarcity",
+      "label": {"ar": "الندرة الحقيقية", "en": "Real scarcity"},
+      "description": "Limited seats, a closing date or an invite-only wave. Allowed only when the limit is true and stated."
+    },
+    {
+      "id": "curiosity-gap",
+      "label": {"ar": "فجوة الفضول", "en": "Curiosity gap"},
+      "description": "Opens one specific, closable gap that the slides then close. The cover never answers it."
+    },
+    {
+      "id": "specificity",
+      "label": {"ar": "التحديد", "en": "Specificity"},
+      "description": "A named tool, a number, a place or a time frame replaces an abstract promise."
+    },
+    {
+      "id": "goal-gradient",
+      "label": {"ar": "خط النهاية", "en": "Goal gradient"},
+      "description": "A visible count (7 tools, 3 steps) gives a finish line, so the reader keeps swiping to reach it."
+    },
+    {
+      "id": "identity",
+      "label": {"ar": "الهوية", "en": "Identity"},
+      "description": "Names who the post is for so the right reader self-selects and sends it to someone like them."
+    },
+    {
+      "id": "relatability",
+      "label": {"ar": "التعرّف على النفس", "en": "Relatability"},
+      "description": "A shared experience the reader recognises at once ('we all ask...'). Strong for sends, weak for saves."
+    },
+    {
+      "id": "contrast",
+      "label": {"ar": "التباين", "en": "Contrast"},
+      "description": "Sets two things side by side (free vs paid, before vs after, fast vs slow) so the difference does the work."
+    },
+    {
+      "id": "future-pacing",
+      "label": {"ar": "تخيّل المستقبل", "en": "Future pacing"},
+      "description": "Lets the reader picture the result as a scene before any explanation."
+    },
+    {
+      "id": "open-loop",
+      "label": {"ar": "الحلقة المفتوحة", "en": "Open loop"},
+      "description": "An unfinished sequence or sentence across the swipe edge. The reader resumes to close it."
+    },
+    {
+      "id": "debate",
+      "label": {"ar": "الجدل", "en": "Debate"},
+      "description": "Takes a side on a question people disagree about, which invites sends and one-line replies."
+    },
+    {
+      "id": "authority",
+      "label": {"ar": "الخبرة", "en": "Authority"},
+      "description": "Lived experience or tested work (years in the field, N tools tried) gives the claim weight."
+    },
+    {
+      "id": "social-proof",
+      "label": {"ar": "الدليل", "en": "Social proof"},
+      "description": "A real result, a real number or a real client moment shows it works. Every figure needs a source."
+    },
+    {
+      "id": "recency",
+      "label": {"ar": "الجِدّة", "en": "Recency"},
+      "description": "A dated update. Wins reach on the day, rarely saves, so pair it with what it changes for the reader."
+    },
+    {
+      "id": "free-value",
+      "label": {"ar": "قيمة مجانية", "en": "Free value"},
+      "description": "Gives something useful away (template, file, checklist) before asking for anything."
+    },
+    {
+      "id": "big-number",
+      "label": {"ar": "الرقم الضخم", "en": "Big number"},
+      "description": "One striking, sourced number standing alone. The isolation does the attracting."
+    },
+    {
+      "id": "irony",
+      "label": {"ar": "المفارقة", "en": "Irony"},
+      "description": "Points at a contradiction in what people do (fast here, slow there) and lets the reader laugh at themselves."
+    },
+    {
+      "id": "objection-removal",
+      "label": {"ar": "إزالة الاعتراض", "en": "Objection removal"},
+      "description": "States the result without the obstacle the reader assumes (no budget, no experience, no camera)."
+    }
+  ]
+}

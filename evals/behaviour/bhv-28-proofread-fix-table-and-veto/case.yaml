@@ -1,0 +1,40 @@
+schema_version: "1.0"
+name: bhv-28-proofread-fix-table-and-veto
+description: "The proofreader returns a fix table and a PASS or VETO verdict, applies only deterministic fixes, and suggests the rest."
+tags: [behaviour, needs-bash, arabic-proofread, proofread]
+plugins: ["../../../plugins/carousel-studio"]
+execution:
+  prompt: |
+    دقّقلي النص ده (مصري): "اتعلم انشاء كاروسيل من الصفر في ساعة. اللى بيكتب كويس بيتقرا للآخر، وكل خطوه بتاخد دقيقتين بس ، جرّب الأداة دي!!"
+  append_system_prompt: |
+    This is an automated evaluation of the Carousel Studio plugin, not a live session. There is no Artifact tool, no network access and no connected image, video or design tool. Save every file you create in the current working directory and never in a home folder: name the post spec spec.json, a brand profile brand.json and a plan plan-YYYY-MM.json, and when a script offers a workspace or root option (for example brand_io.py --dir) point it at the current directory. Otherwise answer the user exactly as you normally would.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Skill, Read, Write, Edit, Bash, Glob, Grep]
+runs: 2
+graders:
+  - type: tool_used
+    name: runs-the-orthography-lint
+    tool: Bash
+    input_match: 'ortho_lint\.py'
+    min: 1
+    weight: 2
+  - type: llm
+    name: table-columns
+    criteria: |
+      The reply lists each issue with the original text, the fix, the rule and a confidence.
+    weight: 2
+  - type: llm
+    name: autofix-versus-suggestion
+    criteria: |
+      The spacing before the comma and the doubled exclamation mark are fixed automatically, while the hamza, yaa and taa marbuta corrections are suggestions awaiting the user's approval.
+    weight: 3
+  - type: regex
+    name: verdict-present
+    pattern: 'VETO|PASS'
+    weight: 2
+  - type: llm
+    name: answers-in-the-users-dialect
+    criteria: |
+      The reply is written in the user's own dialect rather than in formal Arabic or in English (tool, font and file names may stay Latin) and does not paste a whole slide script or a whole caption into the chat.
+expected_outcome: "A fix table and a verdict; suggestions are not applied silently."

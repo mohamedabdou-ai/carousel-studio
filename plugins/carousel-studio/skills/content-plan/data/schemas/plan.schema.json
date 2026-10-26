@@ -1,0 +1,394 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:carousel-studio:schema:plan:1",
+  "title": "Carousel Studio content plan",
+  "description": "plan-YYYY-MM.json: slots whose 'start' action opens carousel-create on the slot.",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "brandSlug": {
+      "$ref": "#/$defs/slug"
+    },
+    "period": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}$"
+    },
+    "goal": {
+      "type": "string",
+      "enum": [
+        "followers",
+        "clients",
+        "sales"
+      ]
+    },
+    "cadence": {
+      "type": "object",
+      "properties": {
+        "perWeek": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 14
+        },
+        "days": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "mon",
+              "tue",
+              "wed",
+              "thu",
+              "fri",
+              "sat",
+              "sun"
+            ]
+          },
+          "maxItems": 7,
+          "uniqueItems": true
+        },
+        "hours": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/clock"
+          },
+          "maxItems": 6
+        },
+        "tz": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "perWeek",
+        "tz"
+      ],
+      "additionalProperties": false
+    },
+    "slots": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/slot"
+      },
+      "maxItems": 62
+    },
+    "ideaBank": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/shortId"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 300
+          },
+          "pillarId": {
+            "$ref": "#/$defs/shortId"
+          },
+          "intents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/intent"
+            },
+            "maxItems": 4,
+            "uniqueItems": true
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "user",
+              "audience-faq",
+              "occasion",
+              "repurposed",
+              "claude"
+            ]
+          },
+          "createdAt": {
+            "$ref": "#/$defs/isoDateTime"
+          }
+        },
+        "required": [
+          "id",
+          "text"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 300
+    },
+    "angleBank": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/shortId"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "lens": {
+            "$ref": "#/$defs/lens"
+          },
+          "score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "topic": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "pillarId": {
+            "$ref": "#/$defs/shortId"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 300
+    },
+    "occasions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9-]{2,47}$"
+      },
+      "maxItems": 24
+    },
+    "createdAt": {
+      "$ref": "#/$defs/isoDateTime"
+    },
+    "updatedAt": {
+      "$ref": "#/$defs/isoDateTime"
+    },
+    "ext": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Reserved extension namespace. Tools may store private data here; engines ignore it."
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "brandSlug",
+    "period",
+    "cadence",
+    "slots"
+  ],
+  "additionalProperties": false,
+  "x-sharedDefs": [
+    "architecture",
+    "clock",
+    "ctaKind",
+    "hookFamily",
+    "id",
+    "intent",
+    "isoDate",
+    "isoDateTime",
+    "lens",
+    "shortId",
+    "slug"
+  ],
+  "$defs": {
+    "architecture": {
+      "type": "string",
+      "enum": [
+        "listicle",
+        "steps",
+        "myth-fact",
+        "story",
+        "case-study",
+        "framework",
+        "comparison",
+        "opinion",
+        "news",
+        "offer",
+        "results",
+        "lead-magnet"
+      ]
+    },
+    "clock": {
+      "type": "string",
+      "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+      "description": "24-hour HH:MM."
+    },
+    "ctaKind": {
+      "type": "string",
+      "enum": [
+        "save",
+        "send",
+        "question",
+        "keyword-dm",
+        "follow"
+      ]
+    },
+    "hookFamily": {
+      "type": "string",
+      "enum": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5",
+        "P6",
+        "P7",
+        "P8",
+        "P9",
+        "P10",
+        "P11",
+        "P12",
+        "P13",
+        "P14",
+        "P15",
+        "P16",
+        "F17",
+        "F18",
+        "F19",
+        "F20",
+        "F21",
+        "F22",
+        "F23",
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "description": "Family code: P1-P16 playbook, F17-F23 new, S1-S3 soft-sell."
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{5,63}$",
+      "description": "Long stable identifier (brand, spec, plan, occasion pack)."
+    },
+    "intent": {
+      "type": "string",
+      "enum": [
+        "reach",
+        "save",
+        "send",
+        "sell"
+      ]
+    },
+    "isoDate": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "isoDateTime": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})$"
+    },
+    "lens": {
+      "type": "string",
+      "enum": [
+        "contrarian",
+        "costly-mistake",
+        "free-vs-paid",
+        "tested-ranked",
+        "identity",
+        "before-after",
+        "myth",
+        "story",
+        "framework",
+        "news",
+        "setup",
+        "imagine"
+      ]
+    },
+    "shortId": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,31}$",
+      "description": "Short local identifier (source, asset, prompt, angle, pillar, slot)."
+    },
+    "slot": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/shortId"
+        },
+        "date": {
+          "$ref": "#/$defs/isoDate"
+        },
+        "time": {
+          "$ref": "#/$defs/clock"
+        },
+        "pillarId": {
+          "$ref": "#/$defs/shortId"
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "carousel",
+            "single"
+          ]
+        },
+        "intent": {
+          "$ref": "#/$defs/intent"
+        },
+        "architecture": {
+          "$ref": "#/$defs/architecture"
+        },
+        "family": {
+          "$ref": "#/$defs/hookFamily"
+        },
+        "ctaKind": {
+          "$ref": "#/$defs/ctaKind"
+        },
+        "angleId": {
+          "$ref": "#/$defs/shortId"
+        },
+        "occasionId": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{2,47}$"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "idea",
+            "angled",
+            "scripted",
+            "designed",
+            "exported",
+            "posted"
+          ]
+        },
+        "specId": {
+          "$ref": "#/$defs/id"
+        },
+        "studioUrl": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 300
+        }
+      },
+      "required": [
+        "id",
+        "date",
+        "format",
+        "intent",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,39}$"
+    }
+  }
+}

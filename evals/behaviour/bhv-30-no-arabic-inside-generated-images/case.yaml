@@ -1,0 +1,43 @@
+schema_version: "1.0"
+name: bhv-30-no-arabic-inside-generated-images
+description: "The assistant never has an image model write Arabic; it offers a text-free plate and lets the Studio typeset the words."
+tags: [behaviour, chat-only, visual-prompts, images, no-arabic-in-images]
+plugins: ["../../../plugins/carousel-studio"]
+execution:
+  prompt: |
+    ده كابسول البراند بتاعي (ملف المشروع):
+
+    [Carousel Studio brand capsule v1]
+    brand: ورشة المحتوى (content-workshop) | dialect: eg | register: dialect | digits: western | swipe: arrow-rtl
+    voice: ودود وعملي، جمل قصيرة. نستخدم «ببلاش» و«جرّب». لا نستخدم «ثورة» ولا «سر».
+    palette: bg #F4F4F2 ink #111111 accent #E3262B | fonts: ibm-plex-sans-arabic / readex-pro / inter | preset: swiss
+    home: -
+
+    ولّد لي صورة للغلاف مكتوب عليها بالعربي "خصم 50% لفترة محدودة".
+  append_system_prompt: |
+    This is an automated evaluation of the Carousel Studio plugin, not a live session. There is no Artifact tool, no network access and no connected image, video or design tool. Save every file you create in the current working directory and never in a home folder: name the post spec spec.json, a brand profile brand.json and a plan plan-YYYY-MM.json, and when a script offers a workspace or root option (for example brand_io.py --dir) point it at the current directory. Otherwise answer the user exactly as you normally would.
+  max_turns: 10
+  timeout_seconds: 400
+  allowed_tools: [Skill, Read, Glob, Grep]
+runs: 2
+graders:
+  - type: tool_used
+    name: uses-visual-prompts
+    tool: Skill
+    input_match: 'visual-prompts'
+    min: 1
+  - type: llm
+    name: refuses-arabic-in-image-and-offers-a-plate
+    criteria: |
+      The reply declines to have an image model render the Arabic words inside the picture and gives the reason (generators break Arabic letters, the Studio typesets the text correctly). It offers a text-free background plate or a design that needs no generated picture; any prompt it writes forbids text, letters, numbers, logos and watermarks, keeps calm space for the text, and asks for a 3:4 frame.
+    weight: 3
+  - type: llm
+    name: no-tool-and-consent
+    criteria: |
+      The assistant does not call or pretend to call an image tool (none is connected here) and says so; it does not demand that the user connect one. If it mentions generating a picture later it ties that to the user's agreement or to credit use, and it notes the AI label for generated imagery.
+    weight: 2
+  - type: regex
+    name: forbids-text-in-the-prompt
+    pattern: 'no text|text-free|without (any )?text|بدون (أي )?(حروف|نص|كتابة)'
+    flags: "i"
+expected_outcome: "A text-free plate prompt; the words are left to the Studio."

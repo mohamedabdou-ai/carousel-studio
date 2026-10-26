@@ -1,0 +1,268 @@
+{
+  "schemaVersion": 1,
+  "skill_name": "arabic-proofread",
+  "description": "Triggers (20 should-trigger across Egyptian, Gulf, Levantine, white MSA and English; 10 should-not) and behaviour evals for arabic-proofread.",
+  "triggerTargets": {
+    "precision": 0.9,
+    "recall": 0.9
+  },
+  "triggers": [
+    {
+      "id": "t01",
+      "query": "دقّقلي النص ده قبل ما أنشره: \"انشاء الله هنبدأ الاسبوع الجاي بالاستخدام الجديد\"",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t02",
+      "query": "راجع الإملاء في الكابشن ده وقولي أغلاطه إيه بالظبط: \"افضل الادوات المجانيه للمصممين\"",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t03",
+      "query": "صحّحلي كابشن البوست ده قبل ما أنزله، حاسس إن فيه همزات ناقصة: \"ازاي تبدأ مشروعك بدون راس مال؟ اول خطوه انك تحدد فكرتك. تاني خطوه تجرب الفكره على ناس تعرفهم. وبعدين ابدأ صغير\"",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t04",
+      "query": "النص ده مكتوب مصري بس حاسس إن فيه كلمات خليجية دخلت غلط: \"عايز اسوي بوست الحين عن الفريلانس\"، شوفهالي",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t05",
+      "query": "دقق لي هالنص إملائيا: \"هذا افضل مكان للاستثمار في السعوديه\"",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t06",
+      "query": "راجع لي كابشن البوست، أبي أتأكد ما فيه كلمات مصرية دخلت بالغلط، وعطني جدول بالتعديلات: \"عايز تبدأ مشروعك؟ ازاي تختار فكرتك صح؟ ابدأ بسؤال بسيط: مين هيشتري منك؟ وبعدها جرب الفكرة على صديق\"",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t07",
+      "query": "صحح لي هالجملة وقل لي نوع كل خطأ: \"اضافة الى ذلك فان المسئول سيحضر غدا\"",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t08",
+      "query": "أحس نص الإعلان مترجم من الإنجليزي وركيك، راجعه لي وعدّل الصياغة وقل لي وش غيرت: \"قم بالضغط على الزر الخاص بك للحصول على المزيد من المعلومات. نحن نسعى جاهدين لتقديم حلول متكاملة\"",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t09",
+      "query": "دقّقلي هاد النص: \"شو رأيك نبدأ بالمشروع هلئ ونكمل بكرا\"",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t10",
+      "query": "راجعلي الإملاء بهالكابشن وقللي إذا في كلمات مصرية أو خليجية: \"كتير مهم تعمل خطة قبل ما تبلش\"",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t11",
+      "query": "عندي نص فيه إنجليزي وأرقام: \"استخدم ChatGPT لـ 5 مهام\"، تأكدلي إنها ما بتنقلب ببعض وقت يتصمم",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t12",
+      "query": "صحّحلي الهمزات والتاء المربوطة بهاد النص قبل ما نصممو: \"فكره جديده لمشروع الاستثمار. اول خطوه ان تحدد ميزانيتك، وثاني خطوه ان تختار المكان المناسب\"",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t13",
+      "query": "يرجى تدقيق هذا النص إملائيًا ولغويًا قبل النشر: \"ان هذة الطريقه افضل من سابقتها\"",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t14",
+      "query": "راجع علامات الترقيم والهمزات في هذه الفقرة وأعطني جدولًا بالتصحيحات: \"هل تعلم ان الاستثمار ، يحتاج الى صبر ؟\"",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t15",
+      "query": "هل يوجد في نص الكابشن هذا أخطاء إملائية أو ترجمة حرفية؟ أرجو جدولًا بالتصحيحات: \"نحن نسعى جاهدين لتقديم حلول متكاملة من قبل فريقنا. للمزيد من المعلومات انقر هنا\"",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t16",
+      "query": "قبل أن أصمم، افحص نص الشرائح التالي من حيث توحيد الأرقام وسلامة الكلمات الإنجليزية داخل الجمل العربية: \"اشترك في ٣ دورات و5 ورش خلال ١٢ شهرًا مع ChatGPT\"",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t17",
+      "query": "proofread this Arabic caption for spelling and hamza mistakes: \"الاستخدام الامثل للادوات الذكيه\"",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t18",
+      "query": "can you check my Arabic text for dialect consistency? it should be pure Egyptian: \"عايز تعرف كيف تبدأ؟ تعالى نشوف\"",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t19",
+      "query": "run the orthography check on my slides' copy and show me a fix table (original, fix, rule, confidence)",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t20",
+      "query": "review this Arabic sentence with an English tool name inside it, is the punctuation and spacing right? \"استخدم ChatGPT, وجرب Claude\"",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t21",
+      "query": "ركّبلي ترجمة عربي على الريل ده وقص السكتات",
+      "should_trigger": false,
+      "dialect": "eg",
+      "kind": "reel",
+      "instead": "reel-montage"
+    },
+    {
+      "id": "t22",
+      "query": "ترجم لي هالفقرة للإنجليزي: \"القهوة المحمصة طازجة تغير طعم يومك\"",
+      "should_trigger": false,
+      "dialect": "gulf",
+      "kind": "unrelated",
+      "instead": "none"
+    },
+    {
+      "id": "t23",
+      "query": "اكتبلي هوكات لكاروسيل عن أدوات الذكاء الاصطناعي المجانية للموظفين، عايز أختار من كذا واحد",
+      "should_trigger": false,
+      "dialect": "eg",
+      "kind": "sibling",
+      "instead": "carousel-create"
+    },
+    {
+      "id": "t24",
+      "query": "وش الزوايا اللي أقدر أطرح فيها موضوع التسويق للمطاعم؟",
+      "should_trigger": false,
+      "dialect": "gulf",
+      "kind": "sibling",
+      "instead": "content-angles"
+    },
+    {
+      "id": "t25",
+      "query": "أريد إعداد هوية جديدة لعلامتي التجارية تشمل اللهجة والصوت والألوان والخطوط",
+      "should_trigger": false,
+      "dialect": "msa-white",
+      "kind": "sibling",
+      "instead": "brand-setup"
+    },
+    {
+      "id": "t26",
+      "query": "غيّرلي ستايل تصميم البوست لستايل دفتر الملاحظات وكبّرلي الخط",
+      "should_trigger": false,
+      "dialect": "levant",
+      "kind": "sibling",
+      "instead": "carousel-design"
+    },
+    {
+      "id": "t27",
+      "query": "proofread my English cover letter and tighten the grammar",
+      "should_trigger": false,
+      "dialect": "en",
+      "kind": "adjacent",
+      "instead": "none"
+    },
+    {
+      "id": "t28",
+      "query": "صحّحلي هاد الكود بالبايثون، عم يعطيني خطأ",
+      "should_trigger": false,
+      "dialect": "levant",
+      "kind": "unrelated",
+      "instead": "none"
+    },
+    {
+      "id": "t29",
+      "query": "راجع بنود عقد الإيجار هذا وأخبرني بالمخاطر القانونية",
+      "should_trigger": false,
+      "dialect": "msa-white",
+      "kind": "adjacent",
+      "instead": "none"
+    },
+    {
+      "id": "t30",
+      "query": "عدّل لي النص داخل التصميم في كانفا وغيّر الخط",
+      "should_trigger": false,
+      "dialect": "gulf",
+      "kind": "canva",
+      "instead": "canva"
+    }
+  ],
+  "evals": [
+    {
+      "id": 1,
+      "name": "fix-table-with-pass-or-veto",
+      "prompt": "دقّقلي النص ده (مصري): \"اتعلم انشاء كاروسيل من الصفر في ساعة. اللى بيكتب كويس بيتقرا للآخر، وكل خطوه بتاخد دقيقتين بس ، جرّب الأداة دي!!\"",
+      "expected_output": "A diff table (original, fix, rule, confidence) and a PASS or VETO verdict; only deterministic fixes are applied.",
+      "files": [],
+      "fixtures": [
+        "ortho-seeded-errors.json"
+      ],
+      "behaviour": [
+        "bhv-28-proofread-fix-table-and-veto"
+      ],
+      "expectations": [
+        "ortho_lint.py ran on the text",
+        "The table has the columns original, fix, rule and confidence",
+        "Spacing before the comma and the doubled exclamation mark are fixed automatically; hamza, taa marbuta and yaa are suggestions awaiting approval",
+        "The reply ends with PASS or VETO"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "gulf-words-inside-an-egyptian-post",
+      "prompt": "راجع النص ده، المفروض مصري بس: \"ابغى اعرف ليش الكاروسيل ما ينحفظ، وش الغلط اللي بسويه؟\"",
+      "expected_output": "The Gulf words are flagged as dialect leaks with Egyptian suggestions and the verdict is VETO unless the brand allows them.",
+      "files": [],
+      "fixtures": [
+        "hook-candidates.eg.json"
+      ],
+      "behaviour": [
+        "bhv-34-dialect-purity-flags-gulf-in-egyptian"
+      ],
+      "expectations": [
+        "ابغى، ليش، وش and بسويه are flagged as Gulf words",
+        "An Egyptian suggestion is offered for each (عايز، ليه، إيه، بعمله)",
+        "The verdict is VETO and the reply explains that اللهجة كده صح adds a word to the brand's allow-list"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "latin-names-and-digits-in-arabic-lines",
+      "prompt": "تأكدلي إن النص ده هيتصمم صح: \"استخدم لـ ChatGPT و5 أدوات تانية بـ$20 شهريًا\"",
+      "expected_output": "The stranded prefix and the unbound number-noun pairs are reported, with the fixed text.",
+      "files": [],
+      "fixtures": [
+        "bidi-strings.json"
+      ],
+      "behaviour": [
+        "bhv-16-latin-names-stay-attached"
+      ],
+      "expectations": [
+        "The stranded prefix «لـ ChatGPT» is reported and fixed to «لـChatGPT»",
+        "The unbound pairs «5 أدوات» and «$20 شهريًا» are reported and bound with U+00A0",
+        "The Latin names stay Latin"
+      ]
+    }
+  ]
+}

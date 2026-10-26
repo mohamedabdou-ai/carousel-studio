@@ -1,0 +1,164 @@
+{
+  "slides": [
+    {
+      "id": "s02",
+      "visual": {
+        "anchor": {
+          "kind": "field",
+          "word": "كل"
+        },
+        "recipe": "over",
+        "tone": "base",
+        "field": true,
+        "bleed": "both",
+        "marks": [
+          "underline"
+        ],
+        "why": "مفيش صورة تقول الكلام ده بصدق، فخلينا الكلمة هي الصورة",
+        "alt": "الكلمة «كل» بحجم كبير"
+      }
+    },
+    {
+      "id": "s03",
+      "visual": {
+        "anchor": {
+          "kind": "numeral",
+          "companion": "waffle",
+          "of": 100,
+          "filled": 74
+        },
+        "recipe": "over",
+        "tone": "field",
+        "field": true,
+        "bleed": "both",
+        "why": "الرقم 74 هو الفكرة، فكبرناه",
+        "alt": "الرقم 74%"
+      }
+    },
+    {
+      "id": "s04",
+      "visual": {
+        "anchor": {
+          "kind": "mock",
+          "mock": {
+            "kind": "notes",
+            "caption": "ده اللي بيوقّف الإبهام"
+          }
+        },
+        "recipe": "under",
+        "tone": "base",
+        "why": "حطينا كلام السلايد نفسه جوه ملاحظات",
+        "alt": "ملاحظات: 5 نصايح للكتابة"
+      }
+    },
+    {
+      "id": "s05",
+      "visual": {
+        "anchor": {
+          "kind": "field"
+        },
+        "recipe": "full",
+        "tone": "base",
+        "field": true
+      }
+    },
+    {
+      "id": "s06",
+      "visual": {
+        "anchor": {
+          "kind": "word",
+          "word": "خرافة",
+          "wordStyle": "struck"
+        },
+        "recipe": "under",
+        "tone": "invert",
+        "why": "مفيش صورة تقول الكلام ده بصدق، فخلينا الكلمة هي الصورة",
+        "alt": "الكلمة «خرافة» بحجم كبير"
+      }
+    },
+    {
+      "id": "s07",
+      "visual": {
+        "anchor": {
+          "kind": "field",
+          "icon": "users"
+        },
+        "recipe": "under",
+        "tone": "base",
+        "field": true,
+        "why": "اخترنا فريق لأن الكلام عن متابعينك",
+        "alt": "أيقونة فريق"
+      }
+    },
+    {
+      "id": "s08",
+      "visual": {
+        "anchor": {
+          "kind": "rows"
+        },
+        "recipe": "full",
+        "tone": "base",
+        "rowIcons": [
+          "magnet",
+          "circle",
+          "camera",
+          "circle"
+        ],
+        "why": "حطينا أيقونة جنب كل نقطة عشان تتقرا بسرعة",
+        "alt": "قايمة فيها 4 نقاط، لكل نقطة أيقونة"
+      }
+    },
+    {
+      "id": "s09",
+      "visual": {
+        "anchor": {
+          "kind": "field",
+          "object": "bar-chart"
+        },
+        "recipe": "under",
+        "tone": "invert",
+        "field": true,
+        "why": "اخترنا الأرقام لأن الكلام عن الأرقام",
+        "alt": "رسم الأرقام"
+      }
+    },
+    {
+      "id": "s10",
+      "visual": {
+        "anchor": {
+          "kind": "mock",
+          "mock": {
+            "kind": "chat",
+            "caption": "رسالة بعد أسبوع"
+          }
+        },
+        "recipe": "under",
+        "tone": "base",
+        "why": "حطينا كلام السلايد نفسه جوه محادثة",
+        "alt": "محادثة: كنت بكتب كاروسيل ومحدش بيحفظه"
+      }
+    },
+    {
+      "id": "s11",
+      "visual": {
+        "anchor": {
+          "kind": "icon",
+          "icon": "bookmark",
+          "treatment": "giant",
+          "size": "hero"
+        },
+        "recipe": "center",
+        "tone": "field",
+        "field": true,
+        "why": "اخترنا حفظ لأن الكلام عن احفظ البوست",
+        "alt": "أيقونة حفظ"
+      },
+      "variant": "action"
+    }
+  ],
+  "style": {
+    "planV": "1.1.0+e7d18307+5a1ce000",
+    "motif": "megaphone"
+  },
+  "notes": []
+}

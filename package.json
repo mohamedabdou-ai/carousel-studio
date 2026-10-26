@@ -1,0 +1,44 @@
+{
+  "name": "carousel-studio",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Carousel Studio: an Arabic-first Claude plugin that plans, writes and designs Instagram carousels. This package.json only drives the repository tooling; the plugin itself has no Node dependencies.",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "build:check": "node tools/build.mjs --check",
+    "sync": "python tools/sync_shared.py",
+    "sync:check": "python tools/sync_shared.py --check",
+    "check:dir": "python tools/check_directory.py",
+    "test:py": "python -m pytest tests/unit/py -q",
+    "test:lib": "node --test \"tests/unit/js/lib/*.test.mjs\"",
+    "test:qa": "node --test \"tests/unit/js/qa/*.test.cjs\"",
+    "test:ui": "node --test \"tests/unit/js/ui/*.test.mjs\"",
+    "test:core": "node tests/unit/js/core/run.mjs --lib real",
+    "test:browser": "node tests/video/run.mjs",
+    "test:conformance": "node tests/conformance/run_js.mjs --out tests/conformance/.verdicts.js.json && python tests/conformance/run_py.py --compare tests/conformance/.verdicts.js.json",
+    "examples": "node tools/make_examples.mjs",
+    "sync:team": "python tools/sync_team.py",
+    "sync:team:check": "python tools/sync_team.py --check",
+    "check:repo": "python tools/check_directory.py --root . --scope repo --repo-max-files 915",
+    "test:corpus": "node tests/corpus-bad/run.mjs && python tests/corpus-bad/run.py",
+    "test:geometry": "node tests/geometry/run.mjs",
+    "test:golden": "node tests/golden/run.mjs",
+    "test:privacy": "node tests/privacy/run.mjs",
+    "test:e2e": "node tests/mobile-e2e/studio-smoke.mjs && node tests/mobile-e2e/studio-smoke.mjs --real-engine",
+    "traffic": "python tools/traffic_snapshot.py --dry-run",
+    "test:cover": "node tests/cover-baseline/run.mjs --check",
+    "test:marks": "node --test \"tests/unit/js/marks/*.test.mjs\"",
+    "test:visual": "node --test \"tests/unit/js/visual/*.test.mjs\"",
+    "test:art": "node tests/unit/js/art/run.mjs",
+    "test:icons": "node --test \"tests/unit/js/icons/*.test.mjs\"",
+    "build:icons": "node tools/build-icons.mjs --all",
+    "build:icons:check": "node tools/build-icons.mjs --check"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.64.1"
+  }
+}

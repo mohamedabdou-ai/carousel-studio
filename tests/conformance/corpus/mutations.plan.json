@@ -1,0 +1,147 @@
+{
+ "schemaVersion": 1,
+ "description": "Mutations for the stored visual plan (slide.visual) and the gates that read the art capabilities, the icon data or the brand constraints: VA3 (kind, recipe, variant, icon, object, item counts), VA4, VA7, VA8, D10.glyph-icon and the C2 additions. Each patch plants a defect or a clean control on a fixture deck; `expect` lists the findings that must appear ({gate, rule, el or slide, sev?}) and the controls that must not ({absent: true}). The gates are implemented in JavaScript only until Q6 lands their Python twins, so run_js.mjs checks these entries against its own unfiltered findings and run_py.py skips them (qa-rules.json says who owns each check). The point is that the run cannot count a gate as executed while the capability data it needs is missing: with CS.visual.caps() empty, VA3 finds nothing for the impossible kind and recipe and these entries fail.",
+ "mutations": [
+  {
+   "id": "vp-impossible-kind",
+   "base": "spec.eg.8slides.json",
+   "patch": [
+    {"op": "add", "path": "/slides/2/visual", "value": {"anchor": {"kind": "scene", "template": "solo", "icons": ["camera"]}, "recipe": "under", "why": "مشهد"}},
+    {"op": "add", "path": "/slides/4/visual", "value": {"anchor": {"kind": "icon", "icon": "camera"}, "recipe": "under", "why": "الكاميرا"}}
+   ],
+   "expect": [
+    {"gate": "VA3", "rule": "VA3.valid", "el": "s03.anchor", "sev": "FIX"},
+    {"gate": "VA3", "rule": "VA3.valid", "el": "s03.recipe", "absent": true},
+    {"gate": "VA3", "rule": "VA3.valid", "el": "s05.anchor", "absent": true},
+    {"gate": "VA3", "rule": "VA3.valid", "el": "s05.recipe", "absent": true}
+   ]
+  },
+  {
+   "id": "vp-impossible-recipe",
+   "base": "spec.eg.8slides.json",
+   "patch": [
+    {"op": "add", "path": "/slides/2/visual", "value": {"anchor": {"kind": "icon", "icon": "camera"}, "recipe": "half", "why": "الكاميرا"}},
+    {"op": "add", "path": "/slides/4/visual", "value": {"anchor": {"kind": "icon", "icon": "camera"}, "recipe": "center", "why": "الكاميرا"}}
+   ],
+   "expect": [
+    {"gate": "VA3", "rule": "VA3.valid", "el": "s03.recipe", "sev": "FIX"},
+    {"gate": "VA3", "rule": "VA3.valid", "el": "s03.anchor", "absent": true},
+    {"gate": "VA3", "rule": "VA3.valid", "el": "s05.recipe", "absent": true}
+   ]
+  },
+  {
+   "id": "vp-unknown-variant",
+   "base": "spec.eg.8slides.json",
+   "patch": [
+    {"op": "replace", "path": "/slides/3/variant", "value": "ghost-numbers"},
+    {"op": "add", "path": "/slides/3/visual", "value": {"anchor": {"kind": "icon", "icon": "camera"}, "recipe": "under", "why": "الكاميرا"}},
+    {"op": "add", "path": "/slides/5/visual", "value": {"anchor": {"kind": "icon", "icon": "camera"}, "recipe": "under", "why": "الكاميرا"}}
+   ],
+   "expect": [
+    {"gate": "VA3", "rule": "VA3.valid", "el": "s04.variant", "sev": "FIX"},
+    {"gate": "VA3", "rule": "VA3.valid", "el": "s06.variant", "absent": true}
+   ]
+  },
+  {
+   "id": "vp-unknown-icon-and-object",
+   "base": "spec.eg.8slides.json",
+   "patch": [
+    {"op": "add", "path": "/slides/2/visual", "value": {"anchor": {"kind": "icon", "icon": "no-such-icon", "object": "no-such-object"}, "recipe": "under", "why": "مجهول"}},
+    {"op": "add", "path": "/slides/4/visual", "value": {"anchor": {"kind": "icon", "icon": "camera", "object": "coin-stack"}, "recipe": "under", "why": "معروف"}}
+   ],
+   "expect": [
+    {"gate": "VA3", "rule": "VA3.valid", "el": "s03.anchor.icon", "sev": "FIX"},
+    {"gate": "VA3", "rule": "VA3.valid", "el": "s03.anchor.object", "sev": "FIX"},
+    {"gate": "VA3", "rule": "VA3.valid", "el": "s05.anchor.icon", "absent": true},
+    {"gate": "VA3", "rule": "VA3.valid", "el": "s05.anchor.object", "absent": true}
+   ]
+  },
+  {
+   "id": "vp-item-counts",
+   "base": "spec.eg.8slides.json",
+   "patch": [
+    {"op": "replace", "path": "/slides/2", "value": {"id": "s03", "n": 3, "type": "grid", "title": "ست أدوات للبداية", "variant": "bento", "items": [{"title": "Canva", "text": "تصميم سريع"}, {"title": "CapCut", "text": "مونتاج"}, {"title": "Notion", "text": "خطة المحتوى"}, {"title": "Buffer", "text": "جدولة"}, {"title": "Figma", "text": "تصميم متقدم"}, {"title": "Descript", "text": "مونتاج صوت"}], "visual": {"tone": "base"}}},
+    {"op": "replace", "path": "/slides/4", "value": {"id": "s05", "n": 5, "type": "timeline", "title": "رحلة خمس أسابيع", "variant": "rail", "bridge": "وبعدها", "items": [{"title": "الأول", "value": "أسبوع 1"}, {"title": "التاني", "value": "أسبوع 2"}, {"title": "التالت", "value": "أسبوع 3"}, {"title": "الرابع", "value": "أسبوع 4"}, {"title": "الخامس", "value": "أسبوع 5"}], "visual": {"tone": "base"}}},
+    {"op": "replace", "path": "/slides/5", "value": {"id": "s06", "n": 6, "type": "grid", "title": "أربع أدوات كفاية", "variant": "bento", "items": [{"title": "Canva", "text": "تصميم سريع"}, {"title": "CapCut", "text": "مونتاج"}, {"title": "Notion", "text": "خطة المحتوى"}, {"title": "Buffer", "text": "جدولة"}], "visual": {"tone": "base"}}},
+    {"op": "replace", "path": "/slides/6", "value": {"id": "s07", "n": 7, "type": "timeline", "title": "رحلة خمس أسابيع", "items": [{"title": "الأول", "value": "أسبوع 1"}, {"title": "التاني", "value": "أسبوع 2"}, {"title": "التالت", "value": "أسبوع 3"}, {"title": "الرابع", "value": "أسبوع 4"}, {"title": "الخامس", "value": "أسبوع 5"}], "visual": {"tone": "base"}}}
+   ],
+   "expect": [
+    {"gate": "VA3", "rule": "VA3.valid", "el": "s03.items", "sev": "FIX"},
+    {"gate": "VA3", "rule": "VA3.valid", "el": "s05.items", "sev": "FIX"},
+    {"gate": "VA3", "rule": "VA3.valid", "el": "s06.items", "absent": true},
+    {"gate": "VA3", "rule": "VA3.valid", "el": "s07.items", "absent": true}
+   ]
+  },
+  {
+   "id": "vp-agreement",
+   "base": "spec.eg.8slides.json",
+   "patch": [
+    {"op": "replace", "path": "/slides/2/title", "value": "احذر خسارة الفلوس"},
+    {"op": "replace", "path": "/slides/2/body", "value": "ما تعملش كده"},
+    {"op": "add", "path": "/slides/2/visual", "value": {"anchor": {"kind": "icon", "icon": "party-popper"}, "recipe": "under"}},
+    {"op": "replace", "path": "/slides/4/title", "value": "احذر خسارة الفلوس"},
+    {"op": "replace", "path": "/slides/4/body", "value": "ما تعملش كده"},
+    {"op": "add", "path": "/slides/4/visual", "value": {"anchor": {"kind": "icon", "icon": "triangle-alert"}, "recipe": "under"}}
+   ],
+   "expect": [
+    {"gate": "VA7", "rule": "VA7.agreement", "el": "s03.anchor.icon", "sev": "FIX"},
+    {"gate": "VA7", "rule": "VA7.agreement", "el": "s05.anchor.icon", "absent": true}
+   ]
+  },
+  {
+   "id": "vp-brand-constraint",
+   "base": "spec.eg.8slides.json",
+   "brand": "brand.eg.creator.json",
+   "brandPatch": [
+    {"op": "add", "path": "/visual/art", "value": {"constraints": {"animals": "none"}}}
+   ],
+   "patch": [
+    {"op": "add", "path": "/slides/2/visual", "value": {"anchor": {"kind": "icon", "icon": "tb-horse"}, "recipe": "under", "why": "حصان"}},
+    {"op": "add", "path": "/slides/4/visual", "value": {"anchor": {"kind": "icon", "icon": "camera"}, "recipe": "under", "why": "الكاميرا"}}
+   ],
+   "expect": [
+    {"gate": "VA8", "rule": "VA8.constraints", "el": "s03.anchor.icon", "sev": "BLOCK"},
+    {"gate": "VA8", "rule": "VA8.constraints", "el": "s05.anchor.icon", "absent": true}
+   ]
+  },
+  {
+   "id": "vp-glyph-icon",
+   "base": "spec.eg.8slides.json",
+   "patch": [
+    {"op": "replace", "path": "/slides/2/title", "value": "فكرة 🚀 كبيرة"},
+    {"op": "replace", "path": "/slides/4/title", "value": "الحقوق © محفوظة"}
+   ],
+   "expect": [
+    {"gate": "D10", "rule": "D10.glyph-icon", "el": "s03.title", "sev": "FIX"},
+    {"gate": "D10", "rule": "D10.glyph-icon", "el": "s05.title", "absent": true}
+   ]
+  },
+  {
+   "id": "vp-chart-source",
+   "base": "spec.eg.8slides.json",
+   "patch": [
+    {"op": "add", "path": "/slides/2/visual", "value": {"anchor": {"kind": "chart", "chart": {"kind": "bars-h", "values": [{"label": "الأولى", "value": 30}, {"label": "التانية", "value": 70}]}}, "recipe": "under"}},
+    {"op": "add", "path": "/slides/4/visual", "value": {"anchor": {"kind": "chart", "chart": {"kind": "bars-h", "illustrative": true, "values": [{"label": "الأولى", "value": 30}, {"label": "التانية", "value": 70}]}, "captions": ["رسم توضيحي"]}, "recipe": "under"}}
+   ],
+   "expect": [
+    {"gate": "VA4", "rule": "VA4.chart-honesty", "el": "s03.chart", "sev": "BLOCK"},
+    {"gate": "VA4", "rule": "VA4.chart-honesty", "el": "s05.chart", "absent": true}
+   ]
+  },
+  {
+   "id": "vp-demo-and-figures",
+   "base": "spec.eg.8slides.json",
+   "patch": [
+    {"op": "replace", "path": "/slides/3", "value": {"id": "s04", "n": 4, "type": "step", "ord": 2, "title": "ابدأ بسؤال", "body": "اسأل سؤال واحد بس."}},
+    {"op": "replace", "path": "/slides/5/body", "value": "نتيجة 74 ثم 74 ثم 74 من الحالات."},
+    {"op": "replace", "path": "/slides/6/body", "value": "نتيجة 74 ثم 74 من الحالات."}
+   ],
+   "expect": [
+    {"gate": "C2", "rule": "C2.demo-missing", "slide": "s04"},
+    {"gate": "C2", "rule": "C2.demo-missing", "slide": "s05", "absent": true},
+    {"gate": "C2", "rule": "C2.figure-repeat", "slide": "s06", "sev": "NOTE"},
+    {"gate": "C2", "rule": "C2.figure-repeat", "slide": "s07", "absent": true}
+   ]
+  }
+ ]
+}

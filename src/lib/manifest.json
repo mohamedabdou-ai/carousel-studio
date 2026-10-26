@@ -1,0 +1,6 @@
+{
+  "module": "lib",
+  "chunk": "cs-core.js",
+  "order": 0,
+  "files": ["root.js", "canon.js", "patch.js", "color.js", "schema.js", "text.js"]
+}

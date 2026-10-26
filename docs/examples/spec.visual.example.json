@@ -1,0 +1,619 @@
+{
+  "specVersion": 1,
+  "id": "post-20261023-0002",
+  "rev": 2,
+  "brand": {
+    "slug": "demo-brand",
+    "snapshotHash": "0123456789abcdef"
+  },
+  "brief": {
+    "topic": "كابشنات وهوكات بتتحفظ",
+    "input": "idea"
+  },
+  "format": "carousel",
+  "mode": "guided",
+  "checkpoint": "script",
+  "canvas": {
+    "preset": "ig-3x4",
+    "w": 1080,
+    "h": 1440,
+    "safe": [
+      34,
+      45,
+      1012,
+      1350
+    ],
+    "exports": [
+      "3x4",
+      "4x5"
+    ]
+  },
+  "locale": {
+    "dialect": "eg",
+    "register": "dialect",
+    "digits": "western",
+    "appLanguage": "ar",
+    "swipeCue": "arrow-rtl"
+  },
+  "intent": "save",
+  "awareness": "problem",
+  "contentType": "value",
+  "architecture": "framework",
+  "angle": {
+    "id": "a1",
+    "title": "الهوك بيقرر الحفظ",
+    "lens": "framework",
+    "score": 72,
+    "why": "الهوك الواضح بيزود الحفظ"
+  },
+  "hook": {
+    "id": "P1-LIST-number-outcome",
+    "family": "P1",
+    "text": "الكابشن اللي بيتحفظ بيبدأ بهوك واضح",
+    "cover": "الكابشن اللي بيتحفظ… بيبدأ بهوك",
+    "score": {
+      "R": 30,
+      "J": 28,
+      "P": 15,
+      "total": 73
+    },
+    "alternates": []
+  },
+  "style": {
+    "presetId": "creator@1.0",
+    "metaLabel": "كابشنات",
+    "visualMode": "auto",
+    "planV": "1.1.0+9f2c41e0",
+    "world": {
+      "id": "notebook-page",
+      "artefact": "notes",
+      "mockPrefer": [
+        "notes",
+        "chat"
+      ],
+      "toneBias": "balanced",
+      "boldMove": {
+        "slide": "s09",
+        "kind": "chart"
+      }
+    },
+    "motif": "bookmark",
+    "rail": "auto",
+    "thread": "off",
+    "panorama": {
+      "enabled": true,
+      "dir": "left"
+    }
+  },
+  "slides": [
+    {
+      "id": "s01",
+      "n": 1,
+      "type": "cover",
+      "kicker": "للمبدعين",
+      "headline": "الكابشن اللي بيتحفظ\nبيبدأ ==بهوك==",
+      "media": {
+        "slot": "none",
+        "ai": false
+      }
+    },
+    {
+      "id": "s02",
+      "n": 2,
+      "type": "rehook",
+      "variant": "statement",
+      "headline": "الهوك بيقرر الحفظ قبل ما حد يكمل.",
+      "bridge": "إزاي؟",
+      "visual": {
+        "idea": "كلمة هوك لوحدها بخط كبير على أرضية داكنة",
+        "anchor": {
+          "kind": "word",
+          "word": "هوك",
+          "wordStyle": "solid"
+        },
+        "recipe": "center",
+        "field": false,
+        "bleed": "none",
+        "tone": "invert",
+        "marks": [
+          "underline"
+        ],
+        "pause": true,
+        "why": "اخترنا كلمة واحدة تشيل الفكرة كلها",
+        "alt": "كلمة «هوك» بخط كبير وتحتها خط",
+        "lock": false,
+        "relax": 0
+      }
+    },
+    {
+      "id": "s03",
+      "n": 3,
+      "type": "stat",
+      "title": "نسبة الحفظ مع هوك واضح",
+      "number": {
+        "value": "74",
+        "unit": "%",
+        "sourceId": "src1"
+      },
+      "sourceIds": [
+        "src1"
+      ],
+      "bridge": "ليه؟",
+      "visual": {
+        "idea": "رقم كبير على أرضية ملونة وجنبه مربعات بتتملى",
+        "anchor": {
+          "kind": "numeral",
+          "value": "74",
+          "unit": "%",
+          "companion": "waffle",
+          "of": 100,
+          "filled": 74
+        },
+        "recipe": "over",
+        "field": true,
+        "bleed": "both",
+        "tone": "field",
+        "marks": [
+          "circle",
+          "sparkle"
+        ],
+        "why": "الرقم هو الخبر فاخترناه",
+        "alt": "نسبة\u00a074%\u00a0جنب شبكة مربعات، ثلاثة أرباعها ملونة",
+        "lock": true,
+        "relax": 0
+      }
+    },
+    {
+      "id": "s04",
+      "n": 4,
+      "type": "item",
+      "ord": 1,
+      "title": "ابدأ بالفايدة",
+      "body": "جملة واحدة تقول إيه اللي هياخده القارئ.",
+      "bridge": "وبعدين؟",
+      "visual": {
+        "idea": "لمبة على ملصق ملون وعليها علامة صح",
+        "anchor": {
+          "kind": "icon",
+          "icon": "lightbulb",
+          "object": "lightbulb",
+          "treatment": "sticker",
+          "size": "xl",
+          "badge": "check",
+          "captions": [
+            "فايدة"
+          ]
+        },
+        "recipe": "under",
+        "field": true,
+        "bleed": "none",
+        "tone": "base",
+        "marks": [
+          "sparkle"
+        ],
+        "why": "اخترنا اللمبة لأن الكلام عن الفكرة",
+        "alt": "لمبة على ملصق وعليها علامة صح",
+        "lock": false,
+        "relax": 0
+      }
+    },
+    {
+      "id": "s05",
+      "n": 5,
+      "type": "story-beat",
+      "variant": "scene",
+      "title": "التلات عناصر",
+      "body": "هوك يشد، وفايدة تقنع، ودعوة تحفظ.",
+      "bridge": "جربها",
+      "visual": {
+        "idea": "تلات أيقونات: هوك وفايدة ودعوة",
+        "anchor": {
+          "kind": "scene",
+          "template": "trio",
+          "icons": [
+            "megaphone",
+            "gift",
+            "bookmark"
+          ],
+          "roles": [
+            "dominant",
+            "support",
+            "support"
+          ],
+          "treatment": "duo",
+          "size": "xl",
+          "captions": [
+            "هوك",
+            "فايدة",
+            "دعوة"
+          ]
+        },
+        "recipe": "under",
+        "field": true,
+        "bleed": "none",
+        "tone": "base",
+        "marks": [
+          "arrow"
+        ],
+        "span": {
+          "with": "s06",
+          "kind": "ribbon",
+          "dir": "left"
+        },
+        "why": "في تلات كلمات واضحة فاخترنا تلات أيقونات",
+        "alt": "تلات أيقونات: ميجافون وهدية وعلامة حفظ",
+        "lock": false,
+        "relax": 0
+      }
+    },
+    {
+      "id": "s06",
+      "n": 6,
+      "type": "step",
+      "variant": "track",
+      "ord": 3,
+      "title": "جرب الهوك في محادثة",
+      "body": "ابعته لصاحبك وشوف رده.",
+      "bridge": "وبعدين؟",
+      "demo": {
+        "lines": [
+          {
+            "who": "me",
+            "text": "هتحفظ بوست واحد؟ احفظ ده"
+          },
+          {
+            "who": "them",
+            "text": "ده اللي كنت محتاجه",
+            "hi": true
+          }
+        ],
+        "caption": "محادثة تجريبية"
+      },
+      "visual": {
+        "idea": "نافذة محادثة بين اتنين والرد الأخير متظلل",
+        "anchor": {
+          "kind": "mock",
+          "mock": {
+            "kind": "chat",
+            "title": "صاحبي",
+            "caption": "رد حقيقي",
+            "state": "after",
+            "highlight": 1
+          }
+        },
+        "recipe": "full",
+        "field": false,
+        "bleed": "none",
+        "tone": "base",
+        "marks": [
+          "arrow"
+        ],
+        "why": "الكلام نفسه محادثة فعرضناه كمحادثة",
+        "alt": "محادثة بين اتنين، والرد الأخير متظلل",
+        "lock": false,
+        "relax": 0
+      }
+    },
+    {
+      "id": "s07",
+      "n": 7,
+      "type": "checklist",
+      "variant": "icons",
+      "title": "قبل ما تنزل",
+      "bullets": [
+        "هوك واضح من أول سطر",
+        "فايدة في جملة",
+        "دعوة واحدة"
+      ],
+      "bridge": "احفظها",
+      "visual": {
+        "idea": "ثلاث صفوف وكل صف له أيقونة",
+        "anchor": {
+          "kind": "rows"
+        },
+        "rowIcons": [
+          "eye",
+          "gift",
+          "bookmark"
+        ],
+        "recipe": "under",
+        "field": false,
+        "bleed": "none",
+        "tone": "base",
+        "why": "قايمة قصيرة فاخترنا صفوف بأيقونات",
+        "alt": "ثلاث صفوف، لكل صف أيقونة",
+        "lock": false,
+        "relax": 0
+      }
+    },
+    {
+      "id": "s08",
+      "n": 8,
+      "type": "grid",
+      "variant": "bento",
+      "title": "أدوات الكاروسيل",
+      "items": [
+        {
+          "title": "الكتابة",
+          "text": "فكرة واحدة",
+          "icon": "pencil",
+          "value": "سريع",
+          "hi": true,
+          "mark": "tick"
+        },
+        {
+          "title": "المراجعة",
+          "text": "عين تانية",
+          "icon": "eye",
+          "mark": "circle"
+        },
+        {
+          "title": "النشر",
+          "text": "وقت الذروة",
+          "icon": "send",
+          "value": "مجاني",
+          "mark": "cross"
+        },
+        {
+          "title": "الخصوصية",
+          "text": "سطر مخفي",
+          "mark": "redact"
+        }
+      ],
+      "bridge": "شوف التالي",
+      "visual": {
+        "idea": "الكروت نفسها هي الصورة",
+        "anchor": {
+          "kind": "none"
+        },
+        "recipe": "full",
+        "field": false,
+        "bleed": "none",
+        "tone": "base",
+        "why": "المحتوى كروت فمفيش حاجة تتضاف",
+        "alt": "أربع كروت لأدوات الكاروسيل",
+        "lock": false,
+        "relax": 0
+      }
+    },
+    {
+      "id": "s09",
+      "n": 9,
+      "type": "item",
+      "ord": 2,
+      "title": "الأرقام بتقنع",
+      "body": "الهوك اللي فيه رقم بيتحفظ أكتر. الأرقام هنا توضيحية.",
+      "bridge": "كمل",
+      "visual": {
+        "idea": "أعمدة أفقية والأطول متظلل",
+        "anchor": {
+          "kind": "chart",
+          "chart": {
+            "kind": "bars-h",
+            "values": [
+              {
+                "label": "سؤال",
+                "value": 41,
+                "icon": "message-circle"
+              },
+              {
+                "label": "رقم",
+                "value": 74,
+                "icon": "target",
+                "hi": true
+              },
+              {
+                "label": "وعد",
+                "value": 58,
+                "icon": "gift",
+                "hi": false
+              }
+            ],
+            "total": 100,
+            "target": 60,
+            "unit": "%",
+            "illustrative": true
+          }
+        },
+        "recipe": "full",
+        "field": false,
+        "bleed": "none",
+        "tone": "base",
+        "marks": [
+          "circle"
+        ],
+        "why": "فيه تلات قيم للمقارنة فاخترنا أعمدة",
+        "alt": "أعمدة أفقية للأسئلة والأرقام والوعود، والأرقام هي الأطول",
+        "lock": false,
+        "relax": 0
+      }
+    },
+    {
+      "id": "s10",
+      "n": 10,
+      "type": "proof",
+      "variant": "screenshot",
+      "title": "النتيجة بعد أسبوع",
+      "bridge": "شوف الفرق",
+      "media": {
+        "slot": "screenshot",
+        "assetId": "shot1",
+        "ai": false,
+        "frame": "phone",
+        "zoom": {
+          "x": 0.1,
+          "y": 0.2,
+          "w": 0.5,
+          "h": 0.4
+        },
+        "backdropAssetId": "bg1"
+      }
+    },
+    {
+      "id": "s11",
+      "n": 11,
+      "type": "share",
+      "headline": "ابعتها لصاحبك اللي بيكتب كابشنات",
+      "visual": {
+        "idea": "أرضية منقطة تملا الشريحة والكلام فوقها",
+        "anchor": {
+          "kind": "pattern",
+          "pattern": "bold-dots"
+        },
+        "recipe": "full",
+        "field": true,
+        "bleed": "both",
+        "tone": "field",
+        "why": "الشريحة كلها كلام فخلينا الصورة أرضية",
+        "alt": "أرضية منقطة بنقط كبيرة",
+        "lock": false,
+        "relax": 0
+      }
+    },
+    {
+      "id": "s12",
+      "n": 12,
+      "type": "setup",
+      "title": "هتحتاج إيه؟",
+      "bullets": [
+        "ورقة وقلم",
+        "فكرة واحدة",
+        "دقيقة تركيز"
+      ],
+      "bridge": "جاهز؟",
+      "visual": {
+        "idea": "ورقة اختبار عليها ختم صح",
+        "anchor": {
+          "kind": "mock",
+          "mock": {
+            "kind": "artefact",
+            "artefact": "exam",
+            "stamp": "صح",
+            "title": "ورقة الكابشن",
+            "caption": "اجتزت الاختبار",
+            "lines": [
+              {
+                "who": "sys",
+                "text": "درجتك",
+                "hi": true
+              }
+            ],
+            "items": [
+              "هوك واضح",
+              "فايدة في سطر",
+              "دعوة واحدة"
+            ]
+          }
+        },
+        "recipe": "under",
+        "field": false,
+        "bleed": "none",
+        "tone": "base",
+        "marks": [
+          "tape"
+        ],
+        "why": "العالم ده ورقة شغل فاخترنا ورقة اختبار",
+        "alt": "ورقة اختبار عليها ختم صح",
+        "lock": false,
+        "relax": 0
+      }
+    },
+    {
+      "id": "s13",
+      "n": 13,
+      "type": "cta",
+      "variant": "action",
+      "title": "احفظ البوست",
+      "body": "وابعته لصاحبك.",
+      "cta": {
+        "kind": "save",
+        "text": "احفظه لما تيجي تكتب كابشن"
+      },
+      "visual": {
+        "idea": "كلمة احفظ على ملصق كبير",
+        "anchor": {
+          "kind": "word",
+          "word": "احفظ",
+          "wordStyle": "sticker"
+        },
+        "recipe": "center",
+        "field": true,
+        "bleed": "none",
+        "tone": "field",
+        "marks": [
+          "arrow",
+          "kashida"
+        ],
+        "why": "الطلب كلمة واحدة فخليناها الصورة",
+        "alt": "كلمة «احفظ» على ملصق كبير",
+        "lock": false,
+        "relax": 0
+      }
+    }
+  ],
+  "remix": {
+    "of": "a1b2c3d4e5f60718",
+    "mode": "same-world",
+    "axes": [
+      "anchor-system",
+      "layout-topology"
+    ],
+    "coverHash": "1122334455667788",
+    "bodyHash": "99aabbccddeeff00",
+    "refresh": [
+      "hook",
+      "cta"
+    ],
+    "lineage": [
+      "a1b2c3d4e5f60718"
+    ]
+  },
+  "sources": [
+    {
+      "id": "src1",
+      "kind": "user",
+      "ref": "user-attested",
+      "excerpt": "نسبة الحفظ\u00a074%\u00a0مع هوك واضح",
+      "verified": true
+    }
+  ],
+  "assets": [
+    {
+      "id": "shot1",
+      "kind": "image",
+      "ref": "asset:shot1",
+      "mime": "image/png",
+      "width": 1170,
+      "height": 2532,
+      "aiGenerated": false,
+      "alt": "لقطة شاشة لنتيجة الأسبوع الأول"
+    },
+    {
+      "id": "bg1",
+      "kind": "image",
+      "ref": "asset:bg1",
+      "mime": "image/jpeg",
+      "width": 1080,
+      "height": 1440,
+      "aiGenerated": false
+    }
+  ],
+  "qa": {
+    "status": "pass",
+    "results": []
+  },
+  "approvals": {
+    "angle": {
+      "at": "2026-10-23T10:05:00Z"
+    }
+  },
+  "meta": {
+    "createdAt": "2026-10-23T10:00:00Z",
+    "updatedAt": "2026-10-23T10:06:00Z",
+    "updatedBy": "claude",
+    "generator": {
+      "skill": "carousel-create",
+      "version": "1.1.0"
+    }
+  }
+}

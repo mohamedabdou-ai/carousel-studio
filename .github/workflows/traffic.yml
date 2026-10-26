@@ -1,0 +1,57 @@
+name: Traffic snapshot
+
+# GitHub keeps repository traffic (views, clones, referrers) for 14 days only. This job copies the counters into one JSON file on the
+# separate branch "traffic-data" once a day, so the history is not lost. It stores counters only; see tools/traffic_snapshot.py.
+#
+# One-time setup: create a fine-grained token for this repository with "Administration: read" and save it as the repository secret
+# TRAFFIC_TOKEN. The default GITHUB_TOKEN cannot read traffic data. Without the secret the job stops with a clear message.
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: traffic-snapshot
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    name: Record the day's counters
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Check out the data branch (created on the first run)
+        run: |
+          git config user.name "carousel-studio traffic"
+          git config user.email "traffic@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin traffic-data > /dev/null; then
+            git fetch --depth 1 origin traffic-data
+            git worktree add -B traffic-data data FETCH_HEAD
+          else
+            git worktree add --detach data
+            git -C data checkout --orphan traffic-data
+            git -C data rm -rf --quiet .
+          fi
+      - name: Take the snapshot
+        env:
+          TRAFFIC_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+        run: python tools/traffic_snapshot.py --repo "$GITHUB_REPOSITORY" --out data/traffic.json
+      - name: Save it on the data branch
+        working-directory: data
+        run: |
+          git add traffic.json
+          if git diff --cached --quiet; then
+            echo "Nothing new to save."
+          else
+            git commit -m "Traffic snapshot $(date -u +%F)"
+            git push origin traffic-data
+          fi

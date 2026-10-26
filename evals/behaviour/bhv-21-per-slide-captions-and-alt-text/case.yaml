@@ -1,0 +1,54 @@
+schema_version: "1.0"
+name: bhv-21-per-slide-captions-and-alt-text
+description: "Every slide gets a per-slide caption and an Arabic alt text."
+tags: [behaviour, needs-bash, carousel-create, per-slide-captions-alt, caption]
+plugins: ["../../../plugins/carousel-studio"]
+execution:
+  prompt: |
+    ده كابسول البراند بتاعي (ملف المشروع):
+
+    [Carousel Studio brand capsule v1]
+    brand: ورشة المحتوى (content-workshop) | dialect: eg | register: dialect | digits: western | swipe: arrow-rtl
+    voice: ودود وعملي، جمل قصيرة. نستخدم «ببلاش» و«جرّب». لا نستخدم «ثورة» ولا «سر».
+    palette: bg #F4F4F2 ink #111111 accent #E3262B | fonts: ibm-plex-sans-arabic / readex-pro / inter | preset: swiss
+    home: -
+
+    بسرعة: كاروسيل 8 سلايدات عن 5 أخطاء بتخلي الناس تعدّي كاروسيلك بدون ما تسحب.
+  append_system_prompt: |
+    This is an automated evaluation of the Carousel Studio plugin, not a live session. There is no Artifact tool, no network access and no connected image, video or design tool. Save every file you create in the current working directory and never in a home folder: name the post spec spec.json, a brand profile brand.json and a plan plan-YYYY-MM.json, and when a script offers a workspace or root option (for example brand_io.py --dir) point it at the current directory. Otherwise answer the user exactly as you normally would.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Skill, Read, Write, Edit, Bash, Glob, Grep]
+runs: 2
+graders:
+  - type: tool_used
+    name: uses-carousel-create
+    tool: Skill
+    input_match: 'carousel-create'
+    min: 1
+  - type: file_exists
+    name: spec-json-written
+    path: "**/spec.json"
+  - type: tool_used
+    name: validates-the-spec
+    tool: Bash
+    input_match: 'validate\.py'
+    min: 1
+  - type: llm
+    name: one-entry-per-slide
+    criteria: |
+      In spec.json captionPack.perSlide and captionPack.alt each have exactly one non-empty entry per slide.
+    focus: {source: file, path: spec.json}
+    weight: 3
+  - type: llm
+    name: alt-quotes-the-slide
+    criteria: |
+      Each alt entry in spec.json quotes the words that are on its slide and is at most 300 characters.
+    focus: {source: file, path: spec.json}
+    weight: 2
+  - type: llm
+    name: per-slide-captions-are-short
+    criteria: |
+      Each perSlide entry in spec.json is a single line of at most 100 characters.
+    focus: {source: file, path: spec.json}
+expected_outcome: "perSlide and alt have one good entry for every slide."

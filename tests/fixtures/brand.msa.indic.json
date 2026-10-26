@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "id": "brand-financial-guide-0001",
+  "slug": "financial-guide",
+  "name": "الدليل المالي",
+  "handle": "@financial.guide.demo",
+  "kind": "business",
+  "version": 1,
+  "approvedAt": "2026-10-19T09:00:00Z",
+  "locale": {
+    "dialect": "msa-white",
+    "register": "msa",
+    "digits": "arabic-indic",
+    "digitsReason": "اختيار العلامة: خطاب رسمي لمحتوى مالي (الأرقام الهندية ٠١٢٣\u00a0بموافقة صريحة)",
+    "countries": [
+      "SA",
+      "EG"
+    ],
+    "appLanguage": "ar",
+    "swipeCue": "arrow-rtl",
+    "latinTerms": []
+  },
+  "identity": {
+    "who": "منصة توعية مالية للأفراد",
+    "niche": "الادخار وإدارة الميزانية الشخصية",
+    "offer": "أدلة مجانية وورش شهرية",
+    "goal": "followers"
+  },
+  "audience": {
+    "persona": "موظف شاب يريد أن يبدأ الادخار ولا يعرف من أين",
+    "pains": [
+      "الراتب ينتهي قبل نهاية الشهر"
+    ],
+    "desires": [
+      "عادة ادخار ثابتة"
+    ],
+    "objections": [
+      "المبلغ صغير"
+    ],
+    "awareness": "problem"
+  },
+  "voice": {
+    "tone": {
+      "formalFriendly": 2,
+      "seriousPlayful": 1,
+      "calmEnergetic": 2
+    },
+    "use": [
+      "بسيط",
+      "تدريجيا"
+    ],
+    "avoid": [
+      "اغتنم الفرصة",
+      "ثراء سريع"
+    ],
+    "allow": [],
+    "ctaStyle": "دعوة هادئة للمشاركة",
+    "samples": [
+      "الادخار عادة قبل أن يكون مبلغا. ابدأ بما تستطيع، ثم زده تدريجيا مع كل زيادة في الدخل.",
+      "لا تؤجل القرار المالي الصغير، فالمبالغ الصغيرة المنتظمة هي التي تصنع الفرق بعد سنوات.",
+      "اسأل نفسك قبل كل عملية شراء: هل أحتاجها اليوم أم أريدها فقط؟"
+    ],
+    "fingerprint": {
+      "sentLen": {
+        "p25": 9.8,
+        "p50": 11.5,
+        "p75": 12.5,
+        "p90": 13.4
+      },
+      "emojiPer100w": 0,
+      "emojiSet": [],
+      "latinMixPct": 0.0,
+      "ellipsisRate": 0.0,
+      "questionBangRate": 0.25,
+      "person": "ana",
+      "openers": [
+        "الادخار عادة قبل",
+        "لا تؤجل القرار",
+        "اسأل نفسك قبل"
+      ],
+      "dialectMarkers": {
+        "التي": 1
+      },
+      "captionLenBand": [
+        60,
+        85
+      ],
+      "signatures": [],
+      "computedAt": "2026-10-20T09:00:00Z",
+      "sampleCount": 3
+    }
+  },
+  "visual": {
+    "palette": {
+      "bg": "#F7F3EA",
+      "surface": "#FFFFFF",
+      "ink": "#1D2A20",
+      "inkMuted": "#556057",
+      "accent": "#2F6B3F"
+    },
+    "fonts": {
+      "display": "alexandria",
+      "body": "noto-sans-arabic",
+      "latin": "inter"
+    },
+    "presetId": "poster",
+    "presetAlternates": [
+      "swiss"
+    ],
+    "locks": []
+  },
+  "strategy": {
+    "pillars": [
+      {
+        "id": "saving",
+        "name": "الادخار",
+        "share": 0.6,
+        "intents": [
+          "save",
+          "send"
+        ]
+      },
+      {
+        "id": "budget",
+        "name": "الميزانية",
+        "share": 0.4,
+        "intents": [
+          "save"
+        ]
+      }
+    ],
+    "postsPerWeek": 3,
+    "intentMix": {
+      "save": 0.4,
+      "send": 0.3,
+      "reach": 0.2,
+      "sell": 0.1
+    },
+    "bestHours": {
+      "tz": "Asia/Riyadh",
+      "slots": [
+        {
+          "day": "any",
+          "from": "19:00",
+          "to": "22:00"
+        }
+      ]
+    }
+  },
+  "tools": {
+    "detectedAt": "2026-10-19T09:00:00Z",
+    "caps": {},
+    "consent": "ask-each-post"
+  },
+  "hooks": {
+    "packs": [],
+    "familyPriors": {},
+    "history": []
+  },
+  "onboarding": {
+    "sections": {
+      "identity": "done",
+      "audience": "done",
+      "voice": "done",
+      "visual": "done",
+      "strategy": "done",
+      "tools": "skipped"
+    },
+    "current": "close",
+    "bookApprovedAt": "2026-10-19T09:00:00Z"
+  },
+  "createdAt": "2026-10-18T09:00:00Z",
+  "updatedAt": "2026-10-19T09:00:00Z"
+}

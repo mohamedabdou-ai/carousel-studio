@@ -1,0 +1,6 @@
+/* test decor for the fixture preset "heritage": the rule with {{accent}} exercises the per-slide colour placeholders */
+.cs-slide[data-preset="heritage"] .cs-decor { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cpath d='M0 36h72M36 0v72' stroke='{{accent}}' stroke-opacity='.18' fill='none'/%3E%3C/svg%3E"); background-size: 72px 72px; opacity: 0.9; }
+.cs-slide[data-preset="heritage"][data-hl="color"] .cs-em { color: var(--cs-accent); }
+.cs-slide[data-preset="heritage"] .cs-kicker { color: var(--cs-accent); }
+.cs-slide[data-preset="heritage"] .cs-savepill { border: 2px solid var(--cs-accent); padding-inline: 20px; border-radius: 999px; }
+.cs-slide[data-preset="heritage"] .cs-cta { border: 2px solid var(--cs-accent); border-radius: 12px; }

@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "id": "brand-fresh-start-0001",
+  "slug": "fresh-start",
+  "name": "Fresh Start Coaching",
+  "handle": "@fresh.start.demo",
+  "kind": "creator",
+  "version": 1,
+  "locale": {
+    "dialect": "en",
+    "register": "white",
+    "digits": "western",
+    "digitsReason": "Default: Western digits 0-9",
+    "countries": [
+      "AE"
+    ],
+    "appLanguage": "en",
+    "swipeCue": "arrow-ltr",
+    "latinTerms": []
+  },
+  "identity": {
+    "who": "Career coach",
+    "niche": "Career changes",
+    "goal": "clients"
+  },
+  "voice": {
+    "tone": {
+      "formalFriendly": 4,
+      "seriousPlayful": 2,
+      "calmEnergetic": 3
+    },
+    "use": [],
+    "avoid": [],
+    "allow": [],
+    "samples": []
+  },
+  "visual": {
+    "palette": {
+      "bg": "#101820",
+      "surface": "#1B2733",
+      "ink": "#F5F7FA",
+      "inkMuted": "#A9B4C0",
+      "accent": "#4CC9F0"
+    },
+    "fonts": {
+      "display": "inter",
+      "body": "inter",
+      "latin": "inter"
+    },
+    "presetId": "interface",
+    "presetAlternates": [],
+    "locks": []
+  },
+  "hooks": {
+    "packs": [],
+    "familyPriors": {},
+    "history": []
+  },
+  "onboarding": {
+    "sections": {
+      "identity": "done",
+      "audience": "skipped",
+      "voice": "skipped",
+      "visual": "done",
+      "strategy": "skipped",
+      "tools": "skipped"
+    },
+    "current": "audience"
+  },
+  "createdAt": "2026-10-21T09:00:00Z",
+  "updatedAt": "2026-10-21T09:00:00Z"
+}

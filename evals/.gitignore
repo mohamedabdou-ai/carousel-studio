@@ -1,0 +1,4 @@
+# Local outputs of `claude plugin eval` and of the trigger exporter. Never committed:
+# the 210 exported trigger cases alone would add 210 files to the repository.
+results/
+triggers/generated/

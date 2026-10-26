@@ -1,0 +1,44 @@
+schema_version: "1.0"
+name: bhv-04-no-brand-defaults-no-nagging
+description: "With no brand and a user who declined setup, the post proceeds on defaults and the setup is mentioned at most once."
+tags: [behaviour, needs-bash, carousel-create, brand-setup, brand, flow]
+plugins: ["../../../plugins/carousel-studio"]
+execution:
+  prompt: |
+    مفيش عندي براند لسه وعايز أبدأ على طول: اعملي كاروسيل بسرعة عن إزاي أحدد سعر خدمتي كفريلانسر. كمّل بالافتراضي من غير أسئلة إعداد.
+  append_system_prompt: |
+    This is an automated evaluation of the Carousel Studio plugin, not a live session. There is no Artifact tool, no network access and no connected image, video or design tool. Save every file you create in the current working directory and never in a home folder: name the post spec spec.json, a brand profile brand.json and a plan plan-YYYY-MM.json, and when a script offers a workspace or root option (for example brand_io.py --dir) point it at the current directory. Otherwise answer the user exactly as you normally would.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Skill, Read, Write, Edit, Bash, Glob, Grep]
+runs: 2
+graders:
+  - type: tool_used
+    name: uses-carousel-create
+    tool: Skill
+    input_match: 'carousel-create'
+    min: 1
+  - type: file_exists
+    name: spec-json-written
+    path: "**/spec.json"
+  - type: tool_used
+    name: does-not-run-onboarding
+    tool: Skill
+    input_match: 'brand-setup'
+    min: 0
+    max: 0
+    arm: both
+  - type: regex
+    name: dialect-is-eg
+    pattern: '"dialect"\s*:\s*"eg"'
+    target: {source: file, path: spec.json}
+  - type: regex
+    name: digits-are-western
+    pattern: '"digits"\s*:\s*"western"'
+    target: {source: file, path: spec.json}
+  - type: llm
+    name: no-onboarding-detour
+    criteria: |
+      The assistant goes straight to the post: it asks no onboarding questions, and it mentions the brand setup at most once, in one short line.
+    weight: 3
+expected_outcome: "The post is produced on defaults without an onboarding detour."

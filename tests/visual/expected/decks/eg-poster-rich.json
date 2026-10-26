@@ -1,0 +1,345 @@
+{
+  "specVersion": 1,
+  "id": "post-plan-eg-poster",
+  "rev": 1,
+  "brand": {
+    "slug": "content-workshop",
+    "snapshotHash": "14976278932d0a11"
+  },
+  "brief": {
+    "topic": "كام بتكلّف خدمة تصميم فعلاً",
+    "input": "idea"
+  },
+  "format": "carousel",
+  "mode": "guided",
+  "checkpoint": "design",
+  "canvas": {
+    "preset": "ig-3x4",
+    "w": 1080,
+    "h": 1440,
+    "safe": [
+      34,
+      45,
+      1012,
+      1350
+    ],
+    "exports": [
+      "3x4",
+      "4x5"
+    ]
+  },
+  "locale": {
+    "dialect": "eg",
+    "register": "dialect",
+    "digits": "western",
+    "appLanguage": "ar",
+    "swipeCue": "arrow-rtl"
+  },
+  "intent": "save",
+  "awareness": "problem",
+  "contentType": "value",
+  "architecture": "listicle",
+  "angle": {
+    "id": "a2",
+    "title": "5 أخطاء بتموّت الكاروسيل",
+    "lens": "costly-mistake",
+    "score": 82,
+    "why": "الغلطة المكلّفة مع رقم في أول سطر، وقائمة بتتحفظ"
+  },
+  "hook": {
+    "id": "P3-MISTAKE-count-cost",
+    "family": "P3",
+    "text": "5 أخطاء بتموّت الكاروسيل قبل ما حد يسحب للسلايد التانية",
+    "cover": "5 أخطاء بتموّت الكاروسيل",
+    "score": {
+      "R": 34,
+      "J": 30,
+      "P": 15,
+      "total": 79
+    },
+    "slide2": "مشكلة كاروسيلك غالبا مش في الألوان",
+    "alternates": [
+      {
+        "id": "F17-REFRAME-relocate",
+        "family": "F17",
+        "cover": "مشكلتك مش في الألوان… مشكلتك في أول جملة",
+        "score": {
+          "total": 74
+        }
+      },
+      {
+        "id": "P1-LIST-number-outcome",
+        "family": "P1",
+        "cover": "5 حاجات… بتخلي بوستك يتحفظ",
+        "score": {
+          "total": 71
+        }
+      }
+    ]
+  },
+  "style": {
+    "presetId": "poster@1.0"
+  },
+  "compat": {
+    "paint": "auto",
+    "mp4": "auto",
+    "hfRuntime": "auto"
+  },
+  "slides": [
+    {
+      "id": "s01",
+      "n": 1,
+      "type": "cover",
+      "kicker": "حسبة",
+      "headline": "سعر ==التصميم== مش اللي في دماغك",
+      "media": {
+        "slot": "none",
+        "ai": false
+      }
+    },
+    {
+      "id": "s02",
+      "n": 2,
+      "type": "rehook",
+      "headline": "هتدفع كام فعلاً؟",
+      "sub": "الحسبة في 5 سلايدات",
+      "bridge": "اسحب"
+    },
+    {
+      "id": "s03",
+      "n": 3,
+      "type": "stat",
+      "variant": "chart",
+      "title": "سعر التصميم حسب الخدمة",
+      "body": "بالجنيه المصري.",
+      "sourceIds": [
+        "src1"
+      ],
+      "items": [
+        {
+          "title": "شعار",
+          "value": "1500"
+        },
+        {
+          "title": "هوية كاملة",
+          "value": "8000",
+          "hi": true
+        },
+        {
+          "title": "قالب سوشيال",
+          "value": "3000"
+        }
+      ]
+    },
+    {
+      "id": "s04",
+      "n": 4,
+      "type": "setup",
+      "title": "اللي هتدفعه",
+      "bullets": [
+        "التصميم نفسه",
+        "التعديلات",
+        "ملفات المصدر"
+      ],
+      "demo": {
+        "lines": [
+          {
+            "text": "تصميم: 8000"
+          },
+          {
+            "text": "تعديلات: 2 فقط"
+          },
+          {
+            "text": "ملفات المصدر: 500"
+          }
+        ],
+        "caption": "الإجمالي 8500"
+      }
+    },
+    {
+      "id": "s05",
+      "n": 5,
+      "type": "timeline",
+      "title": "مراحل المشروع",
+      "items": [
+        {
+          "title": "بريف",
+          "value": "يوم 1"
+        },
+        {
+          "title": "مسودة",
+          "value": "يوم 4",
+          "hi": true
+        },
+        {
+          "title": "تعديل",
+          "value": "يوم 7"
+        }
+      ]
+    },
+    {
+      "id": "s06",
+      "n": 6,
+      "type": "grid",
+      "title": "اللي في الباقة",
+      "items": [
+        {
+          "title": "شعار",
+          "text": "3 نسخ"
+        },
+        {
+          "title": "ألوان",
+          "text": "باليت كامل"
+        },
+        {
+          "title": "خطوط",
+          "text": "اتنين"
+        },
+        {
+          "title": "قالب",
+          "text": "سوشيال",
+          "hi": true
+        }
+      ]
+    },
+    {
+      "id": "s07",
+      "n": 7,
+      "type": "proof",
+      "title": "نتيجة فعلية",
+      "media": {
+        "slot": "screenshot",
+        "assetId": "a001"
+      }
+    },
+    {
+      "id": "s08",
+      "n": 8,
+      "type": "offer",
+      "title": "باقة الهوية",
+      "number": {
+        "value": "8000",
+        "unit": "جنيه",
+        "sourceId": "src1"
+      },
+      "bullets": [
+        "شعار",
+        "هوية بصرية",
+        "قالب"
+      ],
+      "cta": {
+        "kind": "send",
+        "text": "ابعت بريفك"
+      },
+      "sourceIds": [
+        "src1"
+      ]
+    },
+    {
+      "id": "s09",
+      "n": 9,
+      "type": "quote",
+      "title": "قبل ما تسأل",
+      "body": "ليه مفيش سعر ثابت؟"
+    },
+    {
+      "id": "s10",
+      "n": 10,
+      "type": "cta",
+      "title": "ابعتها لصاحبك",
+      "cta": {
+        "kind": "send",
+        "text": "ابعتها لحد بيسأل عن سعر التصميم"
+      }
+    }
+  ],
+  "cover": {
+    "motion": {
+      "recipe": "story",
+      "feel": "story",
+      "seconds": 6,
+      "fps": 30,
+      "source": "internal"
+    }
+  },
+  "captionPack": {
+    "firstLine": "فاكر إن مشكلة كاروسيلك في الألوان؟ غالبا المشكلة في الكلام.",
+    "keywordLine": "جمعتلك 5 أخطاء في كتابة كاروسيل Instagram بتخلي الناس تكمل بدل ما تعدّي.",
+    "body": "1. خط صغير ميتقراش: كبّر الخط واقطع الجملة.\n2. تعريف بنفسك في التانية: ادخل في الفايدة على طول.\n3. فقرة كاملة في سلايد: فكرة واحدة في كل سلايد.\n4. نفس الدعوة كل مرة: بدّل بين الحفظ والإرسال.\n5. غلاف من غير وعد: اكتب اللي هيطلع بيه القارئ.",
+    "cta": "احفظ البوست وارجعله لما تيجي تكتب الكاروسيل الجاي.",
+    "hashtags": [
+      "#كاروسيل",
+      "#تصميم_السوشيال",
+      "#محتوى_عربي",
+      "#كتابة_المحتوى"
+    ],
+    "perSlide": [
+      "line 1",
+      "line 2",
+      "line 3",
+      "line 4",
+      "line 5",
+      "line 6",
+      "line 7",
+      "line 8",
+      "line 9",
+      "line 10"
+    ],
+    "alt": [
+      "alt 1",
+      "alt 2",
+      "alt 3",
+      "alt 4",
+      "alt 5",
+      "alt 6",
+      "alt 7",
+      "alt 8",
+      "alt 9",
+      "alt 10"
+    ]
+  },
+  "sources": [
+    {
+      "id": "src1",
+      "kind": "user",
+      "ref": "قائمة الأسعار",
+      "excerpt": "هوية كاملة 8000 جنيه",
+      "verified": true
+    }
+  ],
+  "assets": [
+    {
+      "id": "a001",
+      "kind": "image",
+      "ref": "asset:a001",
+      "mime": "image/png",
+      "width": 1080,
+      "height": 1440,
+      "aiGenerated": false,
+      "alt": "لقطة شاشة"
+    }
+  ],
+  "qa": {
+    "status": "pass",
+    "runAt": "2026-10-22T09:20:00Z",
+    "engine": "cs-1.1.0",
+    "results": []
+  },
+  "approvals": {
+    "angle": {
+      "at": "2026-10-22T09:04:00Z"
+    },
+    "script": {
+      "at": "2026-10-22T09:16:00Z"
+    }
+  },
+  "meta": {
+    "createdAt": "2026-10-22T09:00:00Z",
+    "updatedAt": "2026-10-22T09:20:00Z",
+    "updatedBy": "claude",
+    "generator": {
+      "skill": "carousel-create",
+      "version": "1.0.0"
+    }
+  }
+}

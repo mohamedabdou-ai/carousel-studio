@@ -1,0 +1,260 @@
+{
+  "schemaVersion": 1,
+  "skill_name": "content-plan",
+  "description": "Triggers (20 should-trigger across Egyptian, Gulf, Levantine, white MSA and English; 10 should-not) and behaviour evals for content-plan.",
+  "triggerTargets": {
+    "precision": 0.9,
+    "recall": 0.9
+  },
+  "triggers": [
+    {
+      "id": "t01",
+      "query": "عايز خطة محتوى للأسبوع الجاي، بوستين كاروسيل وبوست واحد",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t02",
+      "query": "إيه المناسبات الجاية اللي أقدر أعمل عنها محتوى؟",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t03",
+      "query": "اقترحلي أفكار محتوى للشهر، صفحتي عن التغذية",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t04",
+      "query": "حدد لي ركائز المحتوى وبنك أفكار لصفحتي، أنا بعمل كورسات تصوير",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t05",
+      "query": "ابغى خطة محتوى لشهر رمضان لحسابي",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t06",
+      "query": "وش المناسبات القادمة في السعودية والإمارات؟",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t07",
+      "query": "سوي لي جدول نشر أسبوعي وحدد لي أفضل الأوقات",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t08",
+      "query": "أبي أفكار محتوى لشهر كامل، مع توزيع بين حفظ وإرسال وبيع",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t09",
+      "query": "بدّي خطة محتوى للأسبوع، أربع بوستات",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t10",
+      "query": "شو المناسبات الجاية بالأردن ولبنان؟",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t11",
+      "query": "اقترحلي محتوى للشهر الجاي لصفحة المطعم يلي عندي",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t12",
+      "query": "كيف بوزّع المحتوى بين التعليمي والبيع خلال الشهر؟",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t13",
+      "query": "أعدّ لي خطة نشر شهرية لحسابي على Instagram",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t14",
+      "query": "ما موعد عيد الأضحى المتوقع وما المحتوى المناسب قبله؟",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t15",
+      "query": "أرغب في بنك أفكار ومحاور للمحتوى لعلامتي التجارية",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t16",
+      "query": "أحتاج جدولًا أسبوعيًا للمنشورات يراعي المناسبات والتاريخ الهجري",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t17",
+      "query": "plan my Instagram content for next month, including Ramadan and Eid dates",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t18",
+      "query": "what MENA occasions are coming up in the next 60 days?",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t19",
+      "query": "build a weekly posting plan with an intent mix of save, send, reach and sell",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t20",
+      "query": "I need content pillars and an idea bank for my fitness brand",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t21",
+      "query": "اعمل ريل من الفيديو ده وقص السكتات",
+      "should_trigger": false,
+      "dialect": "eg",
+      "kind": "reel",
+      "instead": "reel-montage"
+    },
+    {
+      "id": "t22",
+      "query": "عايز أعرف الإجازات الرسمية السنة دي عشان أظبط إجازتي من الشغل",
+      "should_trigger": false,
+      "dialect": "eg",
+      "kind": "adjacent",
+      "instead": "none"
+    },
+    {
+      "id": "t23",
+      "query": "بدّي كاروسيل عن كيف تبدأ بالتسويق بالمحتوى، جمهوري كله مبتدئين",
+      "should_trigger": false,
+      "dialect": "levant",
+      "kind": "sibling",
+      "instead": "carousel-create"
+    },
+    {
+      "id": "t24",
+      "query": "هاتلي زوايا للموضوع ده: ليه الناس بتشتري كورسات ومبتكملهاش؟",
+      "should_trigger": false,
+      "dialect": "eg",
+      "kind": "sibling",
+      "instead": "content-angles"
+    },
+    {
+      "id": "t25",
+      "query": "ابغى أسوي براند جديد لعميل عندي في الرياض، ولهجته بيضاء خليجية",
+      "should_trigger": false,
+      "dialect": "gulf",
+      "kind": "sibling",
+      "instead": "brand-setup"
+    },
+    {
+      "id": "t26",
+      "query": "جهّزلي البوست للنشر: صدّر السلايدات PNG وفيديو الغلاف وحزمة النشر كاملة",
+      "should_trigger": false,
+      "dialect": "eg",
+      "kind": "sibling",
+      "instead": "carousel-design"
+    },
+    {
+      "id": "t27",
+      "query": "build me a monthly budget spreadsheet in Excel",
+      "should_trigger": false,
+      "dialect": "en",
+      "kind": "unrelated",
+      "instead": "none"
+    },
+    {
+      "id": "t28",
+      "query": "ما أفضل طريقة لتنظيم جدول مذاكرتي في رمضان؟",
+      "should_trigger": false,
+      "dialect": "msa-white",
+      "kind": "adjacent",
+      "instead": "none"
+    },
+    {
+      "id": "t29",
+      "query": "ابغى قالب تقويم محتوى جاهز في كانفا",
+      "should_trigger": false,
+      "dialect": "gulf",
+      "kind": "canva",
+      "instead": "canva"
+    },
+    {
+      "id": "t30",
+      "query": "رتّبلي جدول اجتماعات الفريق للأسبوع الجاي",
+      "should_trigger": false,
+      "dialect": "levant",
+      "kind": "unrelated",
+      "instead": "none"
+    }
+  ],
+  "evals": [
+    {
+      "id": 1,
+      "name": "month-plan-with-occasions-from-the-table",
+      "prompt": "اعملي خطة محتوى لشهر نوفمبر 2026، 4 بوستات في الأسبوع، وقولي المناسبات اللي لازم أحسب حسابها.",
+      "expected_output": "plan-2026-11.json that passes plan.py lint, with occasions read from calendar.py and Hijri dates flagged +/-1 day.",
+      "files": [],
+      "fixtures": [
+        "plan.eg.2026-11.json",
+        "brand.eg.creator.json"
+      ],
+      "behaviour": [
+        "bhv-29-plan-occasions-from-calendar-table"
+      ],
+      "expectations": [
+        "calendar.py supplied every occasion date; no date or Hijri date was worked out by hand",
+        "White Friday on 27 November 2026 is listed and the reply says no occasion pack ships in v1, so brand styling is used",
+        "plan.py lint passes: no architecture twice in a row, no hook family three times in a row, at least one save-intent list per week",
+        "One Arabic line per slot is shown"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "slot-starts-a-post",
+      "prompt": "اعمل بوست الخانة 1 من الخطة.",
+      "expected_output": "The first slot's pillar, intent, architecture and family are handed to carousel-create.",
+      "files": [],
+      "fixtures": [
+        "plan.eg.2026-11.json"
+      ],
+      "expectations": [
+        "carousel-create starts with the slot's intent, architecture and hook family already set",
+        "The plan slot's status moves to angled or scripted and records the spec id",
+        "Nothing else in the plan changes"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "pillars-and-idea-bank",
+      "prompt": "حدد لي ركائز المحتوى وبنك أفكار لصفحتي. أنا بعمل كورسات تصوير موبايل.",
+      "expected_output": "3-5 pillars with shares and preferred intents, and an idea bank filed under them.",
+      "files": [],
+      "expectations": [
+        "Three to five pillars are proposed, each with a share and preferred intents",
+        "The shares add up to 1",
+        "Every idea in the bank belongs to a pillar and names at least one intent"
+      ]
+    }
+  ]
+}

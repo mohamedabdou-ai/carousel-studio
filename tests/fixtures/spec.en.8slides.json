@@ -1,0 +1,216 @@
+{
+  "specVersion": 1,
+  "id": "post-20261022-0007",
+  "rev": 1,
+  "brand": {
+    "slug": "fresh-start",
+    "snapshotHash": "8c523dc8be32fef0"
+  },
+  "brief": {
+    "topic": "A pre-post checklist for Instagram carousels",
+    "input": "idea"
+  },
+  "format": "carousel",
+  "mode": "guided",
+  "checkpoint": "design",
+  "canvas": {
+    "preset": "ig-3x4",
+    "w": 1080,
+    "h": 1440,
+    "safe": [
+      34,
+      45,
+      1012,
+      1350
+    ],
+    "exports": [
+      "3x4",
+      "4x5"
+    ]
+  },
+  "locale": {
+    "dialect": "en",
+    "register": "white",
+    "digits": "western",
+    "appLanguage": "en",
+    "swipeCue": "arrow-ltr"
+  },
+  "intent": "save",
+  "awareness": "solution",
+  "contentType": "value",
+  "architecture": "steps",
+  "angle": {
+    "id": "a5",
+    "title": "4 checks before you hit post",
+    "lens": "framework",
+    "score": 75,
+    "why": "A short checklist people keep for later"
+  },
+  "hook": {
+    "id": "F19-PRECHECK-before-you",
+    "family": "F19",
+    "text": "4 checks before you hit post",
+    "cover": "4 checks before you hit post",
+    "score": {
+      "R": 31,
+      "J": 27,
+      "P": 10,
+      "total": 68
+    },
+    "slide2": "Most flops fail at line one"
+  },
+  "style": {
+    "presetId": "interface@1.0"
+  },
+  "compat": {
+    "paint": "auto",
+    "mp4": "auto",
+    "hfRuntime": "auto"
+  },
+  "slides": [
+    {
+      "id": "s01",
+      "n": 1,
+      "type": "cover",
+      "kicker": "Before you post",
+      "headline": "4 checks\nbefore you ==hit post==",
+      "sub": "no designer needed",
+      "media": {
+        "slot": "none",
+        "ai": false
+      }
+    },
+    {
+      "id": "s02",
+      "n": 2,
+      "type": "rehook",
+      "headline": "Most flops fail at line one",
+      "sub": "4 checks, starting here.",
+      "bridge": "Check one"
+    },
+    {
+      "id": "s03",
+      "n": 3,
+      "type": "step",
+      "ord": 1,
+      "title": "Read the cover at thumbnail size",
+      "body": "Shrink it to a thumbnail. If you cannot read it in one glance, enlarge the text.",
+      "bridge": "Now slide two"
+    },
+    {
+      "id": "s04",
+      "n": 4,
+      "type": "step",
+      "ord": 2,
+      "title": "Make slide two pay off",
+      "body": "Skip the intro. Give the first useful thing on slide two.",
+      "bridge": "Then the length"
+    },
+    {
+      "id": "s05",
+      "n": 5,
+      "type": "step",
+      "variant": "base",
+      "ord": 3,
+      "title": "Cut every slide to one idea",
+      "body": "If a slide needs a paragraph, split it into two slides.",
+      "bridge": "Last check"
+    },
+    {
+      "id": "s06",
+      "n": 6,
+      "type": "step",
+      "ord": 4,
+      "title": "Pick one call to action",
+      "body": "Save, send or answer. Choose a single ask and put it at the end.",
+      "bridge": "Quick recap"
+    },
+    {
+      "id": "s07",
+      "n": 7,
+      "type": "summary",
+      "title": "The four checks",
+      "bullets": [
+        "Read it small",
+        "Pay off on slide two",
+        "One idea per slide",
+        "One call to action"
+      ]
+    },
+    {
+      "id": "s08",
+      "n": 8,
+      "type": "cta",
+      "title": "Save this checklist",
+      "cta": {
+        "kind": "save",
+        "text": "Save this for when you need it"
+      }
+    }
+  ],
+  "cover": {
+    "motion": {
+      "recipe": "counter",
+      "feel": "calm",
+      "seconds": 6,
+      "fps": 30,
+      "source": "internal"
+    }
+  },
+  "captionPack": {
+    "firstLine": "Most posts lose people before slide two. Run these four checks first.",
+    "keywordLine": "A quick pre-post checklist for Instagram carousels: thumbnail test, slide two, one idea, one ask.",
+    "body": "1. Read the cover at thumbnail size\n2. Make slide two pay off\n3. Cut every slide to one idea\n4. Pick one call to action\n\nTwo minutes of checking beats an hour of redesigning later.",
+    "cta": "Save this for when you need it.",
+    "hashtags": [
+      "#instagramtips",
+      "#carouseldesign",
+      "#contentcreation"
+    ],
+    "perSlide": [
+      "Four checks that take two minutes.",
+      "Where most carousels lose people.",
+      "Shrink it first, then judge it.",
+      "Give the payoff before the intro.",
+      "One idea, one slide.",
+      "Pick a single ask.",
+      "All four checks at a glance.",
+      "Save it for your next post."
+    ],
+    "alt": [
+      "Cover: \"4 checks before you hit post\" in large white type on a dark navy background, with \"Before you post\" above and \"no designer needed\" below.",
+      "Slide 2: \"Most flops fail at line one\" with \"Fix that first.\" underneath.",
+      "Step 1: \"Read the cover at thumbnail size\". \"Shrink it to a thumbnail. If you cannot read it in one glance, enlarge the text.\"",
+      "Step 2: \"Make slide two pay off\". \"Skip the intro. Give the first useful thing on slide two.\"",
+      "Step 3: \"Cut every slide to one idea\". \"If a slide needs a paragraph, split it into two slides.\"",
+      "Step 4: \"Pick one call to action\". \"Save, send or answer. Choose a single ask and put it at the end.\"",
+      "Summary of 4 points: Read it small, Pay off on slide two, One idea per slide, One call to action.",
+      "Call to action: \"Save this checklist\". \"Save this for when you need it\"."
+    ]
+  },
+  "sources": [],
+  "assets": [],
+  "qa": {
+    "status": "pass",
+    "runAt": "2026-10-22T09:20:00Z",
+    "engine": "cs-1.1.0",
+    "results": []
+  },
+  "approvals": {
+    "angle": {
+      "at": "2026-10-22T09:04:00Z"
+    },
+    "script": {
+      "at": "2026-10-22T09:16:00Z"
+    }
+  },
+  "meta": {
+    "createdAt": "2026-10-22T09:00:00Z",
+    "updatedAt": "2026-10-22T09:20:00Z",
+    "updatedBy": "claude",
+    "generator": {
+      "skill": "carousel-create",
+      "version": "1.0.0"
+    }
+  }
+}

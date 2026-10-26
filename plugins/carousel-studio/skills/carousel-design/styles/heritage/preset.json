@@ -1,0 +1,236 @@
+{
+  "schemaVersion": 1,
+  "id": "heritage",
+  "version": "1.0",
+  "name": {
+    "ar": "تراثي",
+    "en": "Heritage"
+  },
+  "description": {
+    "ar": "أخضر عميق بتدرّج هادئ، وشبكة هندسية إسلامية تخفت نحو النص، وذهبي للكلمة المهمة، ويقبل كلمة واحدة بالكشيدة. للثقافة والمناسبات.",
+    "en": "Deep green with a calm gradient, an Islamic geometric lattice that fades toward the text, gold for the key word and room for one kashida word. For culture and occasions."
+  },
+  "bestFor": [
+    "culture",
+    "national days",
+    "ramadan and eids",
+    "typography",
+    "storytelling"
+  ],
+  "ships": "1.2",
+  "paintable": true,
+  "roles": {
+    "bg": "#133B31",
+    "surface": "#1F5A47",
+    "ink": "#F7F1E3",
+    "inkMuted": "#CDDBD3",
+    "accent": "#EEBA66"
+  },
+  "brandBindings": [
+    "bg",
+    "surface",
+    "ink",
+    "inkMuted",
+    "accent",
+    "fonts"
+  ],
+  "type": {
+    "display": {
+      "family": "reem-kufi",
+      "wght": 600,
+      "lh": 1.35
+    },
+    "heading": {
+      "family": "el-messiri",
+      "wght": 700,
+      "lh": 1.4
+    },
+    "body": {
+      "family": "el-messiri",
+      "wght": 500,
+      "lh": 1.65
+    },
+    "latin": {
+      "family": "el-messiri",
+      "wght": 700
+    },
+    "scale": {
+      "hero": [
+        120,
+        170
+      ],
+      "heroTarget": 150,
+      "h1": 84,
+      "h2": 68,
+      "title": [
+        64,
+        72
+      ],
+      "body": [
+        44,
+        48
+      ],
+      "small": 34,
+      "micro": 30
+    }
+  },
+  "layout": {
+    "align": "center",
+    "coverAnchor": "top",
+    "headlineWidth": [
+      0.65,
+      0.8
+    ]
+  },
+  "background": {
+    "kind": "gradient",
+    "params": {
+      "angle": 160,
+      "stops": [
+        [
+          "surface",
+          0
+        ],
+        [
+          "bg",
+          100
+        ]
+      ]
+    }
+  },
+  "decor": {
+    "highlight": "color",
+    "numbering": "plain",
+    "texture": "pattern",
+    "kashida": {
+      "allowed": true,
+      "maxWords": 1
+    }
+  },
+  "chrome": {
+    "handle": {
+      "slot": "header-start",
+      "logo": "auto"
+    },
+    "meta": {
+      "slot": "header-end"
+    },
+    "counter": {
+      "slot": "footer-center",
+      "format": "{i} من {n}"
+    },
+    "swipe": {
+      "slot": "footer-end",
+      "style": "label+chevron"
+    },
+    "savePill": {
+      "slot": "footer-start",
+      "showOn": [
+        "cta"
+      ]
+    }
+  },
+  "variants": {
+    "cover": [
+      "top",
+      "center"
+    ],
+    "rehook": [
+      "base",
+      "split"
+    ],
+    "item": [
+      "base",
+      "side-number",
+      "media"
+    ],
+    "step": [
+      "pill",
+      "base"
+    ],
+    "stat": [
+      "base",
+      "bar"
+    ],
+    "compare": [
+      "columns",
+      "stacked",
+      "versus"
+    ],
+    "myth-fact": [
+      "columns",
+      "stacked"
+    ],
+    "quote": [
+      "mark",
+      "base"
+    ],
+    "story-beat": [
+      "base",
+      "panel",
+      "media"
+    ],
+    "checklist": [
+      "ruled",
+      "boxes",
+      "base"
+    ],
+    "summary": [
+      "list",
+      "grid"
+    ],
+    "setup": [
+      "base",
+      "cards"
+    ],
+    "proof": [
+      "screenshot",
+      "base"
+    ],
+    "share": [
+      "big-word",
+      "base"
+    ],
+    "cta": [
+      "pill",
+      "base"
+    ],
+    "offer": [
+      "card",
+      "base"
+    ],
+    "testimonial": [
+      "card",
+      "base"
+    ],
+    "poster": [
+      "top",
+      "center"
+    ],
+    "grid": [
+      "bento"
+    ],
+    "timeline": [
+      "rail"
+    ]
+  },
+  "motion": {
+    "default": "highlight-sweep",
+    "allowed": [
+      "calm",
+      "story",
+      "highlight-sweep",
+      "stamp",
+      "counter",
+      "map-dots",
+      "drop-clock"
+    ]
+  },
+  "floors": {
+    "hero": 96,
+    "body": 42,
+    "meta": 30,
+    "contrastBody": 4.5,
+    "contrastLarge": 3.0
+  }
+}

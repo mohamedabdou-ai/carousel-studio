@@ -1,0 +1,1161 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "1.0.0",
+  "dialect": "gulf",
+  "label": {
+    "ar": "خليجي",
+    "en": "Gulf"
+  },
+  "status": "beta",
+  "nativeReviewed": false,
+  "markers": [
+    "مو",
+    "مب",
+    "وايد",
+    "الحين",
+    "شلون",
+    "شنو",
+    "وش",
+    "ليش",
+    "أبي",
+    "أبغى",
+    "تبي",
+    "تبغى",
+    "يبي",
+    "زين",
+    "كذا",
+    "وين"
+  ],
+  "deny": [
+    {
+      "id": "DM-GULF-001",
+      "text": "عايز",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "An Egyptian word in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "DM-GULF-002",
+      "text": "وعايز",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "An Egyptian word in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "DM-GULF-003",
+      "text": "عاوز",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "An Egyptian word in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "DM-GULF-004",
+      "text": "وعاوز",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "An Egyptian word in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "DM-GULF-005",
+      "text": "عايزة",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "An Egyptian word in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "DM-GULF-006",
+      "text": "وعايزة",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "An Egyptian word in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "DM-GULF-007",
+      "text": "عايزين",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "An Egyptian word in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "DM-GULF-008",
+      "text": "وعايزين",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "An Egyptian word in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "DM-GULF-009",
+      "text": "إزاي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: كيف / شلون.",
+        "en": "An Egyptian word in a Gulf post; use كيف / شلون."
+      },
+      "suggest": "كيف / شلون"
+    },
+    {
+      "id": "DM-GULF-010",
+      "text": "وإزاي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: كيف / شلون.",
+        "en": "An Egyptian word in a Gulf post; use كيف / شلون."
+      },
+      "suggest": "كيف / شلون"
+    },
+    {
+      "id": "DM-GULF-011",
+      "text": "ازاي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: كيف / شلون.",
+        "en": "An Egyptian word in a Gulf post; use كيف / شلون."
+      },
+      "suggest": "كيف / شلون"
+    },
+    {
+      "id": "DM-GULF-012",
+      "text": "وازاي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: كيف / شلون.",
+        "en": "An Egyptian word in a Gulf post; use كيف / شلون."
+      },
+      "suggest": "كيف / شلون"
+    },
+    {
+      "id": "DM-GULF-013",
+      "text": "دلوقتي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: الحين.",
+        "en": "An Egyptian word in a Gulf post; use الحين."
+      },
+      "suggest": "الحين"
+    },
+    {
+      "id": "DM-GULF-014",
+      "text": "ودلوقتي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: الحين.",
+        "en": "An Egyptian word in a Gulf post; use الحين."
+      },
+      "suggest": "الحين"
+    },
+    {
+      "id": "DM-GULF-015",
+      "text": "دلوقت",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: الحين.",
+        "en": "An Egyptian word in a Gulf post; use الحين."
+      },
+      "suggest": "الحين"
+    },
+    {
+      "id": "DM-GULF-016",
+      "text": "ودلوقت",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: الحين.",
+        "en": "An Egyptian word in a Gulf post; use الحين."
+      },
+      "suggest": "الحين"
+    },
+    {
+      "id": "DM-GULF-017",
+      "text": "مش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: مو.",
+        "en": "An Egyptian word in a Gulf post; use مو."
+      },
+      "suggest": "مو"
+    },
+    {
+      "id": "DM-GULF-018",
+      "text": "ومش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: مو.",
+        "en": "An Egyptian word in a Gulf post; use مو."
+      },
+      "suggest": "مو"
+    },
+    {
+      "id": "DM-GULF-019",
+      "text": "ده",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: هذا / هذي.",
+        "en": "An Egyptian word in a Gulf post; use هذا / هذي."
+      },
+      "suggest": "هذا / هذي"
+    },
+    {
+      "id": "DM-GULF-020",
+      "text": "وده",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: هذا / هذي.",
+        "en": "An Egyptian word in a Gulf post; use هذا / هذي."
+      },
+      "suggest": "هذا / هذي"
+    },
+    {
+      "id": "DM-GULF-021",
+      "text": "دي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: هذا / هذي.",
+        "en": "An Egyptian word in a Gulf post; use هذا / هذي."
+      },
+      "suggest": "هذا / هذي"
+    },
+    {
+      "id": "DM-GULF-028",
+      "text": "إمتى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: متى.",
+        "en": "An Egyptian word in a Gulf post; use متى."
+      },
+      "suggest": "متى"
+    },
+    {
+      "id": "DM-GULF-029",
+      "text": "وإمتى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: متى.",
+        "en": "An Egyptian word in a Gulf post; use متى."
+      },
+      "suggest": "متى"
+    },
+    {
+      "id": "DM-GULF-030",
+      "text": "امتى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: متى.",
+        "en": "An Egyptian word in a Gulf post; use متى."
+      },
+      "suggest": "متى"
+    },
+    {
+      "id": "DM-GULF-031",
+      "text": "وامتى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: متى.",
+        "en": "An Egyptian word in a Gulf post; use متى."
+      },
+      "suggest": "متى"
+    },
+    {
+      "id": "DM-GULF-032",
+      "text": "بتاع",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: حق.",
+        "en": "An Egyptian word in a Gulf post; use حق."
+      },
+      "suggest": "حق"
+    },
+    {
+      "id": "DM-GULF-033",
+      "text": "وبتاع",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: حق.",
+        "en": "An Egyptian word in a Gulf post; use حق."
+      },
+      "suggest": "حق"
+    },
+    {
+      "id": "DM-GULF-034",
+      "text": "بتاعت",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: حق.",
+        "en": "An Egyptian word in a Gulf post; use حق."
+      },
+      "suggest": "حق"
+    },
+    {
+      "id": "DM-GULF-035",
+      "text": "وبتاعت",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: حق.",
+        "en": "An Egyptian word in a Gulf post; use حق."
+      },
+      "suggest": "حق"
+    },
+    {
+      "id": "DM-GULF-036",
+      "text": "بتاعة",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: حق.",
+        "en": "An Egyptian word in a Gulf post; use حق."
+      },
+      "suggest": "حق"
+    },
+    {
+      "id": "DM-GULF-037",
+      "text": "وبتاعة",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: حق.",
+        "en": "An Egyptian word in a Gulf post; use حق."
+      },
+      "suggest": "حق"
+    },
+    {
+      "id": "DM-GULF-038",
+      "text": "أوي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: وايد.",
+        "en": "An Egyptian word in a Gulf post; use وايد."
+      },
+      "suggest": "وايد"
+    },
+    {
+      "id": "DM-GULF-039",
+      "text": "وأوي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: وايد.",
+        "en": "An Egyptian word in a Gulf post; use وايد."
+      },
+      "suggest": "وايد"
+    },
+    {
+      "id": "DM-GULF-040",
+      "text": "اوي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: وايد.",
+        "en": "An Egyptian word in a Gulf post; use وايد."
+      },
+      "suggest": "وايد"
+    },
+    {
+      "id": "DM-GULF-041",
+      "text": "واوي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: وايد.",
+        "en": "An Egyptian word in a Gulf post; use وايد."
+      },
+      "suggest": "وايد"
+    },
+    {
+      "id": "DM-GULF-042",
+      "text": "بدي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "A Levantine word in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "DM-GULF-043",
+      "text": "وبدي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "A Levantine word in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "DM-GULF-044",
+      "text": "بدك",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "A Levantine word in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "DM-GULF-045",
+      "text": "وبدك",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "A Levantine word in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "DM-GULF-046",
+      "text": "بدنا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "A Levantine word in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "DM-GULF-047",
+      "text": "وبدنا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "A Levantine word in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "DM-GULF-048",
+      "text": "بدها",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "A Levantine word in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "DM-GULF-049",
+      "text": "وبدها",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "A Levantine word in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "DM-GULF-050",
+      "text": "هلق",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: الحين.",
+        "en": "A Levantine word in a Gulf post; use الحين."
+      },
+      "suggest": "الحين"
+    },
+    {
+      "id": "DM-GULF-051",
+      "text": "وهلق",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: الحين.",
+        "en": "A Levantine word in a Gulf post; use الحين."
+      },
+      "suggest": "الحين"
+    },
+    {
+      "id": "DM-GULF-052",
+      "text": "هلأ",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: الحين.",
+        "en": "A Levantine word in a Gulf post; use الحين."
+      },
+      "suggest": "الحين"
+    },
+    {
+      "id": "DM-GULF-053",
+      "text": "وهلأ",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: الحين.",
+        "en": "A Levantine word in a Gulf post; use الحين."
+      },
+      "suggest": "الحين"
+    },
+    {
+      "id": "DM-GULF-054",
+      "text": "هيك",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: كذا.",
+        "en": "A Levantine word in a Gulf post; use كذا."
+      },
+      "suggest": "كذا"
+    },
+    {
+      "id": "DM-GULF-055",
+      "text": "وهيك",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: كذا.",
+        "en": "A Levantine word in a Gulf post; use كذا."
+      },
+      "suggest": "كذا"
+    },
+    {
+      "id": "DM-GULF-056",
+      "text": "منيح",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: زين.",
+        "en": "A Levantine word in a Gulf post; use زين."
+      },
+      "suggest": "زين"
+    },
+    {
+      "id": "DM-GULF-057",
+      "text": "ومنيح",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: زين.",
+        "en": "A Levantine word in a Gulf post; use زين."
+      },
+      "suggest": "زين"
+    },
+    {
+      "id": "DM-GULF-058",
+      "text": "رح",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: راح / بـ.",
+        "en": "A Levantine word in a Gulf post; use راح / بـ."
+      },
+      "suggest": "راح / بـ"
+    },
+    {
+      "id": "DM-GULF-059",
+      "text": "ورح",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: راح / بـ.",
+        "en": "A Levantine word in a Gulf post; use راح / بـ."
+      },
+      "suggest": "راح / بـ"
+    },
+    {
+      "id": "DM-GULF-060",
+      "text": "بزاف",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مغاربية في منشور خليجي؛ البديل: وايد.",
+        "en": "A Maghrebi word in a Gulf post; use وايد."
+      },
+      "suggest": "وايد"
+    },
+    {
+      "id": "DM-GULF-061",
+      "text": "وبزاف",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مغاربية في منشور خليجي؛ البديل: وايد.",
+        "en": "A Maghrebi word in a Gulf post; use وايد."
+      },
+      "suggest": "وايد"
+    },
+    {
+      "id": "DM-GULF-062",
+      "text": "دابا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مغاربية في منشور خليجي؛ البديل: الحين.",
+        "en": "A Maghrebi word in a Gulf post; use الحين."
+      },
+      "suggest": "الحين"
+    },
+    {
+      "id": "DM-GULF-063",
+      "text": "ودابا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مغاربية في منشور خليجي؛ البديل: الحين.",
+        "en": "A Maghrebi word in a Gulf post; use الحين."
+      },
+      "suggest": "الحين"
+    }
+  ],
+  "warn": [
+    {
+      "id": "WM-GULF-001",
+      "text": "كده",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: كذا.",
+        "en": "An Egyptian word in a Gulf post; use كذا."
+      },
+      "suggest": "كذا"
+    },
+    {
+      "id": "WM-GULF-002",
+      "text": "وكده",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: كذا.",
+        "en": "An Egyptian word in a Gulf post; use كذا."
+      },
+      "suggest": "كذا"
+    },
+    {
+      "id": "WM-GULF-003",
+      "text": "كدا",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: كذا.",
+        "en": "An Egyptian word in a Gulf post; use كذا."
+      },
+      "suggest": "كذا"
+    },
+    {
+      "id": "WM-GULF-004",
+      "text": "وكدا",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: كذا.",
+        "en": "An Egyptian word in a Gulf post; use كذا."
+      },
+      "suggest": "كذا"
+    },
+    {
+      "id": "WM-GULF-005",
+      "text": "لسه",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: توّه / للحين.",
+        "en": "An Egyptian word in a Gulf post; use توّه / للحين."
+      },
+      "suggest": "توّه / للحين"
+    },
+    {
+      "id": "WM-GULF-006",
+      "text": "ولسه",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: توّه / للحين.",
+        "en": "An Egyptian word in a Gulf post; use توّه / للحين."
+      },
+      "suggest": "توّه / للحين"
+    },
+    {
+      "id": "WM-GULF-007",
+      "text": "ليه",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: ليش.",
+        "en": "An Egyptian word in a Gulf post; use ليش."
+      },
+      "suggest": "ليش"
+    },
+    {
+      "id": "WM-GULF-008",
+      "text": "وليه",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: ليش.",
+        "en": "An Egyptian word in a Gulf post; use ليش."
+      },
+      "suggest": "ليش"
+    },
+    {
+      "id": "WM-GULF-009",
+      "text": "فين",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: وين.",
+        "en": "An Egyptian word in a Gulf post; use وين."
+      },
+      "suggest": "وين"
+    },
+    {
+      "id": "WM-GULF-010",
+      "text": "وفين",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: وين.",
+        "en": "An Egyptian word in a Gulf post; use وين."
+      },
+      "suggest": "وين"
+    },
+    {
+      "id": "WM-GULF-011",
+      "text": "كتير",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: وايد.",
+        "en": "A Levantine word in a Gulf post; use وايد."
+      },
+      "suggest": "وايد"
+    },
+    {
+      "id": "WM-GULF-012",
+      "text": "وكتير",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: وايد.",
+        "en": "A Levantine word in a Gulf post; use وايد."
+      },
+      "suggest": "وايد"
+    },
+    {
+      "id": "WM-GULF-013",
+      "text": "هاي",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: هذي.",
+        "en": "A Levantine word in a Gulf post; use هذي."
+      },
+      "suggest": "هذي"
+    },
+    {
+      "id": "WM-GULF-014",
+      "text": "وهاي",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة شامية في منشور خليجي؛ البديل: هذي.",
+        "en": "A Levantine word in a Gulf post; use هذي."
+      },
+      "suggest": "هذي"
+    },
+    {
+      "id": "WM-GULF-015",
+      "text": "لماذا",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور خليجي؛ البديل: ليش.",
+        "en": "A formal MSA word that reads stiff in a Gulf post; use ليش."
+      },
+      "suggest": "ليش"
+    },
+    {
+      "id": "WM-GULF-016",
+      "text": "ولماذا",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور خليجي؛ البديل: ليش.",
+        "en": "A formal MSA word that reads stiff in a Gulf post; use ليش."
+      },
+      "suggest": "ليش"
+    },
+    {
+      "id": "WM-GULF-017",
+      "text": "ماذا",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور خليجي؛ البديل: وش / شنو.",
+        "en": "A formal MSA word that reads stiff in a Gulf post; use وش / شنو."
+      },
+      "suggest": "وش / شنو"
+    },
+    {
+      "id": "WM-GULF-018",
+      "text": "وماذا",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور خليجي؛ البديل: وش / شنو.",
+        "en": "A formal MSA word that reads stiff in a Gulf post; use وش / شنو."
+      },
+      "suggest": "وش / شنو"
+    },
+    {
+      "id": "WM-GULF-019",
+      "text": "سوف",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور خليجي؛ البديل: راح / بـ.",
+        "en": "A formal MSA word that reads stiff in a Gulf post; use راح / بـ."
+      },
+      "suggest": "راح / بـ"
+    },
+    {
+      "id": "WM-GULF-020",
+      "text": "وسوف",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور خليجي؛ البديل: راح / بـ.",
+        "en": "A formal MSA word that reads stiff in a Gulf post; use راح / بـ."
+      },
+      "suggest": "راح / بـ"
+    },
+    {
+      "id": "WM-GULF-021",
+      "text": "أريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "A formal MSA word that reads stiff in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "WM-GULF-022",
+      "text": "وأريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "A formal MSA word that reads stiff in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "WM-GULF-023",
+      "text": "تريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "A formal MSA word that reads stiff in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "WM-GULF-024",
+      "text": "وتريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "A formal MSA word that reads stiff in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "WM-GULF-025",
+      "text": "يريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "A formal MSA word that reads stiff in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "WM-GULF-026",
+      "text": "ويريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور خليجي؛ البديل: أبي / أبغى.",
+        "en": "A formal MSA word that reads stiff in a Gulf post; use أبي / أبغى."
+      },
+      "suggest": "أبي / أبغى"
+    },
+    {
+      "id": "WM-GULF-027",
+      "text": "نريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور خليجي؛ البديل: نبي.",
+        "en": "A formal MSA word that reads stiff in a Gulf post; use نبي."
+      },
+      "suggest": "نبي"
+    },
+    {
+      "id": "WM-GULF-028",
+      "text": "ونريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور خليجي؛ البديل: نبي.",
+        "en": "A formal MSA word that reads stiff in a Gulf post; use نبي."
+      },
+      "suggest": "نبي"
+    },
+    {
+      "id": "WM-GULF-029",
+      "text": "الآن",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور خليجي؛ البديل: الحين.",
+        "en": "A formal MSA word that reads stiff in a Gulf post; use الحين."
+      },
+      "suggest": "الحين"
+    },
+    {
+      "id": "WM-GULF-030",
+      "text": "والآن",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور خليجي؛ البديل: الحين.",
+        "en": "A formal MSA word that reads stiff in a Gulf post; use الحين."
+      },
+      "suggest": "الحين"
+    },
+    {
+      "id": "WM-GULF-031",
+      "text": "الان",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور خليجي؛ البديل: الحين.",
+        "en": "A formal MSA word that reads stiff in a Gulf post; use الحين."
+      },
+      "suggest": "الحين"
+    },
+    {
+      "id": "WM-GULF-032",
+      "text": "والان",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور خليجي؛ البديل: الحين.",
+        "en": "A formal MSA word that reads stiff in a Gulf post; use الحين."
+      },
+      "suggest": "الحين"
+    },
+    {
+      "id": "WM-GULF-033",
+      "text": "علشان",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: عشان.",
+        "en": "An Egyptian word in a Gulf post; use عشان."
+      },
+      "suggest": "عشان"
+    },
+    {
+      "id": "WM-GULF-034",
+      "text": "وعلشان",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة مصرية في منشور خليجي؛ البديل: عشان.",
+        "en": "An Egyptian word in a Gulf post; use عشان."
+      },
+      "suggest": "عشان"
+    },
+    {
+      "id": "WM-GULF-035",
+      "text": "إيه",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "«إيه» تعني «نعم» في الخليجي أيضًا؛ إن قُصد بها «ماذا» فالبديل: وش / شنو.",
+        "en": "«إيه» also means “yes” in Gulf speech; if “what” is meant, use وش / شنو."
+      },
+      "suggest": "وش / شنو"
+    },
+    {
+      "id": "WM-GULF-036",
+      "text": "وإيه",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "«إيه» تعني «نعم» في الخليجي أيضًا؛ إن قُصد بها «ماذا» فالبديل: وش / شنو.",
+        "en": "«إيه» also means “yes” in Gulf speech; if “what” is meant, use وش / شنو."
+      },
+      "suggest": "وش / شنو"
+    },
+    {
+      "id": "WM-GULF-037",
+      "text": "ايه",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "«إيه» تعني «نعم» في الخليجي أيضًا؛ إن قُصد بها «ماذا» فالبديل: وش / شنو.",
+        "en": "«إيه» also means “yes” in Gulf speech; if “what” is meant, use وش / شنو."
+      },
+      "suggest": "وش / شنو"
+    },
+    {
+      "id": "WM-GULF-038",
+      "text": "وايه",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "«إيه» تعني «نعم» في الخليجي أيضًا؛ إن قُصد بها «ماذا» فالبديل: وش / شنو.",
+        "en": "«إيه» also means “yes” in Gulf speech; if “what” is meant, use وش / شنو."
+      },
+      "suggest": "وش / شنو"
+    },
+    {
+      "id": "WM-GULF-039",
+      "pattern": "(^|[^\\u0621-\\u064A])(و|ف)?بي(بقى|بقوا|كون|كونون|عمل|عملوا|شتغل|ساعد|علم|قول|خلي|فرق|ظهر|حصل|كتب|قدر|حتاج|وفر|دفع|كسب|خسر|عرف|فهم|جيب|حط|دور|روح|جي|خلص|زيد|قلل)[\\u0621-\\u064A]{0,4}($|[^\\u0621-\\u064A])",
+      "flags": "u",
+      "match": "regex",
+      "sev": "FIX",
+      "note": {
+        "ar": "بادئة المضارع «بي-» مصرية/شامية؛ في الخليجي يُقال «يكون، يعلّم، يقول» بلا «بـ».",
+        "en": "The habitual “bi-” verb prefix is Egyptian/Levantine; Gulf drops it (يكون, يعلّم, يقول)."
+      },
+      "suggest": "احذف «ب» من أول الفعل"
+    }
+  ],
+  "lexicon": {
+    "not": [
+      "مو"
+    ],
+    "will": [
+      "بـ",
+      "راح"
+    ],
+    "want": [
+      "تبي",
+      "تبغى"
+    ],
+    "think-that": [
+      "تحسب إن"
+    ],
+    "thing": [
+      "شي",
+      "أشياء"
+    ],
+    "how": [
+      "شلون",
+      "كيف"
+    ],
+    "why": [
+      "ليش"
+    ],
+    "now": [
+      "الحين"
+    ],
+    "a-lot": [
+      "وايد"
+    ],
+    "do": [
+      "تسوي"
+    ],
+    "before": [
+      "قبل لا"
+    ],
+    "free": [
+      "مجانا"
+    ],
+    "this": [
+      "هذا",
+      "هذي"
+    ]
+  },
+  "cta": {
+    "save": [
+      "احفظ البوست لين تحتاجه",
+      "احفظه وارجع له وقت الشغل",
+      "احفظه للمرة الجاية"
+    ],
+    "send": [
+      "أرسله لـ{who}",
+      "شاركه مع {who}",
+      "أرسله لـ{who} {reason}"
+    ],
+    "question": [
+      "{question} اكتب جوابك في سطر واحد",
+      "{question} قل لنا رأيك بالتعليقات"
+    ],
+    "keyword-dm": [
+      "اكتب «{keyword}» بالتعليقات ويوصلك {asset} على الخاص مباشرة"
+    ],
+    "follow": [
+      "تابعني عشان يوصلك {series}",
+      "{series} الجاي {day}"
+    ]
+  },
+  "registerNotes": {
+    "ar": "خليجي أبيض واحد مفهوم في دول المجلس: النفي «مو»، المستقبل «راح» أو «بـ»، والاستفهام «ليش، وين، شنو أو وش». «وايد» تُقرأ كويتية أو إماراتية أو قطرية، وللرياض الأنسب «مرة» أو «كثير». اختيار النجدي أو الحجازي أو الإماراتي يضبط «أبي/أبغى» و«وش/ايش». تجريبي حتى تراجعه عين خليجية.",
+    "en": "One neutral white-Gulf register understood across the GCC: negation «مو», future «راح» or «بـ», questions «ليش، وين، شنو or وش». «وايد» reads Kuwaiti, Emirati or Qatari; for Riyadh prefer «مرة» or «كثير». The sub-variety (Najdi, Hijazi, Emirati) fixes «أبي/أبغى» and «وش/ايش». Beta until a Gulf native has reviewed it."
+  },
+  "subVarieties": {
+    "najdi": {
+      "prefer": [
+        "أبي",
+        "تبي",
+        "وش",
+        "وين",
+        "الحين",
+        "مرة"
+      ],
+      "avoid": [
+        "أبغى",
+        "ايش",
+        "دحين"
+      ],
+      "note": {
+        "ar": "نجدي: «أبي» و«وش» و«وين».",
+        "en": "Najdi: «أبي», «وش», «وين»."
+      }
+    },
+    "hijazi": {
+      "prefer": [
+        "أبغى",
+        "تبغى",
+        "ايش",
+        "ليش",
+        "مرة"
+      ],
+      "avoid": [
+        "أبي",
+        "وش"
+      ],
+      "note": {
+        "ar": "حجازي: «أبغى» و«ايش».",
+        "en": "Hijazi: «أبغى», «ايش»."
+      }
+    },
+    "emirati": {
+      "prefer": [
+        "شو",
+        "أبا",
+        "وايد",
+        "هالحين",
+        "ليش"
+      ],
+      "avoid": [
+        "وش",
+        "أبغى"
+      ],
+      "note": {
+        "ar": "إماراتي: «شو» و«وايد».",
+        "en": "Emirati: «شو», «وايد»."
+      }
+    }
+  }
+}

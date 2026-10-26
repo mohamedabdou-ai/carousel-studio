@@ -1,0 +1,263 @@
+{
+  "schemaVersion": 1,
+  "skill_name": "carousel-design",
+  "description": "Triggers (20 should-trigger across Egyptian, Gulf, Levantine, white MSA and English; 10 should-not) and behaviour evals for carousel-design.",
+  "triggerTargets": {
+    "precision": 0.9,
+    "recall": 0.9
+  },
+  "triggers": [
+    {
+      "id": "t01",
+      "query": "السكريبت عجبني خلاص، تمام صمّملي الكاروسيل واختارلي ستايل مناسب لبراندي",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t02",
+      "query": "افتحلي الاستوديو بتاع البوست ده عشان أعدّل الكلام بنفسي",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t03",
+      "query": "غيّر ستايل البوست لحاجة أنضف وأهدى، وحرّك الغلاف",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t04",
+      "query": "جهّزلي البوست للنشر: صدّر السلايدات PNG وفيديو الغلاف وحزمة النشر كاملة",
+      "should_trigger": true,
+      "dialect": "eg"
+    },
+    {
+      "id": "t05",
+      "query": "السكريبت حقي جاهز ومعتمد، ابغى أصمم الكاروسيل، افتح لي الاستوديو",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t06",
+      "query": "غيّر لي ستايل البوست اللي خلصنا نصه لستايل تراثي وصدّر الصور png",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t07",
+      "query": "حرّك لي غلاف البوست ست ثواني واحفظه فيديو",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t08",
+      "query": "النص خلص والتصميم يبي له لمسة، ورني الغلاف بكذا ستايل وبعدين أختار الأنسب لبراندي",
+      "should_trigger": true,
+      "dialect": "gulf"
+    },
+    {
+      "id": "t09",
+      "query": "بدّي صمّم هاد البوست، افتحلي الاستوديو",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t10",
+      "query": "غيّرلي ستايل تصميم البوست لستايل دفتر الملاحظات وكبّرلي الخط",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t11",
+      "query": "جهّزلي حزمة النشر مع الكابشن وملف PDF والسلايدات",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t12",
+      "query": "بدّي شوف الكاروسيل عالموبايل وبحجم صغير، وتأكدلي إنه مقروء وما في مشاكل قبل ما أصدّره",
+      "should_trigger": true,
+      "dialect": "levant"
+    },
+    {
+      "id": "t13",
+      "query": "صمّم المنشور بناءً على النص المعتمد ثم أرني الاستوديو لأعدّل عليه",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t14",
+      "query": "أريد تغيير النمط البصري للمنشور إلى نمط أنيق يشبه المجلات وتحريك الغلاف",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t15",
+      "query": "صدّر الشرائح بصيغة PNG واحفظ فيديو الغلاف وملف PDF",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t16",
+      "query": "افتح الصفحة الرئيسية للعلامة (Brand Home) وأرني دليل الهوية",
+      "should_trigger": true,
+      "dialect": "msa-white"
+    },
+    {
+      "id": "t17",
+      "query": "the script of my post is approved, so open the Studio and let me restyle it and edit the text there",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t18",
+      "query": "animate the cover and export the publishing kit",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t19",
+      "query": "run the quality check on my post and fix whatever blocks the export",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t20",
+      "query": "render the kit locally in Claude Code and make the MP4 cover",
+      "should_trigger": true,
+      "dialect": "en"
+    },
+    {
+      "id": "t21",
+      "query": "اعمل ريل من الفيديو ده، عايزه بموشن جرافيك وخلفيات",
+      "should_trigger": false,
+      "dialect": "eg",
+      "kind": "reel",
+      "instead": "reel-montage"
+    },
+    {
+      "id": "t22",
+      "query": "ابغى أعدل التصميم في كانفا وأغير الصورة",
+      "should_trigger": false,
+      "dialect": "gulf",
+      "kind": "canva",
+      "instead": "canva"
+    },
+    {
+      "id": "t23",
+      "query": "اعملي كاروسيل عن 5 أخطاء بتموّت الكاروسيل، أنا مدرّب سوشيال ميديا وجمهوري مبتدئين",
+      "should_trigger": false,
+      "dialect": "eg",
+      "kind": "sibling",
+      "instead": "carousel-create"
+    },
+    {
+      "id": "t24",
+      "query": "اعملي خلفية مولّدة لغلاف الكاروسيل، هادية وفيها مساحة فاضية فوق للكلام",
+      "should_trigger": false,
+      "dialect": "eg",
+      "kind": "sibling",
+      "instead": "visual-prompts"
+    },
+    {
+      "id": "t25",
+      "query": "إيه المناسبات الجاية اللي أقدر أعمل عنها محتوى؟",
+      "should_trigger": false,
+      "dialect": "eg",
+      "kind": "sibling",
+      "instead": "content-plan"
+    },
+    {
+      "id": "t26",
+      "query": "إزاي أخلي الأداة تكتب بصوتي؟ هبعتلك 6 كابشنات قديمة من صفحتي تتعلم منهم",
+      "should_trigger": false,
+      "dialect": "eg",
+      "kind": "sibling",
+      "instead": "brand-setup"
+    },
+    {
+      "id": "t27",
+      "query": "design a landing page for my course in Figma",
+      "should_trigger": false,
+      "dialect": "en",
+      "kind": "adjacent",
+      "instead": "none"
+    },
+    {
+      "id": "t28",
+      "query": "بدّي صمم لوغو لمحلّي",
+      "should_trigger": false,
+      "dialect": "levant",
+      "kind": "adjacent",
+      "instead": "none"
+    },
+    {
+      "id": "t29",
+      "query": "صمّم لي عرضًا تقديميًا بـ PowerPoint عن خطة الشركة",
+      "should_trigger": false,
+      "dialect": "msa-white",
+      "kind": "adjacent",
+      "instead": "none"
+    },
+    {
+      "id": "t30",
+      "query": "دقق لي هالنص إملائيا: \"هذا افضل مكان للاستثمار في السعوديه\"",
+      "should_trigger": false,
+      "dialect": "gulf",
+      "kind": "sibling",
+      "instead": "arabic-proofread"
+    }
+  ],
+  "evals": [
+    {
+      "id": 1,
+      "name": "build-the-studio-from-a-valid-spec",
+      "prompt": "افتحلي الاستوديو للبوست ده. (الـspec والبراند في الفولدر الحالي: spec.json و brand.json)",
+      "expected_output": "The spec is validated first, studio.html is built, and the link goes on its own line.",
+      "files": [],
+      "fixtures": [
+        "spec.eg.8slides.json",
+        "brand.eg.creator.json"
+      ],
+      "expectations": [
+        "validate.py spec ran before build_studio.py and a BLOCK stops the build",
+        "build_studio.py ran with --view script for a guided post and produced one self-contained HTML file",
+        "Where no Artifact tool exists the reply says so instead of inventing a link",
+        "The reply does not paste the script or the caption"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "audit-needs-the-users-own-screenshots",
+      "prompt": "راجعلي كاروسيل واحد منافس وقولي ليه بينجح.",
+      "expected_output": "A polite refusal to score another person's post and an offer to audit the user's own screenshots, cover first.",
+      "files": [],
+      "behaviour": [
+        "bhv-36-audit-needs-own-screenshots"
+      ],
+      "expectations": [
+        "The reply declines to score or compare another person's post",
+        "It asks for the user's own screenshots, cover first and in order",
+        "It names what the audit covers: the seven errors and the slide count"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "exports-carry-no-credit",
+      "prompt": "جهّز البوست للنشر.",
+      "expected_output": "A publishing kit whose text files carry no owner name, no handle and no credit line.",
+      "files": [],
+      "fixtures": [
+        "spec.eg.8slides.json"
+      ],
+      "behaviour": [
+        "bhv-24-no-credit-in-exports"
+      ],
+      "expectations": [
+        "When the source files are asked for, studio-source.html is built with --credit-free (the default kit leaves it out)",
+        "Neither spelling of the owner's name, no handle and no «من صنع» line appears in any kit text file",
+        "X1 (clean export) reports no finding"
+      ]
+    }
+  ]
+}

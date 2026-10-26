@@ -1,0 +1,175 @@
+Carousel Studio (كاروسيل ستوديو)
+Copyright (c) 2026 Mohamed Abdou (محمد عبده)
+
+Carousel Studio is free software released under the Apache License,
+Version 2.0 (see the LICENSE file). The project lives at
+https://github.com/mohamedabdou-ai/carousel-studio
+
+You own everything you create with Carousel Studio.
+كل اللي بتعمله بكاروسيل ستوديو بتاعك.
+
+The names "Carousel Studio" and «كاروسيل ستوديو» and the project logo are not
+licensed under the Apache License; see TRADEMARKS.md.
+
+Carousel Studio is an independent project. It is not affiliated with,
+endorsed by or sponsored by Anthropic. "Claude" is a trademark of Anthropic.
+
+Files you export with the Studio (images, video, PDF, text, the publishing
+kit) carry only the third-party notices that the licences below require. They
+do not carry this notice or the author's name. An exported HTML or SVG file
+holds icon path data, so it ends with one comment line that names the icon
+licences (items 4 and 5) and points here. A PNG, JPEG, PDF or MP4 is a picture
+of the icons, not a copy of them, and carries nothing.
+
+===============================================================================
+THIRD-PARTY COMPONENTS
+===============================================================================
+
+1. mediabunny
+   Licence:  Mozilla Public License 2.0 (MPL-2.0)
+   Author:   Vanilagy and contributors
+   Source:   https://github.com/Vanilagy/mediabunny
+   Licence:  https://www.mozilla.org/MPL/2.0/
+   Use:      Muxes the H.264 video of the animated cover in the Studio. The
+             unmodified release 1.61.0 is loaded from the jsDelivr CDN at the
+             moment a user exports an MP4. It is not copied into, or modified
+             by, this repository.
+
+2. fflate
+   Licence:  MIT
+   Author:   Arjun Barrett
+   Source:   https://github.com/101arrowz/fflate
+   Use:      Optional compression helper, release 0.8.2, loaded unmodified
+             from the jsDelivr CDN only when the Studio needs it.
+
+3. HyperFrames
+   Licence:  Apache License 2.0
+   Author:   HeyGen
+   Source:   https://github.com/heygen-com/hyperframes
+   Use:      The animated cover (cover.hf.html) follows the HyperFrames
+             composition format. In Claude Code, the pinned HyperFrames
+             command-line tool is run on the user's own machine, with its
+             telemetry switched off; it is not distributed here. Any
+             HyperFrames code that a runtime file contains keeps its Apache-2.0
+             notice in that file.
+
+4. Lucide
+   Licence:  ISC; icons derived from Feather are also under the MIT licence
+   Author:   Lucide Icons and Contributors; Cole Bemis (Feather)
+   Source:   https://lucide.dev
+   Use:      A subset of icons in the Studio sprite (icons.svg) and in the slide
+             icon pack (data/icons/pack.json), which the Studio page carries and
+             the slides draw from. Licence text:
+
+   ISC License
+
+   Copyright (c) 2026 Lucide Icons and Contributors
+
+   Permission to use, copy, modify, and/or distribute this software for any
+   purpose with or without fee is hereby granted, provided that the above
+   copyright notice and this permission notice appear in all copies.
+
+   THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+   WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+   ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+   Icons that Lucide derived from the Feather project are covered by:
+
+   The MIT License (MIT)
+
+   Copyright (c) 2013-present Cole Bemis
+
+   Permission is hereby granted, free of charge, to any person obtaining a
+   copy of this software and associated documentation files (the "Software"),
+   to deal in the Software without restriction, including without limitation
+   the rights to use, copy, modify, merge, publish, distribute, sublicense,
+   and/or sell copies of the Software, and to permit persons to whom the
+   Software is furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in
+   all copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+   DEALINGS IN THE SOFTWARE.
+
+5. Tabler Icons
+   Licence:  MIT
+   Author:   Paweł Kuna
+   Source:   the @tabler/icons package, release 3.49.0 (outline set)
+   Use:      The outline icons of the slide icon pack (data/icons/pack.json)
+             whose names start with tb-. Licence text:
+
+   MIT License
+
+   Copyright (c) 2020-2026 Paweł Kuna
+
+   Permission is hereby granted, free of charge, to any person obtaining a
+   copy of this software and associated documentation files (the "Software"),
+   to deal in the Software without restriction, including without limitation
+   the rights to use, copy, modify, merge, publish, distribute, sublicense,
+   and/or sell copies of the Software, and to permit persons to whom the
+   Software is furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in
+   all copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+   DEALINGS IN THE SOFTWARE.
+
+6. The icons and objects drawn for Carousel Studio
+   Licence:  Apache License 2.0, the licence of this project
+   Use:      The icons whose names start with cs- and the object drawings
+             (data/icons/objects.json) were made for Carousel Studio. They need
+             no third-party notice and are listed here only so that the whole
+             icon pack is accounted for.
+
+7. Fonts
+   Licence:  SIL Open Font License, Version 1.1 (OFL-1.1)
+   Use:      Every font in skills/carousel-design/fonts/ is an unmodified
+             upstream release (never subset, renamed or re-encoded), stored
+             next to its own OFL.txt. That file holds the exact copyright
+             notice and any Reserved Font Name; for IBM Plex the reserved name
+             is "Plex". Fonts a user uploads stay on the user's device and are
+             never part of this distribution.
+
+             Family                  Folder in fonts/
+             ----------------------  ----------------------
+             IBM Plex Sans Arabic    ibm-plex-sans-arabic
+             IBM Plex Sans           ibm-plex-sans
+             Readex Pro              readex-pro
+             Alexandria              alexandria
+             Playpen Sans Arabic     playpen-sans-arabic
+             Noto Kufi Arabic        noto-kufi-arabic
+             Noto Sans Arabic        noto-sans-arabic
+             Reem Kufi               reem-kufi
+             El Messiri              el-messiri
+             Cairo                   cairo
+             Rubik                   rubik
+             Inter                   inter
+
+8. The author's own Arabic skill packs
+   Licence:  MIT, relicensed here under Apache-2.0 by the same copyright holder
+   Author:   Mohamed Abdou (محمد عبده)
+   Use:      Parts of the Arabic proofreading rules (arabic-proofread) and the
+             copy checks (carousel-create) were adapted from the author's
+             earlier packs arabic-typography-audit and arabic-ad-copywriting.
+             Copyright (c) 2026 Mohamed Abdou (محمد عبده).
+
+9. Tools on the user's machine
+   The Claude Code render lane calls Node.js, ffmpeg and a Chromium browser
+   that the user installs. They are not part of this distribution and keep
+   their own licences.

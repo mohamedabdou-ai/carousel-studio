@@ -1,0 +1,1180 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "1.0.0",
+  "dialect": "levant",
+  "label": {
+    "ar": "شامي",
+    "en": "Levantine"
+  },
+  "status": "beta",
+  "nativeReviewed": false,
+  "markers": [
+    "شو",
+    "كتير",
+    "هلق",
+    "هلأ",
+    "بدي",
+    "بدك",
+    "رح",
+    "هيك",
+    "هيدا",
+    "هاد",
+    "هاي",
+    "منيح",
+    "ليش",
+    "قديش",
+    "هون",
+    "لسا",
+    "وين"
+  ],
+  "deny": [
+    {
+      "id": "DM-LEV-001",
+      "text": "عايز",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: بدي.",
+        "en": "An Egyptian word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-002",
+      "text": "وعايز",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: بدي.",
+        "en": "An Egyptian word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-003",
+      "text": "عاوز",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: بدي.",
+        "en": "An Egyptian word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-004",
+      "text": "وعاوز",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: بدي.",
+        "en": "An Egyptian word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-005",
+      "text": "عايزة",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: بدي.",
+        "en": "An Egyptian word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-006",
+      "text": "وعايزة",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: بدي.",
+        "en": "An Egyptian word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-007",
+      "text": "عايزين",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: بدي.",
+        "en": "An Egyptian word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-008",
+      "text": "وعايزين",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: بدي.",
+        "en": "An Egyptian word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-009",
+      "text": "إزاي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: كيف.",
+        "en": "An Egyptian word in a Levantine post; use كيف."
+      },
+      "suggest": "كيف"
+    },
+    {
+      "id": "DM-LEV-010",
+      "text": "وإزاي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: كيف.",
+        "en": "An Egyptian word in a Levantine post; use كيف."
+      },
+      "suggest": "كيف"
+    },
+    {
+      "id": "DM-LEV-011",
+      "text": "ازاي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: كيف.",
+        "en": "An Egyptian word in a Levantine post; use كيف."
+      },
+      "suggest": "كيف"
+    },
+    {
+      "id": "DM-LEV-012",
+      "text": "وازاي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: كيف.",
+        "en": "An Egyptian word in a Levantine post; use كيف."
+      },
+      "suggest": "كيف"
+    },
+    {
+      "id": "DM-LEV-013",
+      "text": "دلوقتي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: هلق.",
+        "en": "An Egyptian word in a Levantine post; use هلق."
+      },
+      "suggest": "هلق"
+    },
+    {
+      "id": "DM-LEV-014",
+      "text": "ودلوقتي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: هلق.",
+        "en": "An Egyptian word in a Levantine post; use هلق."
+      },
+      "suggest": "هلق"
+    },
+    {
+      "id": "DM-LEV-015",
+      "text": "دلوقت",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: هلق.",
+        "en": "An Egyptian word in a Levantine post; use هلق."
+      },
+      "suggest": "هلق"
+    },
+    {
+      "id": "DM-LEV-016",
+      "text": "ودلوقت",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: هلق.",
+        "en": "An Egyptian word in a Levantine post; use هلق."
+      },
+      "suggest": "هلق"
+    },
+    {
+      "id": "DM-LEV-017",
+      "text": "كده",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: هيك.",
+        "en": "An Egyptian word in a Levantine post; use هيك."
+      },
+      "suggest": "هيك"
+    },
+    {
+      "id": "DM-LEV-018",
+      "text": "وكده",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: هيك.",
+        "en": "An Egyptian word in a Levantine post; use هيك."
+      },
+      "suggest": "هيك"
+    },
+    {
+      "id": "DM-LEV-019",
+      "text": "كدا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: هيك.",
+        "en": "An Egyptian word in a Levantine post; use هيك."
+      },
+      "suggest": "هيك"
+    },
+    {
+      "id": "DM-LEV-020",
+      "text": "وكدا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: هيك.",
+        "en": "An Egyptian word in a Levantine post; use هيك."
+      },
+      "suggest": "هيك"
+    },
+    {
+      "id": "DM-LEV-021",
+      "text": "ده",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: هيدا / هاد / هاي.",
+        "en": "An Egyptian word in a Levantine post; use هيدا / هاد / هاي."
+      },
+      "suggest": "هيدا / هاد / هاي"
+    },
+    {
+      "id": "DM-LEV-022",
+      "text": "وده",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: هيدا / هاد / هاي.",
+        "en": "An Egyptian word in a Levantine post; use هيدا / هاد / هاي."
+      },
+      "suggest": "هيدا / هاد / هاي"
+    },
+    {
+      "id": "DM-LEV-023",
+      "text": "دي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: هيدا / هاد / هاي.",
+        "en": "An Egyptian word in a Levantine post; use هيدا / هاد / هاي."
+      },
+      "suggest": "هيدا / هاد / هاي"
+    },
+    {
+      "id": "DM-LEV-030",
+      "text": "فين",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: وين.",
+        "en": "An Egyptian word in a Levantine post; use وين."
+      },
+      "suggest": "وين"
+    },
+    {
+      "id": "DM-LEV-031",
+      "text": "وفين",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: وين.",
+        "en": "An Egyptian word in a Levantine post; use وين."
+      },
+      "suggest": "وين"
+    },
+    {
+      "id": "DM-LEV-032",
+      "text": "بتاع",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: حق / تبع.",
+        "en": "An Egyptian word in a Levantine post; use حق / تبع."
+      },
+      "suggest": "حق / تبع"
+    },
+    {
+      "id": "DM-LEV-033",
+      "text": "وبتاع",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: حق / تبع.",
+        "en": "An Egyptian word in a Levantine post; use حق / تبع."
+      },
+      "suggest": "حق / تبع"
+    },
+    {
+      "id": "DM-LEV-034",
+      "text": "بتاعت",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: حق / تبع.",
+        "en": "An Egyptian word in a Levantine post; use حق / تبع."
+      },
+      "suggest": "حق / تبع"
+    },
+    {
+      "id": "DM-LEV-035",
+      "text": "وبتاعت",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: حق / تبع.",
+        "en": "An Egyptian word in a Levantine post; use حق / تبع."
+      },
+      "suggest": "حق / تبع"
+    },
+    {
+      "id": "DM-LEV-036",
+      "text": "بتاعة",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: حق / تبع.",
+        "en": "An Egyptian word in a Levantine post; use حق / تبع."
+      },
+      "suggest": "حق / تبع"
+    },
+    {
+      "id": "DM-LEV-037",
+      "text": "وبتاعة",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: حق / تبع.",
+        "en": "An Egyptian word in a Levantine post; use حق / تبع."
+      },
+      "suggest": "حق / تبع"
+    },
+    {
+      "id": "DM-LEV-038",
+      "text": "أوي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: كتير.",
+        "en": "An Egyptian word in a Levantine post; use كتير."
+      },
+      "suggest": "كتير"
+    },
+    {
+      "id": "DM-LEV-039",
+      "text": "وأوي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: كتير.",
+        "en": "An Egyptian word in a Levantine post; use كتير."
+      },
+      "suggest": "كتير"
+    },
+    {
+      "id": "DM-LEV-040",
+      "text": "اوي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: كتير.",
+        "en": "An Egyptian word in a Levantine post; use كتير."
+      },
+      "suggest": "كتير"
+    },
+    {
+      "id": "DM-LEV-041",
+      "text": "واوي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: كتير.",
+        "en": "An Egyptian word in a Levantine post; use كتير."
+      },
+      "suggest": "كتير"
+    },
+    {
+      "id": "DM-LEV-042",
+      "text": "وايد",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: كتير.",
+        "en": "A Gulf word in a Levantine post; use كتير."
+      },
+      "suggest": "كتير"
+    },
+    {
+      "id": "DM-LEV-043",
+      "text": "الحين",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: هلق.",
+        "en": "A Gulf word in a Levantine post; use هلق."
+      },
+      "suggest": "هلق"
+    },
+    {
+      "id": "DM-LEV-044",
+      "text": "والحين",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: هلق.",
+        "en": "A Gulf word in a Levantine post; use هلق."
+      },
+      "suggest": "هلق"
+    },
+    {
+      "id": "DM-LEV-045",
+      "text": "شلون",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: كيف.",
+        "en": "A Gulf word in a Levantine post; use كيف."
+      },
+      "suggest": "كيف"
+    },
+    {
+      "id": "DM-LEV-046",
+      "text": "وشلون",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: كيف.",
+        "en": "A Gulf word in a Levantine post; use كيف."
+      },
+      "suggest": "كيف"
+    },
+    {
+      "id": "DM-LEV-047",
+      "text": "شنو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: شو.",
+        "en": "A Gulf word in a Levantine post; use شو."
+      },
+      "suggest": "شو"
+    },
+    {
+      "id": "DM-LEV-048",
+      "text": "وشنو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: شو.",
+        "en": "A Gulf word in a Levantine post; use شو."
+      },
+      "suggest": "شو"
+    },
+    {
+      "id": "DM-LEV-049",
+      "text": "وش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: شو.",
+        "en": "A Gulf word in a Levantine post; use شو."
+      },
+      "suggest": "شو"
+    },
+    {
+      "id": "DM-LEV-050",
+      "text": "أبي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: بدي.",
+        "en": "A Gulf word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-051",
+      "text": "وأبي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: بدي.",
+        "en": "A Gulf word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-052",
+      "text": "ابي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: بدي.",
+        "en": "A Gulf word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-053",
+      "text": "وابي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: بدي.",
+        "en": "A Gulf word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-054",
+      "text": "أبغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: بدي.",
+        "en": "A Gulf word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-055",
+      "text": "وأبغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: بدي.",
+        "en": "A Gulf word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-056",
+      "text": "ابغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: بدي.",
+        "en": "A Gulf word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-057",
+      "text": "وابغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: بدي.",
+        "en": "A Gulf word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-058",
+      "text": "تبي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: بدي.",
+        "en": "A Gulf word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-059",
+      "text": "وتبي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: بدي.",
+        "en": "A Gulf word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-060",
+      "text": "تبغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: بدي.",
+        "en": "A Gulf word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-061",
+      "text": "وتبغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: بدي.",
+        "en": "A Gulf word in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "DM-LEV-062",
+      "text": "مب",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: مش.",
+        "en": "A Gulf word in a Levantine post; use مش."
+      },
+      "suggest": "مش"
+    },
+    {
+      "id": "DM-LEV-063",
+      "text": "ومب",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: مش.",
+        "en": "A Gulf word in a Levantine post; use مش."
+      },
+      "suggest": "مش"
+    },
+    {
+      "id": "DM-LEV-064",
+      "text": "ماكو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عراقية في منشور شامي؛ البديل: مافي.",
+        "en": "An Iraqi word in a Levantine post; use مافي."
+      },
+      "suggest": "مافي"
+    },
+    {
+      "id": "DM-LEV-065",
+      "text": "وماكو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عراقية في منشور شامي؛ البديل: مافي.",
+        "en": "An Iraqi word in a Levantine post; use مافي."
+      },
+      "suggest": "مافي"
+    },
+    {
+      "id": "DM-LEV-066",
+      "text": "بزاف",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مغاربية في منشور شامي؛ البديل: كتير.",
+        "en": "A Maghrebi word in a Levantine post; use كتير."
+      },
+      "suggest": "كتير"
+    },
+    {
+      "id": "DM-LEV-067",
+      "text": "وبزاف",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مغاربية في منشور شامي؛ البديل: كتير.",
+        "en": "A Maghrebi word in a Levantine post; use كتير."
+      },
+      "suggest": "كتير"
+    },
+    {
+      "id": "DM-LEV-068",
+      "text": "دابا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مغاربية في منشور شامي؛ البديل: هلق.",
+        "en": "A Maghrebi word in a Levantine post; use هلق."
+      },
+      "suggest": "هلق"
+    },
+    {
+      "id": "DM-LEV-069",
+      "text": "ودابا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مغاربية في منشور شامي؛ البديل: هلق.",
+        "en": "A Maghrebi word in a Levantine post; use هلق."
+      },
+      "suggest": "هلق"
+    }
+  ],
+  "warn": [
+    {
+      "id": "WM-LEV-001",
+      "text": "ليه",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: ليش.",
+        "en": "An Egyptian word in a Levantine post; use ليش."
+      },
+      "suggest": "ليش"
+    },
+    {
+      "id": "WM-LEV-002",
+      "text": "وليه",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: ليش.",
+        "en": "An Egyptian word in a Levantine post; use ليش."
+      },
+      "suggest": "ليش"
+    },
+    {
+      "id": "WM-LEV-003",
+      "text": "لسه",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: لسا.",
+        "en": "An Egyptian word in a Levantine post; use لسا."
+      },
+      "suggest": "لسا"
+    },
+    {
+      "id": "WM-LEV-004",
+      "text": "ولسه",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: لسا.",
+        "en": "An Egyptian word in a Levantine post; use لسا."
+      },
+      "suggest": "لسا"
+    },
+    {
+      "id": "WM-LEV-005",
+      "text": "إمتى",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: إيمتى.",
+        "en": "An Egyptian word in a Levantine post; use إيمتى."
+      },
+      "suggest": "إيمتى"
+    },
+    {
+      "id": "WM-LEV-006",
+      "text": "وإمتى",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: إيمتى.",
+        "en": "An Egyptian word in a Levantine post; use إيمتى."
+      },
+      "suggest": "إيمتى"
+    },
+    {
+      "id": "WM-LEV-007",
+      "text": "امتى",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: إيمتى.",
+        "en": "An Egyptian word in a Levantine post; use إيمتى."
+      },
+      "suggest": "إيمتى"
+    },
+    {
+      "id": "WM-LEV-008",
+      "text": "وامتى",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة مصرية في منشور شامي؛ البديل: إيمتى.",
+        "en": "An Egyptian word in a Levantine post; use إيمتى."
+      },
+      "suggest": "إيمتى"
+    },
+    {
+      "id": "WM-LEV-009",
+      "text": "زين",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: منيح.",
+        "en": "A Gulf word in a Levantine post; use منيح."
+      },
+      "suggest": "منيح"
+    },
+    {
+      "id": "WM-LEV-010",
+      "text": "وزين",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: منيح.",
+        "en": "A Gulf word in a Levantine post; use منيح."
+      },
+      "suggest": "منيح"
+    },
+    {
+      "id": "WM-LEV-011",
+      "text": "مو",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: مش.",
+        "en": "A Gulf word in a Levantine post; use مش."
+      },
+      "suggest": "مش"
+    },
+    {
+      "id": "WM-LEV-012",
+      "text": "ومو",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة خليجية في منشور شامي؛ البديل: مش.",
+        "en": "A Gulf word in a Levantine post; use مش."
+      },
+      "suggest": "مش"
+    },
+    {
+      "id": "WM-LEV-013",
+      "text": "لماذا",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: ليش.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use ليش."
+      },
+      "suggest": "ليش"
+    },
+    {
+      "id": "WM-LEV-014",
+      "text": "ولماذا",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: ليش.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use ليش."
+      },
+      "suggest": "ليش"
+    },
+    {
+      "id": "WM-LEV-015",
+      "text": "ماذا",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: شو.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use شو."
+      },
+      "suggest": "شو"
+    },
+    {
+      "id": "WM-LEV-016",
+      "text": "وماذا",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: شو.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use شو."
+      },
+      "suggest": "شو"
+    },
+    {
+      "id": "WM-LEV-017",
+      "text": "سوف",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: رح.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use رح."
+      },
+      "suggest": "رح"
+    },
+    {
+      "id": "WM-LEV-018",
+      "text": "وسوف",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: رح.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use رح."
+      },
+      "suggest": "رح"
+    },
+    {
+      "id": "WM-LEV-019",
+      "text": "أريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: بدي.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "WM-LEV-020",
+      "text": "وأريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: بدي.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "WM-LEV-021",
+      "text": "تريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: بدي.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "WM-LEV-022",
+      "text": "وتريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: بدي.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "WM-LEV-023",
+      "text": "يريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: بدي.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "WM-LEV-024",
+      "text": "ويريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: بدي.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use بدي."
+      },
+      "suggest": "بدي"
+    },
+    {
+      "id": "WM-LEV-025",
+      "text": "نريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: بدنا.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use بدنا."
+      },
+      "suggest": "بدنا"
+    },
+    {
+      "id": "WM-LEV-026",
+      "text": "ونريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: بدنا.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use بدنا."
+      },
+      "suggest": "بدنا"
+    },
+    {
+      "id": "WM-LEV-027",
+      "text": "الآن",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: هلق.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use هلق."
+      },
+      "suggest": "هلق"
+    },
+    {
+      "id": "WM-LEV-028",
+      "text": "والآن",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: هلق.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use هلق."
+      },
+      "suggest": "هلق"
+    },
+    {
+      "id": "WM-LEV-029",
+      "text": "الان",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: هلق.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use هلق."
+      },
+      "suggest": "هلق"
+    },
+    {
+      "id": "WM-LEV-030",
+      "text": "والان",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: هلق.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use هلق."
+      },
+      "suggest": "هلق"
+    },
+    {
+      "id": "WM-LEV-031",
+      "text": "كثيرا",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: كتير.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use كتير."
+      },
+      "suggest": "كتير"
+    },
+    {
+      "id": "WM-LEV-032",
+      "text": "وكثيرا",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور شامي؛ البديل: كتير.",
+        "en": "A formal MSA word that reads stiff in a Levantine post; use كتير."
+      },
+      "suggest": "كتير"
+    },
+    {
+      "id": "WM-LEV-033",
+      "text": "إيه",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "«إيه» تعني «نعم» في الشامي أيضًا؛ إن قُصد بها «ماذا» فالبديل: شو.",
+        "en": "«إيه» also means “yes” in Levantine speech; if “what” is meant, use شو."
+      },
+      "suggest": "شو"
+    },
+    {
+      "id": "WM-LEV-034",
+      "text": "وإيه",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "«إيه» تعني «نعم» في الشامي أيضًا؛ إن قُصد بها «ماذا» فالبديل: شو.",
+        "en": "«إيه» also means “yes” in Levantine speech; if “what” is meant, use شو."
+      },
+      "suggest": "شو"
+    },
+    {
+      "id": "WM-LEV-035",
+      "text": "ايه",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "«إيه» تعني «نعم» في الشامي أيضًا؛ إن قُصد بها «ماذا» فالبديل: شو.",
+        "en": "«إيه» also means “yes” in Levantine speech; if “what” is meant, use شو."
+      },
+      "suggest": "شو"
+    },
+    {
+      "id": "WM-LEV-036",
+      "text": "وايه",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "«إيه» تعني «نعم» في الشامي أيضًا؛ إن قُصد بها «ماذا» فالبديل: شو.",
+        "en": "«إيه» also means “yes” in Levantine speech; if “what” is meant, use شو."
+      },
+      "suggest": "شو"
+    },
+    {
+      "id": "WM-LEV-037",
+      "pattern": "(^|[^\\u0621-\\u064A])(رح|راح|كرمال|لحتى|بدي)[ \\t\\n]+[اإ][ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكمهوى][\\u0621-\\u064A]+($|[^\\u0621-\\u064A])",
+      "flags": "u",
+      "match": "regex",
+      "sev": "FIX",
+      "note": {
+        "ar": "المتكلم المفرد في المضارع يحتفظ بالهمزة: «رح أكتب، كرمال أعرض».",
+        "en": "First-person present keeps its hamza: رح أكتب, كرمال أعرض."
+      },
+      "suggest": "أضف الهمزة (أ)"
+    }
+  ],
+  "lexicon": {
+    "not": [
+      "مش"
+    ],
+    "will": [
+      "رح",
+      "بـ"
+    ],
+    "want": [
+      "بدك"
+    ],
+    "think-that": [
+      "مفكر إنو"
+    ],
+    "thing": [
+      "شغلة",
+      "شغلات"
+    ],
+    "how": [
+      "كيف"
+    ],
+    "why": [
+      "ليش"
+    ],
+    "now": [
+      "هلق"
+    ],
+    "a-lot": [
+      "كتير"
+    ],
+    "do": [
+      "تعمل"
+    ],
+    "before": [
+      "قبل ما"
+    ],
+    "free": [
+      "ببلاش"
+    ],
+    "this": [
+      "هيدا",
+      "هاد"
+    ]
+  },
+  "cta": {
+    "save": [
+      "احفظ البوست لحد ما تحتاجه",
+      "احفظه وارجع له وقت الشغل",
+      "احفظه للمرة الجاية"
+    ],
+    "send": [
+      "ابعته لـ{who}",
+      "ابعته لـ{who} اللي محتاجه",
+      "ابعته لـ{who} {reason}"
+    ],
+    "question": [
+      "{question} اكتب جوابك بسطر واحد",
+      "{question} خبرنا رأيك بالتعليقات"
+    ],
+    "keyword-dm": [
+      "اكتب «{keyword}» بالتعليقات وبيوصلك {asset} عالخاص فورا"
+    ],
+    "follow": [
+      "تابعني ليوصلك {series}",
+      "{series} الجاي {day}"
+    ]
+  },
+  "registerNotes": {
+    "ar": "شامي عام: النفي «مش»، المستقبل «رح»، و«كتير، هلق، بدي، شو، ليش». اللبناني والسوري يختلفان في الإشارة («هيدا» مقابل «هاد») ويضبطهما الاختيار الفرعي. تجريبي حتى يراجعه متحدث شامي.",
+    "en": "General Levantine: negation «مش», future «رح», plus «كتير، هلق، بدي، شو، ليش». Lebanese and Syrian differ in the demonstrative («هيدا» vs «هاد»), which the sub-variety setting fixes. Beta until a Levantine native has reviewed it."
+  },
+  "subVarieties": {
+    "lebanese": {
+      "prefer": [
+        "هيدا",
+        "هيدي",
+        "هلق",
+        "شو",
+        "كتير",
+        "بدي"
+      ],
+      "avoid": [
+        "هاد",
+        "هسا"
+      ],
+      "note": {
+        "ar": "لبناني: «هيدا» و«هلق».",
+        "en": "Lebanese: «هيدا», «هلق»."
+      }
+    },
+    "syrian": {
+      "prefer": [
+        "هاد",
+        "هاي",
+        "هلق",
+        "شو",
+        "كتير",
+        "بدي"
+      ],
+      "avoid": [
+        "هيدا"
+      ],
+      "note": {
+        "ar": "سوري: «هاد» و«هاي».",
+        "en": "Syrian: «هاد», «هاي»."
+      }
+    }
+  }
+}

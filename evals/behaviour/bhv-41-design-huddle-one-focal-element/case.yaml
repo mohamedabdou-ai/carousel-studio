@@ -1,0 +1,73 @@
+schema_version: "1.0"
+name: bhv-41-design-huddle-one-focal-element
+description: "Before rendering, the art director and the motion designer each name the cover's focal element, agree on the same one in the same words, and the motion designer writes a six-frame storyboard at fixed times."
+tags: [behaviour, needs-bash, carousel-create, creative-team, design-huddle]
+plugins: ["../../../plugins/carousel-studio"]
+execution:
+  prompt: |
+    ده كابسول البراند بتاعي (ملف المشروع):
+
+        [Carousel Studio brand capsule v1]
+        brand: ورشة المحتوى (content-workshop) | dialect: eg | register: dialect | digits: western | swipe: arrow-rtl
+        voice: ودود وعملي، جمل قصيرة. نستخدم «ببلاش» و«جرّب». لا نستخدم «ثورة» ولا «سر».
+        palette: bg #F4F4F2 ink #111111 accent #E3262B | fonts: ibm-plex-sans-arabic / readex-pro / inter | preset: swiss
+        home: -
+
+    بسرعة: كاروسيل 8 سلايدات عن 5 أخطاء بتموّت الكاروسيل. عايز اتفاق بين التصميم والحركة على عنصر واحد يبقى بطل الغلاف، واعرضلي ستوري بورد الحركة.
+  append_system_prompt: |
+    This is an automated evaluation of the Carousel Studio plugin, not a live session. There is no Artifact tool, no network access and no connected image, video or design tool. Save every file you create in the current working directory and never in a home folder: name the post spec spec.json, the production board board.md, a brand profile brand.json and a plan plan-YYYY-MM.json, and when a script offers a workspace or root option (for example brand_io.py --dir) point it at the current directory. Subagents may be unavailable: when they are, run each team role as an explicit role pass, as the skill says. Otherwise answer the user exactly as you normally would.
+  max_turns: 80
+  timeout_seconds: 1800
+  allowed_tools: [Skill, Read, Write, Edit, Bash, Glob, Grep, Agent]
+runs: 2
+graders:
+  - type: tool_used
+    name: uses-carousel-create
+    tool: Skill
+    input_match: 'carousel-create'
+    min: 1
+  - type: regex
+    name: huddle-section
+    pattern: '\{#huddle\}'
+    match: contains
+    target: {source: file, path: board.md}
+    weight: 2
+  - type: regex
+    name: two-huddle-lines
+    pattern: '(?s)المدير الفني ✓.*مصمم الحركة ✓'
+    match: contains
+    target: {source: file, path: board.md}
+    weight: 2
+  - type: regex
+    name: storyboard-first-and-last-frame
+    pattern: '(?s)0\.0s\s*—.*5\.9s\s*—'
+    match: contains
+    target: {source: file, path: board.md}
+    weight: 2
+  - type: tool_used
+    name: runs-the-board-checker
+    tool: Bash
+    input_match: 'board_check\.py'
+    min: 1
+    weight: 2
+  - type: llm
+    name: one-focal-element
+    criteria: |
+      The art director and the motion designer name the SAME single focal element of the cover (a noun phrase from the cover, for example the number or one word), in the same words, and one motion metaphor that tells the same story.
+    weight: 2
+  - type: llm
+    name: six-frame-storyboard
+    criteria: |
+      A storyboard of six frames at 0.0, 0.4, 1.5, 3.0, 4.5 and 5.9 seconds is given, the first and the last being the finished cover, each frame a short line saying what is on screen and what moves.
+    weight: 2
+  - type: regex
+    name: no-calm-by-default
+    pattern: '(?i)(recipe\W+calm\b|الوصفة:\s*calm)'
+    match: not_contains
+    weight: 2
+  - type: regex
+    name: no-author-credit
+    pattern: 'محمد عبده|Mohamed Abdou'
+    match: not_contains
+    weight: 2
+expected_outcome: "One agreed focal element in the same words, one metaphor and a six-frame storyboard at the six times."

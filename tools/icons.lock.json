@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "note": "Pins the two vendored icon packages that tools/build-icons.mjs reads. The build verifies the SHA-256 of each tarball and of the single JSON file it reads from the extracted package (never an .svg, never a package script) and refuses to run on any difference. The packages live outside the repository (research/vendor); override the folder with --vendor or CS_ICON_VENDOR.",
+  "sources": {
+    "lucide": {
+      "package": "lucide-static",
+      "version": "1.53.0",
+      "license": "ISC",
+      "dir": "lucide-static-1.53.0",
+      "tarball": {
+        "file": "lucide-static-1.53.0.tgz",
+        "sha256": "fe3788dfbfd332b91a58a5fec6b257dcd41ddef553c0dbdc1ed166a0eb657600"
+      },
+      "nodes": {
+        "file": "package/icon-nodes.json",
+        "sha256": "9f6707e56950a20355d33674f38064e878cdef3fb1d46e1761c896583ef00876"
+      }
+    },
+    "tabler": {
+      "package": "@tabler/icons",
+      "version": "3.49.0",
+      "license": "MIT",
+      "dir": "tabler-icons-3.49.0",
+      "tarball": {
+        "file": "tabler-icons-3.49.0.tgz",
+        "sha256": "aa3042907eb0bdb079fd70733e2d75f785683d4726279128a0ca2343099f7074"
+      },
+      "nodes": {
+        "file": "package/tabler-nodes-outline.json",
+        "sha256": "5a2c7e18f3ce5d49115bddd046b4a81cc9752b30acbb29aa7118c4dfc83df1ba"
+      }
+    }
+  }
+}

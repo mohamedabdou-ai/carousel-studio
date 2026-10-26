@@ -1,0 +1,847 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "1.0.0",
+  "description": "Where the text of each slide sits for every preset, so a generated plate keeps that part calm. Read by the visual-prompts skill when it writes a prompt card, and the source of the calm-zone declaration that the A1 backstop requires for every plate under text. Boxes are canvas pixels on the 1080x1440 design; 'start' and 'end' are logical (start is the right-hand side in Arabic).",
+  "derivedFrom": "Each preset's variant list and the text anchoring of the archetype layouts (templates/archetypes.html). If a preset or a layout changes, regenerate this file; the preset wins over any row here.",
+  "howToUse": "Take presets.<preset>.<slide type>. If the slide's variant is listed under 'variants', use that row's zone and coverage; otherwise use the row itself. Store 'zone' in slide.media.calmZone.",
+  "canvas": {"w": 1080, "h": 1440},
+  "mediaTypes": ["cover", "rehook", "item", "step", "story-beat", "quote", "testimonial", "poster", "proof", "grid", "timeline"],
+  "fields": {
+    "zone": "value stored in slide.media.calmZone: top, bottom, start, end, center or none",
+    "coverage": "share of the canvas along the zone's axis that must stay calm (top and bottom: of the height; center: height of a centred band, 1.0 = the whole frame; start and end: of the width)",
+    "use": "texture = tonal texture only, no subject; scene = a subject lives outside the calm zone; slot = fills a media slot with no text on it",
+    "scrim": "none, or soft (the engine may add a light ink-tinted gradient under the text)",
+    "subject": "where the plate's interest should be: top, bottom, edges or none",
+    "defaultVariant": "the preset's default variant for this slide type"
+  },
+  "zones": {
+    "top": {
+      "sampleCoverage": 0.55,
+      "sampleBox": {"x": 0, "y": 0, "w": 1080, "h": 792},
+      "phrase": "the upper 55% of the frame is calm, low-detail negative space (a smooth tonal gradient, no objects, no high-contrast edges); the subject sits in the lower part"
+    },
+    "bottom": {
+      "sampleCoverage": 0.55,
+      "sampleBox": {"x": 0, "y": 648, "w": 1080, "h": 792},
+      "phrase": "the lower 55% of the frame is calm, low-detail negative space (a smooth tonal gradient, no objects, no high-contrast edges); the subject sits in the upper part"
+    },
+    "center": {
+      "sampleCoverage": 0.6,
+      "sampleBox": {"x": 0, "y": 288, "w": 1080, "h": 864},
+      "phrase": "a central horizontal band, 60% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges"
+    },
+    "start": {
+      "sampleCoverage": 0.5,
+      "sampleBox": {
+        "rtl": {"x": 540, "y": 0, "w": 540, "h": 1440},
+        "ltr": {"x": 0, "y": 0, "w": 540, "h": 1440}
+      },
+      "phrase": "the start 50% of the width is calm low-detail negative space; the subject sits on the opposite side (for Arabic posts the start side is the right-hand side)"
+    },
+    "end": {
+      "sampleCoverage": 0.5,
+      "sampleBox": {
+        "rtl": {"x": 0, "y": 0, "w": 540, "h": 1440},
+        "ltr": {"x": 540, "y": 0, "w": 540, "h": 1440}
+      },
+      "phrase": "the end 50% of the width is calm low-detail negative space; the subject sits on the opposite side (for Arabic posts the start side is the right-hand side)"
+    },
+    "none": {"meaning": "the plate fills a media slot and no text sits on it; no calm zone is needed", "phrase": ""}
+  },
+  "presets": {
+    "swiss": {
+      "_note": "typographic preset: a plate is only a flat tonal texture behind the whole slide, never a subject",
+      "_variants": "default variant of each type = first entry of the preset's own variant list",
+      "cover": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "top"
+      },
+      "rehook": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "base"
+      },
+      "item": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "ghost-number"
+      },
+      "step": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "ghost-number"
+      },
+      "story-beat": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "base"
+      },
+      "grid": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "bento"
+      },
+      "timeline": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "rail"
+      },
+      "quote": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "mark"
+      },
+      "testimonial": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "base"
+      },
+      "poster": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "top"
+      },
+      "proof": {
+        "zone": "none",
+        "coverage": 0,
+        "use": "slot",
+        "scrim": "none",
+        "subject": "none",
+        "note": "a proof slide holds a real screenshot, never an AI plate"
+      }
+    },
+    "creator": {
+      "_note": "face cutout and number bar: text above, the person or subject at the bottom",
+      "_variants": "default variant of each type = first entry of the preset's own variant list",
+      "cover": {
+        "zone": "top",
+        "coverage": 0.55,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "bottom",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 792},
+        "phrase": "the upper 55% of the frame is calm, low-detail negative space (a smooth tonal gradient, no objects, no high-contrast edges); the subject sits in the lower part",
+        "defaultVariant": "top",
+        "variants": {
+          "photo": {
+            "zone": "bottom",
+            "coverage": 0.55,
+            "subject": "top",
+            "box": {"x": 0, "y": 648, "w": 1080, "h": 792},
+            "phrase": "the lower 55% of the frame is calm, low-detail negative space (a smooth tonal gradient, no objects, no high-contrast edges); the subject sits in the upper part"
+          }
+        }
+      },
+      "rehook": {
+        "zone": "center",
+        "coverage": 0.55,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "edges",
+        "box": {"x": 0, "y": 324, "w": 1080, "h": 792},
+        "phrase": "a central horizontal band, 55% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges",
+        "defaultVariant": "base",
+        "variants": {
+          "split": {
+            "zone": "top",
+            "coverage": 0.5,
+            "subject": "bottom",
+            "box": {"x": 0, "y": 0, "w": 1080, "h": 720},
+            "phrase": "the upper 50% of the frame is calm, low-detail negative space (a smooth tonal gradient, no objects, no high-contrast edges); the subject sits in the lower part"
+          }
+        }
+      },
+      "item": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "side-number"
+      },
+      "step": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "pill"
+      },
+      "story-beat": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "panel"
+      },
+      "grid": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "bento"
+      },
+      "timeline": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "rail"
+      },
+      "quote": {
+        "zone": "bottom",
+        "coverage": 0.55,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "top",
+        "box": {"x": 0, "y": 648, "w": 1080, "h": 792},
+        "phrase": "the lower 55% of the frame is calm, low-detail negative space (a smooth tonal gradient, no objects, no high-contrast edges); the subject sits in the upper part",
+        "defaultVariant": "photo",
+        "variants": {
+          "mark": {
+            "zone": "center",
+            "coverage": 0.6,
+            "subject": "edges",
+            "box": {"x": 0, "y": 288, "w": 1080, "h": 864},
+            "phrase": "a central horizontal band, 60% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges"
+          },
+          "base": {
+            "zone": "center",
+            "coverage": 0.6,
+            "subject": "edges",
+            "box": {"x": 0, "y": 288, "w": 1080, "h": 864},
+            "phrase": "a central horizontal band, 60% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges"
+          }
+        }
+      },
+      "testimonial": {
+        "zone": "center",
+        "coverage": 0.6,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "edges",
+        "box": {"x": 0, "y": 288, "w": 1080, "h": 864},
+        "phrase": "a central horizontal band, 60% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges",
+        "defaultVariant": "photo"
+      },
+      "poster": {
+        "zone": "top",
+        "coverage": 0.55,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "bottom",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 792},
+        "phrase": "the upper 55% of the frame is calm, low-detail negative space (a smooth tonal gradient, no objects, no high-contrast edges); the subject sits in the lower part",
+        "defaultVariant": "top",
+        "variants": {
+          "photo": {
+            "zone": "bottom",
+            "coverage": 0.55,
+            "subject": "top",
+            "box": {"x": 0, "y": 648, "w": 1080, "h": 792},
+            "phrase": "the lower 55% of the frame is calm, low-detail negative space (a smooth tonal gradient, no objects, no high-contrast edges); the subject sits in the upper part"
+          },
+          "center": {
+            "zone": "center",
+            "coverage": 0.5,
+            "subject": "edges",
+            "box": {"x": 0, "y": 360, "w": 1080, "h": 720},
+            "phrase": "a central horizontal band, 50% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges"
+          }
+        }
+      },
+      "proof": {
+        "zone": "none",
+        "coverage": 0,
+        "use": "slot",
+        "scrim": "none",
+        "subject": "none",
+        "note": "a proof slide holds a real screenshot, never an AI plate"
+      }
+    },
+    "notebook": {
+      "_note": "ruled paper and ink: a plate is a paper or desk texture under everything, never a subject",
+      "_variants": "default variant of each type = first entry of the preset's own variant list",
+      "cover": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "top"
+      },
+      "rehook": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "base"
+      },
+      "item": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "base"
+      },
+      "step": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "pill"
+      },
+      "story-beat": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "panel"
+      },
+      "grid": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "bento"
+      },
+      "timeline": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "rail"
+      },
+      "quote": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "base"
+      },
+      "testimonial": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "card"
+      },
+      "poster": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "none",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "top"
+      },
+      "proof": {
+        "zone": "none",
+        "coverage": 0,
+        "use": "slot",
+        "scrim": "none",
+        "subject": "none",
+        "note": "a proof slide holds a real screenshot, never an AI plate"
+      }
+    },
+    "poster": {
+      "_note": "cream infographic: headline on top, objects used as a chart along the bottom",
+      "_variants": "default variant of each type = first entry of the preset's own variant list",
+      "cover": {
+        "zone": "top",
+        "coverage": 0.55,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "bottom",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 792},
+        "phrase": "the upper 55% of the frame is calm, low-detail negative space (a smooth tonal gradient, no objects, no high-contrast edges); the subject sits in the lower part",
+        "defaultVariant": "top",
+        "variants": {
+          "center": {
+            "zone": "center",
+            "coverage": 0.5,
+            "subject": "edges",
+            "box": {"x": 0, "y": 360, "w": 1080, "h": 720},
+            "phrase": "a central horizontal band, 50% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges"
+          }
+        }
+      },
+      "rehook": {
+        "zone": "center",
+        "coverage": 0.55,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "edges",
+        "box": {"x": 0, "y": 324, "w": 1080, "h": 792},
+        "phrase": "a central horizontal band, 55% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges",
+        "defaultVariant": "base"
+      },
+      "item": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "side-number"
+      },
+      "step": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "pill"
+      },
+      "story-beat": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "base"
+      },
+      "grid": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "bento"
+      },
+      "timeline": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "rail"
+      },
+      "quote": {
+        "zone": "center",
+        "coverage": 0.6,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "edges",
+        "box": {"x": 0, "y": 288, "w": 1080, "h": 864},
+        "phrase": "a central horizontal band, 60% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges",
+        "defaultVariant": "base"
+      },
+      "testimonial": {
+        "zone": "center",
+        "coverage": 0.6,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "edges",
+        "box": {"x": 0, "y": 288, "w": 1080, "h": 864},
+        "phrase": "a central horizontal band, 60% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges",
+        "defaultVariant": "card"
+      },
+      "poster": {
+        "zone": "top",
+        "coverage": 0.55,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "bottom",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 792},
+        "phrase": "the upper 55% of the frame is calm, low-detail negative space (a smooth tonal gradient, no objects, no high-contrast edges); the subject sits in the lower part",
+        "defaultVariant": "top",
+        "variants": {
+          "center": {
+            "zone": "center",
+            "coverage": 0.5,
+            "subject": "edges",
+            "box": {"x": 0, "y": 360, "w": 1080, "h": 720},
+            "phrase": "a central horizontal band, 50% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges"
+          }
+        }
+      },
+      "proof": {
+        "zone": "none",
+        "coverage": 0,
+        "use": "slot",
+        "scrim": "none",
+        "subject": "none",
+        "note": "a proof slide holds a real screenshot, never an AI plate"
+      }
+    },
+    "interface": {
+      "_note": "a window or post cards sit in the middle: the plate is the wallpaper around them",
+      "_variants": "default variant of each type = first entry of the preset's own variant list",
+      "cover": {
+        "zone": "top",
+        "coverage": 0.55,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "bottom",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 792},
+        "phrase": "the upper 55% of the frame is calm, low-detail negative space (a smooth tonal gradient, no objects, no high-contrast edges); the subject sits in the lower part",
+        "defaultVariant": "top",
+        "variants": {
+          "center": {
+            "zone": "center",
+            "coverage": 0.5,
+            "subject": "edges",
+            "box": {"x": 0, "y": 360, "w": 1080, "h": 720},
+            "phrase": "a central horizontal band, 50% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges"
+          }
+        }
+      },
+      "rehook": {
+        "zone": "center",
+        "coverage": 0.55,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "edges",
+        "box": {"x": 0, "y": 324, "w": 1080, "h": 792},
+        "phrase": "a central horizontal band, 55% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges",
+        "defaultVariant": "base",
+        "variants": {
+          "split": {
+            "zone": "top",
+            "coverage": 0.5,
+            "subject": "bottom",
+            "box": {"x": 0, "y": 0, "w": 1080, "h": 720},
+            "phrase": "the upper 50% of the frame is calm, low-detail negative space (a smooth tonal gradient, no objects, no high-contrast edges); the subject sits in the lower part"
+          }
+        }
+      },
+      "item": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "base"
+      },
+      "step": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "pill"
+      },
+      "story-beat": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "panel"
+      },
+      "grid": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "bento"
+      },
+      "timeline": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "rail"
+      },
+      "quote": {
+        "zone": "center",
+        "coverage": 0.6,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "edges",
+        "box": {"x": 0, "y": 288, "w": 1080, "h": 864},
+        "phrase": "a central horizontal band, 60% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges",
+        "defaultVariant": "base"
+      },
+      "testimonial": {
+        "zone": "center",
+        "coverage": 0.6,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "edges",
+        "box": {"x": 0, "y": 288, "w": 1080, "h": 864},
+        "phrase": "a central horizontal band, 60% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges",
+        "defaultVariant": "card"
+      },
+      "poster": {
+        "zone": "top",
+        "coverage": 0.55,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "bottom",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 792},
+        "phrase": "the upper 55% of the frame is calm, low-detail negative space (a smooth tonal gradient, no objects, no high-contrast edges); the subject sits in the lower part",
+        "defaultVariant": "top",
+        "variants": {
+          "center": {
+            "zone": "center",
+            "coverage": 0.5,
+            "subject": "edges",
+            "box": {"x": 0, "y": 360, "w": 1080, "h": 720},
+            "phrase": "a central horizontal band, 50% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges"
+          }
+        }
+      },
+      "proof": {
+        "zone": "none",
+        "coverage": 0,
+        "use": "slot",
+        "scrim": "none",
+        "subject": "none",
+        "note": "a proof slide holds a real screenshot, never an AI plate"
+      }
+    },
+    "heritage": {
+      "_note": "deep colour, grain, pattern and gold: silhouettes and patterns near the bottom, text above",
+      "_variants": "default variant of each type = first entry of the preset's own variant list",
+      "cover": {
+        "zone": "top",
+        "coverage": 0.55,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "bottom",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 792},
+        "phrase": "the upper 55% of the frame is calm, low-detail negative space (a smooth tonal gradient, no objects, no high-contrast edges); the subject sits in the lower part",
+        "defaultVariant": "top",
+        "variants": {
+          "center": {
+            "zone": "center",
+            "coverage": 0.5,
+            "subject": "edges",
+            "box": {"x": 0, "y": 360, "w": 1080, "h": 720},
+            "phrase": "a central horizontal band, 50% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges"
+          }
+        }
+      },
+      "rehook": {
+        "zone": "center",
+        "coverage": 0.55,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "edges",
+        "box": {"x": 0, "y": 324, "w": 1080, "h": 792},
+        "phrase": "a central horizontal band, 55% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges",
+        "defaultVariant": "base",
+        "variants": {
+          "split": {
+            "zone": "top",
+            "coverage": 0.5,
+            "subject": "bottom",
+            "box": {"x": 0, "y": 0, "w": 1080, "h": 720},
+            "phrase": "the upper 50% of the frame is calm, low-detail negative space (a smooth tonal gradient, no objects, no high-contrast edges); the subject sits in the lower part"
+          }
+        }
+      },
+      "item": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "base"
+      },
+      "step": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "pill"
+      },
+      "story-beat": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "base"
+      },
+      "grid": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "bento"
+      },
+      "timeline": {
+        "zone": "center",
+        "coverage": 1.0,
+        "use": "texture",
+        "scrim": "soft",
+        "subject": "none",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 1440},
+        "phrase": "the whole frame is a quiet, low-contrast texture with no focal subject, no object and no strong edge, so text can sit anywhere on it",
+        "defaultVariant": "rail"
+      },
+      "quote": {
+        "zone": "center",
+        "coverage": 0.6,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "edges",
+        "box": {"x": 0, "y": 288, "w": 1080, "h": 864},
+        "phrase": "a central horizontal band, 60% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges",
+        "defaultVariant": "mark"
+      },
+      "testimonial": {
+        "zone": "center",
+        "coverage": 0.6,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "edges",
+        "box": {"x": 0, "y": 288, "w": 1080, "h": 864},
+        "phrase": "a central horizontal band, 60% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges",
+        "defaultVariant": "card"
+      },
+      "poster": {
+        "zone": "top",
+        "coverage": 0.55,
+        "use": "scene",
+        "scrim": "soft",
+        "subject": "bottom",
+        "box": {"x": 0, "y": 0, "w": 1080, "h": 792},
+        "phrase": "the upper 55% of the frame is calm, low-detail negative space (a smooth tonal gradient, no objects, no high-contrast edges); the subject sits in the lower part",
+        "defaultVariant": "top",
+        "variants": {
+          "center": {
+            "zone": "center",
+            "coverage": 0.5,
+            "subject": "edges",
+            "box": {"x": 0, "y": 360, "w": 1080, "h": 720},
+            "phrase": "a central horizontal band, 50% of the height, is calm low-detail negative space; interest lives only near the top and bottom edges"
+          }
+        }
+      },
+      "proof": {
+        "zone": "none",
+        "coverage": 0,
+        "use": "slot",
+        "scrim": "none",
+        "subject": "none",
+        "note": "a proof slide holds a real screenshot, never an AI plate"
+      }
+    }
+  }
+}

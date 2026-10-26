@@ -1,0 +1,122 @@
+/* primitives.css - owned by E4a - engine cs-1.1.0. The token-driven structure shared by every preset (spec 6.0, 6.8; rule A11).
+   build_studio.py appends it to #cs-archetype-css after the layout sheet, so it is serialised into every painted frame: cap 24 KB.
+   Rules of this file
+   - Colours are var(--cs-*) only (the base roles and the tone bundle); no literal, no color-mix(), no filter, mask, clip-path, outline, border-image or inset shadow.
+   - No opacity, letter-spacing, justify or italics. Anything that sets colour or type has specificity (0,3,0) or more (A17: the svg painter writes the slide css before the role rules).
+   - A background with radius or shadow is never on an inline box (A16) and never on an overflow:hidden box (A15).
+   - Rules on 1.0 classes sit under .cs-slide[data-tone], which only art-mode slides carry, so visualMode "off" and presets without art keep their 1.0 look.
+   Token units: --cs-art-r-* and --cs-art-outline are lengths with units ("28px"), --cs-art-tilt an angle ("6deg"), --cs-art-shadow a complete box-shadow value or none.
+   Presets give this sheet their look through tokens first (--cs-art-*, --cs-mark-tick, --cs-mark-cross). A decor.css rule that must replace a shared look has to be stronger than it:
+   the gated looks of sections 4 and 6 are (0,4,0) to (0,8,1), the preset sheet comes first in the page so equal strength loses, and an ordinary preset rule such as
+   .cs-slide[data-preset="x"] .cs-kicker (0,3,0) loses on a [data-tone] slide. Repeat the shared selector with [data-preset="x"] added after .cs-slide: always one attribute stronger. */
+
+/* ---- 1. token defaults (inline values on the slide root win) -------------------------------------------- */
+.cs-slide{
+  --cs-art-r-chip:0px; --cs-art-r-tile:0px; --cs-art-r-card:0px; --cs-art-r-panel:0px; --cs-art-r-window:0px;
+  --cs-art-shadow:none; --cs-art-outline:0px; --cs-art-tilt:0deg; --cs-art-object-outline:.035;
+  --cs-progress-h:4px; --cs-progress-gap:4px; --cs-progress-w:180px; --cs-progress-r:0px; --cs-thread-h:2px;
+}
+
+/* ---- 2. tones: the eight base roles follow the slide's tone ---------------------------------------------
+   The base values are inline on the slide root and an inline declaration beats every rule (no !important), so a sheet cannot change the root's own eight properties. It remaps them on
+   every child and on the root's two pseudo-elements (custom properties inherit: everything inside the slide reads the tone) and paints the root from the bundle. The engine completes
+   the root: for an invert or field slide it also writes that tone's eight aliases inline (tokens.tones[tone]), which these rules then repeat. Base is never remapped.
+   A preset declares a property that reads a role (--cs-mark-tick) on a descendant, not on the root: a property is resolved where it is declared. */
+.cs-slide[data-tone="invert"], .cs-slide[data-tone="invert"] > *, .cs-slide[data-tone="invert"]::before, .cs-slide[data-tone="invert"]::after{
+  --cs-bg:var(--cs-tone-invert-bg); --cs-surface:var(--cs-tone-invert-surface); --cs-ink:var(--cs-tone-invert-ink); --cs-ink-muted:var(--cs-tone-invert-ink-muted);
+  --cs-accent:var(--cs-tone-invert-accent); --cs-accent-2:var(--cs-tone-invert-accent-2); --cs-on-accent:var(--cs-tone-invert-on-accent); --cs-line:var(--cs-tone-invert-line);
+}
+.cs-slide[data-tone="field"], .cs-slide[data-tone="field"] > *, .cs-slide[data-tone="field"]::before, .cs-slide[data-tone="field"]::after{
+  --cs-bg:var(--cs-tone-field-bg); --cs-surface:var(--cs-tone-field-surface); --cs-ink:var(--cs-tone-field-ink); --cs-ink-muted:var(--cs-tone-field-ink-muted);
+  --cs-accent:var(--cs-tone-field-accent); --cs-accent-2:var(--cs-tone-field-accent-2); --cs-on-accent:var(--cs-tone-field-on-accent); --cs-line:var(--cs-tone-field-line);
+}
+.cs-slide[data-tone="invert"][data-preset]{ background-color:var(--cs-tone-invert-bg); color:var(--cs-tone-invert-ink); }
+.cs-slide[data-tone="field"][data-preset]{ background-color:var(--cs-tone-field-bg); color:var(--cs-tone-field-ink); }
+.cs-slide[data-tone="invert"] > .cs-content{ color:var(--cs-tone-invert-ink); }
+.cs-slide[data-tone="field"] > .cs-content{ color:var(--cs-tone-field-ink); }
+
+/* ---- 3. art: icons, anchors, labels ---------------------------------------------------------------------- */
+.cs-slide .cs-icon{ display:inline-block; flex:none; vertical-align:middle; }
+.cs-slide .cs-anchor-slot{ min-inline-size:0; }
+.cs-slide[data-tone]:not([data-type="cover"])[data-anchor-kind="word"] .cs-content[data-recipe="center"] > .cs-anchor-slot{ max-inline-size:none; }
+.cs-slide .cs-art{ position:relative; box-sizing:border-box; }
+.cs-slide .cs-art-panel{ position:relative; box-sizing:border-box; border-radius:var(--cs-art-r-panel); }
+.cs-slide .cs-art-svg{ display:block; flex:none; }
+/* an art word is a fit slot; fit sets its size, these are the starting values of each role (small, body and title keep the archetype roles) */
+.cs-slide .cs-art-label{ display:block; margin:0; min-inline-size:0; }
+.cs-slide .cs-art-label[data-role]{ color:var(--cs-ink); }
+.cs-slide .cs-art-label[data-role="chip"]{ font-family:var(--cs-font-heading); font-weight:var(--cs-wght-heading); font-size:36px; line-height:1.2; white-space:nowrap; }
+.cs-slide .cs-art-label[data-role="chart"]{ font-size:38px; line-height:1.2; font-variant-numeric:tabular-nums lining-nums; white-space:nowrap; }
+.cs-slide .cs-art-label[data-role="tool"]{ font-family:var(--cs-font-latin); font-weight:var(--cs-wght-latin); font-size:30px; line-height:1.2; white-space:nowrap; }
+.cs-slide .cs-art-label[data-role="numeral"]{ font-family:var(--cs-font-numeral,var(--cs-font-display)); font-weight:var(--cs-wght-numeral,var(--cs-wght-display)); font-size:max(200px,calc(var(--cs-fs-hero) * 2)); line-height:.9; font-variant-numeric:lining-nums; white-space:nowrap; }
+.cs-slide .cs-art-label[data-role="word"]{ font-family:var(--cs-font-display); font-weight:var(--cs-wght-display); font-size:max(220px,calc(var(--cs-fs-hero) * 2)); line-height:1; white-space:nowrap; }
+
+/* ---- 4. items (grid and timeline types, the icons and hub variants): the skin; archetypes.html owns the geometry, the row icons and the timeline connector ---- */
+.cs-slide .cs-items{ list-style:none; }
+.cs-slide .cs-item [data-part="icon"]{ display:flex; align-items:center; justify-content:center; }
+.cs-slide .cs-item [data-part="title"]{ color:var(--cs-ink); font-family:var(--cs-font-heading); font-weight:var(--cs-wght-heading); }
+.cs-slide .cs-item [data-part="text"]{ color:var(--cs-ink-muted); }
+.cs-slide .cs-item [data-part="value"]{ color:var(--cs-ink); font-family:var(--cs-font-heading); font-weight:var(--cs-wght-heading); font-variant-numeric:tabular-nums lining-nums; white-space:nowrap; }
+.cs-slide[data-tone][data-type="grid"] .cs-item{ background-color:var(--cs-surface); border:var(--cs-art-outline) solid var(--cs-art-outline-color,var(--cs-ink)); border-radius:var(--cs-art-r-card); box-shadow:var(--cs-art-shadow); }
+.cs-slide[data-tone][data-type="grid"] .cs-item[data-hi]{ background-color:var(--cs-accent); }
+.cs-slide[data-tone][data-type="grid"] .cs-item[data-hi] [data-part]{ color:var(--cs-on-accent); }
+.cs-slide[data-tone][data-type="grid"] .cs-item > [data-part="value"]{ font-size:120px; line-height:1; }
+.cs-slide[data-tone][data-type="grid"] .cs-a-grid > .cs-items{flex:0 1 auto;min-block-size:664px;grid-template-rows:repeat(2,minmax(320px,auto))}
+.cs-slide[data-tone][data-type="grid"] .cs-item{display:grid;grid-template-columns:64px minmax(0,1fr);grid-template-rows:auto auto auto;align-content:center;padding:16px 24px}
+.cs-slide[data-tone][data-type="grid"] .cs-item > [data-part="icon"]{grid-column:1;grid-row:1;align-self:center;inline-size:64px;block-size:64px}
+.cs-slide[data-tone][data-type="grid"] .cs-item > [data-part="value"]{grid-column:2;grid-row:1;align-self:center}
+.cs-slide[data-tone][data-type="grid"] .cs-item > [data-part="title"]{grid-column:1 / -1;grid-row:2}
+.cs-slide[data-tone][data-type="grid"] .cs-item > [data-part="text"]{grid-column:1 / -1;grid-row:3}
+.cs-slide[data-tone][data-type="grid"] .cs-item > [data-part="title"]{line-height:1.2}
+.cs-slide[data-tone][data-type="grid"] .cs-item > [data-part="text"]{line-height:1.3}
+/* marks of an item (data-mark): a thick glyph with a 3 px ink outline (rule G1 passes whatever the fill) in front of the title, the outline from ::before and the colour from ::after.
+   They sit on the title because the item's own pseudo-elements belong to the layout (the timeline connector).
+   A tick and a cross never share a hue (S-17): the defaults are the second support hue and the accent (distance checked for all 18 preset x tone pairs by the test);
+   a preset sets --cs-mark-tick and --cs-mark-cross in decor.css (on .cs-item or below, see section 2), and the test resolves them per preset and tone and refuses a pair whose two colours are apart by less than a set distance.
+   The glyphs use borders, a rotation and full-box gradients in degrees only: the replay painter drops sized or positioned background layers and "to corner" gradients. */
+.cs-slide .cs-item[data-mark="tick"] > [data-part="title"], .cs-slide .cs-item[data-mark="cross"] > [data-part="title"]{ position:relative; padding-inline-start:52px; }
+.cs-slide .cs-item[data-mark="tick"] > [data-part="title"]::before, .cs-slide .cs-item[data-mark="tick"] > [data-part="title"]::after,
+.cs-slide .cs-item[data-mark="cross"] > [data-part="title"]::before, .cs-slide .cs-item[data-mark="cross"] > [data-part="title"]::after{ content:""; position:absolute; display:block; box-sizing:border-box; pointer-events:none; }
+.cs-slide .cs-item[data-mark="tick"] > [data-part="title"]::before{ inset-inline-start:9px; inset-block-start:calc(50% - 19px); inline-size:22px; block-size:34px; border-right:11px solid var(--cs-art-outline-color,var(--cs-ink)); border-bottom:11px solid var(--cs-art-outline-color,var(--cs-ink)); transform:rotate(45deg); }
+.cs-slide .cs-item[data-mark="tick"] > [data-part="title"]::after{ inset-inline-start:12px; inset-block-start:calc(50% - 16px); inline-size:16px; block-size:28px; border-right:5px solid var(--cs-mark-tick,var(--cs-art-s2,var(--cs-ink-muted))); border-bottom:5px solid var(--cs-mark-tick,var(--cs-art-s2,var(--cs-ink-muted))); transform:rotate(45deg); }
+.cs-slide .cs-item[data-mark="cross"] > [data-part="title"]::before, .cs-slide .cs-item[data-mark="cross"] > [data-part="title"]::after{ inset-inline-start:4px; inset-block-start:calc(50% - 16px); inline-size:32px; block-size:32px; }
+.cs-slide .cs-item[data-mark="cross"] > [data-part="title"]::before{ background-image:linear-gradient(45deg,transparent 34.5%,var(--cs-art-outline-color,var(--cs-ink)) 34.5% 65.5%,transparent 65.5%),linear-gradient(135deg,transparent 34.5%,var(--cs-art-outline-color,var(--cs-ink)) 34.5% 65.5%,transparent 65.5%); }
+.cs-slide .cs-item[data-mark="cross"] > [data-part="title"]::after{ background-image:linear-gradient(45deg,transparent 41%,var(--cs-mark-cross,var(--cs-accent)) 41% 59%,transparent 59%),linear-gradient(135deg,transparent 41%,var(--cs-mark-cross,var(--cs-accent)) 41% 59%,transparent 59%); }
+
+/* ---- 5. rail, marks, thread -------------------------------------------------------------------------------- */
+/* the progress rail sits at the foot of the counter (text 36 + gap 4 + rail 4 or 6 inside the 49 px chrome height) and fills from the start edge */
+.cs-slide .cs-counter{ position:relative; }
+.cs-slide .cs-rail{ position:absolute; inset-block-end:0; inset-inline-start:50%; margin-inline-start:calc(var(--cs-progress-w) / -2); inline-size:var(--cs-progress-w); block-size:var(--cs-progress-h); display:flex; gap:var(--cs-progress-gap); pointer-events:none; }
+.cs-slide .cs-rail-seg{ display:block; flex:1 1 0; min-inline-size:0; block-size:100%; background-color:var(--cs-line); border-radius:var(--cs-progress-r); }
+.cs-slide .cs-rail-seg[data-on="1"]{ background-color:var(--cs-ink); }
+.cs-slide .cs-rail[data-style="on"], .cs-slide .cs-rail[data-rail="on"]{ --cs-progress-h:6px; --cs-progress-w:240px; }
+.cs-slide .cs-rail[data-style="on"] > .cs-rail-seg[data-on="1"], .cs-slide .cs-rail[data-rail="on"] > .cs-rail-seg[data-on="1"]{ background-color:var(--cs-accent); }
+/* the settle pass appends one svg of text-bound marks above the content and the chrome */
+.cs-slide .cs-marks{ position:absolute; inset-block-start:0; inset-inline-start:0; display:block; inline-size:100%; block-size:100%; overflow:visible; z-index:4; pointer-events:none; }
+/* the thread (off by default): the preset's own footer rule drawn to both canvas edges; the preset gives its y, height and colour */
+.cs-slide .cs-thread{ position:absolute; display:block; inset-inline:0; inset-block-start:var(--cs-thread-y,0px); block-size:var(--cs-thread-h); background-color:var(--cs-thread-c,var(--cs-line)); z-index:1; pointer-events:none; }
+
+/* ---- 6. shared looks of existing classes, art-mode slides only (never the cover) ---------------- */
+/* emphasis: inline-block, because the replay painter drops the radius and shadow of an inline background (S-4) */
+.cs-slide[data-tone]:not([data-type="cover"]) .cs-em{ display:inline-block; }
+.cs-slide[data-tone]:not([data-type="cover"])[data-hl="marker"] .cs-em, .cs-slide[data-tone]:not([data-type="cover"])[data-hl="bar"] .cs-em{ background-color:var(--cs-accent); color:var(--cs-on-accent); padding-inline:.16em; border-radius:min(var(--cs-art-r-chip),.2em); }
+.cs-slide[data-tone]:not([data-type="cover"])[data-hl="bar"] .cs-em{ border-radius:0; }
+.cs-slide[data-tone]:not([data-type="cover"])[data-hl="underline"] .cs-em{ text-decoration:underline; text-decoration-color:var(--cs-accent); text-decoration-thickness:.14em; text-underline-offset:.1em; }
+.cs-slide[data-tone]:not([data-type="cover"])[data-hl="color"] .cs-em{ color:var(--cs-accent); }
+/* cards: the two columns of compare and myth-fact */
+.cs-slide[data-tone]:not([data-type="cover"]) .cs-side{ background-color:var(--cs-surface); border:var(--cs-art-outline) solid var(--cs-art-outline-color,var(--cs-ink)); border-radius:var(--cs-art-r-card); box-shadow:var(--cs-art-shadow); }
+.cs-slide[data-tone]:not([data-type="cover"]) .cs-side[data-side="1"]{ background-color:var(--cs-accent); }
+.cs-slide[data-tone]:not([data-type="cover"]) .cs-side[data-side="1"] .cs-side-text{ color:var(--cs-on-accent); }
+/* chips: the kicker and the side labels */
+.cs-slide[data-tone]:not([data-type="cover"]) .cs-kicker, .cs-slide[data-tone]:not([data-type="cover"]) .cs-side-label{ inline-size:fit-content; padding-inline:calc(var(--cs-unit) * 2.5); background-color:var(--cs-surface); border:var(--cs-art-outline) solid var(--cs-art-outline-color,var(--cs-ink)); border-radius:var(--cs-art-r-chip); color:var(--cs-ink); }
+.cs-slide[data-tone]:not([data-type="cover"])[data-align="center"] .cs-kicker{ margin-inline:auto; }
+/* numbering: the pill (also the 96 px side-number) */
+.cs-slide[data-tone]:not([data-type="cover"])[data-numbering="pill"]:not([data-variant="ghost-number"]) .cs-ord, .cs-slide[data-tone]:not([data-type="cover"])[data-variant="side-number"] .cs-ord{ inline-size:fit-content; padding-inline:calc(var(--cs-unit) * 3); background-color:var(--cs-accent); border:var(--cs-art-outline) solid var(--cs-art-outline-color,var(--cs-ink)); border-radius:var(--cs-art-r-chip); color:var(--cs-on-accent); }
+/* the button */
+.cs-slide[data-tone]:not([data-type="cover"]) .cs-cta{ background-color:var(--cs-accent); border:var(--cs-art-outline) solid var(--cs-art-outline-color,var(--cs-ink)); border-radius:var(--cs-art-r-chip); box-shadow:var(--cs-art-shadow); color:var(--cs-on-accent); }
+/* the generic media frame belongs to photo-like kinds only; icons and art keep no frame. The frame sits on the image, because the slot clips (A15) */
+.cs-slide[data-tone]:not([data-type="cover"]) .cs-content > .cs-media-slot:not([data-media-kind="icon"]):not([data-media-kind="art"]):not([data-media-kind="cutout"]){ overflow:visible; }
+.cs-slide[data-tone]:not([data-type="cover"]) .cs-content > .cs-media-slot:not([data-media-kind="icon"]):not([data-media-kind="art"]):not([data-media-kind="cutout"]) > img,
+.cs-slide[data-tone]:not([data-type="cover"]) .cs-content > .cs-media-slot:not([data-media-kind="icon"]):not([data-media-kind="art"]):not([data-media-kind="cutout"]) > video{ border:var(--cs-art-outline) solid var(--cs-art-outline-color,var(--cs-ink)); border-radius:var(--cs-art-r-card); box-shadow:var(--cs-art-shadow); }
+
+/* Free content keeps the preset bands and a natural, authored layout. */

@@ -1,0 +1,334 @@
+{
+  "specVersion": 1,
+  "id": "post-plan-eg-creator",
+  "rev": 1,
+  "brand": {
+    "slug": "content-workshop",
+    "snapshotHash": "14976278932d0a11"
+  },
+  "brief": {
+    "topic": "إزاي تكتب هوك يخلي الناس تقف",
+    "input": "idea"
+  },
+  "format": "carousel",
+  "mode": "guided",
+  "checkpoint": "design",
+  "canvas": {
+    "preset": "ig-3x4",
+    "w": 1080,
+    "h": 1440,
+    "safe": [
+      34,
+      45,
+      1012,
+      1350
+    ],
+    "exports": [
+      "3x4",
+      "4x5"
+    ]
+  },
+  "locale": {
+    "dialect": "eg",
+    "register": "dialect",
+    "digits": "western",
+    "appLanguage": "ar",
+    "swipeCue": "arrow-rtl"
+  },
+  "intent": "save",
+  "awareness": "problem",
+  "contentType": "value",
+  "architecture": "listicle",
+  "angle": {
+    "id": "a2",
+    "title": "5 أخطاء بتموّت الكاروسيل",
+    "lens": "costly-mistake",
+    "score": 82,
+    "why": "الغلطة المكلّفة مع رقم في أول سطر، وقائمة بتتحفظ"
+  },
+  "hook": {
+    "id": "P3-MISTAKE-count-cost",
+    "family": "P3",
+    "text": "5 أخطاء بتموّت الكاروسيل قبل ما حد يسحب للسلايد التانية",
+    "cover": "5 أخطاء بتموّت الكاروسيل",
+    "score": {
+      "R": 34,
+      "J": 30,
+      "P": 15,
+      "total": 79
+    },
+    "slide2": "مشكلة كاروسيلك غالبا مش في الألوان",
+    "alternates": [
+      {
+        "id": "F17-REFRAME-relocate",
+        "family": "F17",
+        "cover": "مشكلتك مش في الألوان… مشكلتك في أول جملة",
+        "score": {
+          "total": 74
+        }
+      },
+      {
+        "id": "P1-LIST-number-outcome",
+        "family": "P1",
+        "cover": "5 حاجات… بتخلي بوستك يتحفظ",
+        "score": {
+          "total": 71
+        }
+      }
+    ]
+  },
+  "style": {
+    "presetId": "creator@1.0"
+  },
+  "compat": {
+    "paint": "auto",
+    "mp4": "auto",
+    "hfRuntime": "auto"
+  },
+  "slides": [
+    {
+      "id": "s01",
+      "n": 1,
+      "type": "cover",
+      "kicker": "دليل سريع",
+      "headline": "إزاي تكتب ==هوك== يخلي الناس تقف",
+      "sub": "في ثواني",
+      "media": {
+        "slot": "none",
+        "ai": false
+      }
+    },
+    {
+      "id": "s02",
+      "n": 2,
+      "type": "rehook",
+      "headline": "أول سلايدتين هما ==كل== اللعبة",
+      "sub": "وده ليه",
+      "bridge": "اسحب وشوف"
+    },
+    {
+      "id": "s03",
+      "n": 3,
+      "type": "stat",
+      "number": {
+        "value": "74",
+        "unit": "%",
+        "sourceId": "src1"
+      },
+      "title": "من الناس بتقرا أول سلايدين بس",
+      "body": "عشان كده التانية مهمة زي الغلاف.",
+      "sourceIds": [
+        "src1"
+      ],
+      "bridge": "يعني؟"
+    },
+    {
+      "id": "s04",
+      "n": 4,
+      "type": "step",
+      "ord": 1,
+      "variant": "track",
+      "title": "اكتب الهوك قبل أي حاجة",
+      "body": "افتح ورقة واكتب 5 هوكات.",
+      "bridge": "والخطوة الجاية تفرق معاك",
+      "demo": {
+        "lines": [
+          {
+            "text": "5 نصايح للكتابة"
+          },
+          {
+            "text": "ليه محدش بيكمّل بوستك؟",
+            "hi": true
+          },
+          {
+            "text": "دليل الكابشن الكامل"
+          }
+        ],
+        "caption": "ده اللي بيوقّف الإبهام"
+      }
+    },
+    {
+      "id": "s05",
+      "n": 5,
+      "type": "compare",
+      "title": "هوك ضعيف وهوك بيشدّ",
+      "sides": [
+        {
+          "label": "قبل",
+          "text": "نصايح عن الكتابة"
+        },
+        {
+          "label": "بعد",
+          "text": "ليه محدش بيكمّل بوستك؟"
+        }
+      ]
+    },
+    {
+      "id": "s06",
+      "n": 6,
+      "type": "myth-fact",
+      "title": "خرافة: لازم مصمم",
+      "sides": [
+        {
+          "label": "خرافة",
+          "text": "لازم أشتغل مع مصمم"
+        },
+        {
+          "label": "حقيقة",
+          "text": "قالب واحد وكفاية"
+        }
+      ],
+      "bridge": "والتالتة أشيع"
+    },
+    {
+      "id": "s07",
+      "n": 7,
+      "type": "quote",
+      "title": "اللي بيسأله متابعينك",
+      "body": "هتاخد كام على الكاروسيل ده؟",
+      "attribution": "متابع",
+      "variant": "base"
+    },
+    {
+      "id": "s08",
+      "n": 8,
+      "type": "checklist",
+      "title": "قبل ما تنشر",
+      "bullets": [
+        "الهوك في أول سطر",
+        "كلمة واحدة بتتكبر",
+        "صورة واحدة تحكي",
+        "دعوة واحدة في الآخر"
+      ]
+    },
+    {
+      "id": "s09",
+      "n": 9,
+      "type": "item",
+      "ord": 2,
+      "title": "الأرقام بتشدّ العين",
+      "body": "رقم واحد كبير أحسن من فقرة كاملة.",
+      "bridge": "وكمان؟"
+    },
+    {
+      "id": "s10",
+      "n": 10,
+      "type": "testimonial",
+      "body": "زاد الحفظ عندي 3 أضعاف",
+      "attribution": "منى، مصممة",
+      "sourceIds": [
+        "src2"
+      ],
+      "demo": {
+        "lines": [
+          {
+            "who": "them",
+            "text": "كنت بكتب كاروسيل ومحدش بيحفظه"
+          },
+          {
+            "who": "me",
+            "text": "جرّبتي الهوك؟"
+          }
+        ],
+        "caption": "رسالة بعد أسبوع"
+      }
+    },
+    {
+      "id": "s11",
+      "n": 11,
+      "type": "cta",
+      "title": "احفظ البوست ده",
+      "cta": {
+        "kind": "save",
+        "text": "احفظه لما تيجي تكتب الهوك الجاي"
+      }
+    }
+  ],
+  "cover": {
+    "motion": {
+      "recipe": "story",
+      "feel": "story",
+      "seconds": 6,
+      "fps": 30,
+      "source": "internal"
+    }
+  },
+  "captionPack": {
+    "firstLine": "فاكر إن مشكلة كاروسيلك في الألوان؟ غالبا المشكلة في الكلام.",
+    "keywordLine": "جمعتلك 5 أخطاء في كتابة كاروسيل Instagram بتخلي الناس تكمل بدل ما تعدّي.",
+    "body": "1. خط صغير ميتقراش: كبّر الخط واقطع الجملة.\n2. تعريف بنفسك في التانية: ادخل في الفايدة على طول.\n3. فقرة كاملة في سلايد: فكرة واحدة في كل سلايد.\n4. نفس الدعوة كل مرة: بدّل بين الحفظ والإرسال.\n5. غلاف من غير وعد: اكتب اللي هيطلع بيه القارئ.",
+    "cta": "احفظ البوست وارجعله لما تيجي تكتب الكاروسيل الجاي.",
+    "hashtags": [
+      "#كاروسيل",
+      "#تصميم_السوشيال",
+      "#محتوى_عربي",
+      "#كتابة_المحتوى"
+    ],
+    "perSlide": [
+      "line 1",
+      "line 2",
+      "line 3",
+      "line 4",
+      "line 5",
+      "line 6",
+      "line 7",
+      "line 8",
+      "line 9",
+      "line 10",
+      "line 11"
+    ],
+    "alt": [
+      "alt 1",
+      "alt 2",
+      "alt 3",
+      "alt 4",
+      "alt 5",
+      "alt 6",
+      "alt 7",
+      "alt 8",
+      "alt 9",
+      "alt 10",
+      "alt 11"
+    ]
+  },
+  "sources": [
+    {
+      "id": "src1",
+      "kind": "user",
+      "ref": "أرقام حسابي على إنستجرام",
+      "excerpt": "74% من الزوار يقفون عند السلايدين الأولين",
+      "verified": true
+    },
+    {
+      "id": "src2",
+      "kind": "user",
+      "ref": "موافقة المتابعة على نشر رأيها",
+      "excerpt": "زاد الحفظ عندي 3 أضعاف",
+      "verified": true
+    }
+  ],
+  "assets": [],
+  "qa": {
+    "status": "pass",
+    "runAt": "2026-10-22T09:20:00Z",
+    "engine": "cs-1.1.0",
+    "results": []
+  },
+  "approvals": {
+    "angle": {
+      "at": "2026-10-22T09:04:00Z"
+    },
+    "script": {
+      "at": "2026-10-22T09:16:00Z"
+    }
+  },
+  "meta": {
+    "createdAt": "2026-10-22T09:00:00Z",
+    "updatedAt": "2026-10-22T09:20:00Z",
+    "updatedBy": "claude",
+    "generator": {
+      "skill": "carousel-create",
+      "version": "1.0.0"
+    }
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "1.0.0",
+  "description": "One word for each thing the tool names, in every surface (Studio, chat, posting guide, docs). Skills and scripts say 'use'; a test (tests/unit/py/test_glossary.py) fails when a shipped Arabic text contains one of the 'avoid' forms. Arabic text names Instagram in Latin letters, as orthography.md section 9 says for every brand and tool name.",
+  "terms": {
+    "brandBook": {
+      "use": {
+        "ar": "كتاب البراند",
+        "en": "Brand Book"
+      },
+      "avoid": [
+        "دليل البراند",
+        "دليل العلامة",
+        "براند بوك",
+        "كتاب العلامة"
+      ],
+      "note": "The approved document of a brand; Brand Home is the page that holds it."
+    },
+    "style": {
+      "use": {
+        "ar": "الستايل",
+        "en": "style"
+      },
+      "avoid": [
+        "النمط البصري",
+        "نمط التصميم"
+      ],
+      "note": "A preset and everything that restyles a post. «النمط» alone means a hook pattern in the hook-engine text and is not covered by this term."
+    },
+    "slide": {
+      "use": {
+        "ar": "سلايد",
+        "en": "slide"
+      },
+      "gender": "masculine",
+      "avoid": [
+        "السلايد الثانية",
+        "السلايد التالية",
+        "السلايد السابقة",
+        "السلايد الحالية",
+        "السلايد الأولى",
+        "السلايد الأخيرة"
+      ],
+      "note": "Masculine in every dialect: السلايد الثاني، التالي، السابق، الحالي، الأول."
+    },
+    "caption": {
+      "use": {
+        "ar": "الكابشن",
+        "en": "caption"
+      },
+      "perSlide": {
+        "ar": "وصف السلايد",
+        "en": "slide caption"
+      },
+      "avoid": [
+        "كابشن السلايد"
+      ],
+      "note": "«التعليق» means a comment under the post; never use it for the caption."
+    },
+    "instagram": {
+      "use": {
+        "ar": "Instagram",
+        "en": "Instagram"
+      },
+      "avoid": [
+        "إنستجرام",
+        "إنستقرام",
+        "إنستغرام",
+        "انستجرام",
+        "انستقرام",
+        "انستغرام"
+      ],
+      "note": "Latin in Arabic text. The orthography lint offers the same fix for the Arabic spellings."
+    },
+    "mythFact": {
+      "use": {
+        "ar": "خرافة / حقيقة",
+        "en": "Myth / Fact"
+      },
+      "avoid": [
+        "خرافة / الحقيقة",
+        "الخرافة / الحقيقة"
+      ],
+      "note": "The two labels printed on a myth-fact slide, both without the article."
+    },
+    "ellipsisBeat": {
+      "use": {
+        "ar": "…",
+        "en": "…"
+      },
+      "note": "The single character, never three dots (ORTHO-PUNCT-005)."
+    }
+  }
+}

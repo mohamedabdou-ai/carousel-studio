@@ -1,0 +1,568 @@
+{
+ "schemaVersion": 1,
+ "description": "Clean slice decks (round 3, package Q7a; build plan r2 3.2). Each deck is a zero-override fixture of tests/fixtures/auto (base, with #n picking one spec of the array) plus a stored plan: the visual objects the V2 planner writes with plan.mjs --save-plan, kept wherever the real engine draws that slide cleanly and replaced by a hand-picked anchor where the zero-override pick did not (the replaced picks are the AUTO floor, which ACC judges and node tests/corpus-bad/rendered.mjs --floor lists; this corpus asks only whether the gates raise a false alarm on slides that are fine). The text gates run these decks in both engines (run.mjs, run.py: no BLOCK and no FIX); rendered.mjs renders them with the real engine in Chromium and runs every rendered gate too. requireExecuted names the gates of build plan r2 3.1: each must have run at least once over the decks, because a gate that never ran proves nothing. Fields: id, base, brand, preset (creator or poster), note, fonts, patch (RFC 6902 on the base spec). `fonts` is written by hand: the registry id the Studio resolves for display, heading, body and latin, because both presets bind the fonts role and so the brand's own fonts win over the preset's (build_studio.py embeds them, resolve.js applyBrand applies them). rendered.mjs embeds the fonts of every brand it renders and fails when the resolved family of any slide differs from this list, or when a resolved face did not load. The deck ids are a fixed list held in fixed.mjs and run.py.",
+ "requireExecuted": [
+  "D9.band",
+  "D9.rect",
+  "D9.fill",
+  "D9.container-fill",
+  "VA1.anchor-present",
+  "VA2.anchor-size",
+  "VA3.valid",
+  "VA4.chart-honesty",
+  "VA6.pause",
+  "VA7.agreement",
+  "VA8.constraints",
+  "D8.anchor-run",
+  "D8.tone-run",
+  "D10.nesting",
+  "D10.icon-tile-stack",
+  "D10.stroke-feed",
+  "D10.art-label",
+  "D10.glyph-icon",
+  "C2.body-with-art",
+  "C2.demo-words",
+  "C2.demo-missing",
+  "C2.demo-duplicate",
+  "C2.figure-repeat"
+ ],
+ "decks": [
+  {
+   "id": "eg2-creator",
+   "base": "tests/fixtures/auto/eg.json#2",
+   "preset": "creator",
+   "note": "Egyptian, creator: four items, a before/after pair, a testimonial and a keyword call to action.",
+   "brand": "tests/fixtures/brand.eg.creator.json",
+   "fonts": { "display": "ibm-plex-sans-arabic", "heading": "ibm-plex-sans-arabic", "body": "readex-pro", "latin": "inter" },
+   "patch": [
+    {
+     "op": "add",
+     "path": "/style/motif",
+     "value": "pencil"
+    },
+    {
+     "op": "add",
+     "path": "/slides/1/visual",
+     "value": {
+      "anchor": {
+       "kind": "numeral",
+       "icon": "trending-up",
+       "value": "4",
+       "unit": "تعديلات",
+       "companion": "icon"
+      },
+      "recipe": "over",
+      "tone": "base",
+      "field": true,
+      "bleed": "both",
+      "why": "الرقم 4 هو الفكرة، فكبرناه",
+      "alt": "الرقم 4 تعديلات"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/2/visual",
+     "value": {
+      "anchor": {
+       "kind": "icon",
+       "icon": "target",
+       "treatment": "duo",
+       "size": "hero"
+      },
+      "recipe": "under",
+      "tone": "base",
+      "why": "اخترنا هدف لأن الكلام عن بالنتيجة",
+      "alt": "أيقونة هدف"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/3/visual",
+     "value": {
+      "anchor": {
+       "kind": "numeral",
+       "icon": "circle-question-mark",
+       "value": "2",
+       "companion": "icon"
+      },
+      "recipe": "under",
+      "tone": "base",
+      "why": "الرقم 2 هو الفكرة، فكبرناه",
+      "alt": "الرقم 2"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/4/visual",
+     "value": {
+      "anchor": {
+       "kind": "icon",
+       "object": "trophy",
+       "size": "hero"
+      },
+      "recipe": "under",
+      "tone": "base",
+      "why": "اخترنا رقم لأن الكلام عن رقم",
+      "alt": "رسم رقم"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/5/visual",
+     "value": {
+      "anchor": {
+       "kind": "field",
+       "word": "الجملة"
+      },
+      "recipe": "under",
+      "tone": "base",
+      "field": true,
+      "why": "مفيش صورة تقول الكلام ده بصدق، فخلينا الكلمة هي الصورة",
+      "alt": "الكلمة «الجملة» بحجم كبير"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/6/visual",
+     "value": {
+      "anchor": {
+       "kind": "word",
+       "word": "بعد",
+       "wordStyle": "sticker"
+      },
+      "recipe": "under",
+      "tone": "base"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/7/visual",
+     "value": {
+      "anchor": {
+       "kind": "numeral"
+      },
+      "recipe": "under",
+      "tone": "base",
+      "why": "الرقم 120 هو الفكرة، فكبرناه",
+      "alt": "الرقم 120 حفظ"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/8/variant",
+     "value": "action"
+    },
+    {
+     "op": "add",
+     "path": "/slides/8/visual",
+     "value": {
+      "anchor": {
+       "kind": "word",
+       "word": "عايز",
+       "wordStyle": "sticker"
+      },
+      "recipe": "center",
+      "tone": "base",
+      "field": true,
+      "why": "مفيش صورة تقول الكلام ده بصدق، فخلينا الكلمة هي الصورة",
+      "alt": "الكلمة «عايز» بحجم كبير"
+     }
+    }
+   ]
+  },
+  {
+   "id": "eg4-poster",
+   "base": "tests/fixtures/auto/eg.json#4",
+   "preset": "poster",
+   "note": "Egyptian, poster: a statement rehook, three items, myth and fact, a review timeline, a rows summary.",
+   "brand": "tests/fixtures/brand.eg.creator.json",
+   "fonts": { "display": "ibm-plex-sans-arabic", "heading": "ibm-plex-sans-arabic", "body": "readex-pro", "latin": "inter" },
+   "patch": [
+    {
+     "op": "add",
+     "path": "/style/motif",
+     "value": "book"
+    },
+    {
+     "op": "add",
+     "path": "/slides/1/visual",
+     "value": {
+      "anchor": {
+       "kind": "icon",
+       "icon": "brain",
+       "treatment": "duo",
+       "size": "xl"
+      },
+      "recipe": "over",
+      "tone": "base"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/2/visual",
+     "value": {
+      "anchor": {
+       "kind": "icon",
+       "icon": "book-open",
+       "treatment": "duo",
+       "size": "hero"
+      },
+      "recipe": "under",
+      "tone": "base",
+      "why": "اخترنا كتاب لأن الكلام عن عارف",
+      "alt": "أيقونة كتاب"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/3/variant",
+     "value": "numeral"
+    },
+    {
+     "op": "add",
+     "path": "/slides/3/visual",
+     "value": {
+      "anchor": {
+       "kind": "numeral",
+       "icon": "lightbulb",
+       "value": "2",
+       "companion": "icon"
+      },
+      "recipe": "under",
+      "tone": "base",
+      "why": "الرقم 2 هو الفكرة، فكبرناه",
+      "alt": "الرقم 2"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/4/visual",
+     "value": {
+      "anchor": {
+       "kind": "icon",
+       "icon": "spell-check",
+       "treatment": "duo",
+       "size": "hero"
+      },
+      "recipe": "under",
+      "tone": "base",
+      "why": "اخترنا املاء لأن الكلام عن راجع",
+      "alt": "أيقونة املاء"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/5/variant",
+     "value": "stamp"
+    },
+    {
+     "op": "add",
+     "path": "/slides/5/visual",
+     "value": {
+      "anchor": {
+       "kind": "word",
+       "word": "السهر",
+       "wordStyle": "struck"
+      },
+      "recipe": "under",
+      "tone": "base"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/6/variant",
+     "value": "rail"
+    },
+    {
+     "op": "add",
+     "path": "/slides/6/visual",
+     "value": {
+      "anchor": {
+       "kind": "none"
+      },
+      "recipe": "full",
+      "tone": "base",
+      "why": "حطينا أيقونة جنب كل نقطة عشان تتقرا بسرعة"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/7/visual",
+     "value": {
+      "anchor": {
+       "kind": "rows"
+      },
+      "recipe": "under",
+      "tone": "base"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/8/variant",
+     "value": "action"
+    },
+    {
+     "op": "add",
+     "path": "/slides/8/visual",
+     "value": {
+      "anchor": {
+       "kind": "word",
+       "word": "احفظ",
+       "wordStyle": "sticker"
+      },
+      "recipe": "under",
+      "tone": "base"
+     }
+    }
+   ]
+  },
+  {
+   "id": "en1-creator",
+   "base": "tests/fixtures/auto/en.json#1",
+   "preset": "creator",
+   "note": "English (left to right), creator: a timeline, a bento grid, a chat story beat, notes, a proof frame.",
+   "brand": "tests/fixtures/brand.en.minimal.json",
+   "fonts": { "display": "inter", "heading": "inter", "body": "inter", "latin": "inter" },
+   "patch": [
+    {
+     "op": "replace",
+     "path": "/style/presetId",
+     "value": "creator@1.0"
+    },
+    {
+     "op": "add",
+     "path": "/slides/1/visual",
+     "value": {
+      "anchor": {
+       "kind": "icon",
+       "icon": "utensils",
+       "treatment": "duo",
+       "size": "xl"
+      },
+      "recipe": "over",
+      "tone": "base"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/2/variant",
+     "value": "rail"
+    },
+    {
+     "op": "add",
+     "path": "/slides/2/visual",
+     "value": {
+      "anchor": {
+       "kind": "none"
+      },
+      "recipe": "full",
+      "tone": "base",
+      "why": "We put an icon beside each point so it reads fast"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/3/variant",
+     "value": "bento"
+    },
+    {
+     "op": "add",
+     "path": "/slides/3/visual",
+     "value": {
+      "anchor": {
+       "kind": "none"
+      },
+      "recipe": "full",
+      "tone": "base",
+      "why": "We put an icon beside each point so it reads fast"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/4/visual",
+     "value": {
+      "anchor": {
+       "kind": "mock",
+       "mock": {
+        "kind": "chat"
+       }
+      },
+      "recipe": "under",
+      "tone": "base",
+      "why": "We put the slide's own words inside a chat",
+      "alt": "chat: Table for two: one hour wait"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/5/variant",
+     "value": "cards"
+    },
+    {
+     "op": "add",
+     "path": "/slides/5/visual",
+     "value": {
+      "anchor": {
+       "kind": "mock",
+       "mock": {
+        "kind": "notes"
+       }
+      },
+      "recipe": "under",
+      "tone": "base"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/7/visual",
+     "value": {
+      "anchor": {
+       "kind": "icon",
+       "icon": "clipboard-check",
+       "treatment": "duo",
+       "size": "xl"
+      },
+      "recipe": "under",
+      "tone": "base"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/8/visual",
+     "value": {
+      "anchor": {
+       "kind": "word",
+       "word": "Want",
+       "wordStyle": "sticker"
+      },
+      "recipe": "center",
+      "tone": "base",
+      "field": true,
+      "why": "No picture says this honestly, so the word is the picture",
+      "alt": "The word «Want» set large"
+     }
+    }
+   ]
+  },
+  {
+   "id": "en1-poster",
+   "base": "tests/fixtures/auto/en.json#1",
+   "preset": "poster",
+   "note": "English (left to right), poster: the same trip plan as en1-creator in the second preset.",
+   "brand": "tests/fixtures/brand.en.minimal.json",
+   "fonts": { "display": "inter", "heading": "inter", "body": "inter", "latin": "inter" },
+   "patch": [
+    {
+     "op": "add",
+     "path": "/slides/1/visual",
+     "value": {
+      "anchor": {
+       "kind": "icon",
+       "icon": "utensils",
+       "treatment": "duo",
+       "size": "xl"
+      },
+      "recipe": "over",
+      "tone": "base"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/2/variant",
+     "value": "rail"
+    },
+    {
+     "op": "add",
+     "path": "/slides/2/visual",
+     "value": {
+      "anchor": {
+       "kind": "none"
+      },
+      "recipe": "full",
+      "tone": "base",
+      "why": "We put an icon beside each point so it reads fast"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/3/variant",
+     "value": "bento"
+    },
+    {
+     "op": "add",
+     "path": "/slides/3/visual",
+     "value": {
+      "anchor": {
+       "kind": "none"
+      },
+      "recipe": "full",
+      "tone": "base",
+      "why": "We put an icon beside each point so it reads fast"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/4/visual",
+     "value": {
+      "anchor": {
+       "kind": "mock",
+       "mock": {
+        "kind": "chat"
+       }
+      },
+      "recipe": "under",
+      "tone": "base",
+      "why": "We put the slide's own words inside a chat",
+      "alt": "chat: Table for two: one hour wait"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/5/variant",
+     "value": "cards"
+    },
+    {
+     "op": "add",
+     "path": "/slides/5/visual",
+     "value": {
+      "anchor": {
+       "kind": "mock",
+       "mock": {
+        "kind": "notes"
+       }
+      },
+      "recipe": "under",
+      "tone": "base"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/7/visual",
+     "value": {
+      "anchor": {
+       "kind": "icon",
+       "icon": "clipboard-check",
+       "treatment": "duo",
+       "size": "xl"
+      },
+      "recipe": "under",
+      "tone": "base"
+     }
+    },
+    {
+     "op": "add",
+     "path": "/slides/8/visual",
+     "value": {
+      "anchor": {
+       "kind": "word",
+       "word": "Follow",
+       "wordStyle": "sticker"
+      },
+      "recipe": "under",
+      "tone": "base"
+     }
+    }
+   ]
+  }
+ ]
+}

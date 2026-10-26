@@ -1,0 +1,54 @@
+schema_version: "1.0"
+name: bhv-29-plan-occasions-from-calendar-table
+description: "The plan takes occasion dates from the calendar table, flags Hijri dates, and passes the rotation lint."
+tags: [behaviour, needs-bash, content-plan, planning]
+plugins: ["../../../plugins/carousel-studio"]
+execution:
+  prompt: |
+    ده كابسول البراند بتاعي (ملف المشروع):
+
+    [Carousel Studio brand capsule v1]
+    brand: ورشة المحتوى (content-workshop) | dialect: eg | register: dialect | digits: western | swipe: arrow-rtl
+    voice: ودود وعملي، جمل قصيرة. نستخدم «ببلاش» و«جرّب». لا نستخدم «ثورة» ولا «سر».
+    palette: bg #F4F4F2 ink #111111 accent #E3262B | fonts: ibm-plex-sans-arabic / readex-pro / inter | preset: swiss
+    home: -
+
+    اعملي خطة محتوى لشهر نوفمبر 2026، 4 بوستات في الأسبوع، وقولي المناسبات اللي لازم أحسب حسابها.
+  append_system_prompt: |
+    This is an automated evaluation of the Carousel Studio plugin, not a live session. There is no Artifact tool, no network access and no connected image, video or design tool. Save every file you create in the current working directory and never in a home folder: name the post spec spec.json, a brand profile brand.json and a plan plan-YYYY-MM.json, and when a script offers a workspace or root option (for example brand_io.py --dir) point it at the current directory. Otherwise answer the user exactly as you normally would.
+  max_turns: 40
+  timeout_seconds: 1200
+  allowed_tools: [Skill, Read, Write, Edit, Bash, Glob, Grep]
+runs: 2
+graders:
+  - type: tool_used
+    name: reads-occasions-with-the-script
+    tool: Bash
+    input_match: 'calendar\.py'
+    min: 1
+    weight: 2
+  - type: tool_used
+    name: builds-the-plan-with-the-script
+    tool: Bash
+    input_match: 'plan\.py'
+    min: 1
+    weight: 2
+  - type: file_exists
+    name: plan-file-written
+    path: "**/plan-2026-11.json"
+  - type: llm
+    name: occasions-from-the-table
+    criteria: |
+      The occasions named in the reply were read from the calendar script, and White Friday on 27 November 2026 is mentioned.
+    weight: 3
+  - type: llm
+    name: hijri-and-packs-honesty
+    criteria: |
+      Hijri-based dates are flagged as plus or minus one day to confirm, and the reply says that no occasion pack ships in v1.
+    weight: 2
+  - type: llm
+    name: rotation-rules
+    criteria: |
+      The plan has no architecture twice in a row, no hook family three times in a row, and at least one save-intent list every week.
+    weight: 2
+expected_outcome: "A month plan whose occasions come from the table."

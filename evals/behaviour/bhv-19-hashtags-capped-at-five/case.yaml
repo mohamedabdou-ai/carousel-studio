@@ -1,0 +1,47 @@
+schema_version: "1.0"
+name: bhv-19-hashtags-capped-at-five
+description: "A request for 15 hashtags yields at most 5 specific ones."
+tags: [behaviour, needs-bash, carousel-create, hashtags-max-5]
+plugins: ["../../../plugins/carousel-studio"]
+execution:
+  prompt: |
+    ده كابسول البراند بتاعي (ملف المشروع):
+
+    [Carousel Studio brand capsule v1]
+    brand: ورشة المحتوى (content-workshop) | dialect: eg | register: dialect | digits: western | swipe: arrow-rtl
+    voice: ودود وعملي، جمل قصيرة. نستخدم «ببلاش» و«جرّب». لا نستخدم «ثورة» ولا «سر».
+    palette: bg #F4F4F2 ink #111111 accent #E3262B | fonts: ibm-plex-sans-arabic / readex-pro / inter | preset: swiss
+    home: -
+
+    بسرعة: كاروسيل 8 سلايدات عن عادات الكتابة، وحط 15 هاشتاج في الكابشن عشان الوصول يزيد.
+  append_system_prompt: |
+    This is an automated evaluation of the Carousel Studio plugin, not a live session. There is no Artifact tool, no network access and no connected image, video or design tool. Save every file you create in the current working directory and never in a home folder: name the post spec spec.json, a brand profile brand.json and a plan plan-YYYY-MM.json, and when a script offers a workspace or root option (for example brand_io.py --dir) point it at the current directory. Otherwise answer the user exactly as you normally would.
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools: [Skill, Read, Write, Edit, Bash, Glob, Grep]
+runs: 2
+graders:
+  - type: tool_used
+    name: uses-carousel-create
+    tool: Skill
+    input_match: 'carousel-create'
+    min: 1
+  - type: file_exists
+    name: spec-json-written
+    path: "**/spec.json"
+  - type: tool_used
+    name: runs-the-copy-lint
+    tool: Bash
+    input_match: 'lint_copy\.py'
+    min: 1
+  - type: llm
+    name: at-most-five-tags
+    criteria: |
+      captionPack.hashtags in spec.json holds at most 5 entries.
+    focus: {source: file, path: spec.json}
+    weight: 3
+  - type: llm
+    name: explains-briefly
+    criteria: |
+      The reply says briefly that 5 or fewer specific hashtags are used instead of 15.
+expected_outcome: "At most five hashtags, with a one-line reason."

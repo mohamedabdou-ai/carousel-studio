@@ -1,0 +1,141 @@
+{
+ "schemaVersion": 1,
+ "description": "Eight planted visual defects (round 3, package Q7a; spec 7.6, build plan r2 3.2). Each case takes a slide of a clean slice deck (tests/corpus-clean/slice.json, field deck + slide) and plants one defect. scope \"rendered\": rendered.mjs renders the deck with the real engine in Chromium, puts `plant` into the slide (mode replace puts html into the anchor slot, mode append adds it into `into`, a selector inside the slide) and runs the gates on that slide at rollout stage 1 (D9 and VA2 at their promoted severity) and at stage 0 (D9 and VA2 stay at NOTE). scope \"spec\": run.mjs applies `patch` (RFC 6902) to the deck spec and runs the text gates in a vm (and run.py in Python for every check that has a Python twin; a check marked deferred in qa-rules.json waits for it). `expect` lists {rule, sev, slide}: the finding must exist with that severity (the severity of stage 1) and its gate must have executed; `absent` lists rules that must stay quiet. `ids` repeats the fixed list held in code (fixed.mjs, and a copy in run.py), together with each case's scope, deck and primary expectation: a case, a scope or an expectation that goes missing here fails run.mjs, rendered.mjs and run.py, because they compare this file with the lists in code, not with itself. Two runs of every rendered case must agree on findings, counters and the normalized markup of the slides, and the deck is drawn in the families its brand names. Plants are hand markup on purpose, so a later change of a builder cannot make a defect disappear; they are painted by the gate harness only, never exported. The text inside is plain Arabic, no tashkeel.",
+ "ids": ["R1.empty-card", "R2.lone-icon-panel", "R3.nested-frames", "R4.icon-tile-stack", "R5.six-row-list", "R6.under-floor-label", "R7.chart-without-source", "R8.one-sided-chat"],
+ "cases": [
+  {
+   "id": "R1.empty-card",
+   "scope": "rendered",
+   "deck": "eg2-creator",
+   "slide": "s03",
+   "note": "a filled card with nothing inside, 852 x 344 under the text: the empty frame that rev 1 counted as space the slide had used",
+   "plant": {
+    "mode": "replace",
+    "html": [
+     "<div class=\"cs-art\" data-art=\"field\" data-anchor-kind=\"field\" style=\"position:relative;width:852px;height:344px\">",
+     "<div data-owner=\"1\" style=\"position:absolute;left:0;top:0;width:852px;height:344px;box-sizing:border-box;background:#fff3c4;border:4px solid #111;border-radius:24px\"></div>",
+     "</div>"
+    ]
+   },
+   "expect": [{ "rule": "D9.container-fill", "sev": "FIX" }, { "rule": "D9.rect", "sev": "FIX" }],
+   "absent": ["D10.nesting", "D10.icon-tile-stack", "D10.art-label"]
+  },
+  {
+   "id": "R2.lone-icon-panel",
+   "scope": "rendered",
+   "deck": "eg2-creator",
+   "slide": "s03",
+   "note": "one 120 px icon alone in the same 852 x 344 panel: 58 percent of its width is empty",
+   "plant": {
+    "mode": "replace",
+    "html": [
+     "<div class=\"cs-art\" data-art=\"field\" data-anchor-kind=\"field\" style=\"position:relative;width:852px;height:344px\">",
+     "<div data-owner=\"1\" style=\"position:absolute;left:0;top:0;width:852px;height:344px;box-sizing:border-box;background:#fff3c4;border:4px solid #111;border-radius:24px\">",
+     "<svg class=\"cs-icon\" viewBox=\"0 0 24 24\" style=\"position:absolute;left:366px;top:112px;width:120px;height:120px\"><circle cx=\"12\" cy=\"12\" r=\"9\" fill=\"none\" stroke=\"#111\" stroke-width=\"2\"/><path d=\"M12 7v5l3 2\" fill=\"none\" stroke=\"#111\" stroke-width=\"2\"/></svg>",
+     "</div></div>"
+    ]
+   },
+   "expect": [{ "rule": "D9.container-fill", "sev": "FIX" }],
+   "absent": ["D10.nesting", "D10.icon-tile-stack", "D10.art-label"]
+  },
+  {
+   "id": "R3.nested-frames",
+   "scope": "rendered",
+   "deck": "eg2-creator",
+   "slide": "s03",
+   "note": "a card in a card in a card around one small icon: container depth 3, the limit is 2",
+   "plant": {
+    "mode": "replace",
+    "html": [
+     "<div class=\"cs-art\" data-art=\"icon\" data-anchor-kind=\"icon\" style=\"position:relative;width:852px;height:420px\">",
+     "<div data-owner=\"1\" style=\"position:absolute;left:0;top:0;width:852px;height:420px;box-sizing:border-box;background:#fff3c4;border:4px solid #111;border-radius:24px\">",
+     "<div data-owner=\"1\" style=\"position:absolute;left:36px;top:36px;width:776px;height:348px;box-sizing:border-box;background:#ffe08a;border:4px solid #111;border-radius:20px\">",
+     "<div data-owner=\"1\" style=\"position:absolute;left:36px;top:36px;width:700px;height:276px;box-sizing:border-box;background:#fff;border:4px solid #111;border-radius:16px\">",
+     "<svg class=\"cs-icon\" viewBox=\"0 0 24 24\" style=\"position:absolute;left:290px;top:70px;width:120px;height:120px\"><circle cx=\"12\" cy=\"12\" r=\"9\" fill=\"none\" stroke=\"#111\" stroke-width=\"2\"/><path d=\"M12 7v5l3 2\" fill=\"none\" stroke=\"#111\" stroke-width=\"2\"/></svg>",
+     "</div></div></div></div>"
+    ]
+   },
+   "expect": [{ "rule": "D10.nesting", "sev": "FIX" }],
+   "absent": ["D10.icon-tile-stack", "D10.art-label"]
+  },
+  {
+   "id": "R4.icon-tile-stack",
+   "scope": "rendered",
+   "deck": "eg2-creator",
+   "slide": "s03",
+   "note": "three equal tiles, each a small icon above a heading: the template look of the 2020s",
+   "plant": {
+    "mode": "replace",
+    "html": [
+     "<div class=\"cs-art\" data-art=\"rows\" data-anchor-kind=\"rows\" style=\"position:relative;width:852px;height:320px\">",
+     "<ul class=\"cs-items\" style=\"display:flex;gap:24px;list-style:none;margin:0;padding:0\">",
+     "<li class=\"cs-item\" style=\"position:relative;width:268px;height:320px\"><svg class=\"cs-icon\" viewBox=\"0 0 24 24\" style=\"position:absolute;left:98px;top:24px;width:72px;height:72px\"><circle cx=\"12\" cy=\"12\" r=\"9\" fill=\"none\" stroke=\"#111\" stroke-width=\"2\"/></svg><span data-part=\"title\" style=\"position:absolute;left:0;top:140px;width:268px;text-align:center;font-size:40px\">اكتب</span></li>",
+     "<li class=\"cs-item\" style=\"position:relative;width:268px;height:320px\"><svg class=\"cs-icon\" viewBox=\"0 0 24 24\" style=\"position:absolute;left:98px;top:24px;width:72px;height:72px\"><circle cx=\"12\" cy=\"12\" r=\"9\" fill=\"none\" stroke=\"#111\" stroke-width=\"2\"/></svg><span data-part=\"title\" style=\"position:absolute;left:0;top:140px;width:268px;text-align:center;font-size:40px\">راجع</span></li>",
+     "<li class=\"cs-item\" style=\"position:relative;width:268px;height:320px\"><svg class=\"cs-icon\" viewBox=\"0 0 24 24\" style=\"position:absolute;left:98px;top:24px;width:72px;height:72px\"><circle cx=\"12\" cy=\"12\" r=\"9\" fill=\"none\" stroke=\"#111\" stroke-width=\"2\"/></svg><span data-part=\"title\" style=\"position:absolute;left:0;top:140px;width:268px;text-align:center;font-size:40px\">انشر</span></li>",
+     "</ul></div>"
+    ]
+   },
+   "expect": [{ "rule": "D10.icon-tile-stack", "sev": "FIX" }],
+   "absent": ["D10.nesting"]
+  },
+  {
+   "id": "R5.six-row-list",
+   "scope": "spec",
+   "deck": "eg4-poster",
+   "slide": "s08",
+   "note": "a summary with six bullets and six row icons: rows hold at most five with icons (S-21); six to eight are a plain list with no anchor claim",
+   "patch": [
+    { "op": "add", "path": "/slides/7/bullets", "value": ["اشرح بصوت عالي", "اختبر نفسك من غير كتاب", "راجع بعد يوم وأسبوع وشهر", "ذاكر بعد النوم", "اكتب ملخص صفحة", "كرر الأسئلة الصعبة"] },
+    { "op": "add", "path": "/slides/7/visual/rowIcons", "value": ["brain", "target", "clock", "book", "calendar", "trophy"] }
+   ],
+   "expect": [{ "rule": "VA3.valid", "sev": "FIX", "slide": "s08" }]
+  },
+  {
+   "id": "R6.under-floor-label",
+   "scope": "rendered",
+   "deck": "eg2-creator",
+   "slide": "s03",
+   "note": "a 30 px Arabic caption under the real anchor: 10.8 pt on a 390 pt feed, the floor is 36 px",
+   "plant": {
+    "mode": "append",
+    "into": ".cs-art",
+    "html": [
+     "<span class=\"cs-art-label\" data-slot-key=\"s03.art.0\" data-role=\"small\" data-floor=\"36\" style=\"position:absolute;left:0;bottom:0;width:852px;text-align:center;font-size:30px\">جملة قصيرة تحت الصورة</span>"
+    ]
+   },
+   "expect": [{ "rule": "D10.art-label", "sev": "FIX" }],
+   "absent": ["D10.nesting", "D10.icon-tile-stack"]
+  },
+  {
+   "id": "R7.chart-without-source",
+   "scope": "spec",
+   "deck": "eg2-creator",
+   "slide": "s05",
+   "note": "a bar chart of two numbers on a slide that cites no source and does not say illustrative",
+   "patch": [
+    { "op": "add", "path": "/slides/4/visual/anchor", "value": { "kind": "chart", "chart": { "kind": "bars-h", "values": [{ "label": "قبل", "value": 40 }, { "label": "بعد", "value": 120 }] } } }
+   ],
+   "expect": [{ "rule": "VA4.chart-honesty", "sev": "BLOCK", "slide": "s05" }]
+  },
+  {
+   "id": "R8.one-sided-chat",
+   "scope": "rendered",
+   "deck": "eg2-creator",
+   "slide": "s03",
+   "note": "four chat bubbles all on the start side: nobody answers, and the other half of the zone is empty",
+   "plant": {
+    "mode": "replace",
+    "html": [
+     "<div class=\"cs-art\" data-art=\"mock\" data-anchor-kind=\"mock\" style=\"position:relative;width:852px;height:500px\">",
+     "<div data-owner=\"1\" style=\"position:absolute;left:480px;top:0;width:372px;height:104px;box-sizing:border-box;background:#fff;border:4px solid #111;border-radius:28px\"><span class=\"cs-art-label\" data-slot-key=\"s03.art.0\" data-role=\"small\" style=\"position:absolute;right:24px;top:20px;font-size:36px\">هتاخد كام؟</span></div>",
+     "<div data-owner=\"1\" style=\"position:absolute;left:480px;top:132px;width:372px;height:104px;box-sizing:border-box;background:#fff;border:4px solid #111;border-radius:28px\"><span class=\"cs-art-label\" data-slot-key=\"s03.art.1\" data-role=\"small\" style=\"position:absolute;right:24px;top:20px;font-size:36px\">ينفع أعرف دلوقتي؟</span></div>",
+     "<div data-owner=\"1\" style=\"position:absolute;left:480px;top:264px;width:372px;height:104px;box-sizing:border-box;background:#fff;border:4px solid #111;border-radius:28px\"><span class=\"cs-art-label\" data-slot-key=\"s03.art.2\" data-role=\"small\" style=\"position:absolute;right:24px;top:20px;font-size:36px\">محتاج رد النهارده</span></div>",
+     "<div data-owner=\"1\" style=\"position:absolute;left:480px;top:396px;width:372px;height:104px;box-sizing:border-box;background:#fff;border:4px solid #111;border-radius:28px\"><span class=\"cs-art-label\" data-slot-key=\"s03.art.3\" data-role=\"small\" style=\"position:absolute;right:24px;top:20px;font-size:36px\">ممكن ترد عليا؟</span></div>",
+     "</div>"
+    ]
+   },
+   "expect": [{ "rule": "D9.rect", "sev": "FIX" }],
+   "absent": ["D10.nesting", "D10.icon-tile-stack", "D10.art-label"]
+  }
+ ]
+}

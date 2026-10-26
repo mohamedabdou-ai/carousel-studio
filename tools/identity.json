@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "$comment": "Single source for the author's name, links and standing sentences. Manifests, READMEs and the About screen text are written from these values; tools/check_directory.py reads them to decide where the author's name may appear (CONTRACT 0.6). Change a value here first, then update the files that repeat it.",
+  "project": {
+    "name": "Carousel Studio",
+    "nameAr": "كاروسيل ستوديو",
+    "pluginId": "carousel-studio",
+    "marketplaceId": "mohamed-abdou"
+  },
+  "name": "Mohamed Abdou",
+  "nameAr": "محمد عبده",
+  "nameVariants": ["Mohammed Abdou", "Mohamed Abdo", "Mohammed Abdo", "Engmohammedabdo"],
+  "license": "Apache-2.0",
+  "copyright": "Copyright (c) 2026 Mohamed Abdou (محمد عبده)",
+  "ownership": {
+    "en": "You own everything you create with Carousel Studio.",
+    "ar": "كل اللي بتعمله بكاروسيل ستوديو بتاعك."
+  },
+  "creditLine": {
+    "en": "Made by Mohamed Abdou",
+    "ar": "من صنع محمد عبده، وحسابه ⁦@mohamed.abdou90⁩ على Instagram لو حبيت تتابعه."
+  },
+  "thanksLine": {
+    "ar": "الأداة دي مجانية — كلمة شكر أو ذكر بتفرق معانا."
+  },
+  "githubOwner": "mohamedabdou-ai",
+  "repoUrl": "https://github.com/mohamedabdou-ai/carousel-studio",
+  "homepage": "https://github.com/mohamedabdou-ai/carousel-studio",
+  "documentationUrl": "https://github.com/mohamedabdou-ai/carousel-studio#readme",
+  "supportUrl": "https://github.com/mohamedabdou-ai/carousel-studio/issues",
+  "privacyUrl": "https://github.com/mohamedabdou-ai/carousel-studio/blob/main/PRIVACY.md",
+  "storeUrl": "https://store.pyraai.cloud",
+  "socials": {
+    "instagram": {"handle": "@mohamed.abdou90", "url": "https://www.instagram.com/mohamed.abdou90"},
+    "tiktok": {"handle": "@mohamedabdou.ai", "url": "https://www.tiktok.com/@mohamedabdou.ai"},
+    "youtube": {"handle": "@mohamedabdou-ai", "url": "https://www.youtube.com/@mohamedabdou-ai"},
+    "linkedin": {"handle": "mohamed-abdou90", "url": "https://www.linkedin.com/in/mohamed-abdou90"},
+    "facebook": {"handle": "mohamedabdou.ai.90", "url": "https://www.facebook.com/mohamedabdou.ai.90"}
+  }
+}

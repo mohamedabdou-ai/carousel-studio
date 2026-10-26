@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Carousel Studio">
+  <title>Carousel Studio</title>
+  <rect width="512" height="512" rx="112" fill="#141A44"/>
+  <!-- Three 3:4 slides. Slide 1 sits on the right and the next slides peek out to its left, as they do in an Arabic-UI carousel. -->
+  <rect x="97" y="132" width="190" height="253" rx="26" fill="#0F7D6B"/>
+  <rect x="161" y="108" width="190" height="253" rx="26" fill="#F5B012"/>
+  <rect x="225" y="84" width="190" height="253" rx="26" fill="#F2F4FA"/>
+  <!-- Headline lines of slide 1, set from the right edge. -->
+  <rect x="271" y="124" width="120" height="16" rx="8" fill="#141A44"/>
+  <rect x="295" y="154" width="96" height="16" rx="8" fill="#141A44"/>
+  <rect x="327" y="184" width="64" height="16" rx="8" fill="#F5B012"/>
+  <!-- Swipe cue pointing left. -->
+  <path d="M262 296 L248 310 L262 324" fill="none" stroke="#141A44" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Pager dots; the active one is the rightmost, as slide 1. -->
+  <circle cx="232" cy="424" r="7" fill="#5A6199"/>
+  <circle cx="256" cy="424" r="7" fill="#5A6199"/>
+  <circle cx="280" cy="424" r="7" fill="#F5B012"/>
+</svg>

@@ -1,0 +1,56 @@
+schema_version: "1.0"
+name: bhv-43-team-log-stays-short
+description: "The creator sees a short team log in their own dialect (decisions and reasons, at most six lines, one per key), kept in the spec for the Studio, not the internal debate."
+tags: [behaviour, needs-bash, carousel-create, creative-team, team-log-short]
+plugins: ["../../../plugins/carousel-studio"]
+execution:
+  prompt: |
+    ده كابسول البراند بتاعي (ملف المشروع):
+
+        [Carousel Studio brand capsule v1]
+        brand: ورشة المحتوى (content-workshop) | dialect: eg | register: dialect | digits: western | swipe: arrow-rtl
+        voice: ودود وعملي، جمل قصيرة. نستخدم «ببلاش» و«جرّب». لا نستخدم «ثورة» ولا «سر».
+        palette: bg #F4F4F2 ink #111111 accent #E3262B | fonts: ibm-plex-sans-arabic / readex-pro / inter | preset: swiss
+        home: -
+
+    اعملي كاروسيل عن إزاي تختار أداة ذكاء اصطناعي للكتابة. وبعد كل مرحلة قولي الفريق قرر إيه وليه.
+  append_system_prompt: |
+    This is an automated evaluation of the Carousel Studio plugin, not a live session. There is no Artifact tool, no network access and no connected image, video or design tool. Save every file you create in the current working directory and never in a home folder: name the post spec spec.json, the production board board.md, a brand profile brand.json and a plan plan-YYYY-MM.json, and when a script offers a workspace or root option (for example brand_io.py --dir) point it at the current directory. Subagents may be unavailable: when they are, run each team role as an explicit role pass, as the skill says. Otherwise answer the user exactly as you normally would.
+  max_turns: 80
+  timeout_seconds: 1800
+  allowed_tools: [Skill, Read, Write, Edit, Bash, Glob, Grep, Agent]
+runs: 2
+graders:
+  - type: tool_used
+    name: uses-carousel-create
+    tool: Skill
+    input_match: 'carousel-create'
+    min: 1
+  - type: regex
+    name: team-log-kept-in-the-spec
+    pattern: '"teamLog"\s*:\s*\['
+    match: contains
+    target: {source: file, path: spec.json}
+    weight: 2
+  - type: tool_used
+    name: checks-the-log-against-the-spec
+    tool: Bash
+    input_match: 'board_check\.py[^\n]*--spec'
+    min: 1
+    weight: 2
+  - type: llm
+    name: log-is-short-and-in-dialect
+    criteria: |
+      At each checkpoint the user sees team-log lines (six at most in all, one per key: the idea, the pitch, the duel, the swipe test, the editor, the design), in Egyptian Arabic, each stating a decision and its reason, and none reproducing the internal debate, a handoff card or the board.
+    weight: 2
+  - type: llm
+    name: no-role-chatter
+    criteria: |
+      The reply does not narrate every role switch («دلوقتي أنا المخطط...») or paste the board; it speaks as the creative director.
+    weight: 2
+  - type: regex
+    name: no-author-credit
+    pattern: 'محمد عبده|Mohamed Abdou'
+    match: not_contains
+    weight: 2
+expected_outcome: "A team log of at most six lines in the user's dialect, kept in spec.json for the Studio."

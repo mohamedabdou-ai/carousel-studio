@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "specId": "post-20261022-0001",
+  "rev": 3,
+  "engine": "cs-1.1.0",
+  "createdAt": "2026-10-22T11:00:00Z",
+  "checkpoint": "design",
+  "lane": "studio",
+  "status": "fix",
+  "exitCode": 1,
+  "counts": {
+    "block": 0,
+    "fix": 1,
+    "note": 0
+  },
+  "results": [
+    {
+      "gate": "T1",
+      "sev": "FIX",
+      "slide": "s01",
+      "el": "s01.headline",
+      "msg": {
+        "ar": "الغلاف صغير على المصغّر",
+        "en": "Cover hero is small at thumbnail size"
+      },
+      "fix": {
+        "ar": "كبّر العنوان",
+        "en": "Enlarge the headline"
+      }
+    }
+  ],
+  "environment": {
+    "painter": "svg",
+    "dialect": "eg",
+    "digits": "western"
+  }
+}

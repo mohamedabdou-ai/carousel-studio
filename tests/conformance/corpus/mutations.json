@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "description": "Mutations of the fixture specs for the text-gate conformance run. Each one applies a JSON patch to a base fixture (tests/fixtures/<base>) and runs every text gate; the JavaScript and Python engines must return the same findings. `brand` names a brand fixture, `history` is passed to the repetition gate.",
+  "mutations": [
+    {"id": "base-eg", "base": "spec.eg.8slides.json", "brand": "brand.eg.creator.json", "patch": []},
+    {"id": "base-gulf", "base": "spec.gulf.9slides.json", "brand": "brand.gulf.client.json", "patch": []},
+    {"id": "base-levant", "base": "spec.levant.10slides.json", "patch": []},
+    {"id": "base-msa-indic", "base": "spec.msa-white.indic.8slides.json", "brand": "brand.msa.indic.json", "patch": []},
+    {"id": "base-en", "base": "spec.en.8slides.json", "brand": "brand.en.minimal.json", "patch": []},
+    {"id": "base-single", "base": "spec.eg.single.json", "patch": []},
+    {"id": "base-angle-stub", "base": "spec.eg.angle-stub.json", "patch": []},
+    {"id": "cover-too-long", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/0/headline", "value": "تسعة كلمات في عنوان واحد طويل جدا على الغلاف\nوسطر ثالث\nورابع"}
+    ]},
+    {"id": "body-too-long", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/2/body", "value": "هذا نص طويل جدا يتكرر فيه الكلام بلا فائدة حقيقية ويستمر ويستمر حتى يتجاوز الحد المسموح به بكثير ويمل القارئ منه قبل أن ينتهي من قراءة الجملة الأولى أصلا وهذا غير مقبول في أي حال من الأحوال"}
+    ]},
+    {"id": "slide2-intro", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/1/headline", "value": "قبل ما نبدأ أنا محمد وهقولك حاجة"}
+    ]},
+    {"id": "number-without-source", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/3/body", "value": "أكتر من 85% من المشاهدين بيعدّوا الغلاف و 2 مليون متابع شافوا ده في 3 ساعات."}
+    ]},
+    {"id": "digits-indic-in-western", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/2/title", "value": "خط ٥ صغير ميتقراش"}
+    ]},
+    {"id": "digits-mixed-and-persian", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/4/body", "value": "فكرة ٣ و 4 و ۵ في سلايد"}
+    ]},
+    {"id": "percent-mismatch", "base": "spec.msa-white.indic.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/3/body", "value": "نسبة ٥٠% من المشاهدين"}
+    ]},
+    {"id": "caption-missing-parts", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "remove", "path": "/captionPack/perSlide/3"},
+      {"op": "replace", "path": "/captionPack/alt/2", "value": ""},
+      {"op": "add", "path": "/captionPack/keywordLine", "value": ""}
+    ]},
+    {"id": "caption-too-many-hashtags", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/captionPack/hashtags", "value": ["#a", "#b", "#c", "#d", "#e", "#f", "#a", "bad tag"]}
+    ]},
+    {"id": "cta-twice-and-repeat", "base": "spec.eg.8slides.json", "history": [
+      {"postId": "old-1", "cta": "save", "family": "P3", "cover": "5 أخطاء بتموّت الكاروسيل"},
+      {"postId": "old-2", "cta": "send", "family": "P1", "cover": "ثلاث نصائح"}
+    ], "patch": [
+      {"op": "add", "path": "/slides/3/cta", "value": {"kind": "send", "text": "ابعتها لصاحبك"}}
+    ]},
+    {"id": "dialect-markers", "base": "spec.gulf.9slides.json", "patch": [
+      {"op": "add", "path": "/slides/2/body", "value": "عايز تعرف إزاي دلوقتي مش هتتعب"}
+    ]},
+    {"id": "ortho-errors", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/2/body", "value": "اتعلم انشاء كاروسيل ... و ليه ,نعم ؟؟ انشاء الله اللون ٣"}
+    ]},
+    {"id": "bidi-problems", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/3/body", "value": "استخدم لـ ChatGPT و بـ 5 أدوات في الخطوة 3 دلوقتي"}
+    ]},
+    {"id": "hype-and-ai-words", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/4/body", "value": "في عالم اليوم الحقيقة الصادمة هي أن هذا سر خطير يغير حياتك"}
+    ]},
+    {"id": "too-few-slides", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "remove", "path": "/slides/6"},
+      {"op": "remove", "path": "/slides/5"},
+      {"op": "remove", "path": "/slides/4"},
+      {"op": "remove", "path": "/slides/3"}
+    ]},
+    {"id": "list-count-mismatch", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/0/headline", "value": "7 أخطاء بتموّت الكاروسيل"}
+    ]},
+    {"id": "placeholder-handle", "base": "spec.eg.8slides.json", "brand": "brand.eg.creator.json", "brandPatch": [
+      {"op": "replace", "path": "/handle", "value": "@yourbrand"}
+    ], "patch": []},
+    {"id": "placeholder-name-and-label", "base": "spec.en.8slides.json", "brand": "brand.en.minimal.json", "brandPatch": [
+      {"op": "replace", "path": "/name", "value": "Your Brand"}
+    ], "patch": [
+      {"op": "add", "path": "/style/metaLabel", "value": "{{series}}"}
+    ]},
+    {"id": "slide2-without-the-count", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "replace", "path": "/slides/1/sub", "value": "في الكلام وترتيبه"}
+    ]},
+    {"id": "slide2-names-the-first-item", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "replace", "path": "/slides/1/sub", "value": "أولها: خط صغير ميتقراش"}
+    ]},
+    {"id": "five-identical-items", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "remove", "path": "/slides/3/variant"},
+      {"op": "remove", "path": "/slides/5/variant"}
+    ]},
+    {"id": "source-overlap", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/sources", "value": [{"id": "src1", "kind": "url", "ref": "https://example.com/post", "excerpt": "لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة السلايد التانية فرصة تانية للغلاف"}]}
+    ]}
+  ]
+}

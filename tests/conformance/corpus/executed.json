@@ -1,0 +1,22 @@
+{
+ "schemaVersion": 1,
+ "description": "Gates and checks that must have run at least once in the JavaScript engine of the conformance run; run_py.py --compare exits 2 on a count of zero. These are the text checks only JavaScript runs until their Python twins land (Q6), which register under their own check id: VA1, VA3, VA4, VA6, VA7, VA8, the D8 spec checks, the C2 additions, and D10.glyph-icon (a text check inside the rendered gate D10). The comparison derives the same list from qa-rules.json per check; this list is the second, written-down copy, and a unit test keeps the two equal.",
+ "requireExecuted": [
+  "C2.body-with-art",
+  "C2.demo-duplicate",
+  "C2.demo-missing",
+  "C2.demo-words",
+  "C2.figure-repeat",
+  "C2.word-echo",
+  "D10.glyph-icon",
+  "D8.anchor-run",
+  "D8.tone-flat",
+  "D8.tone-run",
+  "VA1.anchor-present",
+  "VA3.valid",
+  "VA4.chart-honesty",
+  "VA6.pause",
+  "VA7.agreement",
+  "VA8.constraints"
+ ]
+}

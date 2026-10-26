@@ -1,0 +1,6 @@
+{
+  "module": "hf",
+  "chunk": "cs-hf.js",
+  "order": 0,
+  "files": ["runtime.js", "api.js"]
+}

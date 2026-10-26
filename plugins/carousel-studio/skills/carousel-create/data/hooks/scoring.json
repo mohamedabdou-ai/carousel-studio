@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "1.0.0",
+  "description": "Weights and thresholds of the hook score (hook-scoring.md). P (prior) + R (rules, computed by hook_features.py) + J (judge, scored by the model) = 100 points, then penalties. A unit test asserts that the weights add up and that the parts of R and J equal their totals.",
+  "weights": {"P": 20, "R": 40, "J": 40},
+  "rules": {"scannability": 10, "specificity": 10, "awarenessFit": 10, "voiceFit": 10},
+  "judge": {"gapQuality": 20, "saveSendTrigger": 10, "slide2Deliverability": 10},
+  "penalties": {"familyRepeat": -10, "similar": -15, "emoji": -5, "latinOnly": -5},
+  "thresholds": {
+    "similarity": 0.8,
+    "familyRepeatWindow": 2,
+    "historyWindow": 30,
+    "priorMinN": 5,
+    "fearStackMin": 2,
+    "hypeSingleWordIsHit": false
+  },
+  "prior": {
+    "intentPrimary": 12,
+    "intentAlso": 7,
+    "intentOther": 2,
+    "evidence": {"D-own": 8, "D": 6, "O": 6, "EC": 4, "SE": 2},
+    "evidenceFullN": 20
+  },
+  "scannability": {"firstWord": 5, "secondWord": 3, "break": 2, "numeralOnList": 3, "numeralElse": 1},
+  "specificity": {"base": 4, "numeral": 2, "latinName": 2, "timeFrame": 2, "concreteNouns": 2, "concreteNounMin": 2, "concreteNounMinChars": 4, "abstractWord": -5},
+  "voice": {"base": 8, "aiWord": -5, "stockOpener": -5, "stiffMsa": -3, "translationese": -3, "brandAvoid": -5, "brandUse": 1},
+  "awareness": {
+    "order": ["unaware", "problem", "solution", "product"],
+    "match": 10,
+    "adjacent": 5,
+    "far": 0,
+    "unknown": 5
+  },
+  "lines": {"heroLineChars": {"ar": 18, "en": 24}},
+  "selection": {"top": 3, "distinctFamilies": true, "minCandidates": 12, "minFamilies": 4},
+  "listFamilies": ["P1", "P3", "P11", "P15", "P16"]
+}

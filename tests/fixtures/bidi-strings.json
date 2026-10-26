@@ -1,0 +1,1631 @@
+{
+  "schemaVersion": 1,
+  "description": "Bidi, digit and tokenizer strings for the shared conformance suites (CONTRACT section 3.3). `expect` gives the non-space tokens (kind, text), the merged LTR runs, the word count, the digit system detected, and the text-gate findings (N1/B1 ids, plus ORTHO-DIG-004 for glued digits) under `digitsSetting` (default western). U+00A0 is written as \\u00a0 in the JSON.",
+  "source": "docs/CONTRACT.md sections 3.3 and 7.2",
+  "cases": [
+    {
+      "id": "BD-001",
+      "category": "lam-latin",
+      "text": "لـChatGPT",
+      "note": "Reference string. The tatweel is the one connector allowed in copy; the prefix and the Latin name form one word unit.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "لـ"
+          ],
+          [
+            "latin",
+            "ChatGPT"
+          ]
+        ],
+        "ltrRuns": [
+          "ChatGPT"
+        ],
+        "words": 1,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-002",
+      "category": "lam-latin",
+      "text": "بـChatGPT Plus",
+      "note": "Prefix + a two-word Latin run: one LTR run, one word unit for the prefix and the first Latin word.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "بـ"
+          ],
+          [
+            "latin",
+            "ChatGPT"
+          ],
+          [
+            "latin",
+            "Plus"
+          ]
+        ],
+        "ltrRuns": [
+          "ChatGPT Plus"
+        ],
+        "words": 2,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-003",
+      "category": "lam-latin",
+      "text": "الـAI أسرع",
+      "note": "Definite-article connector before a Latin acronym.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "الـ"
+          ],
+          [
+            "latin",
+            "AI"
+          ],
+          [
+            "ar",
+            "أسرع"
+          ]
+        ],
+        "ltrRuns": [
+          "AI"
+        ],
+        "words": 2,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-004",
+      "category": "lam-latin",
+      "text": "وبـCanva تقدر تصمم",
+      "note": "Two proclitics (و + ب) before a Latin name.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "وبـ"
+          ],
+          [
+            "latin",
+            "Canva"
+          ],
+          [
+            "ar",
+            "تقدر"
+          ],
+          [
+            "ar",
+            "تصمم"
+          ]
+        ],
+        "ltrRuns": [
+          "Canva"
+        ],
+        "words": 3,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-005",
+      "category": "lam-latin",
+      "text": "لـ ChatGPT",
+      "note": "Stranded prefix: tatweel, then a space, then a Latin name.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "لـ"
+          ],
+          [
+            "latin",
+            "ChatGPT"
+          ]
+        ],
+        "ltrRuns": [
+          "ChatGPT"
+        ],
+        "words": 2,
+        "digits": "none",
+        "findings": [
+          "B1.stranded-lam"
+        ]
+      }
+    },
+    {
+      "id": "BD-006",
+      "category": "lam-latin",
+      "text": "بـ Canva أسهل",
+      "note": "Stranded prefix before a Latin name (autofix: remove the space).",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "بـ"
+          ],
+          [
+            "latin",
+            "Canva"
+          ],
+          [
+            "ar",
+            "أسهل"
+          ]
+        ],
+        "ltrRuns": [
+          "Canva"
+        ],
+        "words": 3,
+        "digits": "none",
+        "findings": [
+          "B1.stranded-lam"
+        ]
+      }
+    },
+    {
+      "id": "BD-007",
+      "category": "lam-latin",
+      "text": "استخدم ChatGPT لتلخيص المقال",
+      "note": "Latin word between ordinary Arabic words; nothing stranded.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "استخدم"
+          ],
+          [
+            "latin",
+            "ChatGPT"
+          ],
+          [
+            "ar",
+            "لتلخيص"
+          ],
+          [
+            "ar",
+            "المقال"
+          ]
+        ],
+        "ltrRuns": [
+          "ChatGPT"
+        ],
+        "words": 4,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-008",
+      "category": "lam-latin",
+      "text": "جرّب Claude.ai الآن",
+      "note": "A domain-shaped token is one url token and one LTR run.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "جرّب"
+          ],
+          [
+            "url",
+            "Claude.ai"
+          ],
+          [
+            "ar",
+            "الآن"
+          ]
+        ],
+        "ltrRuns": [
+          "Claude.ai"
+        ],
+        "words": 3,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-009",
+      "category": "lam-latin",
+      "text": "شغّل VS Code وافتح الملف",
+      "note": "Two Latin words separated by one space merge into one run.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "شغّل"
+          ],
+          [
+            "latin",
+            "VS"
+          ],
+          [
+            "latin",
+            "Code"
+          ],
+          [
+            "ar",
+            "وافتح"
+          ],
+          [
+            "ar",
+            "الملف"
+          ]
+        ],
+        "ltrRuns": [
+          "VS Code"
+        ],
+        "words": 5,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-010",
+      "category": "lam-latin",
+      "text": "أنا بستخدم iPhone 15 Pro",
+      "note": "Latin, number and Latin merge into one run.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "أنا"
+          ],
+          [
+            "ar",
+            "بستخدم"
+          ],
+          [
+            "latin",
+            "iPhone"
+          ],
+          [
+            "number",
+            "15"
+          ],
+          [
+            "latin",
+            "Pro"
+          ]
+        ],
+        "ltrRuns": [
+          "iPhone 15 Pro"
+        ],
+        "words": 5,
+        "digits": "western",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-011",
+      "category": "lam-latin",
+      "text": "من ChatGPT إلى Claude",
+      "note": "An Arabic word between two Latin names keeps them in two runs.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "من"
+          ],
+          [
+            "latin",
+            "ChatGPT"
+          ],
+          [
+            "ar",
+            "إلى"
+          ],
+          [
+            "latin",
+            "Claude"
+          ]
+        ],
+        "ltrRuns": [
+          "ChatGPT",
+          "Claude"
+        ],
+        "words": 4,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-012",
+      "category": "lam-latin",
+      "text": "Android 15 / iOS 18",
+      "note": "A slash between two Latin names keeps them in two runs.",
+      "expect": {
+        "tokens": [
+          [
+            "latin",
+            "Android"
+          ],
+          [
+            "number",
+            "15"
+          ],
+          [
+            "punct",
+            "/"
+          ],
+          [
+            "latin",
+            "iOS"
+          ],
+          [
+            "number",
+            "18"
+          ]
+        ],
+        "ltrRuns": [
+          "Android 15",
+          "iOS 18"
+        ],
+        "words": 4,
+        "digits": "western",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-013",
+      "category": "number-unit",
+      "text": "$1000/شهريا",
+      "note": "Reference string. The currency number is one LTR run; the slash is punctuation and the Arabic word follows it.",
+      "expect": {
+        "tokens": [
+          [
+            "number",
+            "$1000"
+          ],
+          [
+            "punct",
+            "/"
+          ],
+          [
+            "ar",
+            "شهريا"
+          ]
+        ],
+        "ltrRuns": [
+          "$1000"
+        ],
+        "words": 1,
+        "digits": "western",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-014",
+      "category": "number-unit",
+      "text": "اشترك بـ$20 شهريًا",
+      "note": "Number and noun separated by an ordinary space: they may split across lines.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "اشترك"
+          ],
+          [
+            "ar",
+            "بـ"
+          ],
+          [
+            "number",
+            "$20"
+          ],
+          [
+            "ar",
+            "شهريًا"
+          ]
+        ],
+        "ltrRuns": [
+          "$20"
+        ],
+        "words": 3,
+        "digits": "western",
+        "findings": [
+          "B1.unbound-pair"
+        ]
+      }
+    },
+    {
+      "id": "BD-015",
+      "category": "number-unit",
+      "text": "اشترك بـ$20\u00a0شهريًا",
+      "note": "The same text with U+00A0 between the number and the noun.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "اشترك"
+          ],
+          [
+            "ar",
+            "بـ"
+          ],
+          [
+            "number",
+            "$20"
+          ],
+          [
+            "ar",
+            "شهريًا"
+          ]
+        ],
+        "ltrRuns": [
+          "$20"
+        ],
+        "words": 3,
+        "digits": "western",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-016",
+      "category": "number-unit",
+      "text": "السعر 99 ريال",
+      "note": "Number + unit noun, unbound.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "السعر"
+          ],
+          [
+            "number",
+            "99"
+          ],
+          [
+            "ar",
+            "ريال"
+          ]
+        ],
+        "ltrRuns": [
+          "99"
+        ],
+        "words": 3,
+        "digits": "western",
+        "findings": [
+          "B1.unbound-pair"
+        ]
+      }
+    },
+    {
+      "id": "BD-017",
+      "category": "number-unit",
+      "text": "السعر 99\u00a0ريال",
+      "note": "Bound with U+00A0.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "السعر"
+          ],
+          [
+            "number",
+            "99"
+          ],
+          [
+            "ar",
+            "ريال"
+          ]
+        ],
+        "ltrRuns": [
+          "99"
+        ],
+        "words": 3,
+        "digits": "western",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-018",
+      "category": "number-unit",
+      "text": "50% خصم على الاشتراك",
+      "note": "A percent number followed by a noun is a pair like any other number.",
+      "expect": {
+        "tokens": [
+          [
+            "number",
+            "50%"
+          ],
+          [
+            "ar",
+            "خصم"
+          ],
+          [
+            "ar",
+            "على"
+          ],
+          [
+            "ar",
+            "الاشتراك"
+          ]
+        ],
+        "ltrRuns": [
+          "50%"
+        ],
+        "words": 4,
+        "digits": "western",
+        "findings": [
+          "B1.unbound-pair"
+        ]
+      }
+    },
+    {
+      "id": "BD-019",
+      "category": "number-unit",
+      "text": "خصم 50%",
+      "note": "A percent at the end of the text has nothing to bind to.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "خصم"
+          ],
+          [
+            "number",
+            "50%"
+          ]
+        ],
+        "ltrRuns": [
+          "50%"
+        ],
+        "words": 2,
+        "digits": "western",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-020",
+      "category": "number-unit",
+      "text": "من 10 إلى 20 دقيقة",
+      "note": "Two unbound pairs report one finding id.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "من"
+          ],
+          [
+            "number",
+            "10"
+          ],
+          [
+            "ar",
+            "إلى"
+          ],
+          [
+            "number",
+            "20"
+          ],
+          [
+            "ar",
+            "دقيقة"
+          ]
+        ],
+        "ltrRuns": [
+          "10",
+          "20"
+        ],
+        "words": 5,
+        "digits": "western",
+        "findings": [
+          "B1.unbound-pair"
+        ]
+      }
+    },
+    {
+      "id": "BD-021",
+      "category": "number-unit",
+      "text": "5\u00a0أخطاء بتموّت الكاروسيل",
+      "note": "The flagship cover, bound.",
+      "expect": {
+        "tokens": [
+          [
+            "number",
+            "5"
+          ],
+          [
+            "ar",
+            "أخطاء"
+          ],
+          [
+            "ar",
+            "بتموّت"
+          ],
+          [
+            "ar",
+            "الكاروسيل"
+          ]
+        ],
+        "ltrRuns": [
+          "5"
+        ],
+        "words": 4,
+        "digits": "western",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-022",
+      "category": "number-unit",
+      "text": "5 أخطاء بتموّت الكاروسيل",
+      "note": "The flagship cover typed with an ordinary space; the autofix binds it.",
+      "expect": {
+        "tokens": [
+          [
+            "number",
+            "5"
+          ],
+          [
+            "ar",
+            "أخطاء"
+          ],
+          [
+            "ar",
+            "بتموّت"
+          ],
+          [
+            "ar",
+            "الكاروسيل"
+          ]
+        ],
+        "ltrRuns": [
+          "5"
+        ],
+        "words": 4,
+        "digits": "western",
+        "findings": [
+          "B1.unbound-pair"
+        ]
+      }
+    },
+    {
+      "id": "BD-023",
+      "category": "number-unit",
+      "text": "الخطوة 3 من 7",
+      "note": "A label from copy.json bindLabels before a number, and a number before a noun.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "الخطوة"
+          ],
+          [
+            "number",
+            "3"
+          ],
+          [
+            "ar",
+            "من"
+          ],
+          [
+            "number",
+            "7"
+          ]
+        ],
+        "ltrRuns": [
+          "3",
+          "7"
+        ],
+        "words": 4,
+        "digits": "western",
+        "findings": [
+          "B1.unbound-pair"
+        ]
+      }
+    },
+    {
+      "id": "BD-024",
+      "category": "number-unit",
+      "text": "الخطوة\u00a03\u00a0من\u00a07",
+      "note": "Bound counter text.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "الخطوة"
+          ],
+          [
+            "number",
+            "3"
+          ],
+          [
+            "ar",
+            "من"
+          ],
+          [
+            "number",
+            "7"
+          ]
+        ],
+        "ltrRuns": [
+          "3",
+          "7"
+        ],
+        "words": 4,
+        "digits": "western",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-025",
+      "category": "number-unit",
+      "text": "حمّل الإصدار 2.5.1",
+      "note": "A dotted version is one number token; the label from bindLabels binds to it.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "حمّل"
+          ],
+          [
+            "ar",
+            "الإصدار"
+          ],
+          [
+            "number",
+            "2.5.1"
+          ]
+        ],
+        "ltrRuns": [
+          "2.5.1"
+        ],
+        "words": 3,
+        "digits": "western",
+        "findings": [
+          "B1.unbound-pair"
+        ]
+      }
+    },
+    {
+      "id": "BD-026",
+      "category": "number-unit",
+      "text": "شبكة 5G",
+      "note": "A number with letters stays out of digit detection (it contains a Latin letter).",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "شبكة"
+          ],
+          [
+            "number",
+            "5G"
+          ]
+        ],
+        "ltrRuns": [
+          "5G"
+        ],
+        "words": 2,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-027",
+      "category": "number-unit",
+      "text": "Wi-Fi أسرع",
+      "note": "A hyphenated Latin word is one token.",
+      "expect": {
+        "tokens": [
+          [
+            "latin",
+            "Wi-Fi"
+          ],
+          [
+            "ar",
+            "أسرع"
+          ]
+        ],
+        "ltrRuns": [
+          "Wi-Fi"
+        ],
+        "words": 2,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-028",
+      "category": "number-unit",
+      "text": "C++ و Node.js للمبتدئين",
+      "note": "Plus signs stay inside the Latin token; Node.js is domain-shaped and is a url token.",
+      "expect": {
+        "tokens": [
+          [
+            "latin",
+            "C++"
+          ],
+          [
+            "ar",
+            "و"
+          ],
+          [
+            "url",
+            "Node.js"
+          ],
+          [
+            "ar",
+            "للمبتدئين"
+          ]
+        ],
+        "ltrRuns": [
+          "C++",
+          "Node.js"
+        ],
+        "words": 4,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-029",
+      "category": "digits",
+      "text": "١٫٧",
+      "note": "Reference string. Arabic-Indic decimal with U+066B is one number token; with western digits expected it is a system mismatch.",
+      "expect": {
+        "tokens": [
+          [
+            "number",
+            "١٫٧"
+          ]
+        ],
+        "ltrRuns": [],
+        "words": 1,
+        "digits": "arabic-indic",
+        "findings": [
+          "N1.system"
+        ]
+      }
+    },
+    {
+      "id": "BD-030",
+      "category": "digits",
+      "text": "١٫٧",
+      "note": "The same string under an Arabic-Indic setting.",
+      "digitsSetting": "arabic-indic",
+      "expect": {
+        "tokens": [
+          [
+            "number",
+            "١٫٧"
+          ]
+        ],
+        "ltrRuns": [],
+        "words": 1,
+        "digits": "arabic-indic",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-031",
+      "category": "digits",
+      "text": "نسبة النجاح ٥٠٪",
+      "note": "Arabic-Indic percent (U+066A) with Arabic-Indic digits.",
+      "digitsSetting": "arabic-indic",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "نسبة"
+          ],
+          [
+            "ar",
+            "النجاح"
+          ],
+          [
+            "number",
+            "٥٠٪"
+          ]
+        ],
+        "ltrRuns": [],
+        "words": 3,
+        "digits": "arabic-indic",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-032",
+      "category": "digits",
+      "text": "نسبة الخصم 50٪",
+      "note": "Western digits with the Arabic percent sign.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "نسبة"
+          ],
+          [
+            "ar",
+            "الخصم"
+          ],
+          [
+            "number",
+            "50"
+          ],
+          [
+            "punct",
+            "٪"
+          ]
+        ],
+        "ltrRuns": [
+          "50"
+        ],
+        "words": 3,
+        "digits": "western",
+        "findings": [
+          "N1.percent"
+        ]
+      }
+    },
+    {
+      "id": "BD-033",
+      "category": "digits",
+      "text": "نسبة الخصم ٥٠%",
+      "note": "Arabic-Indic digits with the Western percent sign.",
+      "digitsSetting": "arabic-indic",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "نسبة"
+          ],
+          [
+            "ar",
+            "الخصم"
+          ],
+          [
+            "number",
+            "٥٠"
+          ],
+          [
+            "punct",
+            "%"
+          ]
+        ],
+        "ltrRuns": [],
+        "words": 3,
+        "digits": "arabic-indic",
+        "findings": [
+          "N1.percent"
+        ]
+      }
+    },
+    {
+      "id": "BD-034",
+      "category": "digits",
+      "text": "١٬٢٠٠ ريال",
+      "note": "Arabic-Indic thousands separator (U+066C) inside one number token; unbound with the noun.",
+      "digitsSetting": "arabic-indic",
+      "expect": {
+        "tokens": [
+          [
+            "number",
+            "١٬٢٠٠"
+          ],
+          [
+            "ar",
+            "ريال"
+          ]
+        ],
+        "ltrRuns": [],
+        "words": 2,
+        "digits": "arabic-indic",
+        "findings": [
+          "B1.unbound-pair"
+        ]
+      }
+    },
+    {
+      "id": "BD-035",
+      "category": "digits",
+      "text": "1,200 ريال",
+      "note": "Western thousands separator; unbound with the noun.",
+      "expect": {
+        "tokens": [
+          [
+            "number",
+            "1,200"
+          ],
+          [
+            "ar",
+            "ريال"
+          ]
+        ],
+        "ltrRuns": [
+          "1,200"
+        ],
+        "words": 2,
+        "digits": "western",
+        "findings": [
+          "B1.unbound-pair"
+        ]
+      }
+    },
+    {
+      "id": "BD-036",
+      "category": "digits",
+      "text": "اشترك في ٥\u00a0دورات و 3\u00a0ورش",
+      "note": "Two digit systems in one text.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "اشترك"
+          ],
+          [
+            "ar",
+            "في"
+          ],
+          [
+            "number",
+            "٥"
+          ],
+          [
+            "ar",
+            "دورات"
+          ],
+          [
+            "ar",
+            "و"
+          ],
+          [
+            "number",
+            "3"
+          ],
+          [
+            "ar",
+            "ورش"
+          ]
+        ],
+        "ltrRuns": [
+          "3"
+        ],
+        "words": 7,
+        "digits": "mixed",
+        "findings": [
+          "N1.mixed"
+        ]
+      }
+    },
+    {
+      "id": "BD-037",
+      "category": "digits",
+      "text": "۵ أخطاء",
+      "note": "Persian digit (U+06F5): always a violation.",
+      "expect": {
+        "tokens": [
+          [
+            "number",
+            "۵"
+          ],
+          [
+            "ar",
+            "أخطاء"
+          ]
+        ],
+        "ltrRuns": [],
+        "words": 2,
+        "digits": "persian",
+        "findings": [
+          "B1.unbound-pair",
+          "N1.persian"
+        ]
+      }
+    },
+    {
+      "id": "BD-038",
+      "category": "digits",
+      "text": "٥\u00a0أدوات و٣\u00a0نصائح",
+      "note": "Arabic-Indic digits under a western setting.",
+      "expect": {
+        "tokens": [
+          [
+            "number",
+            "٥"
+          ],
+          [
+            "ar",
+            "أدوات"
+          ],
+          [
+            "ar",
+            "و"
+          ],
+          [
+            "number",
+            "٣"
+          ],
+          [
+            "ar",
+            "نصائح"
+          ]
+        ],
+        "ltrRuns": [],
+        "words": 4,
+        "digits": "arabic-indic",
+        "findings": [
+          "N1.system",
+          "ORTHO-DIG-004"
+        ]
+      }
+    },
+    {
+      "id": "BD-039",
+      "category": "digits",
+      "text": "بتاخد 5ساعات",
+      "note": "Digits glued to the following word.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "بتاخد"
+          ],
+          [
+            "number",
+            "5"
+          ],
+          [
+            "ar",
+            "ساعات"
+          ]
+        ],
+        "ltrRuns": [
+          "5"
+        ],
+        "words": 2,
+        "digits": "western",
+        "findings": [
+          "ORTHO-DIG-004"
+        ]
+      }
+    },
+    {
+      "id": "BD-040",
+      "category": "digits",
+      "text": "اشترك بـ5 دولار",
+      "note": "The proclitic form بـ + digit is allowed; the number and its noun are not bound.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "اشترك"
+          ],
+          [
+            "ar",
+            "بـ"
+          ],
+          [
+            "number",
+            "5"
+          ],
+          [
+            "ar",
+            "دولار"
+          ]
+        ],
+        "ltrRuns": [
+          "5"
+        ],
+        "words": 3,
+        "digits": "western",
+        "findings": [
+          "B1.unbound-pair"
+        ]
+      }
+    },
+    {
+      "id": "BD-041",
+      "category": "digits",
+      "text": "وصلنا إلى ١٫٧ مليون متابع",
+      "note": "Arabic-Indic decimal followed by a noun, unbound.",
+      "digitsSetting": "arabic-indic",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "وصلنا"
+          ],
+          [
+            "ar",
+            "إلى"
+          ],
+          [
+            "number",
+            "١٫٧"
+          ],
+          [
+            "ar",
+            "مليون"
+          ],
+          [
+            "ar",
+            "متابع"
+          ]
+        ],
+        "ltrRuns": [],
+        "words": 5,
+        "digits": "arabic-indic",
+        "findings": [
+          "B1.unbound-pair"
+        ]
+      }
+    },
+    {
+      "id": "BD-042",
+      "category": "handle-tag-url",
+      "text": "تابعنا @content.workshop.demo",
+      "note": "A handle is an LTR run.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "تابعنا"
+          ],
+          [
+            "handle",
+            "@content.workshop.demo"
+          ]
+        ],
+        "ltrRuns": [
+          "@content.workshop.demo"
+        ],
+        "words": 2,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-043",
+      "category": "handle-tag-url",
+      "text": "تواصل على support@example.com اليوم",
+      "note": "An e-mail address is one token.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "تواصل"
+          ],
+          [
+            "ar",
+            "على"
+          ],
+          [
+            "email",
+            "support@example.com"
+          ],
+          [
+            "ar",
+            "اليوم"
+          ]
+        ],
+        "ltrRuns": [
+          "support@example.com"
+        ],
+        "words": 4,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-044",
+      "category": "handle-tag-url",
+      "text": "#كاروسيل_عربي",
+      "note": "A hashtag with an Arabic letter is an RTL tag: no LTR run.",
+      "expect": {
+        "tokens": [
+          [
+            "tag",
+            "#كاروسيل_عربي"
+          ]
+        ],
+        "ltrRuns": [],
+        "words": 1,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-045",
+      "category": "handle-tag-url",
+      "text": "#ChatGPT و#Claude",
+      "note": "Two Latin hashtags are two LTR runs.",
+      "expect": {
+        "tokens": [
+          [
+            "tag",
+            "#ChatGPT"
+          ],
+          [
+            "ar",
+            "و"
+          ],
+          [
+            "tag",
+            "#Claude"
+          ]
+        ],
+        "ltrRuns": [
+          "#ChatGPT",
+          "#Claude"
+        ],
+        "words": 2,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-046",
+      "category": "handle-tag-url",
+      "text": "زر example.com/ar الآن",
+      "note": "A bare domain with a path is a url token.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "زر"
+          ],
+          [
+            "url",
+            "example.com/ar"
+          ],
+          [
+            "ar",
+            "الآن"
+          ]
+        ],
+        "ltrRuns": [
+          "example.com/ar"
+        ],
+        "words": 3,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-047",
+      "category": "handle-tag-url",
+      "text": "اتصل على +20 100 123 4567",
+      "note": "A phone number is one token even with spaces; digit detection ignores it.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "اتصل"
+          ],
+          [
+            "ar",
+            "على"
+          ],
+          [
+            "phone",
+            "+20 100 123 4567"
+          ]
+        ],
+        "ltrRuns": [
+          "+20 100 123 4567"
+        ],
+        "words": 6,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-048",
+      "category": "handle-tag-url",
+      "text": "ملف README.md جاهز",
+      "note": "A file name is domain-shaped and is a url token.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "ملف"
+          ],
+          [
+            "url",
+            "README.md"
+          ],
+          [
+            "ar",
+            "جاهز"
+          ]
+        ],
+        "ltrRuns": [
+          "README.md"
+        ],
+        "words": 3,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-049",
+      "category": "emoji-punct",
+      "text": "جرّب الأداة دي 🔥",
+      "note": "An emoji-only token is not counted as a word.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "جرّب"
+          ],
+          [
+            "ar",
+            "الأداة"
+          ],
+          [
+            "ar",
+            "دي"
+          ],
+          [
+            "emoji",
+            "🔥"
+          ]
+        ],
+        "ltrRuns": [],
+        "words": 3,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-050",
+      "category": "emoji-punct",
+      "text": "هل جربت ChatGPT؟",
+      "note": "Arabic question mark directly after a Latin name.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "هل"
+          ],
+          [
+            "ar",
+            "جربت"
+          ],
+          [
+            "latin",
+            "ChatGPT"
+          ],
+          [
+            "punct",
+            "؟"
+          ]
+        ],
+        "ltrRuns": [
+          "ChatGPT"
+        ],
+        "words": 3,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-051",
+      "category": "emoji-punct",
+      "text": "«ChatGPT» أسرع",
+      "note": "Guillemets are punctuation around a Latin word.",
+      "expect": {
+        "tokens": [
+          [
+            "punct",
+            "«"
+          ],
+          [
+            "latin",
+            "ChatGPT"
+          ],
+          [
+            "punct",
+            "»"
+          ],
+          [
+            "ar",
+            "أسرع"
+          ]
+        ],
+        "ltrRuns": [
+          "ChatGPT"
+        ],
+        "words": 2,
+        "digits": "none",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-052",
+      "category": "markup",
+      "text": "5\u00a0أخطاء\nبتموّت ==الكاروسيل==",
+      "note": "Emphasis markers and a forced break do not change the word count (4).",
+      "expect": {
+        "tokens": [
+          [
+            "number",
+            "5"
+          ],
+          [
+            "ar",
+            "أخطاء"
+          ],
+          [
+            "ar",
+            "بتموّت"
+          ],
+          [
+            "punct",
+            "="
+          ],
+          [
+            "punct",
+            "="
+          ],
+          [
+            "ar",
+            "الكاروسيل"
+          ],
+          [
+            "punct",
+            "="
+          ],
+          [
+            "punct",
+            "="
+          ]
+        ],
+        "ltrRuns": [
+          "5"
+        ],
+        "words": 4,
+        "digits": "western",
+        "findings": []
+      }
+    },
+    {
+      "id": "BD-053",
+      "category": "markup",
+      "text": "كلمة ==مميّزة==",
+      "note": "An emphasis span on one word.",
+      "expect": {
+        "tokens": [
+          [
+            "ar",
+            "كلمة"
+          ],
+          [
+            "punct",
+            "="
+          ],
+          [
+            "punct",
+            "="
+          ],
+          [
+            "ar",
+            "مميّزة"
+          ],
+          [
+            "punct",
+            "="
+          ],
+          [
+            "punct",
+            "="
+          ]
+        ],
+        "ltrRuns": [],
+        "words": 2,
+        "digits": "none",
+        "findings": []
+      }
+    }
+  ]
+}

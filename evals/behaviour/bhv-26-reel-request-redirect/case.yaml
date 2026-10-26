@@ -1,0 +1,34 @@
+schema_version: "1.0"
+name: bhv-26-reel-request-redirect
+description: "A reel or video-editing request is declined in a line or two and no Studio flow starts."
+tags: [behaviour, chat-only, carousel-create, carousel-design, routing, reel]
+plugins: ["../../../plugins/carousel-studio"]
+execution:
+  prompt: |
+    اعمل ريل من الفيديو ده: قص السكتات وحط موشن جرافيك على الكلام.
+  append_system_prompt: |
+    This is an automated evaluation of the Carousel Studio plugin, not a live session. There is no Artifact tool, no network access and no connected image, video or design tool. Save every file you create in the current working directory and never in a home folder: name the post spec spec.json, a brand profile brand.json and a plan plan-YYYY-MM.json, and when a script offers a workspace or root option (for example brand_io.py --dir) point it at the current directory. Otherwise answer the user exactly as you normally would.
+  max_turns: 10
+  timeout_seconds: 400
+  allowed_tools: [Skill, Read, Glob, Grep]
+runs: 2
+graders:
+  - type: tool_used
+    name: starts-no-carousel-studio-skill
+    tool: Skill
+    input_match: 'carousel-create|carousel-design|content-angles|brand-setup|content-plan|visual-prompts|arabic-proofread'
+    min: 0
+    max: 0
+    arm: both
+    weight: 2
+  - type: llm
+    name: says-what-it-does-and-stops
+    criteria: |
+      The reply makes clear that Carousel Studio makes Instagram carousels and single posts and does not edit video or make reels. It may point briefly to other tools for the video work. It does not start a carousel, ask carousel questions, or open the Studio, and it does not pretend to have edited the video.
+    weight: 3
+  - type: regex
+    name: no-spec-written
+    pattern: '"slides"'
+    target: trace
+    match: not_contains
+expected_outcome: "A short redirect; no carousel flow."

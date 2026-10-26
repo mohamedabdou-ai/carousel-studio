@@ -1,0 +1,69 @@
+schema_version: "1.0"
+name: bhv-39-editor-verdict-exists
+description: "An independent Arabic editor pass (or the cs-arabic-editor agent) returns PASS or VETO with a diff table, sees only the copy, and a VETO is fixed and re-checked at most twice before the post is designed."
+tags: [behaviour, needs-bash, carousel-create, creative-team, editor-verdict]
+plugins: ["../../../plugins/carousel-studio"]
+execution:
+  prompt: |
+    ده كابسول البراند بتاعي (ملف المشروع):
+
+        [Carousel Studio brand capsule v1]
+        brand: ورشة المحتوى (content-workshop) | dialect: eg | register: dialect | digits: western | swipe: arrow-rtl
+        voice: ودود وعملي، جمل قصيرة. نستخدم «ببلاش» و«جرّب». لا نستخدم «ثورة» ولا «سر».
+        palette: bg #F4F4F2 ink #111111 accent #E3262B | fonts: ibm-plex-sans-arabic / readex-pro / inter | preset: swiss
+        home: -
+
+    بسرعة: كاروسيل 8 سلايدات عن إزاي تراجع كاروسيلك قبل النشر. وراجع اللغة كويس قبل التصميم.
+  append_system_prompt: |
+    This is an automated evaluation of the Carousel Studio plugin, not a live session. There is no Artifact tool, no network access and no connected image, video or design tool. Save every file you create in the current working directory and never in a home folder: name the post spec spec.json, the production board board.md, a brand profile brand.json and a plan plan-YYYY-MM.json, and when a script offers a workspace or root option (for example brand_io.py --dir) point it at the current directory. Subagents may be unavailable: when they are, run each team role as an explicit role pass, as the skill says. Otherwise answer the user exactly as you normally would.
+  max_turns: 80
+  timeout_seconds: 1800
+  allowed_tools: [Skill, Read, Write, Edit, Bash, Glob, Grep, Agent]
+runs: 2
+graders:
+  - type: tool_used
+    name: uses-carousel-create
+    tool: Skill
+    input_match: 'carousel-create'
+    min: 1
+  - type: regex
+    name: verdict-word
+    pattern: 'PASS|VETO'
+    match: contains
+    weight: 2
+  - type: tool_used
+    name: runs-the-orthography-lint
+    tool: Bash
+    input_match: 'ortho_lint\.py|lint_copy\.py'
+    min: 1
+    weight: 2
+  - type: regex
+    name: editor-verdict-on-the-board
+    pattern: '\{#editor\}[\s\S]*?الحكم:\s*(PASS|VETO)'
+    match: contains
+    target: {source: file, path: board.md}
+    weight: 2
+  - type: tool_used
+    name: runs-the-board-checker
+    tool: Bash
+    input_match: 'board_check\.py'
+    min: 1
+    weight: 2
+  - type: llm
+    name: independent-verdict
+    criteria: |
+      A separate Arabic editor step, run after the copy was written and judged only on the copy, the dialect and the rules (not on the writing conversation or the brief), ends in an explicit PASS or VETO and, when it finds anything, a table of original, fix, rule id and confidence.
+    focus: trace
+    weight: 2
+  - type: llm
+    name: veto-loop-is-bounded
+    criteria: |
+      If the editor vetoed, only the listed rows were fixed and re-checked, no more than two rounds happened, and the design step never started on an open VETO. If the editor passed first time, this criterion is met.
+    focus: trace
+    weight: 2
+  - type: regex
+    name: no-author-credit
+    pattern: 'محمد عبده|Mohamed Abdou'
+    match: not_contains
+    weight: 2
+expected_outcome: "An explicit PASS or VETO from an independent editor step, recorded on the board."

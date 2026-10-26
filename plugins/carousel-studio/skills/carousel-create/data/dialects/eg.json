@@ -1,0 +1,1314 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "1.0.0",
+  "dialect": "eg",
+  "label": {
+    "ar": "مصري",
+    "en": "Egyptian"
+  },
+  "status": "stable",
+  "nativeReviewed": false,
+  "markers": [
+    "مش",
+    "ده",
+    "دي",
+    "إزاي",
+    "ازاي",
+    "ليه",
+    "دلوقتي",
+    "كده",
+    "عايز",
+    "عاوز",
+    "بتاع",
+    "أوي",
+    "فين",
+    "إمتى",
+    "إيه",
+    "لسه",
+    "برضو",
+    "برضه"
+  ],
+  "deny": [
+    {
+      "id": "DM-EG-002",
+      "text": "ومو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: مش.",
+        "en": "A Gulf word in an Egyptian post; use مش."
+      },
+      "suggest": "مش"
+    },
+    {
+      "id": "DM-EG-003",
+      "text": "مب",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: مش.",
+        "en": "A Gulf word in an Egyptian post; use مش."
+      },
+      "suggest": "مش"
+    },
+    {
+      "id": "DM-EG-004",
+      "text": "ومب",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: مش.",
+        "en": "A Gulf word in an Egyptian post; use مش."
+      },
+      "suggest": "مش"
+    },
+    {
+      "id": "DM-EG-005",
+      "text": "وايد",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: كتير.",
+        "en": "A Gulf word in an Egyptian post; use كتير."
+      },
+      "suggest": "كتير"
+    },
+    {
+      "id": "DM-EG-006",
+      "text": "الحين",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: دلوقتي.",
+        "en": "A Gulf word in an Egyptian post; use دلوقتي."
+      },
+      "suggest": "دلوقتي"
+    },
+    {
+      "id": "DM-EG-007",
+      "text": "والحين",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: دلوقتي.",
+        "en": "A Gulf word in an Egyptian post; use دلوقتي."
+      },
+      "suggest": "دلوقتي"
+    },
+    {
+      "id": "DM-EG-008",
+      "text": "شلون",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: إزاي.",
+        "en": "A Gulf word in an Egyptian post; use إزاي."
+      },
+      "suggest": "إزاي"
+    },
+    {
+      "id": "DM-EG-009",
+      "text": "وشلون",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: إزاي.",
+        "en": "A Gulf word in an Egyptian post; use إزاي."
+      },
+      "suggest": "إزاي"
+    },
+    {
+      "id": "DM-EG-010",
+      "text": "شنو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: إيه.",
+        "en": "A Gulf word in an Egyptian post; use إيه."
+      },
+      "suggest": "إيه"
+    },
+    {
+      "id": "DM-EG-011",
+      "text": "وشنو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: إيه.",
+        "en": "A Gulf word in an Egyptian post; use إيه."
+      },
+      "suggest": "إيه"
+    },
+    {
+      "id": "DM-EG-012",
+      "text": "ليش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: ليه.",
+        "en": "A Gulf word in an Egyptian post; use ليه."
+      },
+      "suggest": "ليه"
+    },
+    {
+      "id": "DM-EG-013",
+      "text": "وليش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: ليه.",
+        "en": "A Gulf word in an Egyptian post; use ليه."
+      },
+      "suggest": "ليه"
+    },
+    {
+      "id": "DM-EG-014",
+      "text": "أبغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-015",
+      "text": "وأبغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-016",
+      "text": "ابغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-017",
+      "text": "وابغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-018",
+      "text": "أبغي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-019",
+      "text": "وأبغي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-020",
+      "text": "ابغي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-021",
+      "text": "وابغي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-022",
+      "text": "تبي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-023",
+      "text": "وتبي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-024",
+      "text": "تبغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-025",
+      "text": "وتبغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-026",
+      "text": "تبغي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-027",
+      "text": "وتبغي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-028",
+      "text": "يبي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-029",
+      "text": "ويبي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-030",
+      "text": "يبغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-031",
+      "text": "ويبغى",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-032",
+      "text": "شخبارك",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عامل إيه.",
+        "en": "A Gulf word in an Egyptian post; use عامل إيه."
+      },
+      "suggest": "عامل إيه"
+    },
+    {
+      "id": "DM-EG-033",
+      "text": "وشخبارك",
+      "match": "word",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عامل إيه.",
+        "en": "A Gulf word in an Egyptian post; use عامل إيه."
+      },
+      "suggest": "عامل إيه"
+    },
+    {
+      "id": "DM-EG-034",
+      "text": "بدي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: عايز.",
+        "en": "A Levantine word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-035",
+      "text": "وبدي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: عايز.",
+        "en": "A Levantine word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-036",
+      "text": "بدك",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: عايز.",
+        "en": "A Levantine word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-037",
+      "text": "وبدك",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: عايز.",
+        "en": "A Levantine word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-038",
+      "text": "بدنا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: عايز.",
+        "en": "A Levantine word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-039",
+      "text": "وبدنا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: عايز.",
+        "en": "A Levantine word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-040",
+      "text": "بدها",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: عايز.",
+        "en": "A Levantine word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-041",
+      "text": "وبدها",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: عايز.",
+        "en": "A Levantine word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-042",
+      "text": "بدو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: عايز.",
+        "en": "A Levantine word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-043",
+      "text": "وبدو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: عايز.",
+        "en": "A Levantine word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "DM-EG-044",
+      "text": "هلق",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: دلوقتي.",
+        "en": "A Levantine word in an Egyptian post; use دلوقتي."
+      },
+      "suggest": "دلوقتي"
+    },
+    {
+      "id": "DM-EG-045",
+      "text": "وهلق",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: دلوقتي.",
+        "en": "A Levantine word in an Egyptian post; use دلوقتي."
+      },
+      "suggest": "دلوقتي"
+    },
+    {
+      "id": "DM-EG-046",
+      "text": "هلأ",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: دلوقتي.",
+        "en": "A Levantine word in an Egyptian post; use دلوقتي."
+      },
+      "suggest": "دلوقتي"
+    },
+    {
+      "id": "DM-EG-047",
+      "text": "وهلأ",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: دلوقتي.",
+        "en": "A Levantine word in an Egyptian post; use دلوقتي."
+      },
+      "suggest": "دلوقتي"
+    },
+    {
+      "id": "DM-EG-048",
+      "text": "رح",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: هـ + الفعل.",
+        "en": "A Levantine word in an Egyptian post; use هـ + الفعل."
+      },
+      "suggest": "هـ + الفعل"
+    },
+    {
+      "id": "DM-EG-049",
+      "text": "ورح",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: هـ + الفعل.",
+        "en": "A Levantine word in an Egyptian post; use هـ + الفعل."
+      },
+      "suggest": "هـ + الفعل"
+    },
+    {
+      "id": "DM-EG-050",
+      "text": "هيك",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: كده.",
+        "en": "A Levantine word in an Egyptian post; use كده."
+      },
+      "suggest": "كده"
+    },
+    {
+      "id": "DM-EG-051",
+      "text": "وهيك",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: كده.",
+        "en": "A Levantine word in an Egyptian post; use كده."
+      },
+      "suggest": "كده"
+    },
+    {
+      "id": "DM-EG-052",
+      "text": "هيدا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: ده / دي.",
+        "en": "A Levantine word in an Egyptian post; use ده / دي."
+      },
+      "suggest": "ده / دي"
+    },
+    {
+      "id": "DM-EG-053",
+      "text": "وهيدا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: ده / دي.",
+        "en": "A Levantine word in an Egyptian post; use ده / دي."
+      },
+      "suggest": "ده / دي"
+    },
+    {
+      "id": "DM-EG-054",
+      "text": "هاد",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: ده / دي.",
+        "en": "A Levantine word in an Egyptian post; use ده / دي."
+      },
+      "suggest": "ده / دي"
+    },
+    {
+      "id": "DM-EG-055",
+      "text": "وهاد",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: ده / دي.",
+        "en": "A Levantine word in an Egyptian post; use ده / دي."
+      },
+      "suggest": "ده / دي"
+    },
+    {
+      "id": "DM-EG-056",
+      "text": "هيدي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: ده / دي.",
+        "en": "A Levantine word in an Egyptian post; use ده / دي."
+      },
+      "suggest": "ده / دي"
+    },
+    {
+      "id": "DM-EG-057",
+      "text": "وهيدي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: ده / دي.",
+        "en": "A Levantine word in an Egyptian post; use ده / دي."
+      },
+      "suggest": "ده / دي"
+    },
+    {
+      "id": "DM-EG-058",
+      "text": "منيح",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: كويس.",
+        "en": "A Levantine word in an Egyptian post; use كويس."
+      },
+      "suggest": "كويس"
+    },
+    {
+      "id": "DM-EG-059",
+      "text": "ومنيح",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: كويس.",
+        "en": "A Levantine word in an Egyptian post; use كويس."
+      },
+      "suggest": "كويس"
+    },
+    {
+      "id": "DM-EG-060",
+      "text": "شو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: إيه.",
+        "en": "A Levantine word in an Egyptian post; use إيه."
+      },
+      "suggest": "إيه"
+    },
+    {
+      "id": "DM-EG-061",
+      "text": "وشو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: إيه.",
+        "en": "A Levantine word in an Egyptian post; use إيه."
+      },
+      "suggest": "إيه"
+    },
+    {
+      "id": "DM-EG-062",
+      "text": "قديش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: بكام.",
+        "en": "A Levantine word in an Egyptian post; use بكام."
+      },
+      "suggest": "بكام"
+    },
+    {
+      "id": "DM-EG-063",
+      "text": "وقديش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: بكام.",
+        "en": "A Levantine word in an Egyptian post; use بكام."
+      },
+      "suggest": "بكام"
+    },
+    {
+      "id": "DM-EG-064",
+      "text": "هون",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: هنا.",
+        "en": "A Levantine word in an Egyptian post; use هنا."
+      },
+      "suggest": "هنا"
+    },
+    {
+      "id": "DM-EG-065",
+      "text": "وهون",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: هنا.",
+        "en": "A Levantine word in an Egyptian post; use هنا."
+      },
+      "suggest": "هنا"
+    },
+    {
+      "id": "DM-EG-066",
+      "text": "لسا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: لسه.",
+        "en": "A Levantine word in an Egyptian post; use لسه."
+      },
+      "suggest": "لسه"
+    },
+    {
+      "id": "DM-EG-067",
+      "text": "ولسا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة شامية في منشور مصري؛ البديل: لسه.",
+        "en": "A Levantine word in an Egyptian post; use لسه."
+      },
+      "suggest": "لسه"
+    },
+    {
+      "id": "DM-EG-068",
+      "text": "ماكو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عراقية في منشور مصري؛ البديل: مفيش.",
+        "en": "An Iraqi word in an Egyptian post; use مفيش."
+      },
+      "suggest": "مفيش"
+    },
+    {
+      "id": "DM-EG-069",
+      "text": "وماكو",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عراقية في منشور مصري؛ البديل: مفيش.",
+        "en": "An Iraqi word in an Egyptian post; use مفيش."
+      },
+      "suggest": "مفيش"
+    },
+    {
+      "id": "DM-EG-070",
+      "text": "هواي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عراقية في منشور مصري؛ البديل: كتير.",
+        "en": "An Iraqi word in an Egyptian post; use كتير."
+      },
+      "suggest": "كتير"
+    },
+    {
+      "id": "DM-EG-071",
+      "text": "وهواي",
+      "match": "word",
+      "note": {
+        "ar": "كلمة عراقية في منشور مصري؛ البديل: كتير.",
+        "en": "An Iraqi word in an Egyptian post; use كتير."
+      },
+      "suggest": "كتير"
+    },
+    {
+      "id": "DM-EG-072",
+      "text": "بزاف",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مغاربية في منشور مصري؛ البديل: كتير.",
+        "en": "A Maghrebi word in an Egyptian post; use كتير."
+      },
+      "suggest": "كتير"
+    },
+    {
+      "id": "DM-EG-073",
+      "text": "وبزاف",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مغاربية في منشور مصري؛ البديل: كتير.",
+        "en": "A Maghrebi word in an Egyptian post; use كتير."
+      },
+      "suggest": "كتير"
+    },
+    {
+      "id": "DM-EG-074",
+      "text": "دابا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مغاربية في منشور مصري؛ البديل: دلوقتي.",
+        "en": "A Maghrebi word in an Egyptian post; use دلوقتي."
+      },
+      "suggest": "دلوقتي"
+    },
+    {
+      "id": "DM-EG-075",
+      "text": "ودابا",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مغاربية في منشور مصري؛ البديل: دلوقتي.",
+        "en": "A Maghrebi word in an Egyptian post; use دلوقتي."
+      },
+      "suggest": "دلوقتي"
+    },
+    {
+      "id": "DM-EG-076",
+      "text": "علاش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مغاربية في منشور مصري؛ البديل: ليه.",
+        "en": "A Maghrebi word in an Egyptian post; use ليه."
+      },
+      "suggest": "ليه"
+    },
+    {
+      "id": "DM-EG-077",
+      "text": "وعلاش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مغاربية في منشور مصري؛ البديل: ليه.",
+        "en": "A Maghrebi word in an Egyptian post; use ليه."
+      },
+      "suggest": "ليه"
+    },
+    {
+      "id": "DM-EG-078",
+      "text": "كيفاش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مغاربية في منشور مصري؛ البديل: إزاي.",
+        "en": "A Maghrebi word in an Egyptian post; use إزاي."
+      },
+      "suggest": "إزاي"
+    },
+    {
+      "id": "DM-EG-079",
+      "text": "وكيفاش",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مغاربية في منشور مصري؛ البديل: إزاي.",
+        "en": "A Maghrebi word in an Egyptian post; use إزاي."
+      },
+      "suggest": "إزاي"
+    },
+    {
+      "id": "DM-EG-080",
+      "text": "شكون",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مغاربية في منشور مصري؛ البديل: مين.",
+        "en": "A Maghrebi word in an Egyptian post; use مين."
+      },
+      "suggest": "مين"
+    },
+    {
+      "id": "DM-EG-081",
+      "text": "وشكون",
+      "match": "word",
+      "note": {
+        "ar": "كلمة مغاربية في منشور مصري؛ البديل: مين.",
+        "en": "A Maghrebi word in an Egyptian post; use مين."
+      },
+      "suggest": "مين"
+    }
+  ],
+  "warn": [
+    {
+      "id": "WM-EG-001",
+      "text": "لماذا",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: ليه.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use ليه."
+      },
+      "suggest": "ليه"
+    },
+    {
+      "id": "WM-EG-002",
+      "text": "ولماذا",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: ليه.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use ليه."
+      },
+      "suggest": "ليه"
+    },
+    {
+      "id": "WM-EG-003",
+      "text": "ماذا",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: إيه.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use إيه."
+      },
+      "suggest": "إيه"
+    },
+    {
+      "id": "WM-EG-004",
+      "text": "وماذا",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: إيه.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use إيه."
+      },
+      "suggest": "إيه"
+    },
+    {
+      "id": "WM-EG-005",
+      "text": "سوف",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: هـ + الفعل.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use هـ + الفعل."
+      },
+      "suggest": "هـ + الفعل"
+    },
+    {
+      "id": "WM-EG-006",
+      "text": "وسوف",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: هـ + الفعل.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use هـ + الفعل."
+      },
+      "suggest": "هـ + الفعل"
+    },
+    {
+      "id": "WM-EG-007",
+      "text": "أريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: عايز.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "WM-EG-008",
+      "text": "وأريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: عايز.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "WM-EG-009",
+      "text": "تريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: عايز.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "WM-EG-010",
+      "text": "وتريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: عايز.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "WM-EG-011",
+      "text": "يريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: عايز.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "WM-EG-012",
+      "text": "ويريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: عايز.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "WM-EG-013",
+      "text": "نريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: عايزين.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use عايزين."
+      },
+      "suggest": "عايزين"
+    },
+    {
+      "id": "WM-EG-014",
+      "text": "ونريد",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: عايزين.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use عايزين."
+      },
+      "suggest": "عايزين"
+    },
+    {
+      "id": "WM-EG-015",
+      "text": "زين",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: كويس.",
+        "en": "A Gulf word in an Egyptian post; use كويس."
+      },
+      "suggest": "كويس"
+    },
+    {
+      "id": "WM-EG-016",
+      "text": "وزين",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: كويس.",
+        "en": "A Gulf word in an Egyptian post; use كويس."
+      },
+      "suggest": "كويس"
+    },
+    {
+      "id": "WM-EG-017",
+      "text": "أبي",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "WM-EG-018",
+      "text": "وأبي",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "WM-EG-019",
+      "text": "ابي",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "WM-EG-020",
+      "text": "وابي",
+      "match": "word",
+      "sev": "FIX",
+      "note": {
+        "ar": "كلمة خليجية في منشور مصري؛ البديل: عايز.",
+        "en": "A Gulf word in an Egyptian post; use عايز."
+      },
+      "suggest": "عايز"
+    },
+    {
+      "id": "WM-EG-021",
+      "text": "الآن",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: دلوقتي.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use دلوقتي."
+      },
+      "suggest": "دلوقتي"
+    },
+    {
+      "id": "WM-EG-022",
+      "text": "والآن",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: دلوقتي.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use دلوقتي."
+      },
+      "suggest": "دلوقتي"
+    },
+    {
+      "id": "WM-EG-023",
+      "text": "الان",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: دلوقتي.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use دلوقتي."
+      },
+      "suggest": "دلوقتي"
+    },
+    {
+      "id": "WM-EG-024",
+      "text": "والان",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: دلوقتي.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use دلوقتي."
+      },
+      "suggest": "دلوقتي"
+    },
+    {
+      "id": "WM-EG-025",
+      "text": "كثيرا",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: كتير.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use كتير."
+      },
+      "suggest": "كتير"
+    },
+    {
+      "id": "WM-EG-026",
+      "text": "وكثيرا",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "كلمة فصيحة رسمية تبدو جامدة في منشور مصري؛ البديل: كتير.",
+        "en": "A formal MSA word that reads stiff in an Egyptian post; use كتير."
+      },
+      "suggest": "كتير"
+    },
+    {
+      "id": "WM-EG-027",
+      "text": "مو",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "«مو» خليجية؛ في المصري «مش». وقد تكون جزءًا من اسم («مو صلاح»)، فتُراجَع قبل التغيير.",
+        "en": "«مو» is Gulf; Egyptian uses «مش». It can also be part of a name (Mo Salah), so check before changing."
+      },
+      "suggest": "مش"
+    },
+    {
+      "id": "WM-EG-028",
+      "text": "فحوصات",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "«فحوصات» تبدو لغة تحاليل طبية في منشور مصري؛ البديل: حاجات أو نقط.",
+        "en": "«فحوصات» reads like medical tests in an Egyptian post; use حاجات or نقط."
+      },
+      "suggest": "حاجات أو نقط"
+    },
+    {
+      "id": "WM-EG-029",
+      "text": "وفحوصات",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "«فحوصات» تبدو لغة تحاليل طبية في منشور مصري؛ البديل: حاجات أو نقط.",
+        "en": "«فحوصات» reads like medical tests in an Egyptian post; use حاجات or نقط."
+      },
+      "suggest": "وحاجات أو ونقط"
+    },
+    {
+      "id": "WM-EG-030",
+      "text": "بلسانك",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "«بلسانك» فصيحة جامدة؛ المصري يقول «بكلامك» أو «بالطريقة اللي بتتكلم بيها».",
+        "en": "«بلسانك» is stiff MSA; Egyptians say «بكلامك» or «بالطريقة اللي بتتكلم بيها»."
+      },
+      "suggest": "بكلامك"
+    },
+    {
+      "id": "WM-EG-031",
+      "text": "تحذف",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "الفعل «حذف» فصيح؛ المصري يقول «مسح» في الكلام اليومي، فالبديل: تمسح.",
+        "en": "The verb «حذف» is MSA; everyday Egyptian says «مسح»: use تمسح."
+      },
+      "suggest": "تمسح"
+    },
+    {
+      "id": "WM-EG-032",
+      "text": "وتحذف",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "الفعل «حذف» فصيح؛ المصري يقول «مسح» في الكلام اليومي، فالبديل: وتمسح.",
+        "en": "The verb «حذف» is MSA; everyday Egyptian says «مسح»: use وتمسح."
+      },
+      "suggest": "وتمسح"
+    },
+    {
+      "id": "WM-EG-033",
+      "text": "احذف",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "الفعل «حذف» فصيح؛ المصري يقول «مسح» في الكلام اليومي، فالبديل: امسح.",
+        "en": "The verb «حذف» is MSA; everyday Egyptian says «مسح»: use امسح."
+      },
+      "suggest": "امسح"
+    },
+    {
+      "id": "WM-EG-034",
+      "text": "يحذف",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "الفعل «حذف» فصيح؛ المصري يقول «مسح» في الكلام اليومي، فالبديل: يمسح.",
+        "en": "The verb «حذف» is MSA; everyday Egyptian says «مسح»: use يمسح."
+      },
+      "suggest": "يمسح"
+    },
+    {
+      "id": "WM-EG-035",
+      "text": "يتوجب",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "«يتوجب» لغة رسائل رسمية؛ البديل: لازم.",
+        "en": "«يتوجب» is formal-letter Arabic; use لازم."
+      },
+      "suggest": "لازم"
+    },
+    {
+      "id": "WM-EG-036",
+      "text": "ينبغي",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "«ينبغي» لغة رسائل رسمية؛ البديل: لازم أو المفروض.",
+        "en": "«ينبغي» is formal-letter Arabic; use لازم or المفروض."
+      },
+      "suggest": "لازم أو المفروض"
+    },
+    {
+      "id": "WM-EG-037",
+      "text": "الدعوة",
+      "match": "word",
+      "sev": "NOTE",
+      "note": {
+        "ar": "«الدعوة» في المصري تعني عزومة؛ للطلب الأخير في البوست قل «الطلب اللي في آخر السلايد».",
+        "en": "«الدعوة» means an invitation in Egyptian; for the closing ask say «الطلب اللي في آخر السلايد»."
+      },
+      "suggest": "الطلب اللي في آخر السلايد"
+    }
+  ],
+  "lexicon": {
+    "not": [
+      "مش"
+    ],
+    "will": [
+      "هـ"
+    ],
+    "want": [
+      "عايز",
+      "عاوز"
+    ],
+    "think-that": [
+      "فاكر إن"
+    ],
+    "thing": [
+      "حاجة",
+      "حاجات"
+    ],
+    "how": [
+      "إزاي"
+    ],
+    "why": [
+      "ليه"
+    ],
+    "now": [
+      "دلوقتي"
+    ],
+    "a-lot": [
+      "كتير",
+      "أوي"
+    ],
+    "do": [
+      "تعمل"
+    ],
+    "before": [
+      "قبل ما"
+    ],
+    "free": [
+      "ببلاش"
+    ],
+    "this": [
+      "ده",
+      "دي"
+    ]
+  },
+  "cta": {
+    "save": [
+      "احفظ البوست ده لحد ما تحتاجه",
+      "احفظه لما تيجي تكتب البوست الجاي",
+      "احفظه وارجعله وقت الشغل"
+    ],
+    "send": [
+      "ابعته لـ{who}",
+      "ابعته لـ{who} اللي محتاجه",
+      "ابعته لـ{who} {reason}"
+    ],
+    "question": [
+      "{question} اكتب إجابتك في سطر واحد",
+      "{question} قولي في الكومنتات"
+    ],
+    "keyword-dm": [
+      "اكتب «{keyword}» في الكومنتات وهيوصلك {asset} على الخاص فورا"
+    ],
+    "follow": [
+      "تابعني عشان يوصلك {series}",
+      "{series} الجاي {day}"
+    ]
+  },
+  "registerNotes": {
+    "ar": "مصري عام بالإملاء المتعارف عليه: النفي «مش»، المستقبل «هـ»، والاستفهام «إزاي، ليه، إيه، فين، إمتى». الكتابة كما تُقال بالقاهرة بلا مفردات صعيدية أو إسكندرانية ظاهرة، وسجل واحد في البوست كله.",
+    "en": "General Egyptian in conventional spelling: negation «مش», future «هـ», questions «إزاي، ليه، إيه، فين، إمتى». Written as spoken in Cairo, without obvious Upper-Egyptian or Alexandrian vocabulary, one register per post."
+  }
+}

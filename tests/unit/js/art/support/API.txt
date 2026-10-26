@@ -1,0 +1,143 @@
+CS.art contract v2, kit and art harness - C1 (round 3, r2 sections 1.2 and 6)
+==========================================================================================================
+
+Files (all in chunk cs-art unless noted; each file is one IIFE and publishes only through CS.art)
+  src/art/kit.js          CS.art.kit      elements, shapes, rng, ladder, palette, dna, containers, frame
+  src/art/icon.js         CS.art.icon     the eight treatments over the path-only pack
+  src/art/object.js       CS.art.object   the 48-grid objects
+  src/art/anchor-icon.js  kinds "icon" and "field" (single container)
+  src/art/index.js        CS.art.version, .sizes, .treatments, .modifiers, .describe()
+  src/visual/api.js       CS.visual.art.{has, kinds, build, icon, object, measure}: guarded delegates (cs-visual never touches CS.art directly)
+  CS.art.register(kind, builder, subs) requires a nonempty string[]; registration is atomic.
+  A second owner of ANY (kind, sub), including duplicates in one call, throws E_ART_DUPLICATE.
+  Invalid registrations throw E_ART_REGISTER. Earlier builders always keep ownership. There is no wildcard registration.
+  CS.art.has(kind, sub?) checks exact sub support (omitting sub asks whether kind exists).
+  CS.art.build(anchor, ctx) dispatches by _.sub(anchor), returns null for absent support, and propagates builder errors.
+  _.sub: icon -> icon; scene -> template || solo; chart/mock -> anchor[kind].kind; pattern -> anchor.pattern;
+         numeral -> companion || none; word -> wordStyle || solid; rows -> list;
+         field -> value ? numeral : word ? word : (icon || object) ? icon : panel.
+  Numeral data is anchor.value / anchor.unit. anchor.numeral is not supported.
+  CS.art.caps() -> {v:1, art:{kind:[sub...]}}; keys and subs sorted, fresh snapshots, only registered pairs.
+  CS.visual.art.caps() delegates or returns empty art when cs-art is absent.
+  CS.visual.caps() -> {v:1,art,recipes,variants,types,tones,hash}; available recipes: under over full center;
+     variants: stat icon/chart, compare table/before-after, quote statement, rehook statement, step track,
+               cta action, item numeral, grid bento, timeline rail; all 20 types; tones base/invert/field.
+     hash = fnv1a64(canonicalJSON(payload without hash)); sorted-key JSON, integer manifest, independent of DOM.
+     Pass caps explicitly to plan(spec, brand, preset, memory, {caps}). No registration or capability lookup reads document.
+
+Shared builder helpers and load order (src/art/manifest.json is authoritative)
+  root.js -> kit.js -> icon.js -> object.js -> anchor-icon.js -> index.js -> scene.js -> scene-more.js -> diagram.js -> mock.js -> mock-more.js
+  -> artefact.js -> chart.js -> numeral.js -> chart-more.js -> rows.js -> field.js -> marks.js -> word.js -> frames.js -> pattern.js -> bg.js.
+  Load cs-core first; it provides text, colour, canon and registry. Register platform, qaRules, copy, ortho, dialects and locale rules before composing labels.
+  chart.js publishes CS.art.chart; numeral.js captures it at load time and throws E_ART_REGISTER when missing.
+  CS.art.chart contains div/at (HTML layout), ol (outline), ew/cw/sty (figure/chip metrics and styles), mixTo/pal (contrast palette),
+  bar/waffle/burst (geometry), share (anchor filled/of or value/unit -> share 0..1 | null), proof (source/illustrative tag),
+  chip (tag node and width), comp(sub, anchor, ctx, session, share, W, H, row) -> companion {w,h,el} | null.
+  These are internal shared helpers, published by chart.js and consumed by numeral.js; preserve their load order.
+  rows.js publishes the following on CS.art._; rows.js and field.js consume them (rows.js MUST precede field.js):
+    _.lab(labels, role, text) -> HTML label element. Appends kit.label(role, labels.length, String(text)) to labels, assigning contiguous indices.
+    _.card(session, fill, borderWidth) -> style object (boxSizing, backgroundColor, border, borderRadius and hard boxShadow from the preset DNA).
+    _.mark(kind, size, session) -> SVG checkbox; tick/cross draws the corresponding mark, other kinds draw the empty square.
+  Label elements start empty: fill via real CS.core.compose.label(el, text, ctx, {role,index}) using ctx.id and ctx.rules.
+  The harness refuses a missing real compose.label; it verifies data-slot-key=<slideId>.art.<index> and positive data-floor after every fill.
+
+What the kit reads from ctx (IS-3). Everything has a neutral default, so a half-filled ctx still builds.
+  ctx.tokens  { bg surface ink inkMuted accent accent2 onAccent line note, support: [hex, hex] }   hex strings, tone-resolved
+              kit.palette(tokens) adds: tint (the accent mixed toward the surface until ink reads on it at 4.5:1; on a dark ground the surface itself), paper (= surface),
+              and falls back for missing roles (support: accent mixed toward ink / surface). Memoised per tokens object.
+  ctx.art     { stroke (24-unit), cap, join, container: square|disc|hand-circle|stamp|app-tile|arch, radius { chip tile card panel window },
+                shadow { kind: none|hard|soft, dx, dy, blur }  <- an OBJECT, not a CSS string, outline (px), wobble, tilt, mark: fill|outline, badge?, fills? { chip, tile, ... } }
+              fills is optional: a role name or hex per treatment (chip tile sticker duo badge giant). kit.dna(art) completes it. Memoised per art object.
+  ctx.id = ctx.slideId, ctx.rules = CS.core.registry.rules() for compose.label.
+  ctx.rtl (default true), ctx.seed, ctx.slideId, ctx.box { w, h, x?, y? }, ctx.zone, ctx.recipe, ctx.size, ctx.labelsOnly.
+  ctx.slide: deeply frozen copy of {id,type,title,kicker,headline,sub,body,bullets,sides,number:{value,unit},quote,
+             attribution,items,demo:{lines,caption},sourceIds}; ctx.visual = slide.visual.
+  ctx.brand: null | {handle,name,art}; ctx.sources: {id:shortLabel}; ctx.data: {pack,objects,marks}; ctx.tone.
+  Production hooks (E2a) supply this context; support/page.js supplies the same shape for isolated builder tests.
+  ctx.tokens is the complete, resolved tokens.tones[tone] bundle: bg surface ink inkMuted accent accent2 onAccent line support note.
+  Box = {x,y,w,h,kind:text|ink|owner|pattern|image|mark|decor,id?,ownerOf?,fill?,border?,anchor?,path?,ground?}.
+  Coordinates are px in the body zone, origin ctx.box.x/y (0 when absent); fill is opacity 0..1, border is px,
+  path is [[x,y],...], anchor and ground are booleans. Builders never read layout or mutate ctx.slide.
+
+kit (CS.art.kit)                                             unit: px unless said
+  n(x)                         number to text, two decimals, no -0
+  el(tag, attrs, kids)         svg element; tags: svg g path circle rect ellipse line polyline polygon defs linearGradient radialGradient stop clipPath use;
+                               attributes: the list in kit.js (no style, no on*); fill / stroke / stop-color must be #rgb, #rrggbb, none or url(#id); var() and color-mix() are refused.
+                               A refusal throws CSError E_PAINT_UNSUPPORTED: a builder bug, caught by safe() in the tests, never a runtime condition.
+  path(d, attrs) g(kids, attrs) svg(w, h, kids, { defs: [nodes], ...attrs })      svg: viewBox 0 0 w h, class cs-art-svg, aria-hidden, own <defs> when asked (A3)
+  html(tag, attrs, style, kids)   div span i b; style is an object (numbers are px, flex / z-index / line-height / font-weight are plain); refused: outline, filter, mask,
+                               clip-path, opacity, letter-spacing, border-image, background-clip, conic, inset, justify, italic, color-mix, var()
+  label(role, index, text, attrs) -> { el, text, role, index }   EMPTY span.cs-art-label[data-slot=art][data-index][data-role][data-floor][data-m=decor-item][data-m-i].
+       role: small body title numeral word chip chart tool; index: nonnegative integer. Invalid input: E_ART_LABEL.
+       labelFloor(role,text,floors?) -> Arabic 36, Latin/digits 34, chart 38, Latin tool 30, numeral 200, word 220.
+       Optional floors keys: arabic latin chart tool numeral word (plugin.visual.artLabel). compose.label applies platform floors.
+       Return labels[] to the hook; compose.label supplies data-slot-key sNN.art.<i> and the text pipeline for render AND expectedText.
+       Keep U+00A0 in number+noun bindings and comma-grouped numbers in one <bdi dir="ltr"> run. Builders never emit label text into SVG.
+  wrap(kind, seed, kids, { panel, style, panelStyle })         div.cs-art[data-art][data-anchor-kind][data-m=media][data-seed] (+ div.cs-art-panel[data-owner] when panel)
+  owner(el)                    sets data-owner="1"       uid(slideId, ns?) -> next(): v<slideId>[-ns]-<n>, one per build() and shared          flip(rtl, W)(x, w) -> physical x
+  hash(s) = CS.core.canon.fnv1a64          rng(seed) -> r(); r.range(lo, hi) r.int(n) r.pick(list) r.sign()          (nothing reads a clock or Math.random, A8)
+  shapes (path data, all closed unless noted): disc(cx, cy, r) rrect(x, y, w, h, r | [tl, tr, br, bl]) arch(x, y, w, h, top = .5, rb) blob(cx, cy, r, seed, amp = .12, k = 7)
+                               hand(cx, cy, rx, ry, amp, seed, k = 10) star(cx, cy, R, r, k = 8, rot) scallop(cx, cy, r, k = 10, depth = .08, amp?, seed?) ribbon(x, y, w, h, notch)
+                               poly(points, closed) curve(points, closed) wobble(points, amp, seed) -> points
+  ladder(size, units) -> px = max(units * g / 24, floor), floors 4 px at xs, 5 px at sm and md       units(size, u) -> the same stroke in 24-unit space
+  SIZES { xs 40, sm 64, md 96, lg 160, xl 240, hero 320 }     MULT { bare 1, chip 1.6, tile 1.7, ring 1.8, duo 1.5, sticker 1.6, badge 1.5, giant 1.75 }     gOf(size) tokenOf(size)
+  tint(a, b, t) palette(tokens) role(tk, nameOrHex) on(fill, tk) -> glyph colour at 4.5:1        base(tk, ground, outlined) -> an object's base colour (accent unless it vanishes
+                               on the ground at 1.8:1 or equals the ink; then a support hue; then a mid tone)       dna(art)     session({ ctx | tokens, art, rtl, seed }) -> { tk, dna, rtl, seed }
+  shape(kind, box, dna, seed) -> { d, x: [extra stroke-only paths] }       kind: chip tile plate card panel window badge, in the preset's grammar (square, disc, hand circle with a
+                               retrace, stamp with an inner rule, app tile, arch; heritage plates and chips are arches; badges: star, scallop, stamp)
+  plate(kind, box, { dna, tk, seed, rtl, fill, ink, glyph, outline, paper, lift: hard|soft|none, sh }) -> nodes bottom to top: lift, paper keyline, fill + outline, inner rules.
+                               Use it for every panel, card, window and plate so a scene's containers share the icon's grammar.
+  measure(tr, g, o) -> { S, g, outline, paper, lift, tilt, pad, w, sh }       frame(tr, g, o, draw) -> { el, w, S, pad, g, fill, glyph }
+
+CS.art.icon(name, o) -> <svg class="cs-icon"> | null          .full(name, o) -> { el, w, S, pad, g, fill, glyph } | null          .measure(o) -> measure() without drawing
+CS.art.object(id, o)  -> <svg class="cs-icon"> | null          .full(id, o)    .ids(o)
+  o: ctx | tokens + art + rtl + seed;  size: xs..hero or px (icons default md, objects lg);  treatment: bare chip tile ring duo sticker badge giant (objects also sticker = die-cut);
+     stroke (24-unit, still laddered), drawOn (glyph paths get pathLength=1, data-m=stroke, data-m-i), mirror (flips the glyph only), modifier | badge: slash cross plus check question sparkle
+     (none | unknown draws nothing), fill (role or hex of the container), glyph, ink, ground (what the knock-out and badge sit on; default the container fill, else bg), tintFill (duo, giant),
+     outline, paper, lift (true | false | hard | soft), tilt, name (seeds the sticker tilt and the hand circle), base (objects: the base role), pack / objects (inject data; else the block
+     cs-icon-pack / cs-icon-objects through CS.visual._.block).
+  The svg is S + 2 pad square: the visible container is the centred S square, pad covers outline, paper keyline, lift, tilt and the hand wobble. Nothing draws outside the svg (tested).
+  Glyph in 24-unit space; closed subpaths in f take the tint (duo, giant) and are painted first; dots (s) are r = 1 circles grown to the stroke's diameter; every stroke is path-only (A14).
+  The lift (hard 6 x 6, soft 0 12 32 ...) is the DNA's value at lg and above and shrinks to half at xs and sm (a 32 px blur under a 64 px chip is not a shadow any more); its direction follows rtl.
+  Badge and sparkle: the accent unless it vanishes on its ground (1.8:1), then a support hue, then the ink; they sit inside the glyph box, so a bare icon needs no pad.
+
+Anchors registered here (IS-3):  { kind: "icon" | "field", icon?, object?, captions?: [text], treatment?, size?, badge?, mirror? }
+  treatment default: icon on a peak recipe (over center half full band) giant, else duo; object sticker (giant on a peak recipe); field sticker on the panel. size: the named token, else the
+  largest whose container fits the box (caption line 56 + gap 24 included). A missing object falls back to the icon. The container is the owner (data-owner on the svg; for field the
+  panel div). Returns { el, boxes, labels }: boxes owner / ink / text with ownerOf; labelsOnly returns { el: null, boxes: [], labels }.
+
+Harness (tests/unit/js/art/harness.mjs) - see its header. Quick form:
+  await withArt(async (art) => { const r = await art.render(anchor, { preset: "creator", tone: "base", rtl: true, box: { w: 852, h: 420 } }); (await art.safe(r)).violations; (await art.paintBoth(r)).ssim }, { data: "real" })
+  node tests/unit/js/art/run.mjs [--only kit,registry] [--out DIR] [--real] [--final]
+  --final forces shipped real icon data for every test and fails on core fallback, fixture/custom data or skipped tests. All runs exit nonzero on a skip or missing test.
+  Each test clears the page body before running, including contact sheets outside #art-stage, so hit tests cannot sample a previous sheet.
+  A test file default-exports {module,tests:[{name,real?,run(t)}]}; t = assertions + t.art.
+  art.sheet({ cols, cw, ch, items: [{ kind: icon|object|anchor, name|id|anchor, opts, preset, tone, rtl, label, box }], title }) -> { sel, w, h }; art.shot(sel, "file.png"); art.small(png, width)
+  art.mount((CS, ctx, arg) => node, arg, o) mounts any node a function builds (kit-level tests).
+  safe(): A1-A6, A9-A12, A14-A17 and Arabic rules; A7/A8 source tests, A13 settle pass.
+  A9: SUM over the nearest .cs-slide, else nearest .cell or [data-budget], else the supplied root.
+  When checking a sheet, each cell has its own budget; cell markers inside a real slide never split its total.
+  Includes svg roots and all nested/independent layers: <=800 SVG elements, <=24000 UTF-8 geometry bytes (path d and polygon/polyline points).
+  A15: no overflow:hidden with any border/radius. A16: no inline background radius or inline box shadow.
+  A17: matching role/preset/type/variant rules that set role font/colour properties need specificity >=(0,3,0), or inline styles.
+  Scans style[data-cs-slide-css], style[data-cs-decor], and style#cs-archetype-css; tests inject decor overrides explicitly.
+  art.paintBoth(slide,{regions:[selector,...]}) returns {svgPng,replayPng,ssim,regions:[{selector,svgPng,replayPng,ssim}]}.
+  Use a complete slide AND art/label region selectors to avoid hiding local painter failures in a large flat background.
+  --final checks the real core and pack; preset DNA here remains explicit spec test data, not production preset integration evidence.
+  Without --out nothing is written; CS_TMP is the temp root (set it to keep Windows temp files in the session scratchpad).
+
+Decisions A1 took (all reversible)
+  1. Object sticker is a die-cut (a paper keyline that follows the silhouette) and not a container; the icon sticker is the container with the paper outline of 3.1.
+  2. tint: accent mixed 62% toward the surface (ink must read on it at 4.5:1); on a dark ground (surface luminance < 0.2) it is the surface itself (a muddy khaki otherwise).
+  3. creator-like DNAs (mark outline + disc container) fill chip, sticker and giant with the accent; swiss squares fill tile with the ink. art.fills overrides all of it per preset.
+  4. The shadow shrinks with small glyphs (see above); modifier badges stay inside the glyph box.
+
+Requests (also in the report)
+  V6c: CS.visual.caps() requires CS.core.canon for canonicalJSON/fnv1a64. In a DOM-free VM load cs-core (or src/lib/canon.js) before cs-art and cs-visual.
+  V2 (wave 3, proposed owner; lead to confirm allocation): maintain the planner capability vocabulary (recipes, variants, types, tones currently explicit in src/visual/api.js).
+  T5: add E_ART_REGISTER, E_ART_LABEL and E_ART_DUPLICATE to CONTRACT's closed error-code list. root.js throws plain Error with .code because core/CSError can be absent.
+  B1: remove the per-file 1536-byte root.js pin in skeleton.test.mjs before restoring root formatting; C1 cannot edit B1's tests. Whole chunk limits remain enforced.
+  A1b: icon.test.mjs has fixture-count assertions; do not assert exactly four objects under --final (which forces real data).
+  E4 primitives.css: .cs-icon { display: inline-block; flex: none; vertical-align: middle }  (the builders set no CSS on the svg itself) and .cs-art-label as the art label role.
+  E2b tokens.art: pass shadow as { kind, dx, dy, blur } (the CSS string stays in --cs-art-shadow), outline / wobble / tilt / container / mark as plain values; art.fills is optional.
+  E2a hooks: anchors are called with ctx.box = { w, h, x, y } when the origin matters for boxes[]; labels[] elements are filled through compose.label.

@@ -1,0 +1,321 @@
+{
+ "schemaVersion": 1,
+ "dataVersion": "1.1.0",
+ "strings": {
+  "vis.chart.add": {
+   "eg": "أضف قيمة",
+   "gulf": "أضف قيمة",
+   "levant": "أضف قيمة",
+   "msa-white": "أضف قيمة",
+   "en": "Add a value"
+  },
+  "vis.chart.count": {
+   "eg": "القيم: {n}/{max}",
+   "gulf": "القيم: {n}/{max}",
+   "levant": "القيم: {n}/{max}",
+   "msa-white": "القيم: {n}/{max}",
+   "en": "Values: {n}/{max}"
+  },
+  "vis.chart.illustrative": {
+   "eg": "ده رسم توضيحي (من غير مصدر)",
+   "gulf": "هذا رسم توضيحي (من دون مصدر)",
+   "levant": "هيدا رسم توضيحي (بدون مصدر)",
+   "msa-white": "هذا رسم توضيحي (من دون مصدر)",
+   "en": "This is an illustration (no source)"
+  },
+  "vis.chart.label": {
+   "eg": "الاسم",
+   "gulf": "الاسم",
+   "levant": "الاسم",
+   "msa-white": "الاسم",
+   "en": "Label"
+  },
+  "vis.chart.source": {
+   "eg": "مصدر الأرقام",
+   "gulf": "مصدر الأرقام",
+   "levant": "مصدر الأرقام",
+   "msa-white": "مصدر الأرقام",
+   "en": "Source of the numbers"
+  },
+  "vis.chart.source.hint": {
+   "eg": "من غير مصدر، الرسم بيظهر بعلامة «رسم توضيحي».",
+   "gulf": "من دون مصدر يظهر الرسم بعلامة «رسم توضيحي».",
+   "levant": "بدون مصدر بيظهر الرسم بعلامة «رسم توضيحي».",
+   "msa-white": "من دون مصدر يظهر الرسم بعلامة «رسم توضيحي».",
+   "en": "Without a source, the chart is tagged as an illustration."
+  },
+  "vis.chart.title": {
+   "eg": "بيانات الرسم",
+   "gulf": "بيانات الرسم",
+   "levant": "بيانات الرسم",
+   "msa-white": "بيانات الرسم",
+   "en": "Chart data"
+  },
+  "vis.chart.value": {
+   "eg": "القيمة",
+   "gulf": "القيمة",
+   "levant": "القيمة",
+   "msa-white": "القيمة",
+   "en": "Value"
+  },
+  "vis.demo.add": {
+   "eg": "أضف سطر",
+   "gulf": "أضف سطرًا",
+   "levant": "أضف سطرًا",
+   "msa-white": "أضف سطرًا",
+   "en": "Add a line"
+  },
+  "vis.demo.caption": {
+   "eg": "تعليق تحت المثال",
+   "gulf": "تعليق أسفل المثال",
+   "levant": "تعليق تحت المثال",
+   "msa-white": "تعليق أسفل المثال",
+   "en": "Caption under the example"
+  },
+  "vis.demo.count": {
+   "eg": "السطور: {n}/{max}",
+   "gulf": "السطور: {n}/{max}",
+   "levant": "السطور: {n}/{max}",
+   "msa-white": "السطور: {n}/{max}",
+   "en": "Lines: {n}/{max}"
+  },
+  "vis.demo.hint": {
+   "eg": "الكلام اللي بيظهر جوه المحادثة أو الملاحظات، بلهجة البوست. خلّي كل سطر قصير.",
+   "gulf": "الكلام الذي يظهر داخل المحادثة أو الملاحظات، بلهجة البوست. اجعل كل سطر قصيرًا.",
+   "levant": "الحكي اللي بيظهر جوّا المحادثة أو الملاحظات، بلهجة البوست. خلّي كل سطر قصير.",
+   "msa-white": "الكلام الذي يظهر داخل المحادثة أو الملاحظات، بلهجة البوست. اجعل كل سطر قصيرًا.",
+   "en": "The words that appear inside the chat or notes, in the post's dialect. Keep each line short."
+  },
+  "vis.demo.me": {
+   "eg": "أنا",
+   "gulf": "أنا",
+   "levant": "أنا",
+   "msa-white": "أنا",
+   "en": "Me"
+  },
+  "vis.demo.sys": {
+   "eg": "النظام",
+   "gulf": "النظام",
+   "levant": "النظام",
+   "msa-white": "النظام",
+   "en": "System"
+  },
+  "vis.demo.them": {
+   "eg": "الطرف التاني",
+   "gulf": "الطرف الآخر",
+   "levant": "الطرف التاني",
+   "msa-white": "الطرف الآخر",
+   "en": "Them"
+  },
+  "vis.demo.title": {
+   "eg": "سطور المثال",
+   "gulf": "سطور المثال",
+   "levant": "سطور المثال",
+   "msa-white": "سطور المثال",
+   "en": "Example lines"
+  },
+  "vis.items.add": {
+   "eg": "أضف عنصر",
+   "gulf": "أضف عنصرًا",
+   "levant": "أضف عنصرًا",
+   "msa-white": "أضف عنصرًا",
+   "en": "Add an item"
+  },
+  "vis.items.count": {
+   "eg": "العناصر: {n}/{max}",
+   "gulf": "العناصر: {n}/{max}",
+   "levant": "العناصر: {n}/{max}",
+   "msa-white": "العناصر: {n}/{max}",
+   "en": "Items: {n}/{max}"
+  },
+  "vis.items.icon": {
+   "eg": "الأيقونة (اختياري)",
+   "gulf": "الأيقونة (اختياري)",
+   "levant": "الأيقونة (اختياري)",
+   "msa-white": "الأيقونة (اختياري)",
+   "en": "Icon (optional)"
+  },
+  "vis.items.item": {
+   "eg": "العنصر {n}",
+   "gulf": "العنصر {n}",
+   "levant": "العنصر {n}",
+   "msa-white": "العنصر {n}",
+   "en": "Item {n}"
+  },
+  "vis.items.title": {
+   "eg": "العناصر",
+   "gulf": "العناصر",
+   "levant": "العناصر",
+   "msa-white": "العناصر",
+   "en": "Items"
+  },
+  "vis.items.value": {
+   "eg": "القيمة (اختياري)",
+   "gulf": "القيمة (اختياري)",
+   "levant": "القيمة (اختياري)",
+   "msa-white": "القيمة (اختياري)",
+   "en": "Value (optional)"
+  },
+  "vis.note.planned": {
+   "eg": "اتضافت صور تلقائي",
+   "gulf": "أضفنا الصور تلقائيًا",
+   "levant": "ضفنا الصور تلقائيًا",
+   "msa-white": "أضفنا الصور تلقائيًا",
+   "en": "Images added automatically"
+  },
+  "vis.note.planned.hint": {
+   "eg": "تقدر تغيّر أي رسمة من تبويب الصورة.",
+   "gulf": "يمكنك تغيير أي رسمة من تبويب الصورة.",
+   "levant": "فيك تغيّر أي رسمة من تبويب الصورة.",
+   "msa-white": "يمكنك تغيير أي رسمة من تبويب الصورة.",
+   "en": "You can change any visual in the Image tab."
+  },
+  "vis.numeral.hint": {
+   "eg": "الرقم والوحدة هما أكبر حاجة في السلايد. لو الرقم معلومة، أضف مصدرها.",
+   "gulf": "الرقم والوحدة هما الأكبر في السلايد. إن كان الرقم معلومة فأضف مصدرها.",
+   "levant": "الرقم والوحدة هنّن الأكبر بالسلايد. إذا كان الرقم معلومة فأضف مصدرها.",
+   "msa-white": "الرقم والوحدة هما الأكبر في السلايد. إن كان الرقم معلومة فأضف مصدرها.",
+   "en": "The number and its unit are the biggest thing on the slide. If the number is a fact, add its source."
+  },
+  "vis.numeral.title": {
+   "eg": "الرقم الكبير",
+   "gulf": "الرقم الكبير",
+   "levant": "الرقم الكبير",
+   "msa-white": "الرقم الكبير",
+   "en": "Big number"
+  },
+  "vis.tab.kind": {
+   "eg": "رسمة السلايد",
+   "gulf": "رسمة السلايد",
+   "levant": "رسمة السلايد",
+   "msa-white": "رسمة السلايد",
+   "en": "Slide visual"
+  },
+  "vis.tab.kind.auto": {
+   "eg": "تلقائي",
+   "gulf": "تلقائي",
+   "levant": "تلقائي",
+   "msa-white": "تلقائي",
+   "en": "Auto"
+  },
+  "vis.tab.kind.chart": {
+   "eg": "رسم بياني",
+   "gulf": "رسم بياني",
+   "levant": "رسم بياني",
+   "msa-white": "رسم بياني",
+   "en": "Chart"
+  },
+  "vis.tab.kind.field": {
+   "eg": "لوحة ملوّنة",
+   "gulf": "لوحة ملوّنة",
+   "levant": "لوحة ملوّنة",
+   "msa-white": "لوحة ملوّنة",
+   "en": "Colour panel"
+  },
+  "vis.tab.kind.icon": {
+   "eg": "أيقونة",
+   "gulf": "أيقونة",
+   "levant": "أيقونة",
+   "msa-white": "أيقونة",
+   "en": "Icon"
+  },
+  "vis.tab.kind.mock": {
+   "eg": "واجهة مرسومة",
+   "gulf": "واجهة مرسومة",
+   "levant": "واجهة مرسومة",
+   "msa-white": "واجهة مرسومة",
+   "en": "Screen mock"
+  },
+  "vis.tab.kind.none": {
+   "eg": "بدون رسمة",
+   "gulf": "بدون رسمة",
+   "levant": "بدون رسمة",
+   "msa-white": "بدون رسمة",
+   "en": "No visual"
+  },
+  "vis.tab.kind.numeral": {
+   "eg": "رقم كبير",
+   "gulf": "رقم كبير",
+   "levant": "رقم كبير",
+   "msa-white": "رقم كبير",
+   "en": "Big number"
+  },
+  "vis.tab.kind.rows": {
+   "eg": "قائمة صفوف",
+   "gulf": "قائمة صفوف",
+   "levant": "قائمة صفوف",
+   "msa-white": "قائمة صفوف",
+   "en": "Rows"
+  },
+  "vis.tab.kind.word": {
+   "eg": "كلمة كبيرة",
+   "gulf": "كلمة كبيرة",
+   "levant": "كلمة كبيرة",
+   "msa-white": "كلمة كبيرة",
+   "en": "Big word"
+  },
+  "vis.tab.lock": {
+   "eg": "ثبّت الرسمة دي",
+   "gulf": "ثبّت هذه الرسمة",
+   "levant": "ثبّت هالرسمة",
+   "msa-white": "ثبّت هذه الرسمة",
+   "en": "Lock this visual"
+  },
+  "vis.tab.lock.hint": {
+   "eg": "لو خطّطت تاني، الرسمة دي هتفضل زي ما هي.",
+   "gulf": "عند التخطيط من جديد تبقى هذه الرسمة كما هي.",
+   "levant": "لما تخطّط من جديد بتضل هالرسمة متل ما هي.",
+   "msa-white": "عند إعادة التخطيط تبقى هذه الرسمة كما هي.",
+   "en": "When you plan again, this visual stays as it is."
+  },
+  "vis.tab.locked": {
+   "eg": "مثبّتة",
+   "gulf": "مثبّتة",
+   "levant": "مثبّتة",
+   "msa-white": "مثبّتة",
+   "en": "Locked"
+  },
+  "vis.tab.plan": {
+   "eg": "خطّط الصور",
+   "gulf": "خطّط الصور",
+   "levant": "خطّط الصور",
+   "msa-white": "خطّط الصور",
+   "en": "Plan the images"
+  },
+  "vis.tab.plan.slide": {
+   "eg": "خطّط صورة السلايد ده",
+   "gulf": "خطّط صورة هذا السلايد",
+   "levant": "خطّط صورة هالسلايد",
+   "msa-white": "خطّط صورة هذا السلايد",
+   "en": "Plan this slide's image"
+  },
+  "vis.tab.replan": {
+   "eg": "خطّط تاني",
+   "gulf": "خطّط من جديد",
+   "levant": "خطّط من جديد",
+   "msa-white": "خطّط مرة أخرى",
+   "en": "Plan again"
+  },
+  "vis.tab.replan.hint": {
+   "eg": "بيعيد التخطيط للسلايدات اللي مش مثبّتة بس.",
+   "gulf": "يعيد التخطيط للسلايدات غير المثبّتة فقط.",
+   "levant": "بيعيد التخطيط للسلايدات غير المثبّتة بس.",
+   "msa-white": "يعيد التخطيط للسلايدات غير المثبّتة فقط.",
+   "en": "Re-plans only the slides that are not locked."
+  },
+  "vis.tab.why": {
+   "eg": "ليه اخترنا كده؟",
+   "gulf": "ليش اخترنا هذا؟",
+   "levant": "ليش اخترنا هيك؟",
+   "msa-white": "لماذا اخترنا هذا؟",
+   "en": "Why this one?"
+  },
+  "vis.tab.word": {
+   "eg": "الكلمة الكبيرة",
+   "gulf": "الكلمة الكبيرة",
+   "levant": "الكلمة الكبيرة",
+   "msa-white": "الكلمة الكبيرة",
+   "en": "Big word"
+  }
+ }
+}

@@ -1,0 +1,295 @@
+{
+ "specVersion": 1,
+ "id": "post-20261022-9001",
+ "rev": 1,
+ "brand": {
+  "slug": "content-workshop"
+ },
+ "brief": {
+  "topic": "كتابة كاروسيل بيتحفظ",
+  "input": "idea"
+ },
+ "format": "carousel",
+ "mode": "fast",
+ "checkpoint": "script",
+ "canvas": {
+  "preset": "ig-3x4",
+  "w": 1080,
+  "h": 1440,
+  "safe": [
+   34,
+   45,
+   1012,
+   1350
+  ],
+  "exports": [
+   "3x4",
+   "4x5"
+  ]
+ },
+ "locale": {
+  "dialect": "eg",
+  "register": "dialect",
+  "digits": "western",
+  "appLanguage": "ar",
+  "swipeCue": "arrow-rtl"
+ },
+ "intent": "save",
+ "awareness": "problem",
+ "contentType": "value",
+ "architecture": "listicle",
+ "style": {
+  "presetId": "swiss@1.0",
+  "metaLabel": "نصائح الكتابة"
+ },
+ "sources": [
+  {
+   "id": "src1",
+   "kind": "ownData",
+   "ref": "استطلاع على متابعين الحساب، أكتوبر 2026",
+   "excerpt": "74% من المشاركين قالوا إنهم بيقرأوا أول سلايدين بس."
+  },
+  {
+   "id": "src2",
+   "kind": "ownData",
+   "ref": "إحصائيات الحساب، أكتوبر 2026",
+   "excerpt": "الحفظ اليومي زاد 3 أضعاف، من 120 لـ 360 في أسبوع، والمشاهدات ثابتة."
+  }
+ ],
+ "assets": [
+  {
+   "id": "a1",
+   "kind": "image",
+   "mime": "image/svg+xml",
+   "width": 1704,
+   "height": 704,
+   "aiGenerated": false,
+   "alt": "لقطة شاشة من إحصائيات الحساب: أعمدة الحفظ اليومي ترتفع بعد تغيير أول جملة.",
+   "ref": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNzA0IDcwNCIgd2lkdGg9IjE3MDQiIGhlaWdodD0iNzA0Ij48cmVjdCB3aWR0aD0iMTcwNCIgaGVpZ2h0PSI3MDQiIGZpbGw9IiNGM0Y0RjciLz48Y2lyY2xlIGN4PSIxNjIyIiBjeT0iNTgiIHI9IjMyIiBmaWxsPSIjMTQxODFGIi8+PGNpcmNsZSBjeD0iMTYyMiIgY3k9IjQ5IiByPSIxMSIgZmlsbD0iI0YzRjRGNyIvPjxwYXRoIGQ9Ik0xNjAxIDc5YzMtMTIgMTAtMTcgMjEtMTdzMTggNSAyMSAxN3oiIGZpbGw9IiNGM0Y0RjciLz48cmVjdCB4PSIxMzMwIiB5PSI0MCIgd2lkdGg9IjI0MCIgaGVpZ2h0PSIyMiIgcng9IjExLjAiIGZpbGw9IiMxNDE4MUYiLz48cmVjdCB4PSIxMzk0IiB5PSI3NCIgd2lkdGg9IjE3NiIgaGVpZ2h0PSIxNCIgcng9IjcuMCIgZmlsbD0iI0RERTFFNyIvPjxyZWN0IHg9IjU4IiB5PSIzMCIgd2lkdGg9IjIzNiIgaGVpZ2h0PSI1NiIgcng9IjI4IiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNFMkU1RUEiIHN0cm9rZS13aWR0aD0iMiIvPjxyZWN0IHg9IjkyIiB5PSI1MiIgd2lkdGg9IjEwNCIgaGVpZ2h0PSIxMiIgcng9IjYuMCIgZmlsbD0iIzlCQTNBRSIvPjxwYXRoIGQ9Ik0yMzYgNTNsMTIgMTIgMTItMTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzE0MTgxRiIgc3Ryb2tlLXdpZHRoPSI0LjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxyZWN0IHg9IjExNDYiIHk9IjExNiIgd2lkdGg9IjUwMCIgaGVpZ2h0PSIxNzgiIHJ4PSIyOCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjRTJFNUVBIiBzdHJva2Utd2lkdGg9IjIiLz48cmVjdCB4PSIxNDY2IiB5PSIxNDYiIHdpZHRoPSIxNDAiIGhlaWdodD0iMTQiIHJ4PSI3LjAiIGZpbGw9IiNEREUxRTciLz48ZyBzdHJva2U9IiNGRjVBM0MiIHN0cm9rZS13aWR0aD0iMTEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTE0ODQuMyAxODMuNUwxNDk1LjcgMTgzLjUiLz48cGF0aCBkPSJNMTUwMi41IDE5MC4zTDE1MDIuNSAyMDIuMiIvPjxwYXRoIGQ9Ik0xNDg0LjMgMjA5LjBMMTQ5NS43IDIwOS4wIi8+PHBhdGggZD0iTTE1MDIuNSAyMTUuOEwxNTAyLjUgMjI3LjciLz48cGF0aCBkPSJNMTQ4NC4zIDIzNC41TDE0OTUuNyAyMzQuNSIvPjwvZz48ZyBzdHJva2U9IiNGRjVBM0MiIHN0cm9rZS13aWR0aD0iMTEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTE1MzMuMyAxODMuNUwxNTQ0LjcgMTgzLjUiLz48cGF0aCBkPSJNMTUyNi41IDE5MC4zTDE1MjYuNSAyMDIuMiIvPjxwYXRoIGQ9Ik0xNTMzLjMgMjA5LjBMMTU0NC43IDIwOS4wIi8+PHBhdGggZD0iTTE1MjYuNSAyMTUuOEwxNTI2LjUgMjI3LjciLz48cGF0aCBkPSJNMTU1MS41IDIxNS44TDE1NTEuNSAyMjcuNyIvPjxwYXRoIGQ9Ik0xNTMzLjMgMjM0LjVMMTU0NC43IDIzNC41Ii8+PC9nPjxnIHN0cm9rZT0iI0ZGNUEzQyIgc3Ryb2tlLXdpZHRoPSIxMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBmaWxsPSJub25lIj48cGF0aCBkPSJNMTU4Mi4zIDE4My41TDE1OTMuNyAxODMuNSIvPjxwYXRoIGQ9Ik0xNjAwLjUgMTkwLjNMMTYwMC41IDIwMi4yIi8+PHBhdGggZD0iTTE2MDAuNSAyMTUuOEwxNjAwLjUgMjI3LjciLz48cGF0aCBkPSJNMTU4Mi4zIDIzNC41TDE1OTMuNyAyMzQuNSIvPjxwYXRoIGQ9Ik0xNTc1LjUgMjE1LjhMMTU3NS41IDIyNy43Ii8+PHBhdGggZD0iTTE1NzUuNSAxOTAuM0wxNTc1LjUgMjAyLjIiLz48L2c+PHJlY3QgeD0iMTE4NiIgeT0iMTc4IiB3aWR0aD0iMTM2IiBoZWlnaHQ9IjQ2IiByeD0iMjMiIGZpbGw9IiNEREY0RUEiLz48cGF0aCBkPSJNMTIxMiAyMDhsMTItMTYgMTIgMTZ6IiBmaWxsPSIjMUZBOTcxIi8+PHJlY3QgeD0iMTI1MCIgeT0iMTk1IiB3aWR0aD0iNTIiIGhlaWdodD0iMTIiIHJ4PSI2LjAiIGZpbGw9IiMxRkE5NzEiLz48cmVjdCB4PSIxMTg2IiB5PSIyNTQiIHdpZHRoPSIyNjAiIGhlaWdodD0iMTEiIHJ4PSI1LjUiIGZpbGw9IiNEREUxRTciLz48cmVjdCB4PSI2MDIiIHk9IjExNiIgd2lkdGg9IjUwMCIgaGVpZ2h0PSIxNzgiIHJ4PSIyOCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjRTJFNUVBIiBzdHJva2Utd2lkdGg9IjIiLz48cmVjdCB4PSI5MjIiIHk9IjE0NiIgd2lkdGg9IjE0MCIgaGVpZ2h0PSIxNCIgcng9IjcuMCIgZmlsbD0iI0RERTFFNyIvPjxnIHN0cm9rZT0iIzE0MTgxRiIgc3Ryb2tlLXdpZHRoPSIxMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBmaWxsPSJub25lIj48cGF0aCBkPSJNOTA5LjUgMTkwLjNMOTA5LjUgMjAyLjIiLz48cGF0aCBkPSJNOTA5LjUgMjE1LjhMOTA5LjUgMjI3LjciLz48L2c+PGcgc3Ryb2tlPSIjMTQxODFGIiBzdHJva2Utd2lkdGg9IjExIiBzdHJva2UtbGluZWNhcD0icm91bmQiIGZpbGw9Im5vbmUiPjxwYXRoIGQ9Ik05NDAuMyAxODMuNUw5NTEuNyAxODMuNSIvPjxwYXRoIGQ9Ik05NTguNSAxOTAuM0w5NTguNSAyMDIuMiIvPjxwYXRoIGQ9Ik05NDAuMyAyMDkuMEw5NTEuNyAyMDkuMCIvPjxwYXRoIGQ9Ik05MzMuNSAyMTUuOEw5MzMuNSAyMjcuNyIvPjxwYXRoIGQ9Ik05NDAuMyAyMzQuNUw5NTEuNyAyMzQuNSIvPjwvZz48ZyBzdHJva2U9IiMxNDE4MUYiIHN0cm9rZS13aWR0aD0iMTEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTk4OS4zIDE4My41TDEwMDAuNyAxODMuNSIvPjxwYXRoIGQ9Ik0xMDA3LjUgMTkwLjNMMTAwNy41IDIwMi4yIi8+PHBhdGggZD0iTTEwMDcuNSAyMTUuOEwxMDA3LjUgMjI3LjciLz48cGF0aCBkPSJNOTg5LjMgMjM0LjVMMTAwMC43IDIzNC41Ii8+PHBhdGggZD0iTTk4Mi41IDIxNS44TDk4Mi41IDIyNy43Ii8+PHBhdGggZD0iTTk4Mi41IDE5MC4zTDk4Mi41IDIwMi4yIi8+PC9nPjxnIHN0cm9rZT0iIzE0MTgxRiIgc3Ryb2tlLXdpZHRoPSIxMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBmaWxsPSJub25lIj48cGF0aCBkPSJNMTAzMS41IDE5MC4zTDEwMzEuNSAyMDIuMiIvPjxwYXRoIGQ9Ik0xMDM4LjMgMjA5LjBMMTA0OS43IDIwOS4wIi8+PHBhdGggZD0iTTEwNTYuNSAxOTAuM0wxMDU2LjUgMjAyLjIiLz48cGF0aCBkPSJNMTA1Ni41IDIxNS44TDEwNTYuNSAyMjcuNyIvPjwvZz48cmVjdCB4PSI2NDIiIHk9IjE3OCIgd2lkdGg9IjEwOCIgaGVpZ2h0PSI0NiIgcng9IjIzIiBmaWxsPSIjRThFQUVFIi8+PHJlY3QgeD0iNjcwIiB5PSIxOTgiIHdpZHRoPSI1MiIgaGVpZ2h0PSI2IiByeD0iMyIgZmlsbD0iIzlCQTNBRSIvPjxyZWN0IHg9IjY0MiIgeT0iMjU0IiB3aWR0aD0iMjYwIiBoZWlnaHQ9IjExIiByeD0iNS41IiBmaWxsPSIjRERFMUU3Ii8+PHJlY3QgeD0iNTgiIHk9IjExNiIgd2lkdGg9IjUwMCIgaGVpZ2h0PSIxNzgiIHJ4PSIyOCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjRTJFNUVBIiBzdHJva2Utd2lkdGg9IjIiLz48cmVjdCB4PSIzNzgiIHk9IjE0NiIgd2lkdGg9IjE0MCIgaGVpZ2h0PSIxNCIgcng9IjcuMCIgZmlsbD0iI0RERTFFNyIvPjxnIHN0cm9rZT0iIzE0MTgxRiIgc3Ryb2tlLXdpZHRoPSIxMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBmaWxsPSJub25lIj48cGF0aCBkPSJNNDM4LjUgMTkwLjNMNDM4LjUgMjAyLjIiLz48cGF0aCBkPSJNNDQ1LjMgMjA5LjBMNDU2LjcgMjA5LjAiLz48cGF0aCBkPSJNNDYzLjUgMTkwLjNMNDYzLjUgMjAyLjIiLz48cGF0aCBkPSJNNDYzLjUgMjE1LjhMNDYzLjUgMjI3LjciLz48L2c+PGcgc3Ryb2tlPSIjMTQxODFGIiBzdHJva2Utd2lkdGg9IjExIiBzdHJva2UtbGluZWNhcD0icm91bmQiIGZpbGw9Im5vbmUiPjxwYXRoIGQ9Ik00OTQuMyAxODMuNUw1MDUuNyAxODMuNSIvPjxwYXRoIGQ9Ik01MTIuNSAxOTAuM0w1MTIuNSAyMDIuMiIvPjxwYXRoIGQ9Ik01MTIuNSAyMTUuOEw1MTIuNSAyMjcuNyIvPjxwYXRoIGQ9Ik00OTQuMyAyMzQuNUw1MDUuNyAyMzQuNSIvPjxwYXRoIGQ9Ik00ODcuNSAyMTUuOEw0ODcuNSAyMjcuNyIvPjxwYXRoIGQ9Ik00ODcuNSAxOTAuM0w0ODcuNSAyMDIuMiIvPjxwYXRoIGQ9Ik00OTQuMyAyMDkuMEw1MDUuNyAyMDkuMCIvPjwvZz48cmVjdCB4PSI5OCIgeT0iMTc4IiB3aWR0aD0iMTA4IiBoZWlnaHQ9IjQ2IiByeD0iMjMiIGZpbGw9IiNFOEVBRUUiLz48cGF0aCBkPSJNMTIyIDIwOGwxMi0xNiAxMiAxNnoiIGZpbGw9IiM5QkEzQUUiLz48cmVjdCB4PSIxNTYiIHk9IjE5NSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjEyIiByeD0iNi4wIiBmaWxsPSIjOUJBM0FFIi8+PHJlY3QgeD0iOTgiIHk9IjI1NCIgd2lkdGg9IjI2MCIgaGVpZ2h0PSIxMSIgcng9IjUuNSIgZmlsbD0iI0RERTFFNyIvPjxyZWN0IHg9IjU4IiB5PSIzMjIiIHdpZHRoPSIxNTg4IiBoZWlnaHQ9IjM2MiIgcng9IjI4IiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNFMkU1RUEiIHN0cm9rZS13aWR0aD0iMiIvPjxyZWN0IHg9IjEzOTYiIHk9IjM1MiIgd2lkdGg9IjIxMCIgaGVpZ2h0PSIyMCIgcng9IjEwLjAiIGZpbGw9IiMxNDE4MUYiLz48cmVjdCB4PSIxNDY2IiB5PSIzODYiIHdpZHRoPSIxNDAiIGhlaWdodD0iMTIiIHJ4PSI2LjAiIGZpbGw9IiNEREUxRTciLz48Y2lyY2xlIGN4PSIxMzI2IiBjeT0iMzYyIiByPSIxMCIgZmlsbD0iI0ZGNUEzQyIvPjxyZWN0IHg9IjEyMjYiIHk9IjM1NiIgd2lkdGg9Ijg0IiBoZWlnaHQ9IjEyIiByeD0iNi4wIiBmaWxsPSIjRERFMUU3Ii8+PGNpcmNsZSBjeD0iMTE2NiIgY3k9IjM2MiIgcj0iMTAiIGZpbGw9IiNDNUNCRDUiLz48cmVjdCB4PSIxMDY2IiB5PSIzNTYiIHdpZHRoPSI4NCIgaGVpZ2h0PSIxMiIgcng9IjYuMCIgZmlsbD0iI0RERTFFNyIvPjxwYXRoIGQ9Ik05OCA0MzQuMEgxNjA2IiBzdHJva2U9IiNFMkU1RUEiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWRhc2hhcnJheT0iOCAxMCIvPjxwYXRoIGQ9Ik05OCA0ODIuNUgxNjA2IiBzdHJva2U9IiNFMkU1RUEiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWRhc2hhcnJheT0iOCAxMCIvPjxwYXRoIGQ9Ik05OCA1MzEuMEgxNjA2IiBzdHJva2U9IiNFMkU1RUEiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWRhc2hhcnJheT0iOCAxMCIvPjxwYXRoIGQ9Ik05OCA1NzkuNUgxNjA2IiBzdHJva2U9IiNFMkU1RUEiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWRhc2hhcnJheT0iOCAxMCIvPjxwYXRoIGQ9Ik05OCA2MjguMEgxNjA2IiBzdHJva2U9IiNFMkU1RUEiIHN0cm9rZS13aWR0aD0iMyIvPjxyZWN0IHg9IjE0NTIuMyIgeT0iNTkzLjEiIHdpZHRoPSI5MiIgaGVpZ2h0PSIzNC45IiByeD0iMTUiIGZpbGw9IiNDNUNCRDUiLz48cmVjdCB4PSIxNDc2LjMiIHk9IjY0OCIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjEwIiByeD0iNS4wIiBmaWxsPSIjRERFMUU3Ii8+PHJlY3QgeD0iMTIzNi45IiB5PSI1ODkuNiIgd2lkdGg9IjkyIiBoZWlnaHQ9IjM4LjQiIHJ4PSIxNSIgZmlsbD0iI0M1Q0JENSIvPjxyZWN0IHg9IjEyNjAuOSIgeT0iNjQ4IiB3aWR0aD0iNDQiIGhlaWdodD0iMTAiIHJ4PSI1LjAiIGZpbGw9IiNEREUxRTciLz48cmVjdCB4PSIxMDIxLjQiIHk9IjU5NC44IiB3aWR0aD0iOTIiIGhlaWdodD0iMzMuMiIgcng9IjE1IiBmaWxsPSIjQzVDQkQ1Ii8+PHJlY3QgeD0iMTA0NS40IiB5PSI2NDgiIHdpZHRoPSI0NCIgaGVpZ2h0PSIxMCIgcng9IjUuMCIgZmlsbD0iI0RERTFFNyIvPjxyZWN0IHg9IjgwNi4wIiB5PSI1ODYuMSIgd2lkdGg9IjkyIiBoZWlnaHQ9IjQxLjkiIHJ4PSIxNSIgZmlsbD0iI0M1Q0JENSIvPjxyZWN0IHg9IjgzMC4wIiB5PSI2NDgiIHdpZHRoPSI0NCIgaGVpZ2h0PSIxMCIgcng9IjUuMCIgZmlsbD0iI0RERTFFNyIvPjxyZWN0IHg9IjU5MC42IiB5PSI1MzcuMiIgd2lkdGg9IjkyIiBoZWlnaHQ9IjkwLjgiIHJ4PSIxNSIgZmlsbD0iI0ZGNUEzQyIvPjxyZWN0IHg9IjYxNC42IiB5PSI2NDgiIHdpZHRoPSI0NCIgaGVpZ2h0PSIxMCIgcng9IjUuMCIgZmlsbD0iI0RERTFFNyIvPjxyZWN0IHg9IjM3NS4xIiB5PSI0OTEuOCIgd2lkdGg9IjkyIiBoZWlnaHQ9IjEzNi4yIiByeD0iMTUiIGZpbGw9IiNGRjVBM0MiLz48cmVjdCB4PSIzOTkuMSIgeT0iNjQ4IiB3aWR0aD0iNDQiIGhlaWdodD0iMTAiIHJ4PSI1LjAiIGZpbGw9IiNEREUxRTciLz48cmVjdCB4PSIxNTkuNyIgeT0iNDUzLjQiIHdpZHRoPSI5MiIgaGVpZ2h0PSIxNzQuNiIgcng9IjE1IiBmaWxsPSIjRkY1QTNDIi8+PHJlY3QgeD0iMTgzLjciIHk9IjY0OCIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjEwIiByeD0iNS4wIiBmaWxsPSIjRERFMUU3Ii8+PHBhdGggZD0iTTc0NC4zIDQyOC4wVjYyOC4wIiBzdHJva2U9IiMxNDE4MUYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWRhc2hhcnJheT0iMyAxMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PGNpcmNsZSBjeD0iNzQ0LjMiIGN5PSI0MTQuMCIgcj0iMTUiIGZpbGw9IiMxNDE4MUYiLz48cGF0aCBkPSJNNzM4LjMgNDE0LjBsNSA2IDktMTIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cmVjdCB4PSIxMTAuNyIgeT0iMzU5LjQiIHdpZHRoPSIxOTAiIGhlaWdodD0iNzYiIHJ4PSIyMCIgZmlsbD0iIzE0MTgxRiIvPjxwYXRoIGQ9Ik0xOTIuNyA0MzUuNGwxMyAxNCAxMy0xNHoiIGZpbGw9IiMxNDE4MUYiLz48ZyBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS13aWR0aD0iOSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBmaWxsPSJub25lIj48cGF0aCBkPSJNMTUwLjggMzgwLjlMMTYwLjYgMzgwLjkiLz48cGF0aCBkPSJNMTY2LjIgMzg2LjVMMTY2LjIgMzkxLjgiLz48cGF0aCBkPSJNMTUwLjggMzk3LjRMMTYwLjYgMzk3LjQiLz48cGF0aCBkPSJNMTY2LjIgNDAzLjBMMTY2LjIgNDA4LjMiLz48cGF0aCBkPSJNMTUwLjggNDEzLjlMMTYwLjYgNDEzLjkiLz48L2c+PGcgc3Ryb2tlPSIjRkZGRkZGIiBzdHJva2Utd2lkdGg9IjkiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgZmlsbD0ibm9uZSI+PHBhdGggZD0iTTE5MS44IDM4MC45TDIwMS42IDM4MC45Ii8+PHBhdGggZD0iTTE4Ni4yIDM4Ni41TDE4Ni4yIDM5MS44Ii8+PHBhdGggZD0iTTE5MS44IDM5Ny40TDIwMS42IDM5Ny40Ii8+PHBhdGggZD0iTTE4Ni4yIDQwMy4wTDE4Ni4yIDQwOC4zIi8+PHBhdGggZD0iTTIwNy4yIDQwMy4wTDIwNy4yIDQwOC4zIi8+PHBhdGggZD0iTTE5MS44IDQxMy45TDIwMS42IDQxMy45Ii8+PC9nPjxnIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLXdpZHRoPSI5IiBzdHJva2UtbGluZWNhcD0icm91bmQiIGZpbGw9Im5vbmUiPjxwYXRoIGQ9Ik0yMzIuOCAzODAuOUwyNDIuNiAzODAuOSIvPjxwYXRoIGQ9Ik0yNDguMiAzODYuNUwyNDguMiAzOTEuOCIvPjxwYXRoIGQ9Ik0yNDguMiA0MDMuMEwyNDguMiA0MDguMyIvPjxwYXRoIGQ9Ik0yMzIuOCA0MTMuOUwyNDIuNiA0MTMuOSIvPjxwYXRoIGQ9Ik0yMjcuMiA0MDMuMEwyMjcuMiA0MDguMyIvPjxwYXRoIGQ9Ik0yMjcuMiAzODYuNUwyMjcuMiAzOTEuOCIvPjwvZz48L3N2Zz4="
+  }
+ ],
+ "slides": [
+  {
+   "id": "s01",
+   "n": 1,
+   "type": "cover",
+   "kicker": "دليل عملي",
+   "headline": "5 خطوات\n==كاروسيل== بيتحفظ",
+   "sub": "من غير تصميم معقد"
+  },
+  {
+   "id": "s02",
+   "n": 2,
+   "type": "rehook",
+   "headline": "السر مش في ==التصميم==",
+   "sub": "السر في أول جملة تكتبها",
+   "bridge": "اسحب واعرف إزاي"
+  },
+  {
+   "id": "s03",
+   "n": 3,
+   "type": "item",
+   "ord": 1,
+   "title": "ابدأ بالنتيجة",
+   "body": "اكتب اللي هيطلع بيه القارئ في أول سطر، مش اسم الموضوع.",
+   "bridge": "الخطوة التانية أسهل"
+  },
+  {
+   "id": "s04",
+   "n": 4,
+   "type": "step",
+   "ord": 1,
+   "title": "اكتب فكرة واحدة في السلايد",
+   "body": "لو احتجت أكتر من جملتين، قسّمها على سلايدين.",
+   "bridge": "وبعدها رقم يثبّت الكلام"
+  },
+  {
+   "id": "s05",
+   "n": 5,
+   "type": "stat",
+   "number": {
+    "value": "74",
+    "unit": "%",
+    "sourceId": "src1"
+   },
+   "title": "من الناس بتقرا أول سلايدين بس",
+   "body": "عشان كده التانية مهمة زي الغلاف.",
+   "bridge": "شوف الفرق بين الاتنين",
+   "sourceIds": [
+    "src1"
+   ]
+  },
+  {
+   "id": "s06",
+   "n": 6,
+   "type": "compare",
+   "title": "قبل وبعد",
+   "sides": [
+    {
+     "label": "قبل",
+     "text": "عنوان عام بيشرح الموضوع"
+    },
+    {
+     "label": "بعد",
+     "text": "عنوان بيوعد بنتيجة محددة"
+    }
+   ],
+   "bridge": "وفيه أسطورة منتشرة"
+  },
+  {
+   "id": "s07",
+   "n": 7,
+   "type": "myth-fact",
+   "title": "حقيقة ولا أسطورة؟",
+   "sides": [
+    {
+     "label": "أسطورة",
+     "text": "كل ما زادت السلايدات زاد الوصول"
+    },
+    {
+     "label": "حقيقة",
+     "text": "المحتوى المركّز بيتحفظ أكتر"
+    }
+   ],
+   "bridge": "وده كلام مجرّب"
+  },
+  {
+   "id": "s08",
+   "n": 8,
+   "type": "quote",
+   "body": "اللي بيتقرا في ثانية بيتشارك في دقيقة.",
+   "attribution": "قاعدة كل كاتب محتوى",
+   "bridge": "ودي حكاية حصلت فعلا"
+  },
+  {
+   "id": "s09",
+   "n": 9,
+   "type": "story-beat",
+   "title": "اللحظة اللي اتغير فيها كل حاجة",
+   "body": "غيّرت أول جملة بس، والحفظ زاد في أسبوع.",
+   "bridge": "وده الدليل"
+  },
+  {
+   "id": "s10",
+   "n": 10,
+   "type": "proof",
+   "media": {
+    "slot": "screenshot",
+    "assetId": "a1"
+   },
+   "number": {
+    "value": "3",
+    "unit": "x",
+    "sourceId": "src2"
+   },
+   "title": "نفس الموضوع، نتيجة تانية",
+   "body": "غيّرنا أول جملة بس. المشاهدات فضلت زي ما هي، والحفظ زاد في أسبوع.",
+   "bridge": "وده اللي تعمله قبل النشر",
+   "sourceIds": [
+    "src2"
+   ]
+  },
+  {
+   "id": "s11",
+   "n": 11,
+   "type": "checklist",
+   "title": "قبل ما تنشر",
+   "bullets": [
+    "الغلاف بيوعد بنتيجة",
+    "الخط بيتقرا من الموبايل",
+    "السلايد التانية فيها الفايدة",
+    "دعوة واحدة في الآخر"
+   ],
+   "bridge": "ولخّصنا لك الكلام"
+  },
+  {
+   "id": "s12",
+   "n": 12,
+   "type": "summary",
+   "title": "الخلاصة",
+   "bullets": [
+    "ابدأ بالنتيجة",
+    "فكرة واحدة في كل سلايد",
+    "وعد واضح في الغلاف"
+   ]
+  },
+  {
+   "id": "s13",
+   "n": 13,
+   "type": "setup",
+   "title": "هتحتاج بس",
+   "bullets": [
+    "موبايل أو لابتوب",
+    "عشر دقايق",
+    "أي أداة تصميم"
+   ],
+   "bridge": "وجاهز تبدأ"
+  },
+  {
+   "id": "s14",
+   "n": 14,
+   "type": "testimonial",
+   "body": "غيّرت الغلاف بس، وبقى البوست يتحفظ أكتر من أي وقت قبل كده.",
+   "attribution": "متابِعة من القاهرة",
+   "bridge": "وفي عرض صغير"
+  },
+  {
+   "id": "s15",
+   "n": 15,
+   "type": "offer",
+   "title": "قالب الكاروسيل الجاهز",
+   "bullets": [
+    "12 سلايد قابلة للتعديل",
+    "أمثلة بالعامية المصرية"
+   ],
+   "cta": {
+    "kind": "keyword-dm",
+    "text": "ابعت كلمة «قالب»"
+   }
+  },
+  {
+   "id": "s16",
+   "n": 16,
+   "type": "share",
+   "headline": "ابعتها لصاحبك اللي لسه بيكتب كاروسيل",
+   "sub": "هيشكرك بعدين"
+  },
+  {
+   "id": "s17",
+   "n": 17,
+   "type": "poster",
+   "kicker": "قاعدة الأسبوع",
+   "headline": "اكتب ==الفايدة==\nفي أول سطر",
+   "sub": "عشان القارئ بيحكم في ثانية.",
+   "bullets": [
+    "جملة واحدة في الغلاف",
+    "رقم يثبّت الكلام",
+    "دعوة واحدة في الآخر"
+   ],
+   "cta": {
+    "kind": "save",
+    "text": "احفظه لحد ما تحتاجه"
+   }
+  },
+  {
+   "id": "s18",
+   "n": 18,
+   "type": "cta",
+   "title": "احفظ البوست ده",
+   "body": "ارجعله قبل ما تنشر البوست الجاي.",
+   "cta": {
+    "kind": "save",
+    "text": "احفظه لحد ما تحتاجه"
+   }
+  }
+ ],
+ "cover": {
+  "motion": {
+   "recipe": "calm",
+   "feel": "calm",
+   "seconds": 6,
+   "fps": 30,
+   "source": "internal"
+  }
+ }
+}

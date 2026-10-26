@@ -1,0 +1,1776 @@
+[
+  {
+    "specVersion": 1,
+    "id": "auto-eg-0",
+    "rev": 1,
+    "brand": {
+      "slug": "content-workshop",
+      "snapshotHash": "14976278932d0a11"
+    },
+    "brief": {
+      "topic": "قسّم المرتب على تلات خانات",
+      "input": "idea",
+      "note": "Fixture deck: synthetic example copy; every figure is sourced in spec.sources. No visual plan on purpose (zero-override input for the planner)."
+    },
+    "format": "carousel",
+    "mode": "guided",
+    "checkpoint": "design",
+    "canvas": {
+      "preset": "ig-3x4",
+      "w": 1080,
+      "h": 1440,
+      "safe": [
+        34,
+        45,
+        1012,
+        1350
+      ],
+      "exports": [
+        "3x4",
+        "4x5"
+      ]
+    },
+    "locale": {
+      "dialect": "eg",
+      "register": "dialect",
+      "digits": "western",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl"
+    },
+    "intent": "save",
+    "awareness": "problem",
+    "contentType": "value",
+    "architecture": "framework",
+    "angle": {
+      "id": "a1",
+      "title": "المرتب بيخلص بدري لأن مفيش خانات",
+      "lens": "framework",
+      "score": 78,
+      "why": "قاعدة بسيطة بتتحفظ وبتتنفّذ من أول شهر"
+    },
+    "hook": {
+      "id": "P6-QUESTION-month-end",
+      "family": "P6",
+      "text": "مرتبك بيخلص قبل آخر الشهر؟ المشكلة إن مفيش خانات",
+      "cover": "مرتبك بيخلص قبل آخر الشهر؟",
+      "score": {
+        "R": 33,
+        "J": 29,
+        "P": 14,
+        "total": 76
+      },
+      "slide2": "المشكلة مش إنك بتكسب قليل"
+    },
+    "style": {
+      "presetId": "poster@1.0"
+    },
+    "compat": {
+      "paint": "auto",
+      "mp4": "auto",
+      "hfRuntime": "auto"
+    },
+    "slides": [
+      {
+        "id": "s01",
+        "n": 1,
+        "type": "cover",
+        "kicker": "ميزانية الشهر",
+        "headline": "مرتبك بيخلص\nقبل ==آخر الشهر==؟",
+        "sub": "بخطة بسيطة",
+        "media": {
+          "slot": "none",
+          "ai": false
+        }
+      },
+      {
+        "id": "s02",
+        "n": 2,
+        "type": "rehook",
+        "variant": "statement",
+        "headline": "المشكلة مش إنك بتكسب قليل.\nالمشكلة إن مفيش ==خانات==.",
+        "bridge": "نبدأ بالأساسيات"
+      },
+      {
+        "id": "s03",
+        "n": 3,
+        "type": "stat",
+        "variant": "icon",
+        "title": "نصيب الأساسيات من المرتب",
+        "number": {
+          "value": "50",
+          "unit": "%",
+          "sourceId": "src1"
+        },
+        "body": "إيجار وأكل ومواصلات وفواتير. لو عدّت النص، قلّل من هنا الأول.",
+        "bridge": "وباقي المرتب راح فين؟",
+        "sourceIds": [
+          "src1"
+        ]
+      },
+      {
+        "id": "s04",
+        "n": 4,
+        "type": "grid",
+        "title": "مرتبك على تلات خانات",
+        "items": [
+          {
+            "title": "الأساسيات",
+            "text": "إيجار وأكل وفواتير",
+            "value": "50%"
+          },
+          {
+            "title": "الرغبات",
+            "text": "خروج وهدوم وهوايات",
+            "value": "30%"
+          },
+          {
+            "title": "الادخار",
+            "text": "أول ما المرتب ينزل",
+            "value": "20%",
+            "hi": true
+          }
+        ],
+        "bridge": "إزاي تبدأ؟",
+        "sourceIds": [
+          "src1"
+        ]
+      },
+      {
+        "id": "s05",
+        "n": 5,
+        "type": "compare",
+        "variant": "before-after",
+        "title": "قبل الخطة وبعدها",
+        "sides": [
+          {
+            "label": "قبل",
+            "text": "بصرف الأول وأشوف الباقي"
+          },
+          {
+            "label": "بعد",
+            "text": "بحوّش الأول وأصرف الباقي"
+          }
+        ],
+        "bridge": "والتنفيذ أسهل مما تتخيل"
+      },
+      {
+        "id": "s06",
+        "n": 6,
+        "type": "timeline",
+        "title": "أول شهر أسبوع بأسبوع",
+        "items": [
+          {
+            "value": "الأسبوع\u00a01",
+            "title": "سجّل المصاريف",
+            "text": "كل جنيه تدفعه"
+          },
+          {
+            "value": "الأسبوع\u00a02",
+            "title": "افتح الخانات",
+            "text": "تلات حسابات منفصلة"
+          },
+          {
+            "value": "الأسبوع\u00a03",
+            "title": "أتمت الادخار",
+            "text": "تحويل أول الشهر",
+            "hi": true
+          },
+          {
+            "value": "الأسبوع\u00a04",
+            "title": "راجع وعدّل",
+            "text": "قلّل الزيادة"
+          }
+        ],
+        "bridge": "وإيه اللي تحتاجه؟"
+      },
+      {
+        "id": "s07",
+        "n": 7,
+        "type": "setup",
+        "title": "اللي هتحتاجه",
+        "bullets": [
+          "حساب ادخار منفصل",
+          "تطبيق البنك على موبايلك",
+          "ربع ساعة أول كل شهر"
+        ],
+        "bridge": "ونختم بالخلاصة",
+        "demo": {
+          "lines": [
+            {
+              "who": "sys",
+              "text": "تحويل تلقائي للادخار"
+            },
+            {
+              "who": "sys",
+              "text": "كل أول شهر الساعة 8\u00a0الصبح",
+              "hi": true
+            }
+          ],
+          "caption": "اضبطه مرة واحدة وخلاص"
+        }
+      },
+      {
+        "id": "s08",
+        "n": 8,
+        "type": "summary",
+        "title": "الخلاصة في تلات أسطر",
+        "bullets": [
+          "50%\u00a0للأساسيات",
+          "30%\u00a0لحاجات بتحبها",
+          "20%\u00a0ادخار أول ما المرتب ينزل"
+        ],
+        "sourceIds": [
+          "src1"
+        ]
+      },
+      {
+        "id": "s09",
+        "n": 9,
+        "type": "cta",
+        "title": "احفظ الخطة دي",
+        "cta": {
+          "kind": "save",
+          "text": "احفظها وقسّم مرتبك أول الشهر"
+        }
+      }
+    ],
+    "cover": {
+      "motion": {
+        "recipe": "highlight-sweep",
+        "feel": "calm",
+        "seconds": 6,
+        "fps": 30,
+        "source": "internal"
+      }
+    },
+    "captionPack": {
+      "firstLine": "جرّبت أقسم المرتب تلات خانات بدل ما أصرف وأشوف الباقي. الفرق ظهر من أول شهر.",
+      "keywordLine": "خطة ميزانية بسيطة: قسّم المرتب لأساسيات ورغبات وادخار بقاعدة\u00a050/30/20.",
+      "body": "1.\u00a0الأساسيات 50%: إيجار وأكل وفواتير.\n2.\u00a0الرغبات 30%: خروج وهدوم وهوايات.\n3.\u00a0الادخار 20%: بيتحوّل أول ما المرتب ينزل.\n\nابدأ بتسجيل مصاريفك أسبوع، وبعدها افتح الحسابات واضبط التحويل التلقائي. خطوة خطوة، من غير ما تحس بالحرمان.",
+      "cta": "احفظ البوست وارجعله أول الشهر الجاي.",
+      "hashtags": [
+        "#ميزانية",
+        "#ادخار",
+        "#تنظيم_المرتب",
+        "#مصاريف"
+      ],
+      "perSlide": [
+        "مرتبك بيخلص بدري؟ الحل في تلات خانات.",
+        "المشكلة مش في الدخل، المشكلة في التقسيم.",
+        "نص المرتب تقريبا بيروح على الأساسيات.",
+        "تلات خانات: أساسيات ورغبات وادخار.",
+        "الفرق بين إنك تحوّش الأول وتصرف الأول.",
+        "خطة أول شهر أسبوع بأسبوع.",
+        "حساب ادخار وتحويل تلقائي، وخلاص.",
+        "الخلاصة: 50\u00a0و30\u00a0و20.",
+        "احفظ البوست وارجعله أول الشهر."
+      ],
+      "alt": [
+        "غلاف: «مرتبك بيخلص قبل آخر الشهر؟» وفوقها «ميزانية الشهر» وتحتها «بخطة بسيطة».",
+        "السلايد الثاني: «المشكلة مش إنك بتكسب قليل. المشكلة إن مفيش خانات.».",
+        "رقم: 50 %. «نصيب الأساسيات من المرتب». «إيجار وأكل ومواصلات وفواتير. لو عدّت النص، قلّل من هنا الأول.»",
+        "شبكة: «مرتبك على تلات خانات». 50%\u00a0الأساسيات، 30%\u00a0الرغبات، 20%\u00a0الادخار.",
+        "مقارنة: «قبل الخطة وبعدها». قبل: «بصرف الأول وأشوف الباقي». بعد: «بحوّش الأول وأصرف الباقي».",
+        "جدول زمني: «أول شهر أسبوع بأسبوع». الأسبوع\u00a01\u00a0سجّل المصاريف، الأسبوع\u00a02\u00a0افتح الخانات، الأسبوع\u00a03\u00a0أتمت الادخار، الأسبوع\u00a04\u00a0راجع وعدّل.",
+        "اللي هتحتاجه: «اللي هتحتاجه». حساب ادخار منفصل، تطبيق البنك على موبايلك، ربع ساعة أول كل شهر.",
+        "الخلاصة: «الخلاصة في تلات أسطر». 50%\u00a0للأساسيات، 30%\u00a0لحاجات بتحبها، 20%\u00a0ادخار أول ما المرتب ينزل.",
+        "دعوة: «احفظ الخطة دي». «احفظها وقسّم مرتبك أول الشهر»"
+      ]
+    },
+    "sources": [
+      {
+        "id": "src1",
+        "kind": "calc",
+        "ref": "حساب على مرتب 10000 جنيه",
+        "formula": "10000 * 50% = 5000 ; 10000 * 30% = 3000 ; 10000 * 20% = 2000",
+        "excerpt": "مرتب 10000 جنيه: 50% للأساسيات = 5000 جنيه، 30% للرغبات = 3000 جنيه، 20% للادخار = 2000 جنيه",
+        "inputs": [],
+        "verified": true
+      }
+    ],
+    "assets": [],
+    "qa": {
+      "status": "pass",
+      "runAt": "2026-10-23T09:20:00Z",
+      "engine": "cs-1.1.0",
+      "results": []
+    },
+    "approvals": {
+      "angle": {
+        "at": "2026-10-23T09:04:00Z"
+      },
+      "script": {
+        "at": "2026-10-23T09:16:00Z"
+      }
+    },
+    "meta": {
+      "createdAt": "2026-10-23T09:00:00Z",
+      "updatedAt": "2026-10-23T09:20:00Z",
+      "updatedBy": "claude",
+      "generator": {
+        "skill": "carousel-create",
+        "version": "1.1.0"
+      }
+    }
+  },
+  {
+    "specVersion": 1,
+    "id": "auto-eg-1",
+    "rev": 1,
+    "brand": {
+      "slug": "content-workshop",
+      "snapshotHash": "14976278932d0a11"
+    },
+    "brief": {
+      "topic": "نظّم يومك في 3\u00a0خطوات قبل الضهر",
+      "input": "idea",
+      "note": "Fixture deck: synthetic example copy; every figure is sourced in spec.sources. No visual plan on purpose (zero-override input for the planner)."
+    },
+    "format": "carousel",
+    "mode": "guided",
+    "checkpoint": "design",
+    "canvas": {
+      "preset": "ig-3x4",
+      "w": 1080,
+      "h": 1440,
+      "safe": [
+        34,
+        45,
+        1012,
+        1350
+      ],
+      "exports": [
+        "3x4",
+        "4x5"
+      ]
+    },
+    "locale": {
+      "dialect": "eg",
+      "register": "dialect",
+      "digits": "western",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl"
+    },
+    "intent": "reach",
+    "awareness": "problem",
+    "contentType": "value",
+    "architecture": "steps",
+    "angle": {
+      "id": "a2",
+      "title": "أول ساعة هي اللي بتحدد باقي اليوم",
+      "lens": "framework",
+      "score": 75,
+      "why": "تلات خطوات بسيطة بتتبعت لزميل مشتّت وتوصّل لمتابعين جداد"
+    },
+    "hook": {
+      "id": "P1-LIST-3-steps-morning",
+      "family": "P1",
+      "text": "3\u00a0خطوات تنظّم يومك قبل الضهر",
+      "cover": "3\u00a0خطوات تنظّم يومك كله",
+      "score": {
+        "R": 31,
+        "J": 28,
+        "P": 14,
+        "total": 73
+      },
+      "slide2": "أول ساعة هي اللي بتحدد باقي اليوم"
+    },
+    "style": {
+      "presetId": "creator@1.0"
+    },
+    "compat": {
+      "paint": "auto",
+      "mp4": "auto",
+      "hfRuntime": "auto"
+    },
+    "slides": [
+      {
+        "id": "s01",
+        "n": 1,
+        "type": "cover",
+        "kicker": "تنظيم اليوم",
+        "headline": "3\u00a0خطوات تنظّم\n==يومك== كله",
+        "sub": "قبل الضهر ومن غير تطبيقات",
+        "media": {
+          "slot": "none",
+          "ai": false
+        }
+      },
+      {
+        "id": "s02",
+        "n": 2,
+        "type": "rehook",
+        "headline": "أول ساعة هي اللي بتحدد باقي اليوم",
+        "sub": "3\u00a0خطوات بس هتغيّر ده",
+        "bridge": "نبدأ بالأولى"
+      },
+      {
+        "id": "s03",
+        "n": 3,
+        "type": "step",
+        "ord": 1,
+        "title": "اكتب مهمة واحدة بس",
+        "body": "قبل ما تفتح الموبايل اكتب أهم مهمة النهارده. لو خلصتها يومك اتحسب.",
+        "bridge": "التانية بتحمي تركيزك",
+        "demo": {
+          "lines": [
+            {
+              "text": "المهمة: أخلّص عرض العميل",
+              "hi": true
+            },
+            {
+              "text": "الباقي بعد الضهر"
+            }
+          ],
+          "caption": "مهمة واحدة تكفي"
+        }
+      },
+      {
+        "id": "s04",
+        "n": 4,
+        "type": "step",
+        "variant": "track",
+        "ord": 2,
+        "title": "اقفل الإشعارات ساعة",
+        "body": "فعّل عدم الإزعاج. الرسايل مش هتهرب، هتستناك.",
+        "bridge": "والأخيرة بتسهّل البداية",
+        "demo": {
+          "lines": [
+            {
+              "who": "sys",
+              "text": "وضع التركيز شغّال"
+            },
+            {
+              "who": "sys",
+              "text": "3\u00a0رسايل مستنياك بعد التركيز",
+              "hi": true
+            }
+          ],
+          "caption": "ولا إشعار يقطعك"
+        }
+      },
+      {
+        "id": "s05",
+        "n": 5,
+        "type": "step",
+        "ord": 3,
+        "title": "قسّم المهمة لقطع",
+        "body": "اكتب 3\u00a0قطع صغيرة وابدأ بأسهلها. أصعب حاجة إنك تبدأ.",
+        "bridge": "فاضل نقطتين",
+        "demo": {
+          "lines": [
+            {
+              "text": "افتح الملف"
+            },
+            {
+              "text": "اكتب أول فقرة",
+              "hi": true
+            },
+            {
+              "text": "ابعت للمراجعة"
+            }
+          ],
+          "caption": "كل قطعة ربع ساعة"
+        }
+      },
+      {
+        "id": "s06",
+        "n": 6,
+        "type": "myth-fact",
+        "title": "ساعات أكتر يعني إنتاج أكتر؟",
+        "sides": [
+          {
+            "label": "خرافة",
+            "text": "لو قعدت ساعات أطول هتخلّص أكتر"
+          },
+          {
+            "label": "حقيقة",
+            "text": "ساعتين تركيز بيغلبوا ست ساعات تشتّت"
+          }
+        ],
+        "bridge": "وده بيلخّص اليوم كله"
+      },
+      {
+        "id": "s07",
+        "n": 7,
+        "type": "quote",
+        "variant": "statement",
+        "body": "اللي بيخلّص مهمة واحدة صح، بيكسب اليوم كله."
+      },
+      {
+        "id": "s08",
+        "n": 8,
+        "type": "share",
+        "headline": "ابعتها لزميلك اللي بيبدأ يومه بالرسايل",
+        "sub": "هيشكرك بعدين",
+        "demo": {
+          "lines": [
+            {
+              "who": "me",
+              "text": "بص على الخطوات التلاتة دي"
+            },
+            {
+              "who": "them",
+              "text": "ده اللي كنت محتاجه!",
+              "hi": true
+            }
+          ],
+          "caption": "رسالة صغيرة تفرق"
+        }
+      },
+      {
+        "id": "s09",
+        "n": 9,
+        "type": "cta",
+        "title": "عايز خطوات أكتر؟",
+        "cta": {
+          "kind": "follow",
+          "text": "تابعني لخطوات يومية بسيطة"
+        }
+      }
+    ],
+    "cover": {
+      "motion": {
+        "recipe": "reorder",
+        "feel": "story",
+        "seconds": 6,
+        "fps": 30,
+        "source": "internal"
+      }
+    },
+    "captionPack": {
+      "firstLine": "بدأت أكتب مهمة واحدة كل صبح، وبقيت أخلّص قبل الضهر.",
+      "keywordLine": "3\u00a0خطوات بسيطة لتنظيم اليوم: مهمة واحدة، إشعارات مقفولة، وقطع صغيرة.",
+      "body": "1.\u00a0اكتب مهمة واحدة قبل ما تفتح الموبايل.\n2.\u00a0اقفل الإشعارات ساعة تركيز.\n3.\u00a0قسّم المهمة لقطع صغيرة وابدأ بأسهلها.\n\nمش محتاج تطبيق جديد، محتاج بداية أهدى. جرّب بكرة الصبح وقولي الفرق.",
+      "cta": "تابعني لخطوات يومية بسيطة.",
+      "hashtags": [
+        "#تنظيم_الوقت",
+        "#إنتاجية",
+        "#روتين_الصباح"
+      ],
+      "perSlide": [
+        "3\u00a0خطوات بسيطة تنظّم يومك.",
+        "أول ساعة بتحدد باقي اليوم.",
+        "اكتب مهمة واحدة قبل ما تفتح الموبايل.",
+        "اقفل الإشعارات ساعة وشوف الفرق.",
+        "قسّم المهمة لقطع صغيرة.",
+        "ساعات أكتر مش معناها إنتاج أكتر.",
+        "جملة تتفتكر: مهمة واحدة صح.",
+        "ابعتها لحد بيبدأ يومه بالرسايل.",
+        "تابعني لخطوات يومية بسيطة."
+      ],
+      "alt": [
+        "غلاف: «3\u00a0خطوات تنظّم يومك كله» وفوقها «تنظيم اليوم» وتحتها «قبل الضهر ومن غير تطبيقات».",
+        "السلايد الثاني: «أول ساعة هي اللي بتحدد باقي اليوم» وتحتها «3\u00a0خطوات بس هتغيّر ده».",
+        "الخطوة\u00a01: «اكتب مهمة واحدة بس». «قبل ما تفتح الموبايل اكتب أهم مهمة النهارده. لو خلصتها يومك اتحسب.»",
+        "الخطوة\u00a02: «اقفل الإشعارات ساعة». «فعّل عدم الإزعاج. الرسايل مش هتهرب، هتستناك.»",
+        "الخطوة\u00a03: «قسّم المهمة لقطع». «اكتب 3\u00a0قطع صغيرة وابدأ بأسهلها. أصعب حاجة إنك تبدأ.»",
+        "خرافة وحقيقة: «ساعات أكتر يعني إنتاج أكتر؟». خرافة: «لو قعدت ساعات أطول هتخلّص أكتر». حقيقة: «ساعتين تركيز بيغلبوا ست ساعات تشتّت».",
+        "اقتباس: «اللي بيخلّص مهمة واحدة صح، بيكسب اليوم كله.».",
+        "سلايد المشاركة: «ابعتها لزميلك اللي بيبدأ يومه بالرسايل» «هيشكرك بعدين».",
+        "دعوة: «عايز خطوات أكتر؟». «تابعني لخطوات يومية بسيطة»"
+      ]
+    },
+    "sources": [],
+    "assets": [],
+    "qa": {
+      "status": "pass",
+      "runAt": "2026-10-23T09:20:00Z",
+      "engine": "cs-1.1.0",
+      "results": []
+    },
+    "approvals": {
+      "angle": {
+        "at": "2026-10-23T09:04:00Z"
+      },
+      "script": {
+        "at": "2026-10-23T09:16:00Z"
+      }
+    },
+    "meta": {
+      "createdAt": "2026-10-23T09:00:00Z",
+      "updatedAt": "2026-10-23T09:20:00Z",
+      "updatedBy": "claude",
+      "generator": {
+        "skill": "carousel-create",
+        "version": "1.1.0"
+      }
+    }
+  },
+  {
+    "specVersion": 1,
+    "id": "auto-eg-2",
+    "rev": 1,
+    "brand": {
+      "slug": "content-workshop",
+      "snapshotHash": "14976278932d0a11"
+    },
+    "brief": {
+      "topic": "4\u00a0تعديلات في أول سطر بتزوّد الحفظ",
+      "input": "idea",
+      "note": "Fixture deck: synthetic example copy; every figure is sourced in spec.sources. No visual plan on purpose (zero-override input for the planner)."
+    },
+    "format": "carousel",
+    "mode": "guided",
+    "checkpoint": "design",
+    "canvas": {
+      "preset": "ig-3x4",
+      "w": 1080,
+      "h": 1440,
+      "safe": [
+        34,
+        45,
+        1012,
+        1350
+      ],
+      "exports": [
+        "3x4",
+        "4x5"
+      ]
+    },
+    "locale": {
+      "dialect": "eg",
+      "register": "dialect",
+      "digits": "western",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl"
+    },
+    "intent": "sell",
+    "awareness": "solution",
+    "contentType": "soft-sell",
+    "architecture": "listicle",
+    "angle": {
+      "id": "a3",
+      "title": "أول سطر هو اللي بيتحفظ",
+      "lens": "tested-ranked",
+      "score": 77,
+      "why": "قايمة قصيرة بتتحفظ وتوصل لورقة مجانية"
+    },
+    "hook": {
+      "id": "P1-LIST-4-edits-hook",
+      "family": "P1",
+      "text": "4\u00a0تعديلات في الهوك تزوّد حفظ بوستك",
+      "cover": "4\u00a0تعديلات في الهوك تزوّد الحفظ",
+      "score": {
+        "R": 32,
+        "J": 28,
+        "P": 14,
+        "total": 74
+      },
+      "slide2": "غيّرت أول سطر بس… والحفظ زاد"
+    },
+    "style": {
+      "presetId": "creator@1.0"
+    },
+    "compat": {
+      "paint": "auto",
+      "mp4": "auto",
+      "hfRuntime": "auto"
+    },
+    "slides": [
+      {
+        "id": "s01",
+        "n": 1,
+        "type": "cover",
+        "kicker": "للصنّاع",
+        "headline": "4\u00a0تعديلات في الهوك\nتزوّد ==الحفظ==",
+        "sub": "خطوة خطوة",
+        "media": {
+          "slot": "none",
+          "ai": false
+        }
+      },
+      {
+        "id": "s02",
+        "n": 2,
+        "type": "rehook",
+        "headline": "غيّرت أول سطر بس… والحفظ زاد",
+        "sub": "4\u00a0تعديلات صغيرة",
+        "bridge": "نبدأ بالأهم"
+      },
+      {
+        "id": "s03",
+        "n": 3,
+        "type": "item",
+        "ord": 1,
+        "title": "ابدأ بالنتيجة",
+        "body": "اكتب اللي هيطلع بيه القارئ في أول سطر، مش اسم الموضوع.",
+        "bridge": "التاني بيشد الانتباه"
+      },
+      {
+        "id": "s04",
+        "n": 4,
+        "type": "item",
+        "variant": "numeral",
+        "ord": 2,
+        "title": "اسأل سؤال بيوجع",
+        "body": "سؤال عن مشكلة حقيقية بيخلّي القارئ يقول: ده أنا.",
+        "bridge": "والتالت بيصدّقك"
+      },
+      {
+        "id": "s05",
+        "n": 5,
+        "type": "item",
+        "ord": 3,
+        "title": "حط رقم محدد",
+        "body": "رقم محدد بيتصدّق أكتر من كلمة زي كتير. قول 3\u00a0بدل كتير.",
+        "bridge": "والأخير بيقصّر"
+      },
+      {
+        "id": "s06",
+        "n": 6,
+        "type": "item",
+        "ord": 4,
+        "title": "اقطع الجملة",
+        "body": "أول سطر أقل من عشر كلمات. لو طال، اقطعه واحتفظ بالفكرة.",
+        "bridge": "بص على الفرق"
+      },
+      {
+        "id": "s07",
+        "n": 7,
+        "type": "compare",
+        "variant": "before-after",
+        "title": "نفس الفكرة بهوكين مختلفين",
+        "sides": [
+          {
+            "label": "قبل",
+            "text": "نصايح لكتابة كابشن"
+          },
+          {
+            "label": "بعد",
+            "text": "الكابشن اللي خلّى بوستي يتحفظ"
+          }
+        ],
+        "bridge": "وده رد فعل متدرّبة"
+      },
+      {
+        "id": "s08",
+        "n": 8,
+        "type": "testimonial",
+        "body": "جرّبت التعديلات في بوست واحد. الفرق ظهر في الحفظ قبل التعليقات.",
+        "attribution": "متدرّبة في الورشة (اسم مستعار)",
+        "number": {
+          "value": "120",
+          "unit": "حفظ",
+          "sourceId": "src1"
+        },
+        "sourceIds": [
+          "src1"
+        ],
+        "demo": {
+          "lines": [
+            {
+              "who": "them",
+              "text": "الحفظ زاد من 40\u00a0إلى 120\u00a0في بوست واحد"
+            },
+            {
+              "who": "me",
+              "text": "إنتي عملتي إيه؟"
+            },
+            {
+              "who": "them",
+              "text": "غيّرت أول سطر بس",
+              "hi": true
+            }
+          ],
+          "caption": "رسالة بعد أول أسبوع"
+        }
+      },
+      {
+        "id": "s09",
+        "n": 9,
+        "type": "cta",
+        "title": "عايز ورقة الهوك؟",
+        "cta": {
+          "kind": "keyword-dm",
+          "text": "ابعتلي كلمة هوك في الخاص وهبعتهالك"
+        },
+        "demo": {
+          "lines": [
+            {
+              "who": "me",
+              "text": "هوك"
+            },
+            {
+              "who": "sys",
+              "text": "وصلتك الورقة في الرسايل",
+              "hi": true
+            }
+          ],
+          "caption": "كلمة واحدة وخلاص"
+        }
+      }
+    ],
+    "cover": {
+      "motion": {
+        "recipe": "counter",
+        "feel": "calm",
+        "seconds": 6,
+        "fps": 30,
+        "source": "internal"
+      }
+    },
+    "captionPack": {
+      "firstLine": "غيّرت أول سطر في بوست واحد، والحفظ فيه زاد أكتر من الضعف.",
+      "keywordLine": "4\u00a0تعديلات في الهوك: ابدأ بالنتيجة، اسأل سؤال، حط رقم، واقطع الجملة.",
+      "body": "1.\u00a0ابدأ بالنتيجة، مش بالموضوع.\n2.\u00a0اسأل سؤال عن مشكلة حقيقية.\n3.\u00a0حط رقم محدد بدل كلمة عامة.\n4.\u00a0اقطع الجملة لأقل من عشر كلمات.\n\nجرّب تعديل واحد في بوستك الجاي وقارن الحفظ بالبوست اللي قبله.",
+      "cta": "ابعتلي كلمة هوك في الخاص وهبعتلك الورقة.",
+      "hashtags": [
+        "#كتابة_المحتوى",
+        "#هوك",
+        "#كاروسيل",
+        "#صناع_المحتوى"
+      ],
+      "perSlide": [
+        "4\u00a0تعديلات في الهوك تزوّد الحفظ.",
+        "تعديل واحد غيّر الأرقام.",
+        "ابدأ بالنتيجة مش بالموضوع.",
+        "سؤال بيوجع بيخلّي القارئ يكمّل.",
+        "رقم محدد أقوى من كلمة عامة.",
+        "اقطع الجملة لأقل من عشر كلمات.",
+        "نفس الفكرة بهوكين مختلفين.",
+        "رسالة من متدرّبة بعد أول أسبوع.",
+        "ابعتلي كلمة هوك وخد الورقة."
+      ],
+      "alt": [
+        "غلاف: «4\u00a0تعديلات في الهوك تزوّد الحفظ» وفوقها «للصنّاع» وتحتها «خطوة خطوة».",
+        "السلايد الثاني: «غيّرت أول سطر بس… والحفظ زاد» وتحتها «4\u00a0تعديلات صغيرة».",
+        "النقطة\u00a01: «ابدأ بالنتيجة». «اكتب اللي هيطلع بيه القارئ في أول سطر، مش اسم الموضوع.»",
+        "النقطة\u00a02: «اسأل سؤال بيوجع». «سؤال عن مشكلة حقيقية بيخلّي القارئ يقول: ده أنا.»",
+        "النقطة\u00a03: «حط رقم محدد». «رقم محدد بيتصدّق أكتر من كلمة زي كتير. قول 3\u00a0بدل كتير.»",
+        "النقطة\u00a04: «اقطع الجملة». «أول سطر أقل من عشر كلمات. لو طال، اقطعه واحتفظ بالفكرة.»",
+        "مقارنة: «نفس الفكرة بهوكين مختلفين». قبل: «نصايح لكتابة كابشن». بعد: «الكابشن اللي خلّى بوستي يتحفظ».",
+        "رسالة: «جرّبت التعديلات في بوست واحد. الفرق ظهر في الحفظ قبل التعليقات.» — متدرّبة في الورشة (اسم مستعار).",
+        "دعوة: «عايز ورقة الهوك؟». «ابعتلي كلمة هوك في الخاص وهبعتهالك»"
+      ],
+      "asset": {
+        "keyword": "هوك",
+        "description": "ورقة كتابة الهوك",
+        "delivery": "instant"
+      }
+    },
+    "sources": [
+      {
+        "id": "src1",
+        "kind": "user",
+        "ref": "رسالة متدرّبة وإحصائيات بوستها (بإذنها)",
+        "excerpt": "الحفظ زاد من 40 إلى 120 في بوست واحد بعد تعديل أول سطر",
+        "verified": true
+      }
+    ],
+    "assets": [],
+    "qa": {
+      "status": "pass",
+      "runAt": "2026-10-23T09:20:00Z",
+      "engine": "cs-1.1.0",
+      "results": []
+    },
+    "approvals": {
+      "angle": {
+        "at": "2026-10-23T09:04:00Z"
+      },
+      "script": {
+        "at": "2026-10-23T09:16:00Z"
+      }
+    },
+    "meta": {
+      "createdAt": "2026-10-23T09:00:00Z",
+      "updatedAt": "2026-10-23T09:20:00Z",
+      "updatedBy": "claude",
+      "generator": {
+        "skill": "carousel-create",
+        "version": "1.1.0"
+      }
+    }
+  },
+  {
+    "specVersion": 1,
+    "id": "auto-eg-3",
+    "rev": 1,
+    "brand": {
+      "slug": "content-workshop",
+      "snapshotHash": "14976278932d0a11"
+    },
+    "brief": {
+      "topic": "اكتب برومبت يطلعلك رد تستخدمه من أول مرة",
+      "input": "idea",
+      "note": "Fixture deck: synthetic example copy; every figure is sourced in spec.sources. No visual plan on purpose (zero-override input for the planner)."
+    },
+    "format": "carousel",
+    "mode": "guided",
+    "checkpoint": "design",
+    "canvas": {
+      "preset": "ig-3x4",
+      "w": 1080,
+      "h": 1440,
+      "safe": [
+        34,
+        45,
+        1012,
+        1350
+      ],
+      "exports": [
+        "3x4",
+        "4x5"
+      ]
+    },
+    "locale": {
+      "dialect": "eg",
+      "register": "dialect",
+      "digits": "western",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl"
+    },
+    "intent": "sell",
+    "awareness": "solution",
+    "contentType": "soft-sell",
+    "architecture": "lead-magnet",
+    "angle": {
+      "id": "a4",
+      "title": "مش الأداة… السؤال هو المشكلة",
+      "lens": "contrarian",
+      "score": 76,
+      "why": "قلب الفكرة المعتادة وبعدها ورقة جاهزة"
+    },
+    "hook": {
+      "id": "P4-FLIP-not-the-tool",
+      "family": "P4",
+      "text": "مش الأداة هي المشكلة… السؤال هو المشكلة",
+      "cover": "مش الأداة… السؤال هو المشكلة",
+      "score": {
+        "R": 30,
+        "J": 29,
+        "P": 13,
+        "total": 72
+      },
+      "slide2": "نفس الأداة بتدّي رد ضعيف أو رد ممتاز"
+    },
+    "style": {
+      "presetId": "creator@1.0"
+    },
+    "compat": {
+      "paint": "auto",
+      "mp4": "auto",
+      "hfRuntime": "auto"
+    },
+    "slides": [
+      {
+        "id": "s01",
+        "n": 1,
+        "type": "cover",
+        "kicker": "للمبتدئين",
+        "headline": "مش الأداة…\nالسؤال هو ==المشكلة==",
+        "sub": "اكتب برومبت أحسن",
+        "media": {
+          "slot": "none",
+          "ai": false
+        }
+      },
+      {
+        "id": "s02",
+        "n": 2,
+        "type": "rehook",
+        "headline": "نفس الأداة بتدّي رد ضعيف أو رد ممتاز",
+        "sub": "حسب اللي بتكتبه",
+        "bridge": "جهّز الأول"
+      },
+      {
+        "id": "s03",
+        "n": 3,
+        "type": "setup",
+        "title": "جهّز ده قبل ما تكتب",
+        "bullets": [
+          "أداة ذكاء اصطناعي زي ChatGPT",
+          "مثال لرد عجبك",
+          "هدفك في جملة واحدة"
+        ],
+        "bridge": "وبعدها نكتب",
+        "demo": {
+          "lines": [
+            {
+              "who": "me",
+              "text": "أنا مدرّب لياقة وعايز كابشن"
+            },
+            {
+              "who": "sys",
+              "text": "تمام، الجمهور مين؟",
+              "hi": true
+            }
+          ],
+          "caption": "عرّفه بنفسك الأول"
+        }
+      },
+      {
+        "id": "s04",
+        "n": 4,
+        "type": "step",
+        "ord": 1,
+        "title": "قوله إنت مين",
+        "body": "اشرحله بتكتب لمين وعايز إيه. الرد بيتغيّر على طول.",
+        "bridge": "بعدها شكل الرد",
+        "demo": {
+          "lines": [
+            {
+              "who": "me",
+              "text": "إنت كاتب محتوى لصفحة قهوة"
+            },
+            {
+              "who": "sys",
+              "text": "تمام، بنبرة مرحة؟"
+            }
+          ],
+          "caption": "الدور بيحدد النبرة"
+        }
+      },
+      {
+        "id": "s05",
+        "n": 5,
+        "type": "step",
+        "ord": 2,
+        "title": "اطلب شكل الرد",
+        "body": "حدد الطول والشكل: 3\u00a0أسطر، أو قايمة، أو جدول.",
+        "bridge": "شوف الفرق",
+        "demo": {
+          "lines": [
+            {
+              "who": "me",
+              "text": "اكتب كابشن 3\u00a0أسطر"
+            },
+            {
+              "who": "sys",
+              "text": "سطر للفكرة وسطر للفايدة وسطر للطلب"
+            }
+          ],
+          "caption": "الشكل بيوفّر عليك التعديل"
+        }
+      },
+      {
+        "id": "s06",
+        "n": 6,
+        "type": "compare",
+        "variant": "before-after",
+        "title": "نفس الطلب بتفاصيل",
+        "sides": [
+          {
+            "label": "قبل",
+            "text": "اكتبلي إعلان لمطعم"
+          },
+          {
+            "label": "بعد",
+            "text": "اكتب إعلان من جملتين لمطعم كشري، للموظفين، بنبرة خفيفة"
+          }
+        ],
+        "bridge": "ودي النتيجة"
+      },
+      {
+        "id": "s07",
+        "n": 7,
+        "type": "proof",
+        "title": "النتيجة بعد التعديل",
+        "body": "رد واحد جاهز للنشر من أول مرة.",
+        "bridge": "والورقة كاملة معاك",
+        "media": {
+          "slot": "screenshot",
+          "assetId": "shot1",
+          "ai": false
+        },
+        "notes": "لقطة تمثيلية (stand-in) بدل لقطة شاشة حقيقية لمحادثة: استبدلها بلقطتك قبل النشر."
+      },
+      {
+        "id": "s08",
+        "n": 8,
+        "type": "summary",
+        "title": "الخلاصة",
+        "bullets": [
+          "قوله إنت مين",
+          "حدد شكل الرد",
+          "ادّيله مثال",
+          "عدّل نقطة واحدة كل مرة"
+        ]
+      },
+      {
+        "id": "s09",
+        "n": 9,
+        "type": "offer",
+        "title": "ورقة البرومبتات الجاهزة",
+        "bullets": [
+          "10\u00a0برومبتات للكابشن",
+          "3\u00a0للهوكات",
+          "واحد للردود"
+        ],
+        "cta": {
+          "kind": "keyword-dm",
+          "text": "ابعتلي كلمة برومبت في الخاص"
+        }
+      }
+    ],
+    "cover": {
+      "motion": {
+        "recipe": "stamp",
+        "feel": "story",
+        "seconds": 6,
+        "fps": 30,
+        "source": "internal"
+      }
+    },
+    "captionPack": {
+      "firstLine": "نفس الأداة، ونفس الموضوع، بس برومبت أحسن. شوف الفرق.",
+      "keywordLine": "كيف تكتب برومبت أحسن لأدوات الذكاء الاصطناعي: دور واضح، شكل رد محدد، ومثال.",
+      "body": "1.\u00a0عرّف الأداة بدورها: إنت كاتب محتوى لصفحة قهوة.\n2.\u00a0حدد شكل الرد: 3\u00a0أسطر أو قايمة.\n3.\u00a0ادّيها مثال لرد عجبك.\n4.\u00a0عدّل نقطة واحدة كل مرة.\n\nالأداة نفسها بتدّي رد ضعيف أو ممتاز حسب اللي بتكتبه. جرّب الخطوات الأربعة على طلبك الجاي.",
+      "cta": "ابعتلي كلمة برومبت في الخاص وهبعتلك ورقة برومبتات جاهزة.",
+      "hashtags": [
+        "#ذكاء_اصطناعي",
+        "#برومبت",
+        "#ChatGPT",
+        "#كتابة_المحتوى"
+      ],
+      "perSlide": [
+        "مش الأداة… السؤال هو المشكلة.",
+        "نفس الأداة بتدّي رد ضعيف أو ممتاز.",
+        "جهّز ده قبل ما تكتب.",
+        "عرّف الأداة بدورها الأول.",
+        "حدد شكل الرد اللي عايزه.",
+        "نفس الطلب بتفاصيل بيفرق.",
+        "رد واحد جاهز للنشر.",
+        "الخلاصة في أربع نقط.",
+        "ابعتلي كلمة برومبت وخد الورقة."
+      ],
+      "alt": [
+        "غلاف: «مش الأداة… السؤال هو المشكلة» وفوقها «للمبتدئين» وتحتها «اكتب برومبت أحسن».",
+        "السلايد الثاني: «نفس الأداة بتدّي رد ضعيف أو رد ممتاز» وتحتها «حسب اللي بتكتبه».",
+        "اللي هتحتاجه: «جهّز ده قبل ما تكتب». أداة ذكاء اصطناعي زي ChatGPT، مثال لرد عجبك، هدفك في جملة واحدة.",
+        "الخطوة\u00a01: «قوله إنت مين». «اشرحله بتكتب لمين وعايز إيه. الرد بيتغيّر على طول.»",
+        "الخطوة\u00a02: «اطلب شكل الرد». «حدد الطول والشكل: 3\u00a0أسطر، أو قايمة، أو جدول.»",
+        "مقارنة: «نفس الطلب بتفاصيل». قبل: «اكتبلي إعلان لمطعم». بعد: «اكتب إعلان من جملتين لمطعم كشري، للموظفين، بنبرة خفيفة».",
+        "لقطة شاشة بديلة للتجربة: «النتيجة بعد التعديل». «رد واحد جاهز للنشر من أول مرة.»",
+        "الخلاصة: «الخلاصة». قوله إنت مين، حدد شكل الرد، ادّيله مثال، عدّل نقطة واحدة كل مرة.",
+        "عرض: «ورقة البرومبتات الجاهزة». 10\u00a0برومبتات للكابشن، 3\u00a0للهوكات، واحد للردود. «ابعتلي كلمة برومبت في الخاص»"
+      ],
+      "asset": {
+        "keyword": "برومبت",
+        "description": "ورقة برومبتات جاهزة",
+        "delivery": "instant"
+      }
+    },
+    "sources": [],
+    "assets": [
+      {
+        "id": "shot1",
+        "kind": "image",
+        "ref": "data:image/png;base64,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",
+        "mime": "image/png",
+        "width": 600,
+        "height": 750,
+        "aiGenerated": false,
+        "tool": "fixture stand-in",
+        "alt": "لقطة شاشة بديلة للتجربة: محادثة عامة من غير نص ولا علامة تجارية، والرد المميّز بلون أصفر"
+      }
+    ],
+    "qa": {
+      "status": "pass",
+      "runAt": "2026-10-23T09:20:00Z",
+      "engine": "cs-1.1.0",
+      "results": []
+    },
+    "approvals": {
+      "angle": {
+        "at": "2026-10-23T09:04:00Z"
+      },
+      "script": {
+        "at": "2026-10-23T09:16:00Z"
+      }
+    },
+    "meta": {
+      "createdAt": "2026-10-23T09:00:00Z",
+      "updatedAt": "2026-10-23T09:20:00Z",
+      "updatedBy": "claude",
+      "generator": {
+        "skill": "carousel-create",
+        "version": "1.1.0"
+      }
+    }
+  },
+  {
+    "specVersion": 1,
+    "id": "auto-eg-4",
+    "rev": 1,
+    "brand": {
+      "slug": "content-workshop",
+      "snapshotHash": "14976278932d0a11"
+    },
+    "brief": {
+      "topic": "3\u00a0طرق تذاكر بيها وتفتكر",
+      "input": "idea",
+      "note": "Fixture deck: synthetic example copy; every figure is sourced in spec.sources. No visual plan on purpose (zero-override input for the planner)."
+    },
+    "format": "carousel",
+    "mode": "guided",
+    "checkpoint": "design",
+    "canvas": {
+      "preset": "ig-3x4",
+      "w": 1080,
+      "h": 1440,
+      "safe": [
+        34,
+        45,
+        1012,
+        1350
+      ],
+      "exports": [
+        "3x4",
+        "4x5"
+      ]
+    },
+    "locale": {
+      "dialect": "eg",
+      "register": "dialect",
+      "digits": "western",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl"
+    },
+    "intent": "save",
+    "awareness": "problem",
+    "contentType": "value",
+    "architecture": "framework",
+    "angle": {
+      "id": "a5",
+      "title": "اللي بتذاكره بيتنسي لو ذاكرته غلط",
+      "lens": "myth",
+      "score": 76,
+      "why": "تلات طرق وجدول مراجعة يتحفظ"
+    },
+    "hook": {
+      "id": "P1-LIST-3-study-ways",
+      "family": "P1",
+      "text": "3\u00a0طرق تذاكر بيها وتفتكر فعلا",
+      "cover": "3\u00a0طرق تذاكر بيها وتفتكر فعلا",
+      "score": {
+        "R": 32,
+        "J": 28,
+        "P": 14,
+        "total": 74
+      },
+      "slide2": "اللي بتذاكره النهارده بيتنسي بسرعة"
+    },
+    "style": {
+      "presetId": "poster@1.0"
+    },
+    "compat": {
+      "paint": "auto",
+      "mp4": "auto",
+      "hfRuntime": "auto"
+    },
+    "slides": [
+      {
+        "id": "s01",
+        "n": 1,
+        "type": "cover",
+        "kicker": "مذاكرة أذكى",
+        "headline": "3\u00a0طرق تذاكر بيها\nوتفتكر ==فعلا==",
+        "sub": "من غير سهر",
+        "media": {
+          "slot": "none",
+          "ai": false
+        }
+      },
+      {
+        "id": "s02",
+        "n": 2,
+        "type": "rehook",
+        "variant": "statement",
+        "headline": "اللي بتذاكره النهارده\nبيتنسي ==بسرعة==",
+        "sub": "3\u00a0طرق تثبّته",
+        "bridge": "الأولى أسهلهم"
+      },
+      {
+        "id": "s03",
+        "n": 3,
+        "type": "item",
+        "ord": 1,
+        "title": "اشرحها لحد",
+        "body": "اشرح الدرس بصوت عالي كأن قدامك حد. اللي مش عارف تشرحه، لسه مش فاهمه.",
+        "bridge": "التانية بتكشف الفجوات"
+      },
+      {
+        "id": "s04",
+        "n": 4,
+        "type": "item",
+        "ord": 2,
+        "title": "اختبر نفسك",
+        "body": "اقفل الكتاب وحاول تفتكر. المجهود ده هو اللي بيثبّت المعلومة.",
+        "bridge": "والتالتة بتخليها تفضل"
+      },
+      {
+        "id": "s05",
+        "n": 5,
+        "type": "item",
+        "ord": 3,
+        "title": "راجع على فترات",
+        "body": "راجع الدرس بعد يوم، وبعدها بكام يوم، وبعدها بأسبوع. التكرار الموزّع أقوى.",
+        "bridge": "وفي حاجة بتبوّظ كل ده"
+      },
+      {
+        "id": "s06",
+        "n": 6,
+        "type": "myth-fact",
+        "title": "هو السهر بيفيد؟",
+        "sides": [
+          {
+            "label": "خرافة",
+            "text": "السهر قبل الامتحان بيثبّت المعلومات"
+          },
+          {
+            "label": "حقيقة",
+            "text": "النوم هو اللي بيخزّن اللي ذاكرته"
+          }
+        ],
+        "bridge": "وده جدول المراجعة"
+      },
+      {
+        "id": "s07",
+        "n": 7,
+        "type": "timeline",
+        "title": "جدول مراجعة الدرس",
+        "items": [
+          {
+            "value": "بعد يوم",
+            "title": "أول مراجعة",
+            "text": "اقرأ ولخّص"
+          },
+          {
+            "value": "بعد 3\u00a0أيام",
+            "title": "اختبر نفسك",
+            "text": "من غير كتاب"
+          },
+          {
+            "value": "بعد أسبوع",
+            "title": "مراجعة سريعة",
+            "text": "الأسئلة الصعبة بس",
+            "hi": true
+          },
+          {
+            "value": "بعد شهر",
+            "title": "اختبار نهائي",
+            "text": "قبل الامتحان"
+          }
+        ],
+        "bridge": "واحفظ الجدول",
+        "sourceIds": [
+          "src1"
+        ]
+      },
+      {
+        "id": "s08",
+        "n": 8,
+        "type": "summary",
+        "title": "الخلاصة",
+        "bullets": [
+          "اشرح بصوت عالي",
+          "اختبر نفسك من غير كتاب",
+          "راجع بعد يوم وأسبوع وشهر"
+        ]
+      },
+      {
+        "id": "s09",
+        "n": 9,
+        "type": "cta",
+        "title": "احفظ الجدول ده",
+        "cta": {
+          "kind": "save",
+          "text": "احفظه وابدأ أول مراجعة بكرة"
+        }
+      }
+    ],
+    "cover": {
+      "motion": {
+        "recipe": "highlight-sweep",
+        "feel": "calm",
+        "seconds": 6,
+        "fps": 30,
+        "source": "internal"
+      }
+    },
+    "captionPack": {
+      "firstLine": "كنت بذاكر ساعات وأنسى بسرعة. غيّرت الطريقة، والموضوع اتغيّر.",
+      "keywordLine": "3\u00a0طرق مذاكرة بتثبّت المعلومة: اشرح بصوت عالي، اختبر نفسك، وراجع على فترات.",
+      "body": "1.\u00a0اشرح الدرس بصوت عالي كأن قدامك حد.\n2.\u00a0اقفل الكتاب واختبر نفسك.\n3.\u00a0راجع بعد يوم، وبعد 3\u00a0أيام، وبعد أسبوع، وبعد شهر.\n\nوالسهر قبل الامتحان مش بيثبّت حاجة، النوم هو اللي بيخزّن. جرّب الجدول على درس واحد الأول.",
+      "cta": "احفظ الجدول وابدأ أول مراجعة بكرة.",
+      "hashtags": [
+        "#مذاكرة",
+        "#تعلّم",
+        "#طلاب",
+        "#تنظيم_الوقت"
+      ],
+      "perSlide": [
+        "3\u00a0طرق تذاكر بيها وتفتكر.",
+        "اللي بتذاكره بيتنسي بسرعة.",
+        "اشرح الدرس لحد بصوت عالي.",
+        "اقفل الكتاب واختبر نفسك.",
+        "راجع على فترات مش مرة واحدة.",
+        "السهر مش بيثبّت المعلومات.",
+        "جدول مراجعة بسيط يتحفظ.",
+        "الخلاصة في تلات نقط.",
+        "احفظ الجدول وابدأ بكرة."
+      ],
+      "alt": [
+        "غلاف: «3\u00a0طرق تذاكر بيها وتفتكر فعلا» وفوقها «مذاكرة أذكى» وتحتها «من غير سهر».",
+        "السلايد الثاني: «اللي بتذاكره النهارده بيتنسي بسرعة» وتحتها «3\u00a0طرق تثبّته».",
+        "النقطة\u00a01: «اشرحها لحد». «اشرح الدرس بصوت عالي كأن قدامك حد. اللي مش عارف تشرحه، لسه مش فاهمه.»",
+        "النقطة\u00a02: «اختبر نفسك». «اقفل الكتاب وحاول تفتكر. المجهود ده هو اللي بيثبّت المعلومة.»",
+        "النقطة\u00a03: «راجع على فترات». «راجع الدرس بعد يوم، وبعدها بكام يوم، وبعدها بأسبوع. التكرار الموزّع أقوى.»",
+        "خرافة وحقيقة: «هو السهر بيفيد؟». خرافة: «السهر قبل الامتحان بيثبّت المعلومات». حقيقة: «النوم هو اللي بيخزّن اللي ذاكرته».",
+        "جدول زمني: «جدول مراجعة الدرس». بعد يوم أول مراجعة، بعد 3\u00a0أيام اختبر نفسك، بعد أسبوع مراجعة سريعة، بعد شهر اختبار نهائي.",
+        "الخلاصة: «الخلاصة». اشرح بصوت عالي، اختبر نفسك من غير كتاب، راجع بعد يوم وأسبوع وشهر.",
+        "دعوة: «احفظ الجدول ده». «احفظه وابدأ أول مراجعة بكرة»"
+      ]
+    },
+    "sources": [
+      {
+        "id": "src1",
+        "kind": "user",
+        "ref": "جدول المراجعة اللي بيتّبعه صاحب الحساب",
+        "excerpt": "جدول المراجعة: بعد يوم، بعد 3 أيام، بعد أسبوع، بعد شهر",
+        "verified": true
+      }
+    ],
+    "assets": [],
+    "qa": {
+      "status": "pass",
+      "runAt": "2026-10-23T09:20:00Z",
+      "engine": "cs-1.1.0",
+      "results": []
+    },
+    "approvals": {
+      "angle": {
+        "at": "2026-10-23T09:04:00Z"
+      },
+      "script": {
+        "at": "2026-10-23T09:16:00Z"
+      }
+    },
+    "meta": {
+      "createdAt": "2026-10-23T09:00:00Z",
+      "updatedAt": "2026-10-23T09:20:00Z",
+      "updatedBy": "claude",
+      "generator": {
+        "skill": "carousel-create",
+        "version": "1.1.0"
+      }
+    }
+  },
+  {
+    "specVersion": 1,
+    "id": "auto-eg-5",
+    "rev": 1,
+    "brand": {
+      "slug": "content-workshop",
+      "snapshotHash": "14976278932d0a11"
+    },
+    "brief": {
+      "topic": "تجربة 30\u00a0يوم غيّرت نومي",
+      "input": "idea",
+      "note": "Fixture deck: synthetic example copy; every figure is sourced in spec.sources. No visual plan on purpose (zero-override input for the planner)."
+    },
+    "format": "carousel",
+    "mode": "guided",
+    "checkpoint": "design",
+    "canvas": {
+      "preset": "ig-3x4",
+      "w": 1080,
+      "h": 1440,
+      "safe": [
+        34,
+        45,
+        1012,
+        1350
+      ],
+      "exports": [
+        "3x4",
+        "4x5"
+      ]
+    },
+    "locale": {
+      "dialect": "eg",
+      "register": "dialect",
+      "digits": "western",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl"
+    },
+    "intent": "reach",
+    "awareness": "problem",
+    "contentType": "value",
+    "architecture": "story",
+    "angle": {
+      "id": "a6",
+      "title": "تغييرين صغيرين غيّروا نومي",
+      "lens": "story",
+      "score": 77,
+      "why": "قصة شخصية بنتيجة رقم وقايمة تتبعت وتوصّل لناس جداد"
+    },
+    "hook": {
+      "id": "P9-STORY-five-hours",
+      "family": "P9",
+      "text": "بنام 5\u00a0ساعات وفاكر ده عادي",
+      "cover": "بنام 5\u00a0ساعات وفاكر ده عادي",
+      "score": {
+        "R": 32,
+        "J": 29,
+        "P": 14,
+        "total": 75
+      },
+      "slide2": "التغيير مكانش كبير"
+    },
+    "style": {
+      "presetId": "poster@1.0"
+    },
+    "compat": {
+      "paint": "auto",
+      "mp4": "auto",
+      "hfRuntime": "auto"
+    },
+    "slides": [
+      {
+        "id": "s01",
+        "n": 1,
+        "type": "cover",
+        "kicker": "تجربة شخصية",
+        "headline": "بنام 5\u00a0ساعات\nوفاكر ده ==عادي==",
+        "sub": "30\u00a0يوم بس",
+        "media": {
+          "slot": "none",
+          "ai": false
+        }
+      },
+      {
+        "id": "s02",
+        "n": 2,
+        "type": "rehook",
+        "variant": "statement",
+        "headline": "التغيير مكانش كبير.\nبس كان في المكان ==الصح==.",
+        "bridge": "هحكيلك إزاي"
+      },
+      {
+        "id": "s03",
+        "n": 3,
+        "type": "story-beat",
+        "ord": 1,
+        "title": "كل ليلة نفس القصة",
+        "body": "كنت بشرب 4\u00a0فناجين قهوة عشان أفوق، وأنام وأنا ماسك الموبايل.",
+        "bridge": "لحد ما جرّبت حاجة بسيطة",
+        "demo": {
+          "lines": [
+            {
+              "who": "sys",
+              "text": "الساعة 3\u00a0الفجر… لسه صاحي"
+            },
+            {
+              "who": "me",
+              "text": "فيديو واحد بس"
+            }
+          ],
+          "caption": "كل ليلة نفس الوعد"
+        }
+      },
+      {
+        "id": "s04",
+        "n": 4,
+        "type": "story-beat",
+        "ord": 2,
+        "title": "نقطة التحول",
+        "body": "بطّلت الموبايل ساعة قبل النوم، ونقلت القهوة لقبل الضهر بس.",
+        "bridge": "وبعد أسبوعين",
+        "demo": {
+          "lines": [
+            {
+              "who": "sys",
+              "text": "وضع الطيران من الساعة 11"
+            },
+            {
+              "who": "sys",
+              "text": "آخر فنجان الساعة 12",
+              "hi": true
+            }
+          ],
+          "caption": "تغييران بس"
+        }
+      },
+      {
+        "id": "s05",
+        "n": 5,
+        "type": "story-beat",
+        "ord": 3,
+        "title": "بعد أسبوعين",
+        "body": "من غير منبه ولا قهوة تانية. أول مرة أحس إن الصبح ليه طعم.",
+        "bridge": "وده الرقم",
+        "demo": {
+          "lines": [
+            {
+              "who": "them",
+              "text": "إنت كويس؟ شكلك رايق"
+            },
+            {
+              "who": "me",
+              "text": "صحيت قبل المنبه!",
+              "hi": true
+            }
+          ],
+          "caption": "الناس لاحظت قبلي"
+        }
+      },
+      {
+        "id": "s06",
+        "n": 6,
+        "type": "stat",
+        "title": "نومي بعد 30\u00a0يوم",
+        "number": {
+          "value": "7",
+          "unit": "ساعات",
+          "sourceId": "src1"
+        },
+        "body": "من 5\u00a0لحد 7\u00a0ساعات بالتغييرين دول.",
+        "bridge": "إزاي تبدأ؟",
+        "sourceIds": [
+          "src1"
+        ]
+      },
+      {
+        "id": "s07",
+        "n": 7,
+        "type": "compare",
+        "title": "ليلتي قبل وبعد",
+        "sides": [
+          {
+            "label": "قبل",
+            "text": "موبايل في إيدي لحد ما أنام"
+          },
+          {
+            "label": "بعد",
+            "text": "موبايل بعيد وإضاءة هادية"
+          }
+        ],
+        "bridge": "وده اللي عملته"
+      },
+      {
+        "id": "s08",
+        "n": 8,
+        "type": "checklist",
+        "title": "قبل النوم بساعة",
+        "bullets": [
+          "وضع الطيران",
+          "إضاءة هادية",
+          "كوباية ماية",
+          "ورقة لأفكار بكرة"
+        ]
+      },
+      {
+        "id": "s09",
+        "n": 9,
+        "type": "share",
+        "headline": "ابعتها لصاحبك اللي مابينامش",
+        "sub": "هيحتاجها",
+        "demo": {
+          "lines": [
+            {
+              "who": "me",
+              "text": "إنت لسه صاحي؟ شوف دي"
+            },
+            {
+              "who": "them",
+              "text": "هجرّبها الليلة",
+              "hi": true
+            }
+          ],
+          "caption": "رسالة صغيرة تفرق"
+        }
+      },
+      {
+        "id": "s10",
+        "n": 10,
+        "type": "cta",
+        "title": "عايز تجارب زي دي؟",
+        "cta": {
+          "kind": "follow",
+          "text": "تابعني لتجارب بسيطة بتفرق"
+        }
+      }
+    ],
+    "cover": {
+      "motion": {
+        "recipe": "story",
+        "feel": "story",
+        "seconds": 6,
+        "fps": 30,
+        "source": "internal"
+      }
+    },
+    "captionPack": {
+      "firstLine": "فكرت إن النوم القليل عادي لحد ما جرّبت أغيّر حاجتين بس.",
+      "keywordLine": "تجربة 30\u00a0يوم لتحسين النوم: وضع الطيران قبل النوم والقهوة لحد الضهر بس.",
+      "body": "كنت بنام 5\u00a0ساعات وأشرب 4\u00a0فناجين قهوة عشان أفوق.\n\nبطّلت الموبايل ساعة قبل النوم، ونقلت القهوة لقبل الضهر. بعد 30\u00a0يوم بقيت بنام 7\u00a0ساعات وبصحى من غير منبه.\n\nالقايمة اللي في آخر البوست بتلخّص اللي عملته. جرّب تغيير واحد الليلة.",
+      "cta": "تابعني لتجارب بسيطة بتفرق.",
+      "hashtags": [
+        "#نوم_صحي",
+        "#صحة",
+        "#عادات",
+        "#تجربة_شخصية"
+      ],
+      "perSlide": [
+        "بنام 5\u00a0ساعات وفاكر ده عادي.",
+        "التغيير مكانش كبير بس كان في المكان الصح.",
+        "كل ليلة نفس القصة والموبايل في إيدي.",
+        "تغييران: الموبايل بعيد والقهوة للضهر.",
+        "بعد أسبوعين صحيت قبل المنبه.",
+        "نومي بعد 30\u00a0يوم: 7\u00a0ساعات.",
+        "ليلتي قبل وبعد.",
+        "قايمة قبل النوم بساعة.",
+        "ابعتها لصاحبك اللي مابينامش.",
+        "تابعني لتجارب بسيطة بتفرق."
+      ],
+      "alt": [
+        "غلاف: «بنام 5\u00a0ساعات وفاكر ده عادي» وفوقها «تجربة شخصية» وتحتها «30\u00a0يوم بس».",
+        "السلايد الثاني: «التغيير مكانش كبير. بس كان في المكان الصح.».",
+        "المشهد\u00a01: «كل ليلة نفس القصة». «كنت بشرب 4\u00a0فناجين قهوة عشان أفوق، وأنام وأنا ماسك الموبايل.»",
+        "المشهد\u00a02: «نقطة التحول». «بطّلت الموبايل ساعة قبل النوم، ونقلت القهوة لقبل الضهر بس.»",
+        "المشهد\u00a03: «بعد أسبوعين». «من غير منبه ولا قهوة تانية. أول مرة أحس إن الصبح ليه طعم.»",
+        "رقم: 7\u00a0ساعات. «نومي بعد 30\u00a0يوم». «من 5\u00a0لحد 7\u00a0ساعات بالتغييرين دول.»",
+        "مقارنة: «ليلتي قبل وبعد». قبل: «موبايل في إيدي لحد ما أنام». بعد: «موبايل بعيد وإضاءة هادية».",
+        "قايمة: «قبل النوم بساعة». وضع الطيران، إضاءة هادية، كوباية ماية، ورقة لأفكار بكرة.",
+        "سلايد المشاركة: «ابعتها لصاحبك اللي مابينامش» «هيحتاجها».",
+        "دعوة: «عايز تجارب زي دي؟». «تابعني لتجارب بسيطة بتفرق»"
+      ]
+    },
+    "sources": [
+      {
+        "id": "src1",
+        "kind": "user",
+        "ref": "ملاحظات يومية عن النوم لمدة 30 يوم",
+        "excerpt": "نمت 5 ساعات قبل التجربة و7 ساعات بعد 30 يوم. القهوة من 4 فناجين لفنجان واحد.",
+        "verified": true
+      }
+    ],
+    "assets": [],
+    "qa": {
+      "status": "pass",
+      "runAt": "2026-10-23T09:20:00Z",
+      "engine": "cs-1.1.0",
+      "results": []
+    },
+    "approvals": {
+      "angle": {
+        "at": "2026-10-23T09:04:00Z"
+      },
+      "script": {
+        "at": "2026-10-23T09:16:00Z"
+      }
+    },
+    "meta": {
+      "createdAt": "2026-10-23T09:00:00Z",
+      "updatedAt": "2026-10-23T09:20:00Z",
+      "updatedBy": "claude",
+      "generator": {
+        "skill": "carousel-create",
+        "version": "1.1.0"
+      }
+    }
+  }
+]

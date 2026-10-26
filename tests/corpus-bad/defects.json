@@ -1,0 +1,2988 @@
+{
+"schemaVersion": 1,
+"description": "Broken posts for the text gates (draft 13.2). Each case applies a JSON patch to a fixture in tests/fixtures and lists the findings the gates MUST report for it: a rule id (any slide) or rule@slide. run.mjs (JavaScript) and run.py (Python) both check every case; one miss fails the run. Fields: base (fixture file), brand (fixture file), brandPatch (RFC 6902 on the brand, for chrome strings the brand fixtures never hold), patch (RFC 6902), history (earlier posts for the C7 repetition gate), familyLimits, expect.",
+"cases": [
+{
+"id": "C1.hero-words/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/0/headline",
+"value": "أخطاء كتيرة بتموّت الكاروسيل وبتخلي الناس تعدّي"
+}
+],
+"expect": [
+"C1.hero-words@s01"
+]
+},
+{
+"id": "C1.hero-words/gulf",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/0/headline",
+"value": "قهوة طازجة توصلك كل أسبوع وأنت في بيتك دايم"
+}
+],
+"expect": [
+"C1.hero-words@s01"
+]
+},
+{
+"id": "C1.hero-words/en",
+"base": "spec.en.8slides.json",
+"brand": "brand.en.minimal.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/0/headline",
+"value": "four checks before you hit the post button today"
+}
+],
+"expect": [
+"C1.hero-words@s01"
+]
+},
+{
+"id": "C1.hero-words/poster",
+"base": "spec.eg.single.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/0/headline",
+"value": "مش الخط اللي بيبيع ده الوعد المحدد اللي في أول سطر"
+}
+],
+"expect": [
+"C1.hero-words@s01"
+]
+},
+{
+"id": "C1.total-words/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/0/kicker",
+"value": "دليل سريع ومختصر عن أخطاء الكاروسيل"
+},
+{
+"op": "add",
+"path": "/slides/0/sub",
+"value": "قبل ما حد يسحب للسلايد التانية بسهولة"
+}
+],
+"expect": [
+"C1.total-words@s01"
+]
+},
+{
+"id": "C1.total-words/msa",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/0/kicker",
+"value": "ادخار ذكي يبدأ من هذا الاسبوع"
+},
+{
+"op": "add",
+"path": "/slides/0/sub",
+"value": "والحقيقة وراء كل خرافة منها بوضوح"
+}
+],
+"expect": [
+"C1.total-words@s01"
+]
+},
+{
+"id": "C1.lines/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/0/headline",
+"value": "5 أخطاء\nبتموّت\nالكاروسيل\nقبل الأوان"
+}
+],
+"expect": [
+"C1.lines@s01"
+]
+},
+{
+"id": "C1.lines/levant",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/0/headline",
+"value": "6 خطوات\nلكابشن\nبيكمّلوه\nللآخر"
+}
+],
+"expect": [
+"C1.lines@s01"
+]
+},
+{
+"id": "C1.number-words/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/0/headline",
+"value": "خمسة أخطاء بتموّت الكاروسيل"
+}
+],
+"expect": [
+"C1.number-words@s01"
+]
+},
+{
+"id": "C1.number-words/msa",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/0/headline",
+"value": "ثلاث خرافات تفسد ادخارك"
+}
+],
+"expect": [
+"C1.number-words@s01"
+]
+},
+{
+"id": "C1.number-words/gulf",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/0/headline",
+"value": "ثلاث نكهات توصلك كل أسبوع"
+}
+],
+"expect": [
+"C1.number-words@s01"
+]
+},
+{
+"id": "C2.title-words/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/title",
+"value": "خط صغير جدا ميتقراش من على الموبايل خالص دلوقتي"
+}
+],
+"expect": [
+"C2.title-words@s03"
+]
+},
+{
+"id": "C2.title-words/gulf",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/title",
+"value": "تحميص طازج كل أسبوع يوصلك لين باب بيتك"
+}
+],
+"expect": [
+"C2.title-words@s03"
+]
+},
+{
+"id": "C2.body-words/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/body",
+"value": "لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها"
+}
+],
+"expect": [
+"C2.body-words@s03"
+]
+},
+{
+"id": "C2.body-words/en",
+"base": "spec.en.8slides.json",
+"brand": "brand.en.minimal.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/body",
+"value": "Shrink the cover to thumbnail size and look at it for one second. If you cannot read it at a glance, make the text bigger and cut every extra word."
+}
+],
+"expect": [
+"C2.body-words@s03"
+]
+},
+{
+"id": "C2.body-hard/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها وبعد كده راجع الكلام كله مرة تانية قبل النشر بكام ساعة"
+}
+],
+"expect": [
+"C2.body-hard@s04"
+]
+},
+{
+"id": "C2.body-hard/sides",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/sides/1/text",
+"value": "من لا يدخر قليلا لن يدخر كثيرا لأن العادة تبدأ بمبلغ صغير ثم تكبر مع الوقت وتصبح جزءا من القرار الشهري الذي لا يحتاج إلى تفكير طويل أو إرادة خارقة في كل مرة ولذلك ابدأ اليوم بما تستطيع وزد المبلغ كلما تحسن دخلك"
+}
+],
+"expect": [
+"C2.body-hard@s03"
+]
+},
+{
+"id": "C2.bullets/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/bullets",
+"value": [
+"أ",
+"ب",
+"ج",
+"د",
+"هـ"
+]
+}
+],
+"expect": [
+"C2.bullets@s03"
+]
+},
+{
+"id": "C2.bullets-dense/levant",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/8/bullets",
+"value": [
+"ابدأ بالنتيجة",
+"اكتب لشخص واحد",
+"جمل قصيرة",
+"كلمة مفتاحية",
+"دعوة وحدة",
+"راجع قبل النشر",
+"اقرا بصوت عالي",
+"اسأل صاحبك",
+"انشر بوقت مناسب"
+]
+}
+],
+"expect": [
+"C2.bullets-dense@s09"
+]
+},
+{
+"id": "C2.dense-words/levant",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/8/bullets",
+"value": [
+"ابدأ بالنتيجة قبل أي شي تاني بالكابشن كله",
+"اكتب لشخص واحد بس وتخيله قدامك وانت بتكتب",
+"خلّي الجمل قصيرة وكل جملة بسطر لحالها",
+"حط الكلمة المفتاحية بالسطر التاني مشان البحث",
+"اختم بدعوة وحدة واضحة ما فيها لف ودوران",
+"راجع الكابشن بصوت عالي قبل ما تنزله"
+]
+}
+],
+"expect": [
+"C2.dense-words@s09"
+]
+},
+{
+"id": "C2.slide-words/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/kicker",
+"value": "غلطة أولى مهمة جدا في الكتابة"
+},
+{
+"op": "add",
+"path": "/slides/2/sub",
+"value": "وده أكتر حاجة بتتكرر في كل بوست بنشوفه"
+},
+{
+"op": "add",
+"path": "/slides/2/body",
+"value": "لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها"
+},
+{
+"op": "add",
+"path": "/slides/2/title",
+"value": "خط صغير ميتقراش من الموبايل"
+},
+{
+"op": "add",
+"path": "/slides/2/bridge",
+"value": "التانية أقرب مما تتخيل بكتير عن ده كله"
+}
+],
+"expect": [
+"C2.slide-words@s03"
+]
+},
+{
+"id": "C2.bridge-words/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/bridge",
+"value": "التانية أقرب مما تتخيل بكتير جدا عن كل ده"
+}
+],
+"expect": [
+"C2.bridge-words@s03"
+]
+},
+{
+"id": "C2.bridge-words/en",
+"base": "spec.en.8slides.json",
+"brand": "brand.en.minimal.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/bridge",
+"value": "Now slide two is closer than you think it really is"
+}
+],
+"expect": [
+"C2.bridge-words@s03"
+]
+},
+{
+"id": "C2.cta-words/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/7/cta",
+"value": {
+"kind": "save",
+"text": "احفظه لما تيجي تكتب البوست الجاي وراجع الخمس غلطات دول مرة تانية قبل النشر"
+}
+}
+],
+"expect": [
+"C2.cta-words@s08"
+]
+},
+{
+"id": "C2.share-words/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/7",
+"value": {
+"id": "s09",
+"n": 8,
+"type": "share",
+"headline": "ابعت الغلطة دي لصاحبك اللي لسه بيعمل نفس الحاجة",
+"sub": "وقوله يراجع الكلام قبل ما ينزل البوست الجاي"
+}
+}
+],
+"expect": [
+"C2.share-words@s09"
+]
+},
+{
+"id": "C3.words/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/1/headline",
+"value": "مشكلة كاروسيلك غالبا مش في الألوان ولا في الخط"
+},
+{
+"op": "add",
+"path": "/slides/1/sub",
+"value": "في الكلام وترتيبه وأول جملة"
+}
+],
+"expect": [
+"C3.words@s02"
+]
+},
+{
+"id": "C3.intro/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/1/headline",
+"value": "قبل ما نبدأ خلينا نتكلم عن الأخطاء"
+}
+],
+"expect": [
+"C3.intro@s02"
+]
+},
+{
+"id": "C3.intro/gulf",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/1/headline",
+"value": "قبل أن نبدأ شوف الباقة"
+}
+],
+"expect": [
+"C3.intro@s02"
+]
+},
+{
+"id": "C3.intro/msa",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/1/headline",
+"value": "قبل أن نبدأ في الخرافات"
+}
+],
+"expect": [
+"C3.intro@s02"
+]
+},
+{
+"id": "C3.type/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/1/type",
+"value": "step"
+}
+],
+"expect": [
+"C3.type@s02"
+]
+},
+{
+"id": "C4.count/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "remove",
+"path": "/slides/7/cta"
+}
+],
+"expect": [
+"C4.count"
+]
+},
+{
+"id": "C4.count/en",
+"base": "spec.en.8slides.json",
+"brand": "brand.en.minimal.json",
+"patch": [
+{
+"op": "remove",
+"path": "/slides/7/cta"
+}
+],
+"expect": [
+"C4.count"
+]
+},
+{
+"id": "C4.multiple/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/6/cta",
+"value": {
+"kind": "follow",
+"text": "تابعني للمزيد"
+}
+}
+],
+"expect": [
+"C4.multiple"
+]
+},
+{
+"id": "C4.position/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/cta",
+"value": {
+"kind": "save",
+"text": "احفظه"
+}
+},
+{
+"op": "remove",
+"path": "/slides/7/cta"
+}
+],
+"expect": [
+"C4.position"
+]
+},
+{
+"id": "C4.intent/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/7/cta",
+"value": {
+"kind": "send",
+"text": "ابعته لصاحبك اللي محتاجه"
+}
+}
+],
+"expect": [
+"C4.intent"
+]
+},
+{
+"id": "C4.intent/msa",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/7/cta",
+"value": {
+"kind": "save",
+"text": "احفظه لوقت الحاجة"
+}
+}
+],
+"expect": [
+"C4.intent"
+]
+},
+{
+"id": "C4.bait/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/7/cta",
+"value": {
+"kind": "question",
+"text": "اكتب نعم لو عايز الجزء التاني"
+}
+}
+],
+"expect": [
+"C4.bait"
+]
+},
+{
+"id": "C4.bait/caption-gulf",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/captionPack/cta",
+"value": "علق بقلب لو عجبك"
+}
+],
+"expect": [
+"C4.bait"
+]
+},
+{
+"id": "C4.keyword-asset/gulf",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "remove",
+"path": "/captionPack/asset"
+}
+],
+"expect": [
+"C4.keyword-asset"
+]
+},
+{
+"id": "C4.early/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/cta",
+"value": {
+"kind": "save",
+"text": "احفظه"
+}
+}
+],
+"expect": [
+"C4.early"
+]
+},
+{
+"id": "C5.slide-count/one",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "remove",
+"path": "/slides/7"
+},
+{
+"op": "remove",
+"path": "/slides/6"
+},
+{
+"op": "remove",
+"path": "/slides/5"
+},
+{
+"op": "remove",
+"path": "/slides/4"
+},
+{
+"op": "remove",
+"path": "/slides/3"
+},
+{
+"op": "remove",
+"path": "/slides/2"
+},
+{
+"op": "remove",
+"path": "/slides/1"
+}
+],
+"expect": [
+"C5.slide-count"
+]
+},
+{
+"id": "C5.slide-count/over",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x00",
+"n": 9,
+"type": "item",
+"ord": 6,
+"title": "نقطة 0",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+},
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x01",
+"n": 10,
+"type": "item",
+"ord": 7,
+"title": "نقطة 1",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+},
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x02",
+"n": 11,
+"type": "item",
+"ord": 8,
+"title": "نقطة 2",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+},
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x03",
+"n": 12,
+"type": "item",
+"ord": 9,
+"title": "نقطة 3",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+},
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x04",
+"n": 13,
+"type": "item",
+"ord": 10,
+"title": "نقطة 4",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+},
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x05",
+"n": 14,
+"type": "item",
+"ord": 11,
+"title": "نقطة 5",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+},
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x06",
+"n": 15,
+"type": "item",
+"ord": 12,
+"title": "نقطة 6",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+},
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x07",
+"n": 16,
+"type": "item",
+"ord": 13,
+"title": "نقطة 7",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+},
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x08",
+"n": 17,
+"type": "item",
+"ord": 14,
+"title": "نقطة 8",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+},
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x09",
+"n": 18,
+"type": "item",
+"ord": 15,
+"title": "نقطة 9",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+},
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x10",
+"n": 19,
+"type": "item",
+"ord": 16,
+"title": "نقطة 10",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+},
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x11",
+"n": 20,
+"type": "item",
+"ord": 17,
+"title": "نقطة 11",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+},
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x12",
+"n": 21,
+"type": "item",
+"ord": 18,
+"title": "نقطة 12",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+},
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x13",
+"n": 22,
+"type": "item",
+"ord": 19,
+"title": "نقطة 13",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+}
+],
+"expect": [
+"C5.slide-count"
+]
+},
+{
+"id": "C5.slide-count-low/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "remove",
+"path": "/slides/6"
+},
+{
+"op": "remove",
+"path": "/slides/5"
+},
+{
+"op": "remove",
+"path": "/slides/4"
+}
+],
+"expect": [
+"C5.slide-count-low"
+]
+},
+{
+"id": "C5.slide-count-low/en",
+"base": "spec.en.8slides.json",
+"brand": "brand.en.minimal.json",
+"patch": [
+{
+"op": "remove",
+"path": "/slides/5"
+},
+{
+"op": "remove",
+"path": "/slides/4"
+},
+{
+"op": "remove",
+"path": "/slides/3"
+}
+],
+"expect": [
+"C5.slide-count-low"
+]
+},
+{
+"id": "C5.slide-count-range/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x00",
+"n": 9,
+"type": "item",
+"ord": 6,
+"title": "نقطة 0",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+},
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x01",
+"n": 10,
+"type": "item",
+"ord": 7,
+"title": "نقطة 1",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+},
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x02",
+"n": 11,
+"type": "item",
+"ord": 8,
+"title": "نقطة 2",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+},
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x03",
+"n": 12,
+"type": "item",
+"ord": 9,
+"title": "نقطة 3",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+},
+{
+"op": "add",
+"path": "/slides/-",
+"value": {
+"id": "x04",
+"n": 13,
+"type": "item",
+"ord": 10,
+"title": "نقطة 4",
+"body": "فكرة واحدة في السلايد.",
+"bridge": "وبعدها"
+}
+}
+],
+"expect": [
+"C5.slide-count-range"
+]
+},
+{
+"id": "C5.skeleton/first",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/0/type",
+"value": "rehook"
+}
+],
+"expect": [
+"C5.skeleton"
+]
+},
+{
+"id": "C5.skeleton/last",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/7/type",
+"value": "item"
+}
+],
+"expect": [
+"C5.skeleton"
+]
+},
+{
+"id": "C5.bridge/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "remove",
+"path": "/slides/3/bridge"
+}
+],
+"expect": [
+"C5.bridge@s04"
+]
+},
+{
+"id": "C5.bridge/msa",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "remove",
+"path": "/slides/3/bridge"
+}
+],
+"expect": [
+"C5.bridge@s04"
+]
+},
+{
+"id": "C6.list-count/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/0/headline",
+"value": "7 أخطاء بتموّت الكاروسيل"
+}
+],
+"expect": [
+"C6.list-count"
+]
+},
+{
+"id": "C6.list-count/levant",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/0/headline",
+"value": "9 خطوات\nلكابشن بيكمّلوه"
+}
+],
+"expect": [
+"C6.list-count"
+]
+},
+{
+"id": "C7.cta-repeat/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"history": [
+{
+"postId": "old-1",
+"cta": "save",
+"family": "P3",
+"cover": "ثلاث نصائح للغلاف"
+},
+{
+"postId": "old-2",
+"cta": "send",
+"family": "P1",
+"cover": "كتابة الكابشن"
+}
+],
+"patch": [],
+"expect": [
+"C7.cta-repeat"
+]
+},
+{
+"id": "C7.family-repeat/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"history": [
+{
+"postId": "old-1",
+"cta": "save",
+"family": "P3",
+"cover": "ثلاث نصائح للغلاف"
+},
+{
+"postId": "old-2",
+"cta": "send",
+"family": "P1",
+"cover": "كتابة الكابشن"
+}
+],
+"patch": [
+{
+"op": "add",
+"path": "/hook/family",
+"value": "P3"
+}
+],
+"expect": [
+"C7.family-repeat"
+]
+},
+{
+"id": "C7.hook-similar/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"history": [
+{
+"postId": "old-9",
+"cta": "send",
+"family": "P1",
+"cover": "5 أخطاء بتموّت الكاروسيل"
+}
+],
+"patch": [],
+"expect": [
+"C7.hook-similar"
+]
+},
+{
+"id": "C7.max-use/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"history": [
+{
+"postId": "old-1",
+"cta": "send",
+"family": "P3",
+"cover": "ثلاث نصائح"
+},
+{
+"postId": "old-2",
+"cta": "follow",
+"family": "P1",
+"cover": "كتابة الكابشن"
+}
+],
+"familyLimits": {
+"P3": {
+"posts": 5,
+"count": 1
+}
+},
+"patch": [
+{
+"op": "add",
+"path": "/hook/family",
+"value": "P3"
+}
+],
+"expect": [
+"C7.max-use"
+]
+},
+{
+"id": "C8.ai-words/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "أطلق العنان لفكرتك. فكرة واحدة في السلايد."
+}
+],
+"expect": [
+"C8.ai-words@s05"
+]
+},
+{
+"id": "C8.ai-words/en",
+"base": "spec.en.8slides.json",
+"brand": "brand.en.minimal.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "Unlock a seamless workflow. Give the first useful thing on slide two."
+}
+],
+"expect": [
+"C8.ai-words@s04"
+]
+},
+{
+"id": "C8.stock-opener/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/1/headline",
+"value": "هل تعلم إن مشكلة كاروسيلك مش في الألوان"
+}
+],
+"expect": [
+"C8.stock-opener@s02"
+]
+},
+{
+"id": "C8.stock-opener/msa",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/1/headline",
+"value": "هل فكرت يوما في سبب تأجيل الادخار"
+}
+],
+"expect": [
+"C8.stock-opener@s02"
+]
+},
+{
+"id": "C8.translationese/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "قم بتعديل الخط وسيب التعريف للبروفايل. السلايد التانية فرصة تانية للغلاف."
+}
+],
+"expect": [
+"C8.translationese@s04"
+]
+},
+{
+"id": "C8.translationese/levant",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "تخيّل صاحبك وهو عم يقرا. وذلك من خلال جملة قصيرة بسطر وحدة."
+}
+],
+"expect": [
+"C8.translationese@s04"
+]
+},
+{
+"id": "C8.stiff-msa/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "عزيزي المتابع، ادخل في الفايدة على طول وسيب التعريف للبروفايل."
+}
+],
+"expect": [
+"C8.stiff-msa@s04"
+]
+},
+{
+"id": "C8.stiff-msa/gulf",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/body",
+"value": "عزيزي العميل، كل أسبوع نحمّص دفعة صغيرة ونرسلها لك في نفس اليوم."
+}
+],
+"expect": [
+"C8.stiff-msa@s03"
+]
+},
+{
+"id": "C8.hype/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "الحقيقة الصادمة إن فكرة واحدة في السلايد تكفي."
+}
+],
+"expect": [
+"C8.hype@s05"
+]
+},
+{
+"id": "C8.hype/msa",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/sides/1/text",
+"value": "سر خطير يغير حياتك لا يعرفه أحد"
+}
+],
+"expect": [
+"C8.hype@s05"
+]
+},
+{
+"id": "C8.hype/levant",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "رح تنصدم لما تعرف إنه جملة قصيرة بتغيّر الكابشن."
+}
+],
+"expect": [
+"C8.hype@s04"
+]
+},
+{
+"id": "C8.abstract/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "الفكرة الواحدة بتصنع نجاح وتغيّر حياتك."
+}
+],
+"expect": [
+"C8.abstract@s05"
+]
+},
+{
+"id": "C9.length/short",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/captionPack/body",
+"value": "نقطة واحدة."
+}
+],
+"expect": [
+"C9.length"
+]
+},
+{
+"id": "C9.length/long",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/captionPack/body",
+"value": "لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها"
+}
+],
+"expect": [
+"C9.length"
+]
+},
+{
+"id": "C9.length-hard/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/captionPack/body",
+"value": "لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها"
+}
+],
+"expect": [
+"C9.length-hard"
+]
+},
+{
+"id": "C9.first-line/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/captionPack/firstLine",
+"value": "فاكر إن مشكلة كاروسيلك في الألوان؟ غالبا المشكلة في الكلام ومش في أي حاجة تانية خالص، ومحدش قالك كده قبل النهارده في أي مكان على الإطلاق"
+}
+],
+"expect": [
+"C9.first-line"
+]
+},
+{
+"id": "C9.first-line-similarity/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/captionPack/firstLine",
+"value": "5 أخطاء بتموّت الكاروسيل"
+}
+],
+"expect": [
+"C9.first-line-similarity"
+]
+},
+{
+"id": "C9.keyword-line/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/captionPack/keywordLine",
+"value": ""
+}
+],
+"expect": [
+"C9.keyword-line"
+]
+},
+{
+"id": "C9.hashtags/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/captionPack/hashtags",
+"value": [
+"#أ",
+"#ب",
+"#ج",
+"#د",
+"#هـ",
+"#و"
+]
+}
+],
+"expect": [
+"C9.hashtags"
+]
+},
+{
+"id": "C9.hashtags/inline",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/captionPack/body",
+"value": "5 أخطاء #كاروسيل #تصميم #محتوى #كتابة #بوست #تعليم لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها"
+}
+],
+"expect": [
+"C9.hashtags"
+]
+},
+{
+"id": "C9.hashtags-form/dup",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/captionPack/hashtags",
+"value": [
+"#كاروسيل",
+"#كاروسيل",
+"#محتوى"
+]
+}
+],
+"expect": [
+"C9.hashtags-form"
+]
+},
+{
+"id": "C9.hashtags-form/space",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/captionPack/hashtags",
+"value": [
+"#كاروسيل",
+"# محتوى عربي"
+]
+}
+],
+"expect": [
+"C9.hashtags-form"
+]
+},
+{
+"id": "C9.per-slide/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "remove",
+"path": "/captionPack/perSlide/3"
+}
+],
+"expect": [
+"C9.per-slide"
+]
+},
+{
+"id": "C9.per-slide/empty",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "replace",
+"path": "/captionPack/perSlide/2",
+"value": ""
+}
+],
+"expect": [
+"C9.per-slide"
+]
+},
+{
+"id": "C9.per-slide-length/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "replace",
+"path": "/captionPack/perSlide/1",
+"value": "المشكلة غالبا مش اللي إنت فاكره، وده بالظبط اللي بيخلي الناس تعدّي من غير ما تحس، وبعدين تسأل نفسك ليه محدش بيحفظ البوست بتاعك أصلا"
+}
+],
+"expect": [
+"C9.per-slide-length"
+]
+},
+{
+"id": "C9.alt-missing/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "replace",
+"path": "/captionPack/alt/2",
+"value": ""
+}
+],
+"expect": [
+"C9.alt-missing"
+]
+},
+{
+"id": "C9.alt-missing/gone",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "remove",
+"path": "/captionPack/alt"
+}
+],
+"expect": [
+"C9.alt-missing"
+]
+},
+{
+"id": "C9.alt-length/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "replace",
+"path": "/captionPack/alt/0",
+"value": "غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. "
+}
+],
+"expect": [
+"C9.alt-length"
+]
+},
+{
+"id": "C9.alt-length-hard/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "replace",
+"path": "/captionPack/alt/0",
+"value": "غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. غلاف بخلفية رمادية فاتحة وعنوان أسود عريض. "
+}
+],
+"expect": [
+"C9.alt-length-hard"
+]
+},
+{
+"id": "C9.short-caption/single",
+"base": "spec.eg.single.json",
+"patch": [],
+"expect": [
+"C9.short-caption"
+]
+},
+{
+"id": "C10.overlap-block/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/sources",
+"value": [
+{
+"id": "src1",
+"kind": "url",
+"ref": "https://example.com/post",
+"excerpt": "لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة السلايد التانية فرصة تانية للغلاف ادخل في الفايدة على طول وسيب التعريف للبروفايل"
+}
+]
+}
+],
+"expect": [
+"C10.overlap-block"
+]
+},
+{
+"id": "C10.overlap/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/sources",
+"value": [
+{
+"id": "src1",
+"kind": "url",
+"ref": "https://example.com/post",
+"excerpt": "لو الكلام مش بيتقرا من على الموبايل يبقى وده كلام تاني مختلف تماما عن أي حاجة في البوست وبعدين نكمل"
+}
+]
+}
+],
+"expect": [
+"C10.overlap"
+]
+},
+{
+"id": "N1.mixed/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "فكرة ٣ و 4 في سلايد واحد."
+}
+],
+"expect": [
+"N1.mixed"
+]
+},
+{
+"id": "N1.persian/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "فكرة ۵ في سلايد واحد."
+}
+],
+"expect": [
+"N1.persian"
+]
+},
+{
+"id": "N1.system/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/title",
+"value": "خط ٥ صغير ميتقراش"
+}
+],
+"expect": [
+"N1.system"
+]
+},
+{
+"id": "N1.system/msa",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/0/headline",
+"value": "4 خرافات تفسد ==ادخارك=="
+}
+],
+"expect": [
+"N1.system"
+]
+},
+{
+"id": "N1.percent/msa",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/sides/1/text",
+"value": "نسبة ٥٠% من المبلغ"
+}
+],
+"expect": [
+"N1.percent"
+]
+},
+{
+"id": "N1.percent/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "فكرة واحدة تكفي 50٪ من الوقت."
+}
+],
+"expect": [
+"N1.percent"
+]
+},
+{
+"id": "N1.mixed/caption",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/captionPack/keywordLine",
+"value": "جمعتلك 5 أخطاء و٣ نصائح"
+}
+],
+"expect": [
+"N1.mixed"
+]
+},
+{
+"id": "B1.stranded-lam/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "استخدم لـ ChatGPT في الخطوة دي."
+}
+],
+"expect": [
+"B1.stranded-lam@s04"
+]
+},
+{
+"id": "B1.stranded-lam/digit",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "جرّب بـ 5 أدوات بس."
+}
+],
+"expect": [
+"B1.stranded-lam@s05"
+]
+},
+{
+"id": "B1.stranded-lam/msa",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/sides/1/text",
+"value": "استخدم لـ Notion للتخطيط"
+}
+],
+"expect": [
+"B1.stranded-lam@s05"
+]
+},
+{
+"id": "B1.unbound-pair/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/title",
+"value": "5 أدوات ببلاش"
+}
+],
+"expect": [
+"B1.unbound-pair@s03"
+]
+},
+{
+"id": "B1.unbound-pair/step",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "اتبع خطوة 3 دلوقتي."
+}
+],
+"expect": [
+"B1.unbound-pair@s04"
+]
+},
+{
+"id": "SRC1.missing/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "أكتر من 85% من المشاهدين بيعدّوا الغلاف."
+}
+],
+"expect": [
+"SRC1.missing@s04"
+]
+},
+{
+"id": "SRC1.missing/currency",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "الكورس بسعر 500 جنيه بس."
+}
+],
+"expect": [
+"SRC1.missing@s05"
+]
+},
+{
+"id": "SRC1.missing/stat",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "remove",
+"path": "/slides/6/number/sourceId"
+},
+{
+"op": "remove",
+"path": "/slides/6/sourceIds"
+},
+{
+"op": "add",
+"path": "/slides/6/number/value",
+"value": "٧٥٠٠"
+},
+{
+"op": "add",
+"path": "/slides/6/title",
+"value": "٥٠٠ ريال شهريا تصبح أكثر في سنة"
+}
+],
+"expect": [
+"SRC1.missing@s07"
+]
+},
+{
+"id": "SRC1.mismatch/msa",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "replace",
+"path": "/sources/0",
+"value": {
+"id": "src1",
+"kind": "url",
+"ref": "https://example.com/saving",
+"excerpt": "نص عن الادخار يذكر مبلغ ٣٠٠٠ ريال في السنة",
+"verified": true
+}
+}
+],
+"expect": [
+"SRC1.mismatch@s07"
+]
+},
+{
+"id": "SRC1.unverified/msa",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/sources/0/verified",
+"value": false
+}
+],
+"expect": [
+"SRC1.unverified"
+]
+},
+{
+"id": "SRC1.unverified/gulf",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/sources/0/verified",
+"value": false
+}
+],
+"expect": [
+"SRC1.unverified"
+]
+},
+{
+"id": "SEN1.gulf-name/gulf",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/body",
+"value": "نرسلها لك لين الخليج الفارسي كله."
+}
+],
+"expect": [
+"SEN1.gulf-name"
+]
+},
+{
+"id": "SEN1.gulf-name/eg-saudi",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "فكرة واحدة تكفي لجمهور الخليج الفارسي."
+}
+],
+"expect": [
+"SEN1.gulf-name"
+]
+},
+{
+"id": "SEN1.conspiracy/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "الحقيقة اللي بيخبوه عنك في الكاروسيل."
+}
+],
+"expect": [
+"SEN1.conspiracy@s05"
+]
+},
+{
+"id": "SEN1.conspiracy/gulf",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/body",
+"value": "الحقيقة اللي ما يبونك تعرفها عن القهوة."
+}
+],
+"expect": [
+"SEN1.conspiracy@s03"
+]
+},
+{
+"id": "SEN1.conspiracy/levant",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "اللي ما بدهم ياك تعرفو عن الكابشن."
+}
+],
+"expect": [
+"SEN1.conspiracy@s04"
+]
+},
+{
+"id": "SEN1.conspiracy/msa",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/sides/1/text",
+"value": "ما يخفونه عنك في الادخار"
+}
+],
+"expect": [
+"SEN1.conspiracy@s05"
+]
+},
+{
+"id": "SEN1.fear-stacking/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/body",
+"value": "كارثة وخطر ومخاطر كبيرة في السلايد."
+}
+],
+"expect": [
+"SEN1.fear-stacking@s05"
+]
+},
+{
+"id": "SEN1.fear-stacking/caption",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/captionPack/body",
+"value": "كارثة وخطر وتهديد وانهيار في الكاروسيل. لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة وخلّي كل سلايد فيها فكرة واحدة بس وسيب الباقي للسلايد اللي بعدها"
+}
+],
+"expect": [
+"SEN1.fear-stacking"
+]
+},
+{
+"id": "SEN1.religious-promo/brackets",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/7/title",
+"value": "﴿اشتراك الأسبوع﴾ بسعر خاص"
+}
+],
+"expect": [
+"SEN1.religious-promo"
+]
+},
+{
+"id": "SEN1.religious-promo/shahada",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/7/title",
+"value": "لا إله إلا الله اشتراك الأسبوع"
+}
+],
+"expect": [
+"SEN1.religious-promo"
+]
+},
+{
+"id": "O1.deny-marker/msa-white/DM-MSA-014",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/sides/1/text",
+"value": "هاد هنا في الجملة"
+}
+],
+"expect": [
+"O1.deny-marker"
+]
+},
+{
+"id": "O1.deny-marker/msa-white/DM-MSA-016",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/title",
+"value": "جرّب هيدي اليوم"
+}
+],
+"expect": [
+"O1.deny-marker"
+]
+},
+{
+"id": "O1.deny-marker/msa-white/DM-MSA-018",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/sides/1/text",
+"value": "إزاي هنا في الجملة"
+}
+],
+"expect": [
+"O1.deny-marker"
+]
+},
+{
+"id": "O1.deny-marker/msa-white/DM-MSA-020",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/title",
+"value": "جرّب ازاي اليوم"
+}
+],
+"expect": [
+"O1.deny-marker"
+]
+},
+{
+"id": "O1.deny-marker/gulf/DM-GULF-013",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/body",
+"value": "دلوقتي هنا في الجملة"
+}
+],
+"expect": [
+"O1.deny-marker"
+]
+},
+{
+"id": "O1.deny-marker/gulf/DM-GULF-015",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/title",
+"value": "جرّب دلوقت اليوم"
+}
+],
+"expect": [
+"O1.deny-marker"
+]
+},
+{
+"id": "O1.deny-marker/gulf/DM-GULF-017",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/body",
+"value": "مش هنا في الجملة"
+}
+],
+"expect": [
+"O1.deny-marker"
+]
+},
+{
+"id": "O1.deny-marker/gulf/DM-GULF-019",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/title",
+"value": "جرّب ده اليوم"
+}
+],
+"expect": [
+"O1.deny-marker"
+]
+},
+{
+"id": "O1.deny-marker/levant/DM-LEV-013",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "دلوقتي هنا في الجملة"
+}
+],
+"expect": [
+"O1.deny-marker"
+]
+},
+{
+"id": "O1.deny-marker/levant/DM-LEV-015",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/title",
+"value": "جرّب دلوقت اليوم"
+}
+],
+"expect": [
+"O1.deny-marker"
+]
+},
+{
+"id": "O1.deny-marker/levant/DM-LEV-017",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "كده هنا في الجملة"
+}
+],
+"expect": [
+"O1.deny-marker"
+]
+},
+{
+"id": "O1.deny-marker/levant/DM-LEV-019",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/title",
+"value": "جرّب كدا اليوم"
+}
+],
+"expect": [
+"O1.deny-marker"
+]
+},
+{
+"id": "O1.deny-marker/eg/DM-EG-016",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "ابغى هنا في الجملة"
+}
+],
+"expect": [
+"O1.deny-marker"
+]
+},
+{
+"id": "O1.deny-marker/eg/DM-EG-018",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/title",
+"value": "جرّب أبغي اليوم"
+}
+],
+"expect": [
+"O1.deny-marker"
+]
+},
+{
+"id": "O1.deny-marker/eg/DM-EG-020",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "ابغي هنا في الجملة"
+}
+],
+"expect": [
+"O1.deny-marker"
+]
+},
+{
+"id": "O1.deny-marker/eg/DM-EG-022",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/title",
+"value": "جرّب تبي اليوم"
+}
+],
+"expect": [
+"O1.deny-marker"
+]
+},
+{
+"id": "O1.warn-marker/msa-white/WM-MSA-003",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/sides/1/text",
+"value": "يلا هنا في الجملة"
+}
+],
+"expect": [
+"O1.warn-marker"
+]
+},
+{
+"id": "O1.warn-marker/msa-white/WM-MSA-005",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/sides/1/text",
+"value": "خلاص هنا في الجملة"
+}
+],
+"expect": [
+"O1.warn-marker"
+]
+},
+{
+"id": "O1.warn-marker/gulf/WM-GULF-003",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/body",
+"value": "كدا هنا في الجملة"
+}
+],
+"expect": [
+"O1.warn-marker"
+]
+},
+{
+"id": "O1.warn-marker/gulf/WM-GULF-005",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/2/body",
+"value": "لسه هنا في الجملة"
+}
+],
+"expect": [
+"O1.warn-marker"
+]
+},
+{
+"id": "O1.warn-marker/levant/WM-LEV-003",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "لسه هنا في الجملة"
+}
+],
+"expect": [
+"O1.warn-marker"
+]
+},
+{
+"id": "O1.warn-marker/levant/WM-LEV-005",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "إمتى هنا في الجملة"
+}
+],
+"expect": [
+"O1.warn-marker"
+]
+},
+{
+"id": "O1.warn-marker/eg/WM-EG-003",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "ماذا هنا في الجملة"
+}
+],
+"expect": [
+"O1.warn-marker"
+]
+},
+{
+"id": "O1.warn-marker/eg/WM-EG-005",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "سوف هنا في الجملة"
+}
+],
+"expect": [
+"O1.warn-marker"
+]
+},
+{
+"id": "O1.warn-marker/en/WM-EN-004",
+"base": "spec.en.8slides.json",
+"brand": "brand.en.minimal.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "Read it twice unleash before you post"
+}
+],
+"expect": [
+"O1.warn-marker"
+]
+},
+{
+"id": "O1.warn-marker/en/WM-EN-005",
+"base": "spec.en.8slides.json",
+"brand": "brand.en.minimal.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "Read it twice delve before you post"
+}
+],
+"expect": [
+"O1.warn-marker"
+]
+},
+{
+"id": "O1.ortho/OE-01/ORTHO-HAMZA-001",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "اتعلم انشاء كاروسيل من الصفر في ساعة"
+}
+],
+"expect": [
+"O1.ortho-hamza-001"
+]
+},
+{
+"id": "O1.ortho/OE-02/ORTHO-HAMZA-002",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "افضل وقت للنشر بعد المغرب"
+}
+],
+"expect": [
+"O1.ortho-hamza-002"
+]
+},
+{
+"id": "O1.ortho/OE-03/ORTHO-HAMZA-003",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "وش اخطاء التصميم اللي تقلل التفاعل"
+}
+],
+"expect": [
+"O1.ortho-hamza-003"
+]
+},
+{
+"id": "O1.ortho/OE-04/ORTHO-HAMZA-008",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/sides/1/text",
+"value": "هو مسئول عن مراجعة النص قبل النشر"
+}
+],
+"expect": [
+"O1.ortho-hamza-008"
+]
+},
+{
+"id": "O1.ortho/OE-05/ORTHO-WASL-001",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/sides/1/text",
+"value": "إستخدم أداة واحدة في كل مرة"
+}
+],
+"expect": [
+"O1.ortho-wasl-001"
+]
+},
+{
+"id": "O1.ortho/OE-06/ORTHO-TAA-001",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "كل خطوه بتاخد دقيقتين بس"
+}
+],
+"expect": [
+"O1.ortho-taa-001"
+]
+},
+{
+"id": "O1.ortho/OE-07/ORTHO-YAA-001",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "اللى بيكتب كويس بيتقرا للآخر"
+}
+],
+"expect": [
+"O1.ortho-yaa-001"
+]
+},
+{
+"id": "O1.ortho/OE-08/ORTHO-YAA-002",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/sides/1/text",
+"value": "قدّم محتوى مجانى كل أسبوع"
+}
+],
+"expect": [
+"O1.ortho-yaa-002"
+]
+},
+{
+"id": "O1.ortho/OE-09/ORTHO-SPLIT-001",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/sides/1/text",
+"value": "هاذا هو الحل الأنسب لك"
+}
+],
+"expect": [
+"O1.ortho-split-001"
+]
+},
+{
+"id": "O1.ortho/OE-10/ORTHO-ENC-001",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "الكتاب مفيد جدا للمدیر الجديد"
+}
+],
+"expect": [
+"O1.ortho-enc-001"
+]
+},
+{
+"id": "O1.ortho/OE-11/ORTHO-DIG-002",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "اشترك في ٥ دورات و 3 ورش"
+}
+],
+"expect": [
+"N1.mixed"
+]
+},
+{
+"id": "O1.ortho/OE-12/ORTHO-DIG-003",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "نسبة الخصم 50٪ لفترة محدودة"
+}
+],
+"expect": [
+"N1.percent"
+]
+},
+{
+"id": "O1.ortho/OE-13/ORTHO-DIG-004",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "بتاخد 5ساعات في اليوم"
+}
+],
+"expect": [
+"O1.ortho-dig-004"
+]
+},
+{
+"id": "O1.ortho/OE-14/ORTHO-PUNCT-001",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "جرّب الأداة دي ، وقولي رأيك"
+}
+],
+"expect": [
+"O1.ortho-punct-001"
+]
+},
+{
+"id": "O1.ortho/OE-15/ORTHO-PUNCT-003",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "جرب الأداة, وقل لنا رأيك"
+}
+],
+"expect": [
+"O1.ortho-punct-003"
+]
+},
+{
+"id": "O1.ortho/OE-16/ORTHO-PUNCT-005",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "استنّى شوي... رح تفهم"
+}
+],
+"expect": [
+"O1.ortho-punct-005"
+]
+},
+{
+"id": "O1.ortho/OE-17/ORTHO-PUNCT-006",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "ليه محدش بيحفظ البوست؟؟"
+}
+],
+"expect": [
+"O1.ortho-punct-006"
+]
+},
+{
+"id": "O1.ortho/OE-18/ORTHO-BIDI-001",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "الحل بـ ChatGPT أسرع بكتير"
+}
+],
+"expect": [
+"B1.stranded-lam"
+]
+},
+{
+"id": "O1.ortho/OE-19/ORTHO-TATWEEL-001",
+"base": "spec.msa-white.indic.8slides.json",
+"brand": "brand.msa.indic.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/4/sides/1/text",
+"value": "اقرأ الكـــاروسيل الآن"
+}
+],
+"expect": [
+"O1.ortho-tatweel-001"
+]
+},
+{
+"id": "O1.ortho/OE-20/ORTHO-PUNCT-004",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "add",
+"path": "/slides/3/body",
+"value": "افتح  الإعدادات وغيّر الخط"
+}
+],
+"expect": [
+"O1.ortho-punct-004"
+]
+},
+{
+"id": "B2.placeholder-chrome/handle",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"brandPatch": [
+{
+"op": "replace",
+"path": "/handle",
+"value": "@yourbrand"
+}
+],
+"expect": [
+"B2.placeholder-chrome"
+]
+},
+{
+"id": "B2.placeholder-chrome/template-token",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"brandPatch": [
+{
+"op": "replace",
+"path": "/handle",
+"value": "@<handle>"
+}
+],
+"expect": [
+"B2.placeholder-chrome"
+]
+},
+{
+"id": "B2.placeholder-chrome/name",
+"base": "spec.gulf.9slides.json",
+"brand": "brand.gulf.client.json",
+"brandPatch": [
+{
+"op": "replace",
+"path": "/name",
+"value": "براند تجريبي"
+}
+],
+"expect": [
+"B2.placeholder-chrome"
+]
+},
+{
+"id": "B2.placeholder-chrome/meta-label",
+"base": "spec.en.8slides.json",
+"brand": "brand.en.minimal.json",
+"patch": [
+{
+"op": "add",
+"path": "/style/metaLabel",
+"value": "Meta label"
+}
+],
+"expect": [
+"B2.placeholder-chrome"
+]
+},
+{
+"id": "C6.slide2-promise/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "replace",
+"path": "/slides/1/sub",
+"value": "في الكلام وترتيبه"
+}
+],
+"expect": [
+"C6.slide2-promise@s02"
+]
+},
+{
+"id": "C6.slide2-promise/en",
+"base": "spec.en.8slides.json",
+"brand": "brand.en.minimal.json",
+"patch": [
+{
+"op": "replace",
+"path": "/slides/1/sub",
+"value": "Fix that first."
+}
+],
+"expect": [
+"C6.slide2-promise@s02"
+]
+},
+{
+"id": "C6.slide2-promise/levant",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "replace",
+"path": "/slides/1/sub",
+"value": "مش بالتعريف"
+}
+],
+"expect": [
+"C6.slide2-promise@s02"
+]
+},
+{
+"id": "D8.rhythm/eg",
+"base": "spec.eg.8slides.json",
+"brand": "brand.eg.creator.json",
+"patch": [
+{
+"op": "remove",
+"path": "/slides/3/variant"
+},
+{
+"op": "remove",
+"path": "/slides/5/variant"
+}
+],
+"expect": [
+"D8.rhythm@s06"
+]
+},
+{
+"id": "D8.rhythm/levant",
+"base": "spec.levant.10slides.json",
+"patch": [
+{
+"op": "remove",
+"path": "/slides/3/variant"
+},
+{
+"op": "remove",
+"path": "/slides/5/variant"
+},
+{
+"op": "remove",
+"path": "/slides/7/variant"
+}
+],
+"expect": [
+"D8.rhythm@s06"
+]
+}
+]
+}

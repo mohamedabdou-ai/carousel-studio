@@ -1,0 +1,6 @@
+{
+  "module": "export",
+  "chunk": "cs-export.js",
+  "order": 0,
+  "files": ["core.js", "zip.js", "pdf.js", "text.js", "files.js", "save.js", "automation.js", "api.js"]
+}

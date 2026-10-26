@@ -1,0 +1,568 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:carousel-studio:schema:hook:1",
+  "title": "Carousel Studio hook-library entry",
+  "description": "One hook formula / family variant. Library files wrap entries in $defs.library (validate with --kind hook-library). Root = one entry.",
+  "$ref": "#/$defs/entry",
+  "x-sharedDefs": [
+    "architecture",
+    "awareness",
+    "contentType",
+    "ctaKind",
+    "dialect",
+    "hookFamily",
+    "intent",
+    "presetSlug",
+    "recipe"
+  ],
+  "$defs": {
+    "architecture": {
+      "type": "string",
+      "enum": [
+        "listicle",
+        "steps",
+        "myth-fact",
+        "story",
+        "case-study",
+        "framework",
+        "comparison",
+        "opinion",
+        "news",
+        "offer",
+        "results",
+        "lead-magnet"
+      ]
+    },
+    "awareness": {
+      "type": "string",
+      "enum": [
+        "unaware",
+        "problem",
+        "solution",
+        "product"
+      ]
+    },
+    "contentType": {
+      "type": "string",
+      "enum": [
+        "value",
+        "soft-sell"
+      ]
+    },
+    "ctaKind": {
+      "type": "string",
+      "enum": [
+        "save",
+        "send",
+        "question",
+        "keyword-dm",
+        "follow"
+      ]
+    },
+    "dialect": {
+      "type": "string",
+      "enum": [
+        "eg",
+        "gulf",
+        "levant",
+        "msa-white",
+        "en"
+      ]
+    },
+    "entry": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[PFS][0-9]{1,2}-[A-Z0-9]+-[a-z0-9-]+$",
+          "description": "e.g. F17-REFRAME-relocate."
+        },
+        "family": {
+          "$ref": "#/$defs/hookFamily"
+        },
+        "variant": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{1,31}$"
+        },
+        "name": {
+          "type": "object",
+          "properties": {
+            "ar": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            },
+            "en": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            }
+          },
+          "required": [
+            "ar",
+            "en"
+          ],
+          "additionalProperties": false
+        },
+        "mechanism": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "trigger": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{1,31}$"
+          },
+          "maxItems": 6,
+          "description": "Vocabulary lives in carousel-create/data/hooks/triggers.json."
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tag": {
+                "type": "string",
+                "enum": [
+                  "D-own",
+                  "D",
+                  "O",
+                  "EC",
+                  "SE"
+                ]
+              },
+              "metric": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9-]{1,39}$"
+              },
+              "value": {
+                "type": "number"
+              },
+              "baseline": {
+                "type": "number"
+              },
+              "n": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "note": {
+                "type": "string",
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "tag"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 6
+        },
+        "intent": {
+          "type": "object",
+          "properties": {
+            "primary": {
+              "$ref": "#/$defs/intent"
+            },
+            "also": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/intent"
+              },
+              "maxItems": 3,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "primary"
+          ],
+          "additionalProperties": false
+        },
+        "awareness": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/awareness"
+          },
+          "minItems": 1,
+          "maxItems": 4,
+          "uniqueItems": true
+        },
+        "architectures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/architecture"
+          },
+          "minItems": 1,
+          "maxItems": 6,
+          "uniqueItems": true
+        },
+        "contentType": {
+          "$ref": "#/$defs/contentType"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "cover",
+              "slide2",
+              "caption-line1",
+              "spoken"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 4,
+          "uniqueItems": true
+        },
+        "skeleton": {
+          "type": "object",
+          "properties": {
+            "eg": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 240
+            },
+            "gulf": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 240
+            },
+            "levant": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 240
+            },
+            "msa-white": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 240
+            },
+            "en": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 240
+            }
+          },
+          "additionalProperties": false,
+          "description": "Same {slot} names in every dialect.",
+          "minProperties": 1
+        },
+        "slots": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "noun-phrase",
+                  "verb-phrase",
+                  "clause",
+                  "number",
+                  "name"
+                ]
+              },
+              "maxWords": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 12
+              },
+              "rule": {
+                "type": "string",
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "type",
+              "maxWords"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "needsSource": {
+          "type": "boolean"
+        },
+        "cover": {
+          "type": "object",
+          "properties": {
+            "totalMaxWords": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "heroMaxWords": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 6
+            },
+            "breakAt": {
+              "type": "string",
+              "maxLength": 8
+            }
+          },
+          "required": [
+            "totalMaxWords",
+            "heroMaxWords"
+          ],
+          "additionalProperties": false
+        },
+        "slide2": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "cta": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ctaKind"
+          },
+          "maxItems": 5,
+          "uniqueItems": true
+        },
+        "lints": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "no-answer-on-cover",
+              "one-gap",
+              "no-fear-stack",
+              "digits-on-cover",
+              "no-empty-hype",
+              "no-comment-bait",
+              "no-conspiracy",
+              "no-overclaim",
+              "no-cover-emoji",
+              "no-video-reference",
+              "number-needs-source"
+            ]
+          },
+          "maxItems": 12,
+          "uniqueItems": true
+        },
+        "maxUsePer": {
+          "type": "object",
+          "properties": {
+            "posts": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "posts",
+            "count"
+          ],
+          "additionalProperties": false
+        },
+        "styleHint": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/presetSlug"
+          },
+          "maxItems": 6
+        },
+        "motionHint": {
+          "$ref": "#/$defs/recipe"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "proposed",
+            "approved",
+            "used"
+          ]
+        },
+        "verified": {
+          "type": "boolean"
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "file": {
+              "type": "string",
+              "maxLength": 120
+            },
+            "id": {
+              "type": "string",
+              "maxLength": 40
+            }
+          },
+          "additionalProperties": false
+        },
+        "examples": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/example"
+          },
+          "maxItems": 12
+        }
+      },
+      "required": [
+        "id",
+        "family",
+        "name",
+        "intent",
+        "awareness",
+        "architectures",
+        "contentType",
+        "roles",
+        "skeleton",
+        "slots",
+        "needsSource",
+        "cover",
+        "cta",
+        "lints",
+        "examples"
+      ],
+      "additionalProperties": false
+    },
+    "example": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "dialect": {
+          "$ref": "#/$defs/dialect"
+        },
+        "origin": {
+          "type": "string",
+          "pattern": "^(synthetic|user|owner/H[0-9]{3})$"
+        },
+        "visibility": {
+          "type": "string",
+          "enum": [
+            "public",
+            "brand-private"
+          ]
+        },
+        "nativeReviewed": {
+          "type": "boolean"
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "text",
+        "dialect",
+        "origin",
+        "visibility"
+      ],
+      "additionalProperties": false
+    },
+    "hookFamily": {
+      "type": "string",
+      "enum": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5",
+        "P6",
+        "P7",
+        "P8",
+        "P9",
+        "P10",
+        "P11",
+        "P12",
+        "P13",
+        "P14",
+        "P15",
+        "P16",
+        "F17",
+        "F18",
+        "F19",
+        "F20",
+        "F21",
+        "F22",
+        "F23",
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "description": "Family code: P1-P16 playbook, F17-F23 new, S1-S3 soft-sell."
+    },
+    "intent": {
+      "type": "string",
+      "enum": [
+        "reach",
+        "save",
+        "send",
+        "sell"
+      ]
+    },
+    "library": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "const": 1
+        },
+        "kind": {
+          "const": "hook-library"
+        },
+        "language": {
+          "type": "string",
+          "enum": [
+            "ar",
+            "en"
+          ]
+        },
+        "visibility": {
+          "type": "string",
+          "enum": [
+            "public",
+            "brand-private"
+          ]
+        },
+        "libraryVersion": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/entry"
+          },
+          "maxItems": 400
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "kind",
+        "language",
+        "visibility",
+        "entries"
+      ],
+      "additionalProperties": false
+    },
+    "presetSlug": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,31}$"
+    },
+    "recipe": {
+      "type": "string",
+      "enum": [
+        "calm",
+        "counter",
+        "highlight-sweep",
+        "stamp",
+        "reorder",
+        "story",
+        "morph",
+        "split",
+        "map-dots",
+        "cash-wipe",
+        "drop-clock",
+        "scale",
+        "none"
+      ]
+    }
+  }
+}

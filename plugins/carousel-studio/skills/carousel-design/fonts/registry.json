@@ -1,0 +1,499 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "1.0.0",
+  "upstream": {
+    "repo": "https://github.com/google/fonts",
+    "commit": "45e3d5269e4a17d823f6d84470bc084dc5ae46f6",
+    "commitDate": "2026-10-21T14:04:42Z"
+  },
+  "notes": [
+    "Every font file is an unmodified upstream file from the google/fonts repository at the pinned commit. Nothing is subset, renamed or re-encoded.",
+    "Each OFL.txt is the upstream licence text with its line endings converted from CRLF to LF; the wording is unchanged.",
+    "Only upright faces ship. The engine never draws italic or slanted text, so the italic files of Rubik, IBM Plex Sans and Inter are left out.",
+    "wght is an inclusive [min, max] range on every file: a variable font spans its weight axis, a static font repeats its single weight. weights lists the 100-step stops that fall inside the family range.",
+    "scripts lists what a family is meant to typeset in a design; latin is the Latin coverage measured in coverage.json (extended: accented letters of Latin-1, basic: printable ASCII, none). Offer a family for a role by scripts and roles; use latin to know whether Latin runs, digits and handles can stay in the same face.",
+    "axes[].use: free means the engine sets the axis per token; auto means it is left to font-optical-sizing; default-only means the engine never sets it, so the font default applies (Cairo's slnt stays 0 and no slant is drawn).",
+    "tashkeel: ok means the font maps U+064B-0652 and positions marks (GPOS mark and mkmk for Arabic); limited means marks are mapped but not positioned; none means no support.",
+    "An export that embeds a family as a base64 @font-face must carry that family's copyright line and licence text: copyright, reservedFontNames and licenseFile are recorded for that purpose.",
+    "Maintained with tools/font_coverage.py, which rewrites coverage.json from the cmap and, with --check, verifies bytes, sha256, weights and axes here against the files."
+  ],
+  "families": [
+    {
+      "id": "ibm-plex-sans-arabic",
+      "family": "IBM Plex Sans Arabic",
+      "scripts": ["arabic"],
+      "license": "OFL-1.1",
+      "licenseFile": "ibm-plex-sans-arabic/OFL.txt",
+      "source": "https://fonts.google.com/specimen/IBM+Plex+Sans+Arabic",
+      "copyright": "Copyright © 2017 IBM Corp. with Reserved Font Name \"Plex\"",
+      "reservedFontNames": ["Plex"],
+      "designers": ["Mike Abbink", "Bold Monday", "Khajag Apelian", "Wael Morcos"],
+      "files": [
+        {
+          "file": "ibm-plex-sans-arabic/IBMPlexSansArabic-Thin.ttf",
+          "style": "normal",
+          "wght": [100, 100],
+          "variable": false,
+          "axes": [],
+          "bytes": 242204,
+          "sha256": "f8e1f556f815e3d29c531f79ff2bed276bec18d403fc6470b54900922cd91a79",
+          "upstreamBlob": "032f08e00b3c1a6b681d64b2a47e5e7bd9a9f213",
+          "upstreamPath": "ofl/ibmplexsansarabic/IBMPlexSansArabic-Thin.ttf"
+        },
+        {
+          "file": "ibm-plex-sans-arabic/IBMPlexSansArabic-ExtraLight.ttf",
+          "style": "normal",
+          "wght": [200, 200],
+          "variable": false,
+          "axes": [],
+          "bytes": 241652,
+          "sha256": "4d4137f37a1acd61f1b7eba47c08d0996789596b1e535f9220914ad5daf0a198",
+          "upstreamBlob": "5b76ced2c97dbe6ea7ef252b7713ac63d6970c4f",
+          "upstreamPath": "ofl/ibmplexsansarabic/IBMPlexSansArabic-ExtraLight.ttf"
+        },
+        {
+          "file": "ibm-plex-sans-arabic/IBMPlexSansArabic-Light.ttf",
+          "style": "normal",
+          "wght": [300, 300],
+          "variable": false,
+          "axes": [],
+          "bytes": 238564,
+          "sha256": "0af9d1effbb36ff74d13c64f752c771ecb9162a451cf151c5425f4d00d4daa7c",
+          "upstreamBlob": "b1837f60f271e329c0873467c3f83c720d879d04",
+          "upstreamPath": "ofl/ibmplexsansarabic/IBMPlexSansArabic-Light.ttf"
+        },
+        {
+          "file": "ibm-plex-sans-arabic/IBMPlexSansArabic-Regular.ttf",
+          "style": "normal",
+          "wght": [400, 400],
+          "variable": false,
+          "axes": [],
+          "bytes": 235924,
+          "sha256": "6f611412270a132bbac838da9259d4c68569b4175f3b3b8fa3fa36a30b56dab9",
+          "upstreamBlob": "e779068718b9801b809605b2bf3067121cce524c",
+          "upstreamPath": "ofl/ibmplexsansarabic/IBMPlexSansArabic-Regular.ttf"
+        },
+        {
+          "file": "ibm-plex-sans-arabic/IBMPlexSansArabic-Medium.ttf",
+          "style": "normal",
+          "wght": [500, 500],
+          "variable": false,
+          "axes": [],
+          "bytes": 242100,
+          "sha256": "b8363ab9f733dfa4f8e96b8b2102c24b5cf4110fb96d1d3d9a9412f6fb49cf74",
+          "upstreamBlob": "e82313893b5b5b6af3e7429f5b798666f1e0b097",
+          "upstreamPath": "ofl/ibmplexsansarabic/IBMPlexSansArabic-Medium.ttf"
+        },
+        {
+          "file": "ibm-plex-sans-arabic/IBMPlexSansArabic-SemiBold.ttf",
+          "style": "normal",
+          "wght": [600, 600],
+          "variable": false,
+          "axes": [],
+          "bytes": 244616,
+          "sha256": "597bd5502e5997be4414e4c9c88834b30ff3784250c84f20bce2b20e53ebd467",
+          "upstreamBlob": "f7a7fc87747a9ddabb3557d4a3f4140a7a1460b0",
+          "upstreamPath": "ofl/ibmplexsansarabic/IBMPlexSansArabic-SemiBold.ttf"
+        },
+        {
+          "file": "ibm-plex-sans-arabic/IBMPlexSansArabic-Bold.ttf",
+          "style": "normal",
+          "wght": [700, 700],
+          "variable": false,
+          "axes": [],
+          "bytes": 246992,
+          "sha256": "691e0c891a38637ae6bbdb69700f8042cb0724a137bee615068ffdb92244f61f",
+          "upstreamBlob": "211ff62d8d1778bff69a1b3a906b2ad1686564bc",
+          "upstreamPath": "ofl/ibmplexsansarabic/IBMPlexSansArabic-Bold.ttf"
+        }
+      ],
+      "weights": [100, 200, 300, 400, 500, 600, 700],
+      "classes": ["grotesque-sans"],
+      "roles": ["display", "heading", "body"],
+      "latin": "extended",
+      "tashkeel": "ok",
+      "defaultLook": false,
+      "pairsWith": ["readex-pro", "ibm-plex-sans"],
+      "presets": ["swiss"]
+    },
+    {
+      "id": "readex-pro",
+      "family": "Readex Pro",
+      "scripts": ["arabic", "latin"],
+      "license": "OFL-1.1",
+      "licenseFile": "readex-pro/OFL.txt",
+      "source": "https://fonts.google.com/specimen/Readex+Pro",
+      "copyright": "Copyright 2018 The Readex Pro Project Authors (https://github.com/ThomasJockin/readexpro), with Reserved Font Name “RevReading Lexend”.",
+      "reservedFontNames": ["RevReading Lexend"],
+      "designers": ["Thomas Jockin", "Nadine Chahine", "Bonnie Shaver-Troup", "Santiago Orozco", "Héctor Gómez"],
+      "files": [
+        {
+          "file": "readex-pro/ReadexPro[HEXP,wght].ttf",
+          "style": "normal",
+          "wght": [160, 700],
+          "variable": true,
+          "axes": [
+            { "tag": "wght", "min": 160, "default": 400, "max": 700, "use": "free" },
+            { "tag": "HEXP", "min": 0, "default": 0, "max": 100, "use": "default-only" }
+          ],
+          "bytes": 278544,
+          "sha256": "268bba7e1e8f3b14d798b3fb0e40ebaa3fc39308c9ac0020e2faf6df181cc30e",
+          "upstreamBlob": "563b89d182a98521152f7d5fc904bd646b058880",
+          "upstreamPath": "ofl/readexpro/ReadexPro[HEXP,wght].ttf"
+        }
+      ],
+      "weights": [200, 300, 400, 500, 600, 700],
+      "classes": ["geometric-sans"],
+      "roles": ["display", "heading", "body", "latin"],
+      "latin": "extended",
+      "tashkeel": "ok",
+      "defaultLook": false,
+      "pairsWith": ["ibm-plex-sans-arabic", "alexandria", "playpen-sans-arabic", "noto-kufi-arabic", "ibm-plex-sans", "inter"],
+      "presets": ["swiss", "creator", "notebook", "interface"]
+    },
+    {
+      "id": "alexandria",
+      "family": "Alexandria",
+      "scripts": ["arabic", "latin"],
+      "license": "OFL-1.1",
+      "licenseFile": "alexandria/OFL.txt",
+      "source": "https://fonts.google.com/specimen/Alexandria",
+      "copyright": "Copyright 2022 The Alexandria Project Authors (https://github.com/Gue3bara/Alexandria)",
+      "reservedFontNames": [],
+      "designers": ["Mohamed Gaber", "Julieta Ulanovsky"],
+      "files": [
+        {
+          "file": "alexandria/Alexandria[wght].ttf",
+          "style": "normal",
+          "wght": [100, 900],
+          "variable": true,
+          "axes": [
+            { "tag": "wght", "min": 100, "default": 400, "max": 900, "use": "free" }
+          ],
+          "bytes": 332488,
+          "sha256": "db8ae03b62d55a65aa4e04307878df8c00d6e5388e4800635cbe0e22b6411b64",
+          "upstreamBlob": "2c6c226dc74899321d4939f32d55f6acb97a59b2",
+          "upstreamPath": "ofl/alexandria/Alexandria[wght].ttf"
+        }
+      ],
+      "weights": [100, 200, 300, 400, 500, 600, 700, 800, 900],
+      "classes": ["geometric-sans"],
+      "roles": ["display", "heading", "body", "latin"],
+      "latin": "extended",
+      "tashkeel": "ok",
+      "defaultLook": false,
+      "pairsWith": ["readex-pro", "noto-kufi-arabic"],
+      "presets": ["creator", "poster"]
+    },
+    {
+      "id": "playpen-sans-arabic",
+      "family": "Playpen Sans Arabic",
+      "scripts": ["arabic"],
+      "license": "OFL-1.1",
+      "licenseFile": "playpen-sans-arabic/OFL.txt",
+      "source": "https://fonts.google.com/specimen/Playpen+Sans+Arabic",
+      "copyright": "Copyright 2023 The Playpen Sans Project Authors (https://github.com/TypeTogether/Playpen-Sans)",
+      "reservedFontNames": [],
+      "designers": ["TypeTogether", "Azza Alameddine", "Laura Meseguer", "Veronika Burian", "José Scaglione"],
+      "files": [
+        {
+          "file": "playpen-sans-arabic/PlaypenSansArabic[wght].ttf",
+          "style": "normal",
+          "wght": [100, 800],
+          "variable": true,
+          "axes": [
+            { "tag": "wght", "min": 100, "default": 400, "max": 800, "use": "free" }
+          ],
+          "bytes": 758132,
+          "sha256": "31122f11b6aa8a36a283f95797663a575afffbe2d52b69e496f3a2440942a226",
+          "upstreamBlob": "4f807c64e77fef2dd45b8b3c26b5d867fcd86d5c",
+          "upstreamPath": "ofl/playpensansarabic/PlaypenSansArabic[wght].ttf"
+        }
+      ],
+      "weights": [100, 200, 300, 400, 500, 600, 700, 800],
+      "classes": ["handwritten"],
+      "roles": ["display", "heading"],
+      "latin": "extended",
+      "tashkeel": "ok",
+      "defaultLook": false,
+      "pairsWith": ["readex-pro"],
+      "presets": ["notebook"]
+    },
+    {
+      "id": "noto-kufi-arabic",
+      "family": "Noto Kufi Arabic",
+      "scripts": ["arabic"],
+      "license": "OFL-1.1",
+      "licenseFile": "noto-kufi-arabic/OFL.txt",
+      "source": "https://fonts.google.com/specimen/Noto+Kufi+Arabic",
+      "copyright": "Copyright 2022 The Noto Project Authors (https://github.com/notofonts/arabic)",
+      "reservedFontNames": [],
+      "designers": ["Google"],
+      "files": [
+        {
+          "file": "noto-kufi-arabic/NotoKufiArabic[wght].ttf",
+          "style": "normal",
+          "wght": [100, 900],
+          "variable": true,
+          "axes": [
+            { "tag": "wght", "min": 100, "default": 400, "max": 900, "use": "free" }
+          ],
+          "bytes": 434204,
+          "sha256": "494f6b61469d7a02a2d63f0fc4930bb007388d8cfe551de5eb98354e100889f3",
+          "upstreamBlob": "9bb606f2ba004955109ea00a883cc23959b8d8e2",
+          "upstreamPath": "ofl/notokufiarabic/NotoKufiArabic[wght].ttf"
+        }
+      ],
+      "weights": [100, 200, 300, 400, 500, 600, 700, 800, 900],
+      "classes": ["kufi-sans"],
+      "roles": ["display", "heading"],
+      "latin": "extended",
+      "tashkeel": "ok",
+      "defaultLook": false,
+      "pairsWith": ["alexandria", "readex-pro"],
+      "presets": ["poster"]
+    },
+    {
+      "id": "reem-kufi",
+      "family": "Reem Kufi",
+      "scripts": ["arabic"],
+      "license": "OFL-1.1",
+      "licenseFile": "reem-kufi/OFL.txt",
+      "source": "https://fonts.google.com/specimen/Reem+Kufi",
+      "copyright": "Copyright 2015-2022 The Reem Kufi Project Authors (https://github.com/aliftype/reem-kufi), with Reserved Font Name \"Josefin Sans\".",
+      "reservedFontNames": ["Josefin Sans"],
+      "designers": ["Khaled Hosny", "Santiago Orozco"],
+      "files": [
+        {
+          "file": "reem-kufi/ReemKufi[wght].ttf",
+          "style": "normal",
+          "wght": [400, 700],
+          "variable": true,
+          "axes": [
+            { "tag": "wght", "min": 400, "default": 400, "max": 700, "use": "free" }
+          ],
+          "bytes": 127152,
+          "sha256": "33ead1986cd48c138c4d906c9e5a6341877268461f97623409a2014de1cd4aa4",
+          "upstreamBlob": "ad1a769f41ed4a2b87e3afe4289c9115acb9cc97",
+          "upstreamPath": "ofl/reemkufi/ReemKufi[wght].ttf"
+        }
+      ],
+      "weights": [400, 500, 600, 700],
+      "classes": ["kufi-display"],
+      "roles": ["display", "heading"],
+      "latin": "extended",
+      "tashkeel": "ok",
+      "defaultLook": false,
+      "pairsWith": ["el-messiri"],
+      "presets": ["heritage"]
+    },
+    {
+      "id": "el-messiri",
+      "family": "El Messiri",
+      "scripts": ["arabic", "latin"],
+      "license": "OFL-1.1",
+      "licenseFile": "el-messiri/OFL.txt",
+      "source": "https://fonts.google.com/specimen/El+Messiri",
+      "copyright": "Copyright 2015 The El Messiri Project Authors (https://github.com/Gue3bara/El-Messiri)",
+      "reservedFontNames": [],
+      "designers": ["Mohamed Gaber", "Jovanny Lemonad"],
+      "files": [
+        {
+          "file": "el-messiri/ElMessiri[wght].ttf",
+          "style": "normal",
+          "wght": [400, 700],
+          "variable": true,
+          "axes": [
+            { "tag": "wght", "min": 400, "default": 400, "max": 700, "use": "free" }
+          ],
+          "bytes": 138664,
+          "sha256": "5d58d5259d2accccba39cffe12e1226e88b6afc5150e3605eb2a9c2fe06ccab0",
+          "upstreamBlob": "37a6eeec808d14f751872edbfe6129a644c689ed",
+          "upstreamPath": "ofl/elmessiri/ElMessiri[wght].ttf"
+        }
+      ],
+      "weights": [400, 500, 600, 700],
+      "classes": ["brush-display"],
+      "roles": ["display", "heading", "body", "latin"],
+      "latin": "extended",
+      "tashkeel": "ok",
+      "defaultLook": false,
+      "pairsWith": ["reem-kufi"],
+      "presets": ["heritage"]
+    },
+    {
+      "id": "noto-sans-arabic",
+      "family": "Noto Sans Arabic",
+      "scripts": ["arabic"],
+      "license": "OFL-1.1",
+      "licenseFile": "noto-sans-arabic/OFL.txt",
+      "source": "https://fonts.google.com/specimen/Noto+Sans+Arabic",
+      "copyright": "Copyright 2022 The Noto Project Authors (https://github.com/notofonts/arabic)",
+      "reservedFontNames": [],
+      "designers": ["Google"],
+      "files": [
+        {
+          "file": "noto-sans-arabic/NotoSansArabic[wdth,wght].ttf",
+          "style": "normal",
+          "wght": [100, 900],
+          "variable": true,
+          "axes": [
+            { "tag": "wght", "min": 100, "default": 400, "max": 900, "use": "free" },
+            { "tag": "wdth", "min": 62.5, "default": 100, "max": 100, "use": "default-only" }
+          ],
+          "bytes": 844676,
+          "sha256": "63111b5b2e074dd48cc67692e0a2726d86ee94c1c37fe8598257b7b4e87e869e",
+          "upstreamBlob": "f1d01edce4ebaedcbe9a06fc75fec07b304ec3df",
+          "upstreamPath": "ofl/notosansarabic/NotoSansArabic[wdth,wght].ttf"
+        }
+      ],
+      "weights": [100, 200, 300, 400, 500, 600, 700, 800, 900],
+      "classes": ["neutral-sans"],
+      "roles": ["display", "heading", "body"],
+      "latin": "extended",
+      "tashkeel": "ok",
+      "defaultLook": false,
+      "pairsWith": ["inter", "ibm-plex-sans"],
+      "presets": []
+    },
+    {
+      "id": "cairo",
+      "family": "Cairo",
+      "scripts": ["arabic", "latin"],
+      "license": "OFL-1.1",
+      "licenseFile": "cairo/OFL.txt",
+      "source": "https://fonts.google.com/specimen/Cairo",
+      "copyright": "Copyright 2009 The Cairo Project Authors (https://github.com/Gue3bara/Cairo)",
+      "reservedFontNames": [],
+      "designers": ["Mohamed Gaber", "Accademia di Belle Arti di Urbino"],
+      "files": [
+        {
+          "file": "cairo/Cairo[slnt,wght].ttf",
+          "style": "normal",
+          "wght": [200, 1000],
+          "variable": true,
+          "axes": [
+            { "tag": "wght", "min": 200, "default": 400, "max": 1000, "use": "free" },
+            { "tag": "slnt", "min": -11, "default": 0, "max": 11, "use": "default-only" }
+          ],
+          "bytes": 599548,
+          "sha256": "667c987182391c91f4e57a2f455b1794fb5e3ee6ca4ef3383e86bb690fa9c964",
+          "upstreamBlob": "25641b1c828857698457bcd9f5a102616b4e8033",
+          "upstreamPath": "ofl/cairo/Cairo[slnt,wght].ttf"
+        }
+      ],
+      "weights": [200, 300, 400, 500, 600, 700, 800, 900],
+      "classes": ["kufi-sans"],
+      "roles": ["display", "heading", "body", "latin"],
+      "latin": "extended",
+      "tashkeel": "ok",
+      "defaultLook": true,
+      "pairsWith": [],
+      "presets": []
+    },
+    {
+      "id": "rubik",
+      "family": "Rubik",
+      "scripts": ["arabic", "latin"],
+      "license": "OFL-1.1",
+      "licenseFile": "rubik/OFL.txt",
+      "source": "https://fonts.google.com/specimen/Rubik",
+      "copyright": "Copyright 2015 The Rubik Project Authors (https://github.com/googlefonts/rubik)",
+      "reservedFontNames": [],
+      "designers": ["Hubert and Fischer", "Meir Sadan", "Cyreal", "Daniel Grumer", "Omaima Dajani"],
+      "files": [
+        {
+          "file": "rubik/Rubik[wght].ttf",
+          "style": "normal",
+          "wght": [300, 900],
+          "variable": true,
+          "axes": [
+            { "tag": "wght", "min": 300, "default": 300, "max": 900, "use": "free" }
+          ],
+          "bytes": 359804,
+          "sha256": "1b3a7437ba2af80e465e773ed60c5036d1ba6ace492d89046dbcf18fb31e4e88",
+          "upstreamBlob": "a59aeb632df494345a542697c357f608875481b0",
+          "upstreamPath": "ofl/rubik/Rubik[wght].ttf"
+        }
+      ],
+      "weights": [300, 400, 500, 600, 700, 800, 900],
+      "classes": ["rounded-sans"],
+      "roles": ["display", "heading", "body", "latin"],
+      "latin": "extended",
+      "tashkeel": "ok",
+      "defaultLook": true,
+      "pairsWith": [],
+      "presets": []
+    },
+    {
+      "id": "ibm-plex-sans",
+      "family": "IBM Plex Sans",
+      "scripts": ["latin"],
+      "license": "OFL-1.1",
+      "licenseFile": "ibm-plex-sans/OFL.txt",
+      "source": "https://fonts.google.com/specimen/IBM+Plex+Sans",
+      "copyright": "Copyright © 2017 IBM Corp. with Reserved Font Name \"Plex\"",
+      "reservedFontNames": ["Plex"],
+      "designers": ["Mike Abbink", "Bold Monday"],
+      "files": [
+        {
+          "file": "ibm-plex-sans/IBMPlexSans[wdth,wght].ttf",
+          "style": "normal",
+          "wght": [100, 700],
+          "variable": true,
+          "axes": [
+            { "tag": "wght", "min": 100, "default": 400, "max": 700, "use": "free" },
+            { "tag": "wdth", "min": 75, "default": 100, "max": 100, "use": "default-only" }
+          ],
+          "bytes": 537244,
+          "sha256": "3b031aa4216174205bd8471f88a49b91f093169e9e87bd5262242bc5967fe2e3",
+          "upstreamBlob": "30f837e8b02e8ecddce6cbebc425b1f422392515",
+          "upstreamPath": "ofl/ibmplexsans/IBMPlexSans[wdth,wght].ttf"
+        }
+      ],
+      "weights": [100, 200, 300, 400, 500, 600, 700],
+      "classes": ["grotesque-sans"],
+      "roles": ["latin"],
+      "latin": "extended",
+      "tashkeel": "none",
+      "defaultLook": false,
+      "pairsWith": ["ibm-plex-sans-arabic", "readex-pro", "noto-sans-arabic"],
+      "presets": ["swiss"]
+    },
+    {
+      "id": "inter",
+      "family": "Inter",
+      "scripts": ["latin"],
+      "license": "OFL-1.1",
+      "licenseFile": "inter/OFL.txt",
+      "source": "https://fonts.google.com/specimen/Inter",
+      "copyright": "Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter)",
+      "reservedFontNames": [],
+      "designers": ["Rasmus Andersson"],
+      "files": [
+        {
+          "file": "inter/Inter[opsz,wght].ttf",
+          "style": "normal",
+          "wght": [100, 900],
+          "variable": true,
+          "axes": [
+            { "tag": "opsz", "min": 14, "default": 14, "max": 32, "use": "auto" },
+            { "tag": "wght", "min": 100, "default": 400, "max": 900, "use": "free" }
+          ],
+          "bytes": 876576,
+          "sha256": "29160a80ff49ddcab2c97711247e08b1fab27a484a329ce8b813d820dc559031",
+          "upstreamBlob": "047c92f6e2212473dc436020afed689527076d44",
+          "upstreamPath": "ofl/inter/Inter[opsz,wght].ttf"
+        }
+      ],
+      "weights": [100, 200, 300, 400, 500, 600, 700, 800, 900],
+      "classes": ["grotesque-sans"],
+      "roles": ["latin"],
+      "latin": "extended",
+      "tashkeel": "none",
+      "defaultLook": false,
+      "pairsWith": ["readex-pro", "noto-sans-arabic"],
+      "presets": ["interface"]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "name": "carousel-studio",
+  "version": "1.1.0",
+  "description": "كاروسيل ستوديو — Arabic-first Instagram carousels and posts: angles, scored hooks, dialect copy, correct RTL typesetting, looping video covers, QA-gated export.",
+  "author": {
+    "name": "Mohamed Abdou",
+    "url": "https://store.pyraai.cloud"
+  },
+  "homepage": "https://github.com/mohamedabdou-ai/carousel-studio",
+  "repository": "https://github.com/mohamedabdou-ai/carousel-studio",
+  "documentationUrl": "https://github.com/mohamedabdou-ai/carousel-studio#readme",
+  "supportUrl": "https://github.com/mohamedabdou-ai/carousel-studio/issues",
+  "privacyPolicyUrl": "https://github.com/mohamedabdou-ai/carousel-studio/blob/main/PRIVACY.md",
+  "icon": "./assets/icon.png",
+  "license": "Apache-2.0",
+  "keywords": ["arabic", "rtl", "instagram", "carousel", "كاروسيل", "design", "social-media"],
+  "userConfig": {
+    "workspace_dir": {
+      "type": "directory",
+      "title": "Brands folder (Claude Code)",
+      "description": "Where Carousel Studio stores brand profiles, post specs and exports when you work in Claude Code. The Claude app and Cowork ignore this setting.",
+      "default": "~/CarouselStudio"
+    },
+    "default_brand": {
+      "type": "string",
+      "title": "Default brand slug",
+      "description": "The brand to use when a command does not name one, for example my-brand. Leave empty to be asked.",
+      "default": ""
+    }
+  }
+}

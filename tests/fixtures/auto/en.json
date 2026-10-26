@@ -1,0 +1,606 @@
+[
+  {
+    "specVersion": 1,
+    "id": "auto-en-0",
+    "rev": 1,
+    "brand": {
+      "slug": "fresh-start",
+      "snapshotHash": "8c523dc8be32fef0"
+    },
+    "brief": {
+      "topic": "Why freelance quotes get ignored, and the follow-up that works",
+      "input": "idea",
+      "note": "Fixture deck: synthetic example copy; every figure is sourced in spec.sources. No visual plan on purpose (zero-override input for the planner)."
+    },
+    "format": "carousel",
+    "mode": "guided",
+    "checkpoint": "design",
+    "canvas": {
+      "preset": "ig-3x4",
+      "w": 1080,
+      "h": 1440,
+      "safe": [
+        34,
+        45,
+        1012,
+        1350
+      ],
+      "exports": [
+        "3x4",
+        "4x5"
+      ]
+    },
+    "locale": {
+      "dialect": "en",
+      "register": "white",
+      "digits": "western",
+      "appLanguage": "en",
+      "swipeCue": "arrow-ltr"
+    },
+    "intent": "sell",
+    "awareness": "problem",
+    "contentType": "soft-sell",
+    "architecture": "opinion",
+    "angle": {
+      "id": "a7",
+      "title": "Silence is not a no",
+      "lens": "myth",
+      "score": 76,
+      "why": "A myth most freelancers believe, then a plan and a free script pack"
+    },
+    "hook": {
+      "id": "P4-FLIP-silence-not-no",
+      "family": "P4",
+      "text": "Silence is not a no. It's a forgotten quote.",
+      "cover": "Your quote got ignored.",
+      "score": {
+        "R": 31,
+        "J": 28,
+        "P": 13,
+        "total": 72
+      },
+      "slide2": "Most clients don't say no. They go quiet."
+    },
+    "style": {
+      "presetId": "creator@1.0"
+    },
+    "compat": {
+      "paint": "auto",
+      "mp4": "auto",
+      "hfRuntime": "auto"
+    },
+    "slides": [
+      {
+        "id": "s01",
+        "n": 1,
+        "type": "cover",
+        "kicker": "Freelancers",
+        "headline": "Your quote got\n==ignored==.",
+        "sub": "here's why, and what to send instead",
+        "media": {
+          "slot": "none",
+          "ai": false
+        }
+      },
+      {
+        "id": "s02",
+        "n": 2,
+        "type": "rehook",
+        "headline": "Most clients don't say no. They just go quiet.",
+        "bridge": "Here's the pattern"
+      },
+      {
+        "id": "s03",
+        "n": 3,
+        "type": "stat",
+        "title": "of my quotes got no reply",
+        "number": {
+          "value": "60",
+          "unit": "%",
+          "sourceId": "src1"
+        },
+        "body": "I tracked my last 20 quotes for a month. Silence beat a clear no.",
+        "bridge": "So is silence a no?",
+        "sourceIds": [
+          "src1"
+        ]
+      },
+      {
+        "id": "s04",
+        "n": 4,
+        "type": "myth-fact",
+        "title": "Is silence a no?",
+        "sides": [
+          {
+            "label": "Myth",
+            "text": "No reply means they're not interested"
+          },
+          {
+            "label": "Fact",
+            "text": "No reply means your quote is easy to forget"
+          }
+        ],
+        "bridge": "Here's what to send"
+      },
+      {
+        "id": "s05",
+        "n": 5,
+        "type": "quote",
+        "body": "Quick question before I close your file: budget or timing?",
+        "attribution": "A follow-up that gets replies"
+      },
+      {
+        "id": "s06",
+        "n": 6,
+        "type": "testimonial",
+        "body": "I sent that one line. The client replied within the hour.",
+        "attribution": "Freelance designer (example)",
+        "demo": {
+          "lines": [
+            {
+              "who": "me",
+              "text": "Checking in before I close your file"
+            },
+            {
+              "who": "them",
+              "text": "Sorry, been buried! Budget is fine, send the invoice",
+              "hi": true
+            }
+          ],
+          "caption": "A reply the same afternoon"
+        }
+      },
+      {
+        "id": "s07",
+        "n": 7,
+        "type": "grid",
+        "title": "Your four-step follow-up plan",
+        "items": [
+          {
+            "title": "Day 1",
+            "text": "Confirm you got it"
+          },
+          {
+            "title": "Day 3",
+            "text": "One-line check-in",
+            "hi": true
+          },
+          {
+            "title": "Day 7",
+            "text": "Share a quick win"
+          },
+          {
+            "title": "Day 14",
+            "text": "Close the loop kindly"
+          }
+        ],
+        "bridge": "Want the scripts?"
+      },
+      {
+        "id": "s08",
+        "n": 8,
+        "type": "offer",
+        "title": "Free follow-up script pack",
+        "bullets": [
+          "4 message templates",
+          "A reply tracker sheet",
+          "Tone tips for each step"
+        ],
+        "cta": {
+          "kind": "keyword-dm",
+          "text": "DM me QUOTE and I'll send the pack"
+        }
+      }
+    ],
+    "cover": {
+      "motion": {
+        "recipe": "highlight-sweep",
+        "feel": "calm",
+        "seconds": 6,
+        "fps": 30,
+        "source": "internal"
+      }
+    },
+    "captionPack": {
+      "firstLine": "I tracked my last 20 quotes. Most never got a no, they just went silent.",
+      "keywordLine": "How to follow up on a freelance quote: a four-step plan for days 1, 3, 7 and 14.",
+      "body": "Silence is rarely a no. It usually means your quote is easy to forget.\n\nThe plan: confirm you got it on day 1, send a one-line check-in on day 3, share a quick win on day 7, and close the loop kindly on day 14.\n\nThe day-3 line that gets replies is in the carousel. Send it once and see what happens.",
+      "cta": "DM me QUOTE and I'll send the free script pack.",
+      "hashtags": [
+        "#freelance",
+        "#smallbusiness",
+        "#followup",
+        "#clientwork"
+      ],
+      "perSlide": [
+        "Your quote got ignored. Here's why.",
+        "Most clients go quiet instead of saying no.",
+        "60% of my quotes got no reply.",
+        "Silence is not a no.",
+        "One line that gets replies.",
+        "A reply within the hour.",
+        "Your four-step follow-up plan.",
+        "Free follow-up script pack: DM me QUOTE."
+      ],
+      "alt": [
+        "Cover: \"Your quote got ignored.\", with \"Freelancers\" above and \"here's why, and what to send instead\" below.",
+        "Slide 2: \"Most clients don't say no. They just go quiet.\".",
+        "Number: 60%. \"of my quotes got no reply\". \"I tracked my last 20 quotes for a month. Silence beat a clear no.\"",
+        "Myth and fact: \"Is silence a no?\". Myth: \"No reply means they're not interested\". Fact: \"No reply means your quote is easy to forget\".",
+        "Quote: \"Quick question before I close your file: budget or timing?\" — A follow-up that gets replies.",
+        "Client message: \"I sent that one line. The client replied within the hour.\" — Freelance designer (example).",
+        "Grid: \"Your four-step follow-up plan\". Day 1; Day 3; Day 7; Day 14.",
+        "Offer: \"Free follow-up script pack\". 4 message templates; A reply tracker sheet; Tone tips for each step. \"DM me QUOTE and I'll send the pack\""
+      ],
+      "asset": {
+        "keyword": "QUOTE",
+        "description": "Follow-up script pack",
+        "delivery": "instant"
+      }
+    },
+    "sources": [
+      {
+        "id": "src1",
+        "kind": "calc",
+        "ref": "Own pipeline, last 20 quotes",
+        "formula": "12 / 20 = 60%",
+        "excerpt": "12 of the last 20 quotes got no reply",
+        "inputs": [],
+        "verified": true
+      }
+    ],
+    "assets": [],
+    "qa": {
+      "status": "pass",
+      "runAt": "2026-10-23T09:20:00Z",
+      "engine": "cs-1.1.0",
+      "results": []
+    },
+    "approvals": {
+      "angle": {
+        "at": "2026-10-23T09:04:00Z"
+      },
+      "script": {
+        "at": "2026-10-23T09:16:00Z"
+      }
+    },
+    "meta": {
+      "createdAt": "2026-10-23T09:00:00Z",
+      "updatedAt": "2026-10-23T09:20:00Z",
+      "updatedBy": "claude",
+      "generator": {
+        "skill": "carousel-create",
+        "version": "1.1.0"
+      }
+    }
+  },
+  {
+    "specVersion": 1,
+    "id": "auto-en-1",
+    "rev": 1,
+    "brand": {
+      "slug": "fresh-start",
+      "snapshotHash": "8c523dc8be32fef0"
+    },
+    "brief": {
+      "topic": "A copyable three-day food-first city break for 300 dollars",
+      "input": "idea",
+      "note": "Fixture deck: synthetic example copy; every figure is sourced in spec.sources. No visual plan on purpose (zero-override input for the planner)."
+    },
+    "format": "carousel",
+    "mode": "guided",
+    "checkpoint": "design",
+    "canvas": {
+      "preset": "ig-3x4",
+      "w": 1080,
+      "h": 1440,
+      "safe": [
+        34,
+        45,
+        1012,
+        1350
+      ],
+      "exports": [
+        "3x4",
+        "4x5"
+      ]
+    },
+    "locale": {
+      "dialect": "en",
+      "register": "white",
+      "digits": "western",
+      "appLanguage": "en",
+      "swipeCue": "arrow-ltr"
+    },
+    "intent": "save",
+    "awareness": "solution",
+    "contentType": "value",
+    "architecture": "framework",
+    "angle": {
+      "id": "a8",
+      "title": "Plan the food first",
+      "lens": "framework",
+      "score": 77,
+      "why": "A plan with a budget split people save and reuse"
+    },
+    "hook": {
+      "id": "P11-PACK-three-days-300",
+      "family": "P11",
+      "text": "A copyable 3-day food plan for 300 dollars",
+      "cover": "3 days. $300. Eat well.",
+      "score": {
+        "R": 31,
+        "J": 29,
+        "P": 14,
+        "total": 74
+      },
+      "slide2": "Plan the food first. The trip builds itself."
+    },
+    "style": {
+      "presetId": "poster@1.0"
+    },
+    "compat": {
+      "paint": "auto",
+      "mp4": "auto",
+      "hfRuntime": "auto"
+    },
+    "slides": [
+      {
+        "id": "s01",
+        "n": 1,
+        "type": "cover",
+        "kicker": "Budget city break",
+        "headline": "3 days. $300.\nEat ==well==.",
+        "sub": "a copyable plan",
+        "media": {
+          "slot": "none",
+          "ai": false
+        }
+      },
+      {
+        "id": "s02",
+        "n": 2,
+        "type": "rehook",
+        "headline": "Plan the food first. The trip builds itself.",
+        "sub": "3 days, 3 rules",
+        "bridge": "Here's the plan"
+      },
+      {
+        "id": "s03",
+        "n": 3,
+        "type": "timeline",
+        "title": "Your 3 days at a glance",
+        "items": [
+          {
+            "value": "Day 1",
+            "title": "Market breakfast",
+            "text": "Graze, don't sit down"
+          },
+          {
+            "value": "Day 2",
+            "title": "Food crawl",
+            "text": "Five stops, small bites",
+            "hi": true
+          },
+          {
+            "value": "Day 3",
+            "title": "Proper dinner",
+            "text": "Book it early"
+          }
+        ],
+        "bridge": "Now the money",
+        "sourceIds": [
+          "src1"
+        ]
+      },
+      {
+        "id": "s04",
+        "n": 4,
+        "type": "grid",
+        "title": "Where the $300 goes",
+        "items": [
+          {
+            "title": "Stay",
+            "text": "3 nights, shared room",
+            "value": "$120"
+          },
+          {
+            "title": "Food",
+            "text": "Markets over menus",
+            "value": "$105",
+            "hi": true
+          },
+          {
+            "title": "Transport",
+            "text": "Walk, then metro",
+            "value": "$45"
+          },
+          {
+            "title": "Extras",
+            "text": "One treat, no guilt",
+            "value": "$30"
+          }
+        ],
+        "bridge": "Tools that help",
+        "sourceIds": [
+          "src1"
+        ]
+      },
+      {
+        "id": "s05",
+        "n": 5,
+        "type": "story-beat",
+        "ord": 1,
+        "title": "The day it went wrong",
+        "body": "We queued at a famous restaurant. A market stall next door fed us better.",
+        "bridge": "Which tools helped?",
+        "demo": {
+          "lines": [
+            {
+              "who": "sys",
+              "text": "Table for two: one hour wait"
+            },
+            {
+              "who": "me",
+              "text": "Let's try the stall next door",
+              "hi": true
+            }
+          ],
+          "caption": "Cheaper and better"
+        }
+      },
+      {
+        "id": "s06",
+        "n": 6,
+        "type": "setup",
+        "title": "What you need",
+        "bullets": [
+          "A budget sheet",
+          "A map app with saved pins",
+          "A booking app for dinner",
+          "Cash for market stalls"
+        ],
+        "bridge": "Here's my sheet",
+        "demo": {
+          "lines": [
+            {
+              "text": "Pin: market breakfast"
+            },
+            {
+              "text": "Pin: dinner, book by Friday",
+              "hi": true
+            }
+          ],
+          "caption": "Save pins before you fly"
+        }
+      },
+      {
+        "id": "s07",
+        "n": 7,
+        "type": "proof",
+        "title": "My budget sheet",
+        "body": "Every purchase logged the same day.",
+        "bridge": "One last checklist",
+        "media": {
+          "slot": "screenshot",
+          "assetId": "shot2",
+          "ai": false
+        },
+        "notes": "Stand-in image in place of a real screenshot of a budget sheet: replace it with yours before publishing."
+      },
+      {
+        "id": "s08",
+        "n": 8,
+        "type": "checklist",
+        "title": "Before you go",
+        "bullets": [
+          "Book the proper dinner",
+          "Pin five market stalls",
+          "Set the daily food budget",
+          "Carry small cash"
+        ]
+      },
+      {
+        "id": "s09",
+        "n": 9,
+        "type": "cta",
+        "variant": "action",
+        "title": "Want the next city?",
+        "cta": {
+          "kind": "follow",
+          "text": "Follow for the next food-first plan"
+        }
+      }
+    ],
+    "cover": {
+      "motion": {
+        "recipe": "map-dots",
+        "feel": "story",
+        "seconds": 6,
+        "fps": 30,
+        "source": "internal"
+      }
+    },
+    "captionPack": {
+      "firstLine": "I plan the meals before the flights. It keeps a whole weekend under 300 dollars.",
+      "keywordLine": "A three-day food-first city break on a budget: stay, food, transport and extras for $300.",
+      "body": "Day 1 is a market breakfast. Day 2 is a food crawl with small bites. Day 3 is one proper dinner, booked early.\n\nThe split: $120 for the stay, $105 for food, $45 for transport and $30 for extras.\n\nSave the checklist at the end and pin your market stops before you fly.",
+      "cta": "Follow for the next food-first plan.",
+      "hashtags": [
+        "#budgettravel",
+        "#foodtravel",
+        "#citybreak",
+        "#travelplanning"
+      ],
+      "perSlide": [
+        "3 days. $300. Eat well.",
+        "Plan the food first, the trip builds itself.",
+        "Your three days at a glance.",
+        "Where the $300 goes.",
+        "The day the famous restaurant lost.",
+        "What you need before you go.",
+        "My budget sheet, logged daily.",
+        "A checklist to save.",
+        "Follow for the next city."
+      ],
+      "alt": [
+        "Cover: \"3 days. $300. Eat well.\", with \"Budget city break\" above and \"a copyable plan\" below.",
+        "Slide 2: \"Plan the food first. The trip builds itself.\", with \"3 days, 3 rules\" underneath.",
+        "Timeline: \"Your 3 days at a glance\". Day 1 Market breakfast; Day 2 Food crawl; Day 3 Proper dinner.",
+        "Grid: \"Where the $300 goes\". $120 Stay; $105 Food; $45 Transport; $30 Extras.",
+        "Scene: \"The day it went wrong\". \"We queued at a famous restaurant. A market stall next door fed us better.\"",
+        "What you need: \"What you need\". A budget sheet; A map app with saved pins; A booking app for dinner; Cash for market stalls.",
+        "Stand-in screenshot for the example: \"My budget sheet\". \"Every purchase logged the same day.\"",
+        "Checklist: \"Before you go\". Book the proper dinner; Pin five market stalls; Set the daily food budget; Carry small cash.",
+        "Call to action: \"Want the next city?\". \"Follow for the next food-first plan\""
+      ]
+    },
+    "sources": [
+      {
+        "id": "src1",
+        "kind": "calc",
+        "ref": "Budget for 3 days",
+        "formula": "120 + 105 + 45 + 30 = 300",
+        "excerpt": "Budget for 3 days: 120 + 105 + 45 + 30 = 300 dollars",
+        "inputs": [],
+        "verified": true
+      }
+    ],
+    "assets": [
+      {
+        "id": "shot2",
+        "kind": "image",
+        "ref": "data:image/png;base64,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",
+        "mime": "image/png",
+        "width": 600,
+        "height": 750,
+        "aiGenerated": false,
+        "tool": "fixture stand-in",
+        "alt": "Stand-in screenshot for the example: a generic spreadsheet with no text and no brand, one row highlighted"
+      }
+    ],
+    "qa": {
+      "status": "pass",
+      "runAt": "2026-10-23T09:20:00Z",
+      "engine": "cs-1.1.0",
+      "results": []
+    },
+    "approvals": {
+      "angle": {
+        "at": "2026-10-23T09:04:00Z"
+      },
+      "script": {
+        "at": "2026-10-23T09:16:00Z"
+      }
+    },
+    "meta": {
+      "createdAt": "2026-10-23T09:00:00Z",
+      "updatedAt": "2026-10-23T09:20:00Z",
+      "updatedBy": "claude",
+      "generator": {
+        "skill": "carousel-create",
+        "version": "1.1.0"
+      }
+    }
+  }
+]

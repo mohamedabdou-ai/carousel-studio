@@ -1,0 +1,584 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "1.0.0",
+  "description": "Per-dialect and per-country defaults used at onboarding (brand-setup), by carousel-create (dialect, digits, swipe cue) and by CS.core (punctuation, counter). Digits default to Western 0-9 everywhere (Q38: 100% of numerals on the winning Arabic covers were Western); Arabic-Indic is an opt-in that the plugin only OFFERS for formal registers. Swipe cue follows the audience's Instagram app language (Q24).",
+  "digits": {
+    "default": "western",
+    "optIn": "arabic-indic",
+    "offerArabicIndicWhen": {
+      "register": [
+        "msa"
+      ],
+      "topics": [
+        "government",
+        "finance",
+        "health",
+        "legal"
+      ],
+      "countries": [
+        "EG",
+        "SA",
+        "IQ",
+        "SD",
+        "YE"
+      ]
+    },
+    "evidence": {
+      "ar": "كل الأرقام على أغلفة الكاروسيل العربي الناجحة اللي حلّلناها (16 غلاف) كانت بالأرقام 123.",
+      "en": "Every numeral on the 16 winning Arabic covers we analysed was Western (0-9)."
+    },
+    "rule": "One digit system per design. Conversion happens in one pass and never inside handles, hashtags, URLs or phone numbers.",
+    "systems": {
+      "western": {
+        "digits": "0123456789",
+        "decimal": ".",
+        "thousands": ",",
+        "percent": "%",
+        "counterExample": "3 من 8"
+      },
+      "arabic-indic": {
+        "digits": "٠١٢٣٤٥٦٧٨٩",
+        "decimal": "٫",
+        "thousands": "٬",
+        "percent": "٪",
+        "counterExample": "٣ من ٨"
+      }
+    },
+    "forbiddenDigitForms": [
+      "۰۱۲۳۴۵۶۷۸۹ (Persian / Extended Arabic-Indic U+06F0-06F9)"
+    ]
+  },
+  "swipeCue": {
+    "verification": "Web-verified on 2026-10-21 (Arabic UI puts slide 2 on the LEFT); native phone apps not device-tested (SP8); the cue is a per-brand setting, so it is right either way.",
+    "byAppLanguage": {
+      "ar": "arrow-rtl",
+      "en": "arrow-ltr",
+      "mixed": "neutral"
+    },
+    "meaning": {
+      "arrow-rtl": "Arabic-UI audience: the next slide is on the left, so the cue points left.",
+      "arrow-ltr": "English-UI audience: the next slide is on the right, so the cue points right.",
+      "neutral": "Mixed audience: no arrow; the counter plus a quiet progress rail."
+    },
+    "labels": {
+      "arrow-rtl": {
+        "eg": "اسحب ←",
+        "gulf": "اسحب ←",
+        "levant": "اسحب ←",
+        "msa-white": "اسحب ←",
+        "en": "Swipe ←"
+      },
+      "arrow-ltr": {
+        "eg": "اسحب →",
+        "gulf": "اسحب →",
+        "levant": "اسحب →",
+        "msa-white": "اسحب →",
+        "en": "Swipe →"
+      },
+      "neutral": {
+        "eg": "التالي",
+        "gulf": "التالي",
+        "levant": "التالي",
+        "msa-white": "التالي",
+        "en": "Next"
+      }
+    },
+    "panoramas": "opt-in only, with an explicit direction chosen by the user"
+  },
+  "counter": {
+    "formats": {
+      "ar": "{i} من {n}",
+      "en": "{i}/{n}"
+    },
+    "remainingFormat": {
+      "ar": "باقي {k}",
+      "en": "{k} left"
+    },
+    "remainingFromSlideCount": 2,
+    "digitsFollow": "locale.digits"
+  },
+  "slideStrings": {
+    "_note": "Text the ENGINE prints on slides (it follows the post's dialect, not the Studio UI dialect). {i} {n} {k} are numbers formatted in locale.digits. Labels of compare and myth-fact sides come from slide.sides[].label; mythLabel/factLabel/versusLabel are the defaults when a label is empty.",
+    "savePill": {
+      "eg": "احفظ البوست",
+      "gulf": "احفظ البوست",
+      "levant": "احفظ البوست",
+      "msa-white": "احفظ المنشور",
+      "en": "Save this post"
+    },
+    "stepLabel": {
+      "eg": "الخطوة {i} من {n}",
+      "gulf": "الخطوة {i} من {n}",
+      "levant": "الخطوة {i} من {n}",
+      "msa-white": "الخطوة {i} من {n}",
+      "en": "Step {i} of {n}"
+    },
+    "mythLabel": {
+      "eg": "خرافة",
+      "gulf": "خرافة",
+      "levant": "خرافة",
+      "msa-white": "خرافة",
+      "en": "Myth"
+    },
+    "factLabel": {
+      "eg": "حقيقة",
+      "gulf": "حقيقة",
+      "levant": "حقيقة",
+      "msa-white": "حقيقة",
+      "en": "Fact"
+    },
+    "versusLabel": {
+      "eg": "مقابل",
+      "gulf": "مقابل",
+      "levant": "مقابل",
+      "msa-white": "مقابل",
+      "en": "VS"
+    }
+  },
+  "punctuation": {
+    "ar": {
+      "comma": "،",
+      "semicolon": "؛",
+      "question": "؟",
+      "ellipsis": "…",
+      "quotes": [
+        "«",
+        "»"
+      ],
+      "percent": {
+        "western": "%",
+        "arabic-indic": "٪"
+      },
+      "decimal": {
+        "western": ".",
+        "arabic-indic": "٫"
+      },
+      "thousands": {
+        "western": ",",
+        "arabic-indic": "٬"
+      },
+      "spacing": "No space before ، ؛ ؟ : ! . and one space after. No Latin punctuation (, ; ?) inside Arabic sentences.",
+      "bidi": "Isolate every LTR run with <bdi dir=\"ltr\">; never insert U+200E/U+200F by hand in stored copy."
+    },
+    "en": {
+      "comma": ",",
+      "semicolon": ";",
+      "question": "?",
+      "ellipsis": "…",
+      "quotes": [
+        "“",
+        "”"
+      ]
+    }
+  },
+  "register": {
+    "defaults": {
+      "eg": "dialect",
+      "gulf": "dialect",
+      "levant": "dialect",
+      "msa-white": "white",
+      "en": "white"
+    },
+    "suggestMsaFor": [
+      "government",
+      "finance",
+      "health",
+      "legal",
+      "education-formal"
+    ],
+    "suggestWhiteFor": [
+      "pan-arab ads",
+      "instructions",
+      "reference posts",
+      "mixed-country audiences"
+    ],
+    "suggestDialectFor": [
+      "personal brands",
+      "stories",
+      "opinions",
+      "local pull"
+    ],
+    "rule": "One register per post. Latin brand and tool names stay Latin."
+  },
+  "dialects": {
+    "eg": {
+      "label": {
+        "ar": "مصري",
+        "en": "Egyptian"
+      },
+      "register": "dialect",
+      "uiDialect": "eg",
+      "countries": [
+        "EG"
+      ],
+      "subVarieties": [],
+      "counter": "ar",
+      "ctaStyle": "direct",
+      "note": "Most widely understood dialect. Deny markers for other dialects live in dialects/eg.json."
+    },
+    "gulf": {
+      "label": {
+        "ar": "خليجي",
+        "en": "Gulf"
+      },
+      "register": "dialect",
+      "uiDialect": "gulf",
+      "countries": [
+        "SA",
+        "AE",
+        "KW",
+        "QA",
+        "BH",
+        "OM"
+      ],
+      "subVarieties": [
+        "najdi",
+        "hijazi",
+        "emirati"
+      ],
+      "counter": "ar",
+      "ctaStyle": "soft",
+      "note": "White Gulf (understood across the GCC) plus English tool names. Sub-variety is a brand setting: Najdi 'أبي', Hijazi 'أبغى'."
+    },
+    "levant": {
+      "label": {
+        "ar": "شامي",
+        "en": "Levantine"
+      },
+      "register": "dialect",
+      "uiDialect": "levant",
+      "countries": [
+        "LB",
+        "SY",
+        "JO",
+        "PS"
+      ],
+      "subVarieties": [
+        "lebanese",
+        "syrian"
+      ],
+      "counter": "ar",
+      "ctaStyle": "soft",
+      "note": "Sub-variety is a brand setting: Lebanese 'هيدا', Syrian 'هاد'."
+    },
+    "msa-white": {
+      "label": {
+        "ar": "فصحى مبسّطة",
+        "en": "Simplified MSA"
+      },
+      "register": "white",
+      "uiDialect": "msa-white",
+      "countries": [
+        "IQ",
+        "YE",
+        "SD",
+        "LY",
+        "TN",
+        "DZ",
+        "MA",
+        "MR"
+      ],
+      "subVarieties": [],
+      "counter": "ar",
+      "ctaStyle": "neutral",
+      "note": "Default for Iraq, Yemen, Sudan and the Maghreb until a native Darija pack exists (post-v1). Also the pan-Arab choice."
+    },
+    "en": {
+      "label": {
+        "ar": "English",
+        "en": "English"
+      },
+      "register": "white",
+      "uiDialect": "en",
+      "countries": [],
+      "subVarieties": [],
+      "counter": "en",
+      "ctaStyle": "direct",
+      "note": "English copy: dir=ltr lang=en. The Studio chrome follows the audience app language."
+    }
+  },
+  "countries": {
+    "EG": {
+      "name": {
+        "ar": "مصر",
+        "en": "Egypt"
+      },
+      "dialect": "eg",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl",
+      "tz": "Africa/Cairo",
+      "weekend": [
+        "fri",
+        "sat"
+      ]
+    },
+    "SA": {
+      "name": {
+        "ar": "السعودية",
+        "en": "Saudi Arabia"
+      },
+      "dialect": "gulf",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl",
+      "tz": "Asia/Riyadh",
+      "weekend": [
+        "fri",
+        "sat"
+      ]
+    },
+    "AE": {
+      "name": {
+        "ar": "الإمارات",
+        "en": "United Arab Emirates"
+      },
+      "dialect": "gulf",
+      "appLanguage": "mixed",
+      "swipeCue": "neutral",
+      "tz": "Asia/Dubai",
+      "weekend": [
+        "sat",
+        "sun"
+      ]
+    },
+    "KW": {
+      "name": {
+        "ar": "الكويت",
+        "en": "Kuwait"
+      },
+      "dialect": "gulf",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl",
+      "tz": "Asia/Kuwait",
+      "weekend": [
+        "fri",
+        "sat"
+      ]
+    },
+    "QA": {
+      "name": {
+        "ar": "قطر",
+        "en": "Qatar"
+      },
+      "dialect": "gulf",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl",
+      "tz": "Asia/Qatar",
+      "weekend": [
+        "fri",
+        "sat"
+      ]
+    },
+    "BH": {
+      "name": {
+        "ar": "البحرين",
+        "en": "Bahrain"
+      },
+      "dialect": "gulf",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl",
+      "tz": "Asia/Bahrain",
+      "weekend": [
+        "fri",
+        "sat"
+      ]
+    },
+    "OM": {
+      "name": {
+        "ar": "عُمان",
+        "en": "Oman"
+      },
+      "dialect": "gulf",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl",
+      "tz": "Asia/Muscat",
+      "weekend": [
+        "fri",
+        "sat"
+      ]
+    },
+    "IQ": {
+      "name": {
+        "ar": "العراق",
+        "en": "Iraq"
+      },
+      "dialect": "msa-white",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl",
+      "tz": "Asia/Baghdad",
+      "weekend": [
+        "fri",
+        "sat"
+      ]
+    },
+    "JO": {
+      "name": {
+        "ar": "الأردن",
+        "en": "Jordan"
+      },
+      "dialect": "levant",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl",
+      "tz": "Asia/Amman",
+      "weekend": [
+        "fri",
+        "sat"
+      ]
+    },
+    "LB": {
+      "name": {
+        "ar": "لبنان",
+        "en": "Lebanon"
+      },
+      "dialect": "levant",
+      "appLanguage": "mixed",
+      "swipeCue": "neutral",
+      "tz": "Asia/Beirut",
+      "weekend": [
+        "sat",
+        "sun"
+      ]
+    },
+    "SY": {
+      "name": {
+        "ar": "سوريا",
+        "en": "Syria"
+      },
+      "dialect": "levant",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl",
+      "tz": "Asia/Damascus",
+      "weekend": [
+        "fri",
+        "sat"
+      ]
+    },
+    "PS": {
+      "name": {
+        "ar": "فلسطين",
+        "en": "Palestine"
+      },
+      "dialect": "levant",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl",
+      "tz": "Asia/Hebron",
+      "weekend": [
+        "fri",
+        "sat"
+      ]
+    },
+    "YE": {
+      "name": {
+        "ar": "اليمن",
+        "en": "Yemen"
+      },
+      "dialect": "msa-white",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl",
+      "tz": "Asia/Aden",
+      "weekend": [
+        "fri",
+        "sat"
+      ]
+    },
+    "SD": {
+      "name": {
+        "ar": "السودان",
+        "en": "Sudan"
+      },
+      "dialect": "msa-white",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl",
+      "tz": "Africa/Khartoum",
+      "weekend": [
+        "fri",
+        "sat"
+      ]
+    },
+    "LY": {
+      "name": {
+        "ar": "ليبيا",
+        "en": "Libya"
+      },
+      "dialect": "msa-white",
+      "appLanguage": "ar",
+      "swipeCue": "arrow-rtl",
+      "tz": "Africa/Tripoli",
+      "weekend": [
+        "fri",
+        "sat"
+      ]
+    },
+    "TN": {
+      "name": {
+        "ar": "تونس",
+        "en": "Tunisia"
+      },
+      "dialect": "msa-white",
+      "appLanguage": "mixed",
+      "swipeCue": "neutral",
+      "tz": "Africa/Tunis",
+      "weekend": [
+        "sat",
+        "sun"
+      ]
+    },
+    "DZ": {
+      "name": {
+        "ar": "الجزائر",
+        "en": "Algeria"
+      },
+      "dialect": "msa-white",
+      "appLanguage": "mixed",
+      "swipeCue": "neutral",
+      "tz": "Africa/Algiers",
+      "weekend": [
+        "fri",
+        "sat"
+      ]
+    },
+    "MA": {
+      "name": {
+        "ar": "المغرب",
+        "en": "Morocco"
+      },
+      "dialect": "msa-white",
+      "appLanguage": "mixed",
+      "swipeCue": "neutral",
+      "tz": "Africa/Casablanca",
+      "weekend": [
+        "sat",
+        "sun"
+      ]
+    },
+    "MR": {
+      "name": {
+        "ar": "موريتانيا",
+        "en": "Mauritania"
+      },
+      "dialect": "msa-white",
+      "appLanguage": "mixed",
+      "swipeCue": "neutral",
+      "tz": "Africa/Nouakchott"
+    }
+  },
+  "mixedAudience": {
+    "rule": "When the audience spans countries with different app languages (for example UAE + Egypt) use appLanguage 'mixed'. The cue becomes neutral and the counter carries the progress.",
+    "countriesDefaultMixed": [
+      "AE",
+      "LB",
+      "TN",
+      "DZ",
+      "MA",
+      "MR"
+    ]
+  },
+  "fallback": {
+    "unknownCountry": {
+      "dialect": "msa-white",
+      "appLanguage": "mixed",
+      "swipeCue": "neutral",
+      "tz": "UTC"
+    },
+    "note": "Countries outside this table (SO, DJ, KM, diaspora) use the fallback until the user picks otherwise."
+  }
+}

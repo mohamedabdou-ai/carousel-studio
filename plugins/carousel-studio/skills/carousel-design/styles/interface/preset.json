@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "id": "interface",
+  "version": "1.0",
+  "name": {
+    "ar": "واجهة",
+    "en": "Interface"
+  },
+  "description": {
+    "ar": "نافذة تطبيق بيضاء على سطح مكتب فاتح، وشريط عنوان بحساب الصفحة، وبطاقات وأزرار نظيفة. مثالي لحزم الأدوات والشروحات.",
+    "en": "A white app window on a light desktop, a title bar that carries the handle, clean cards and buttons. Ideal for tool packs and walkthroughs."
+  },
+  "bestFor": [
+    "tool packs",
+    "walkthroughs",
+    "software reviews",
+    "free vs paid",
+    "setup guides",
+    "teaching Instagram and carousels"
+  ],
+  "ships": "1.2",
+  "paintable": true,
+  "roles": {
+    "bg": "#E8ECF3",
+    "surface": "#FFFFFF",
+    "ink": "#0F172A",
+    "inkMuted": "#475569",
+    "accent": "#4F46E5"
+  },
+  "brandBindings": [
+    "bg",
+    "surface",
+    "ink",
+    "inkMuted",
+    "accent",
+    "fonts"
+  ],
+  "type": {
+    "display": {
+      "family": "readex-pro",
+      "wght": 700,
+      "lh": 1.3
+    },
+    "heading": {
+      "family": "readex-pro",
+      "wght": 600,
+      "lh": 1.35
+    },
+    "body": {
+      "family": "readex-pro",
+      "wght": 400,
+      "lh": 1.6
+    },
+    "latin": {
+      "family": "inter",
+      "wght": 700
+    },
+    "scale": {
+      "hero": [
+        120,
+        170
+      ],
+      "heroTarget": 146,
+      "h1": 84,
+      "h2": 68,
+      "title": [
+        64,
+        72
+      ],
+      "body": [
+        44,
+        48
+      ],
+      "small": 34,
+      "micro": 30
+    }
+  },
+  "layout": {
+    "align": "start",
+    "coverAnchor": "top",
+    "headlineWidth": [
+      0.65,
+      0.85
+    ]
+  },
+  "background": {
+    "kind": "solid",
+    "params": {
+      "role": "bg"
+    }
+  },
+  "decor": {
+    "highlight": "marker",
+    "numbering": "pill",
+    "texture": "dots",
+    "kashida": {
+      "allowed": false
+    }
+  },
+  "chrome": {
+    "handle": {
+      "slot": "header-start",
+      "logo": "auto"
+    },
+    "meta": {
+      "slot": "header-center"
+    },
+    "counter": {
+      "slot": "footer-center",
+      "format": "{i} من {n}"
+    },
+    "swipe": {
+      "slot": "footer-end",
+      "style": "label+chevron"
+    },
+    "savePill": {
+      "slot": "footer-start",
+      "showOn": [
+        "cta"
+      ]
+    }
+  },
+  "variants": {
+    "cover": [
+      "top",
+      "split",
+      "center"
+    ],
+    "rehook": [
+      "base",
+      "split"
+    ],
+    "item": [
+      "base",
+      "side-number",
+      "media"
+    ],
+    "step": [
+      "pill",
+      "base"
+    ],
+    "stat": [
+      "bar",
+      "base"
+    ],
+    "compare": [
+      "columns",
+      "versus",
+      "stacked"
+    ],
+    "myth-fact": [
+      "columns",
+      "stacked"
+    ],
+    "quote": [
+      "base",
+      "mark"
+    ],
+    "story-beat": [
+      "panel",
+      "base",
+      "media"
+    ],
+    "checklist": [
+      "boxes",
+      "ruled",
+      "base"
+    ],
+    "summary": [
+      "list",
+      "grid"
+    ],
+    "setup": [
+      "cards",
+      "base"
+    ],
+    "proof": [
+      "screenshot",
+      "base"
+    ],
+    "share": [
+      "base",
+      "big-word"
+    ],
+    "cta": [
+      "pill",
+      "base",
+      "keyword"
+    ],
+    "offer": [
+      "card",
+      "base"
+    ],
+    "testimonial": [
+      "card",
+      "base"
+    ],
+    "poster": [
+      "top",
+      "split",
+      "center"
+    ],
+    "grid": [
+      "bento"
+    ],
+    "timeline": [
+      "rail"
+    ]
+  },
+  "motion": {
+    "default": "highlight-sweep",
+    "allowed": [
+      "calm",
+      "reorder",
+      "counter",
+      "highlight-sweep",
+      "map-dots",
+      "drop-clock"
+    ]
+  },
+  "floors": {
+    "hero": 96,
+    "body": 42,
+    "meta": 30,
+    "contrastBody": 4.5,
+    "contrastLarge": 3.0
+  }
+}

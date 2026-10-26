@@ -1,0 +1,1421 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:carousel-studio:schema:brand:1",
+  "title": "Carousel Studio brand profile",
+  "description": "One brand.json per brand (creator, business or client). Saved after every onboarding section; sections may be missing until their step is done.",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "slug": {
+      "$ref": "#/$defs/slug"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "handle": {
+      "type": "string",
+      "pattern": "^@?[A-Za-z0-9._]{1,30}$"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "creator",
+        "business",
+        "client"
+      ]
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Incremented each time the Brand Book is approved."
+    },
+    "approvedAt": {
+      "$ref": "#/$defs/isoDateTime"
+    },
+    "createdAt": {
+      "$ref": "#/$defs/isoDateTime"
+    },
+    "updatedAt": {
+      "$ref": "#/$defs/isoDateTime"
+    },
+    "homeUrl": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "locale": {
+      "type": "object",
+      "properties": {
+        "dialect": {
+          "$ref": "#/$defs/dialect"
+        },
+        "subVariety": {
+          "$ref": "#/$defs/subVariety"
+        },
+        "uiDialect": {
+          "$ref": "#/$defs/dialect"
+        },
+        "register": {
+          "$ref": "#/$defs/register"
+        },
+        "digits": {
+          "$ref": "#/$defs/digits"
+        },
+        "digitsReason": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "countries": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$"
+          },
+          "maxItems": 8,
+          "uniqueItems": true
+        },
+        "appLanguage": {
+          "$ref": "#/$defs/appLanguage"
+        },
+        "swipeCue": {
+          "$ref": "#/$defs/swipeCue"
+        },
+        "latinTerms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "maxItems": 60
+        }
+      },
+      "required": [
+        "dialect",
+        "register",
+        "digits",
+        "appLanguage",
+        "swipeCue"
+      ],
+      "additionalProperties": false
+    },
+    "identity": {
+      "type": "object",
+      "properties": {
+        "who": {
+          "type": "string",
+          "maxLength": 400
+        },
+        "otherNames": {
+          "type": "array",
+          "maxItems": 5,
+          "uniqueItems": true,
+          "description": "Other names the creator posts under (a company, a second brand, an own hashtag such as #PyramediaX). The export credit check (X1) treats them as the creator's own.",
+          "items": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 60
+          }
+        },
+        "niche": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "offer": {
+          "type": "string",
+          "maxLength": 400
+        },
+        "goal": {
+          "type": "string",
+          "enum": [
+            "followers",
+            "clients",
+            "sales"
+          ]
+        },
+        "proofPoints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "claim": {
+                "type": "string",
+                "maxLength": 300
+              },
+              "sourceId": {
+                "$ref": "#/$defs/shortId"
+              }
+            },
+            "required": [
+              "claim"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 12
+        }
+      },
+      "additionalProperties": false
+    },
+    "audience": {
+      "type": "object",
+      "properties": {
+        "persona": {
+          "type": "string",
+          "maxLength": 600
+        },
+        "pains": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "maxItems": 12
+        },
+        "desires": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "maxItems": 12
+        },
+        "objections": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "maxItems": 12
+        },
+        "faq": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "maxItems": 30
+        },
+        "awareness": {
+          "$ref": "#/$defs/awareness"
+        }
+      },
+      "additionalProperties": false
+    },
+    "voice": {
+      "type": "object",
+      "properties": {
+        "tone": {
+          "type": "object",
+          "properties": {
+            "formalFriendly": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "seriousPlayful": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "calmEnergetic": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            }
+          },
+          "additionalProperties": false,
+          "description": "1-5 scales; 1 = formal / serious / calm, 5 = friendly / playful / energetic."
+        },
+        "use": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 60
+          },
+          "maxItems": 200
+        },
+        "avoid": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 60
+          },
+          "maxItems": 200
+        },
+        "allow": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 60
+          },
+          "maxItems": 300,
+          "description": "Words the proofreader must not flag (learned from 'اللهجة كده صح')."
+        },
+        "ctaStyle": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "samples": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 3000
+          },
+          "maxItems": 10
+        },
+        "fingerprint": {
+          "$ref": "#/$defs/fingerprint"
+        }
+      },
+      "additionalProperties": false
+    },
+    "visual": {
+      "type": "object",
+      "properties": {
+        "logo": {
+          "type": "object",
+          "properties": {
+            "assetId": {
+              "$ref": "#/$defs/shortId"
+            },
+            "dataUri": {
+              "type": "string",
+              "pattern": "^data:image/(png|svg\\+xml|webp|jpeg);base64,[A-Za-z0-9+/=]+$",
+              "maxLength": 82000,
+              "description": "At most 60 KB of binary (about 82,000 base64 characters)."
+            },
+            "mirror": {
+              "const": "never"
+            }
+          },
+          "required": [
+            "mirror"
+          ],
+          "additionalProperties": false
+        },
+        "palette": {
+          "type": "object",
+          "properties": {
+            "bg": {
+              "$ref": "#/$defs/hexColor"
+            },
+            "surface": {
+              "$ref": "#/$defs/hexColor"
+            },
+            "ink": {
+              "$ref": "#/$defs/hexColor"
+            },
+            "inkMuted": {
+              "$ref": "#/$defs/hexColor"
+            },
+            "accent": {
+              "$ref": "#/$defs/hexColor"
+            },
+            "accent2": {
+              "$ref": "#/$defs/hexColor"
+            }
+          },
+          "required": [
+            "bg",
+            "ink",
+            "accent"
+          ],
+          "additionalProperties": false
+        },
+        "fonts": {
+          "type": "object",
+          "properties": {
+            "display": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{1,47}$",
+              "description": "Font registry id (fonts/registry.json)."
+            },
+            "body": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{1,47}$"
+            },
+            "latin": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{1,47}$"
+            },
+            "userFonts": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/shortId"
+              },
+              "maxItems": 4
+            }
+          },
+          "additionalProperties": false
+        },
+        "photos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/shortId"
+          },
+          "maxItems": 40
+        },
+        "presetId": {
+          "$ref": "#/$defs/presetSlug"
+        },
+        "presetAlternates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/presetSlug"
+          },
+          "maxItems": 2
+        },
+        "locks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9.]{1,60}$"
+          },
+          "maxItems": 20,
+          "description": "Token paths the brand locks against occasion overlays and per-post overrides."
+        },
+        "art": {
+          "type": "object",
+          "properties": {
+            "constraints": {
+              "type": "object",
+              "properties": {
+                "figures": {
+                  "type": "string",
+                  "enum": [
+                    "allow",
+                    "faceless",
+                    "none"
+                  ]
+                },
+                "animals": {
+                  "$ref": "#/$defs/allowNone"
+                },
+                "music": {
+                  "$ref": "#/$defs/allowNone"
+                },
+                "maps": {
+                  "$ref": "#/$defs/allowNone"
+                }
+              },
+              "additionalProperties": false
+            },
+            "prefer": {
+              "$ref": "#/$defs/artKinds"
+            },
+            "avoid": {
+              "$ref": "#/$defs/artKinds"
+            },
+            "motifIcon": {
+              "$ref": "#/$defs/iconName"
+            },
+            "chartAxis": {
+              "type": "object",
+              "properties": {
+                "categories": {
+                  "type": "string",
+                  "enum": [
+                    "rtl",
+                    "ltr"
+                  ]
+                },
+                "time": {
+                  "type": "string",
+                  "enum": [
+                    "ltr",
+                    "rtl"
+                  ]
+                }
+              },
+              "additionalProperties": false
+            },
+            "support": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/hexColor"
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "numerals": {
+              "type": "string",
+              "enum": [
+                "western",
+                "arabic-indic"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/reference"
+      },
+      "maxItems": 20
+    },
+    "strategy": {
+      "type": "object",
+      "properties": {
+        "pillars": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/shortId"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              },
+              "share": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "intents": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/intent"
+                },
+                "maxItems": 4,
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 6
+        },
+        "roleModels": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "maxItems": 10
+        },
+        "postsPerWeek": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 14
+        },
+        "intentMix": {
+          "type": "object",
+          "properties": {
+            "save": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "send": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "reach": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "sell": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          },
+          "additionalProperties": false
+        },
+        "bestHours": {
+          "type": "object",
+          "properties": {
+            "tz": {
+              "type": "string",
+              "maxLength": 64,
+              "description": "IANA time zone, e.g. Asia/Dubai."
+            },
+            "slots": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "day": {
+                    "type": "string",
+                    "enum": [
+                      "mon",
+                      "tue",
+                      "wed",
+                      "thu",
+                      "fri",
+                      "sat",
+                      "sun",
+                      "any"
+                    ]
+                  },
+                  "from": {
+                    "$ref": "#/$defs/clock"
+                  },
+                  "to": {
+                    "$ref": "#/$defs/clock"
+                  }
+                },
+                "required": [
+                  "day",
+                  "from",
+                  "to"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 14
+            }
+          },
+          "required": [
+            "tz"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "tools": {
+      "type": "object",
+      "properties": {
+        "detectedAt": {
+          "$ref": "#/$defs/isoDateTime"
+        },
+        "caps": {
+          "type": "object",
+          "properties": {
+            "image.generate": {
+              "$ref": "#/$defs/toolRefs"
+            },
+            "image.edit": {
+              "$ref": "#/$defs/toolRefs"
+            },
+            "image.upscale": {
+              "$ref": "#/$defs/toolRefs"
+            },
+            "image.cutout": {
+              "$ref": "#/$defs/toolRefs"
+            },
+            "image.relight": {
+              "$ref": "#/$defs/toolRefs"
+            },
+            "video.i2v": {
+              "$ref": "#/$defs/toolRefs"
+            },
+            "video.i2v.loop": {
+              "$ref": "#/$defs/toolRefs"
+            },
+            "source.transcribe": {
+              "$ref": "#/$defs/toolRefs"
+            },
+            "insights.ownData": {
+              "$ref": "#/$defs/toolRefs"
+            },
+            "design.canva": {
+              "$ref": "#/$defs/toolRefs"
+            },
+            "publish.scheduler": {
+              "$ref": "#/$defs/toolRefs"
+            }
+          },
+          "additionalProperties": false,
+          "description": "Capability -> opaque tool references. Detected by schema shape, never by tool name."
+        },
+        "consent": {
+          "type": "string",
+          "enum": [
+            "ask-each-post",
+            "batch-ok",
+            "never"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "hooks": {
+      "type": "object",
+      "properties": {
+        "packs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/slug"
+          },
+          "maxItems": 10
+        },
+        "familyPriors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "metric": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9-]{1,39}$"
+              },
+              "value": {
+                "type": "number"
+              },
+              "baseline": {
+                "type": "number"
+              },
+              "n": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "metric",
+              "value",
+              "n"
+            ],
+            "additionalProperties": false
+          },
+          "description": "Key = hook family code."
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "postId": {
+                "$ref": "#/$defs/id"
+              },
+              "date": {
+                "$ref": "#/$defs/isoDate"
+              },
+              "family": {
+                "$ref": "#/$defs/hookFamily"
+              },
+              "hookId": {
+                "type": "string",
+                "maxLength": 64
+              },
+              "cta": {
+                "$ref": "#/$defs/ctaKind"
+              },
+              "architecture": {
+                "$ref": "#/$defs/architecture"
+              }
+            },
+            "required": [
+              "postId",
+              "date",
+              "family"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 30,
+          "description": "Last 30 posts, newest last."
+        }
+      },
+      "additionalProperties": false
+    },
+    "creativeMemory": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "postId": {
+            "$ref": "#/$defs/id"
+          },
+          "date": {
+            "$ref": "#/$defs/isoDate"
+          },
+          "idea": {
+            "type": "string",
+            "maxLength": 240,
+            "description": "The big idea of the post in one Arabic sentence."
+          },
+          "hook": {
+            "type": "string",
+            "maxLength": 160,
+            "description": "The winning cover text, so the next post does not echo it."
+          },
+          "family": {
+            "$ref": "#/$defs/hookFamily"
+          },
+          "move": {
+            "type": "string",
+            "enum": [
+              "big-number",
+              "enemy",
+              "reveal",
+              "mirror",
+              "before-after",
+              "cheat-sheet",
+              "insider-leak",
+              "confession",
+              "free-vs-paid",
+              "countdown"
+            ],
+            "description": "The creative move the director chose (one per carousel)."
+          },
+          "pitch": {
+            "type": "string",
+            "enum": [
+              "safe",
+              "bold",
+              "merged"
+            ],
+            "description": "Which pitch direction won at checkpoint 1."
+          },
+          "preset": {
+            "$ref": "#/$defs/presetSlug"
+          },
+          "motion": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{1,23}$",
+            "description": "The cover's motion recipe."
+          },
+          "intent": {
+            "$ref": "#/$defs/intent"
+          },
+          "cta": {
+            "$ref": "#/$defs/ctaKind"
+          },
+          "panel": {
+            "type": "object",
+            "properties": {
+              "stops": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 3,
+                "description": "How many of the three personas stopped at the final cover at 130 px."
+              },
+              "depth": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20,
+                "description": "The median slide the personas reached in the swipe test."
+              },
+              "slides": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 20,
+                "description": "The slide count the depth is measured against."
+              }
+            },
+            "required": [
+              "stops"
+            ],
+            "additionalProperties": false,
+            "description": "The audience panel's result for the post: a structured gut check, not analytics."
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "ship",
+              "revised",
+              "killed"
+            ],
+            "description": "How the director's review ended."
+          },
+          "series": {
+            "type": "string",
+            "maxLength": 80,
+            "description": "The series the post belongs to, so the next one can continue it."
+          },
+          "loved": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "What the creator loved or asked to keep."
+          },
+          "rejected": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "What the creator rejected, so it is not offered again."
+          }
+        },
+        "required": [
+          "postId",
+          "date",
+          "idea"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 30,
+      "description": "The creative team's memory: the last 30 approved posts, newest last. The director reads it at the brief so the same hook family, move or motion recipe is not used three posts running, the same call to action kind is not used twice, and a recent cover is not echoed; it writes the entry after checkpoint 3. It is not part of the brand snapshot hash."
+    },
+    "onboarding": {
+      "type": "object",
+      "properties": {
+        "sections": {
+          "type": "object",
+          "properties": {
+            "identity": {
+              "$ref": "#/$defs/sectionStatus"
+            },
+            "audience": {
+              "$ref": "#/$defs/sectionStatus"
+            },
+            "voice": {
+              "$ref": "#/$defs/sectionStatus"
+            },
+            "visual": {
+              "$ref": "#/$defs/sectionStatus"
+            },
+            "strategy": {
+              "$ref": "#/$defs/sectionStatus"
+            },
+            "tools": {
+              "$ref": "#/$defs/sectionStatus"
+            }
+          },
+          "required": [
+            "identity",
+            "audience",
+            "voice",
+            "visual",
+            "strategy",
+            "tools"
+          ],
+          "additionalProperties": false
+        },
+        "current": {
+          "type": "string",
+          "enum": [
+            "welcome",
+            "identity",
+            "audience",
+            "voice",
+            "visual",
+            "strategy",
+            "tools",
+            "close"
+          ]
+        },
+        "bookApprovedAt": {
+          "$ref": "#/$defs/isoDateTime"
+        }
+      },
+      "required": [
+        "sections"
+      ],
+      "additionalProperties": false
+    },
+    "ext": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Reserved extension namespace. Tools may store private data here; engines ignore it."
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "slug",
+    "name",
+    "kind",
+    "version",
+    "locale",
+    "onboarding"
+  ],
+  "additionalProperties": false,
+  "x-sharedDefs": [
+    "appLanguage",
+    "architecture",
+    "awareness",
+    "clock",
+    "ctaKind",
+    "dialect",
+    "digits",
+    "hexColor",
+    "hookFamily",
+    "iconName",
+    "id",
+    "intent",
+    "isoDate",
+    "isoDateTime",
+    "presetSlug",
+    "register",
+    "shortId",
+    "slug",
+    "subVariety",
+    "swipeCue"
+  ],
+  "$defs": {
+    "allowNone": {
+      "type": "string",
+      "enum": [
+        "allow",
+        "none"
+      ]
+    },
+    "appLanguage": {
+      "type": "string",
+      "enum": [
+        "ar",
+        "en",
+        "mixed"
+      ]
+    },
+    "architecture": {
+      "type": "string",
+      "enum": [
+        "listicle",
+        "steps",
+        "myth-fact",
+        "story",
+        "case-study",
+        "framework",
+        "comparison",
+        "opinion",
+        "news",
+        "offer",
+        "results",
+        "lead-magnet"
+      ]
+    },
+    "artKinds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "icon",
+          "scene",
+          "rows",
+          "numeral",
+          "chart",
+          "mock",
+          "photo",
+          "field",
+          "word",
+          "pattern"
+        ]
+      },
+      "maxItems": 10,
+      "uniqueItems": true
+    },
+    "awareness": {
+      "type": "string",
+      "enum": [
+        "unaware",
+        "problem",
+        "solution",
+        "product"
+      ]
+    },
+    "clock": {
+      "type": "string",
+      "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+      "description": "24-hour HH:MM."
+    },
+    "ctaKind": {
+      "type": "string",
+      "enum": [
+        "save",
+        "send",
+        "question",
+        "keyword-dm",
+        "follow"
+      ]
+    },
+    "dialect": {
+      "type": "string",
+      "enum": [
+        "eg",
+        "gulf",
+        "levant",
+        "msa-white",
+        "en"
+      ]
+    },
+    "digits": {
+      "type": "string",
+      "enum": [
+        "western",
+        "arabic-indic"
+      ],
+      "description": "western = 0-9 (default, Q38); arabic-indic = U+0660-0669 (opt-in)."
+    },
+    "fingerprint": {
+      "type": "object",
+      "properties": {
+        "sentLen": {
+          "type": "object",
+          "properties": {
+            "p25": {
+              "type": "number",
+              "minimum": 0
+            },
+            "p50": {
+              "type": "number",
+              "minimum": 0
+            },
+            "p75": {
+              "type": "number",
+              "minimum": 0
+            },
+            "p90": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "p25",
+            "p50",
+            "p75",
+            "p90"
+          ],
+          "additionalProperties": false,
+          "description": "Sentence length in words."
+        },
+        "emojiPer100w": {
+          "type": "number",
+          "minimum": 0
+        },
+        "emojiSet": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 16
+          },
+          "maxItems": 20
+        },
+        "latinMixPct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "ellipsisRate": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Ellipses per sentence."
+        },
+        "questionBangRate": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Sentences ending with ? or ! (or ؟) per sentence."
+        },
+        "person": {
+          "type": "string",
+          "enum": [
+            "ana",
+            "ehna",
+            "mixed"
+          ],
+          "description": "ana = first person singular, ehna = first person plural."
+        },
+        "openers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "maxItems": 20
+        },
+        "dialectMarkers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "captionLenBand": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "[p25, p75] caption length in characters."
+        },
+        "signatures": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "maxItems": 20
+        },
+        "computedAt": {
+          "$ref": "#/$defs/isoDateTime"
+        },
+        "sampleCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        }
+      },
+      "additionalProperties": false
+    },
+    "hexColor": {
+      "type": "string",
+      "pattern": "^#[0-9A-Fa-f]{6}$",
+      "description": "Opaque sRGB colour, 6 hex digits. Alpha is never stored in roles."
+    },
+    "hookFamily": {
+      "type": "string",
+      "enum": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5",
+        "P6",
+        "P7",
+        "P8",
+        "P9",
+        "P10",
+        "P11",
+        "P12",
+        "P13",
+        "P14",
+        "P15",
+        "P16",
+        "F17",
+        "F18",
+        "F19",
+        "F20",
+        "F21",
+        "F22",
+        "F23",
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "description": "Family code: P1-P16 playbook, F17-F23 new, S1-S3 soft-sell."
+    },
+    "iconName": {
+      "type": "string",
+      "maxLength": 48,
+      "pattern": "^(tb-|cs-)?[a-z0-9]+(-[a-z0-9]+){0,5}$"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{5,63}$",
+      "description": "Long stable identifier (brand, spec, plan, occasion pack)."
+    },
+    "intent": {
+      "type": "string",
+      "enum": [
+        "reach",
+        "save",
+        "send",
+        "sell"
+      ]
+    },
+    "isoDate": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "isoDateTime": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})$"
+    },
+    "presetSlug": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,31}$"
+    },
+    "reference": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/shortId"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "own",
+            "inspiration",
+            "competitor"
+          ]
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/shortId"
+          },
+          "maxItems": 12
+        },
+        "analysis": {
+          "$ref": "#/$defs/referenceAnalysis"
+        },
+        "nearestPreset": {
+          "$ref": "#/$defs/presetSlug"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 300
+        }
+      },
+      "required": [
+        "id",
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "referenceAnalysis": {
+      "type": "object",
+      "properties": {
+        "background": {
+          "type": "string",
+          "enum": [
+            "photo",
+            "illustration",
+            "paper",
+            "solid",
+            "gradient",
+            "ui-mock",
+            "collage",
+            "pattern"
+          ]
+        },
+        "typeClass": {
+          "type": "string",
+          "enum": [
+            "kufi",
+            "sans",
+            "naskh",
+            "display",
+            "handwritten",
+            "serif",
+            "mono"
+          ]
+        },
+        "alignment": {
+          "type": "string",
+          "enum": [
+            "start",
+            "center",
+            "end"
+          ]
+        },
+        "anchor": {
+          "type": "string",
+          "enum": [
+            "top",
+            "center",
+            "bottom"
+          ]
+        },
+        "headlineWidthPct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "wordsPerSlide": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 200
+        },
+        "imagery": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "chrome": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 60
+          },
+          "maxItems": 12
+        },
+        "digits": {
+          "type": "string",
+          "enum": [
+            "western",
+            "arabic-indic",
+            "mixed",
+            "none"
+          ]
+        },
+        "dialect": {
+          "$ref": "#/$defs/dialect"
+        },
+        "hookFamilies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/hookFamily"
+          },
+          "maxItems": 8
+        },
+        "palette": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/hexColor"
+          },
+          "maxItems": 8
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 600
+        }
+      },
+      "additionalProperties": false,
+      "description": "What vision read from the uploaded screenshots (section 7.3 of the draft). Screenshots only; nothing is scraped."
+    },
+    "register": {
+      "type": "string",
+      "enum": [
+        "dialect",
+        "white",
+        "msa"
+      ]
+    },
+    "sectionStatus": {
+      "type": "string",
+      "enum": [
+        "done",
+        "skipped",
+        "todo"
+      ]
+    },
+    "shortId": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,31}$",
+      "description": "Short local identifier (source, asset, prompt, angle, pillar, slot)."
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{1,39}$"
+    },
+    "subVariety": {
+      "type": "string",
+      "enum": [
+        "najdi",
+        "hijazi",
+        "emirati",
+        "lebanese",
+        "syrian"
+      ]
+    },
+    "swipeCue": {
+      "type": "string",
+      "enum": [
+        "arrow-rtl",
+        "arrow-ltr",
+        "neutral"
+      ],
+      "description": "arrow-rtl = 'اسحب ←' (Arabic-UI audiences); arrow-ltr = 'اسحب →'; neutral = the counter and a quiet progress rail, no arrow."
+    },
+    "toolRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 200
+      },
+      "maxItems": 10
+    }
+  }
+}

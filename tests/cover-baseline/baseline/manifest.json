@@ -1,0 +1,257 @@
+{
+ "schemaVersion": 1,
+ "thresholds": {
+  "cover": 0.995,
+  "frame0": 0.99,
+  "frame0VsPoster": 0.99
+ },
+ "size": [
+  540,
+  720
+ ],
+ "presets": {
+  "swiss": {
+   "preset": "swiss@1.0",
+   "coverVariants": [
+    "top",
+    "number",
+    "center"
+   ],
+   "h264EncoderHere": true,
+   "entries": {
+    "cover": {
+     "file": "swiss/cover.png",
+     "bytes": 33852,
+     "sha256": "b8e7b96685af5159"
+    },
+    "cover@top": {
+     "sameAs": "cover",
+     "variant": "top",
+     "sha256": "b8e7b96685af5159"
+    },
+    "cover@number": {
+     "file": "swiss/cover-number.png",
+     "bytes": 28877,
+     "sha256": "fa1789c6e5663fb5",
+     "variant": "number"
+    },
+    "cover@center": {
+     "file": "swiss/cover-center.png",
+     "bytes": 33857,
+     "sha256": "f7deeba1784e8063",
+     "variant": "center"
+    },
+    "frame0": {
+     "file": "swiss/frame0.png",
+     "bytes": 37794,
+     "sha256": "50806786f0faef3f",
+     "frame0VsPoster": 1,
+     "recipe": "calm"
+    }
+   }
+  },
+  "creator": {
+   "preset": "creator@1.0",
+   "coverVariants": [
+    "top",
+    "photo",
+    "split",
+    "number"
+   ],
+   "h264EncoderHere": true,
+   "entries": {
+    "cover": {
+     "file": "creator/cover.png",
+     "bytes": 47234,
+     "sha256": "793e3e4fc99604f1"
+    },
+    "cover@top": {
+     "sameAs": "cover",
+     "variant": "top",
+     "sha256": "793e3e4fc99604f1"
+    },
+    "cover@photo": {
+     "file": "creator/cover-photo.png",
+     "bytes": 46930,
+     "sha256": "43ce72c84e2b3d98",
+     "variant": "photo"
+    },
+    "cover@split": {
+     "sameAs": "cover",
+     "variant": "split",
+     "sha256": "793e3e4fc99604f1"
+    },
+    "cover@number": {
+     "file": "creator/cover-number.png",
+     "bytes": 44506,
+     "sha256": "bd4661132634fa78",
+     "variant": "number"
+    },
+    "frame0": {
+     "file": "creator/frame0.png",
+     "bytes": 50536,
+     "sha256": "e0267dfccafb2b26",
+     "frame0VsPoster": 1,
+     "recipe": "calm"
+    }
+   }
+  },
+  "notebook": {
+   "preset": "notebook@1.0",
+   "coverVariants": [
+    "top",
+    "center",
+    "split"
+   ],
+   "h264EncoderHere": true,
+   "entries": {
+    "cover": {
+     "file": "notebook/cover.png",
+     "bytes": 88220,
+     "sha256": "27e62ec6e73c99a3"
+    },
+    "cover@top": {
+     "sameAs": "cover",
+     "variant": "top",
+     "sha256": "27e62ec6e73c99a3"
+    },
+    "cover@center": {
+     "file": "notebook/cover-center.png",
+     "bytes": 87984,
+     "sha256": "89b8227462a662b3",
+     "variant": "center"
+    },
+    "cover@split": {
+     "sameAs": "cover",
+     "variant": "split",
+     "sha256": "27e62ec6e73c99a3"
+    },
+    "frame0": {
+     "file": "notebook/frame0.png",
+     "bytes": 75860,
+     "sha256": "094d7ef73a478da7",
+     "frame0VsPoster": 1,
+     "recipe": "calm"
+    }
+   }
+  },
+  "poster": {
+   "preset": "poster@1.0",
+   "coverVariants": [
+    "top",
+    "center",
+    "number"
+   ],
+   "h264EncoderHere": true,
+   "entries": {
+    "cover": {
+     "file": "poster/cover.png",
+     "bytes": 38433,
+     "sha256": "d64de4afb56513c7"
+    },
+    "cover@top": {
+     "sameAs": "cover",
+     "variant": "top",
+     "sha256": "d64de4afb56513c7"
+    },
+    "cover@center": {
+     "file": "poster/cover-center.png",
+     "bytes": 38551,
+     "sha256": "70bc2b7d10cb45f7",
+     "variant": "center"
+    },
+    "cover@number": {
+     "file": "poster/cover-number.png",
+     "bytes": 35086,
+     "sha256": "fa6621e22a76c8be",
+     "variant": "number"
+    },
+    "frame0": {
+     "file": "poster/frame0.png",
+     "bytes": 40637,
+     "sha256": "e02064ca512939e6",
+     "frame0VsPoster": 1,
+     "recipe": "calm"
+    }
+   }
+  },
+  "interface": {
+   "preset": "interface@1.0",
+   "coverVariants": [
+    "top",
+    "split",
+    "center"
+   ],
+   "h264EncoderHere": true,
+   "entries": {
+    "cover": {
+     "file": "interface/cover.png",
+     "bytes": 43996,
+     "sha256": "19634c61d40af195"
+    },
+    "cover@top": {
+     "sameAs": "cover",
+     "variant": "top",
+     "sha256": "19634c61d40af195"
+    },
+    "cover@split": {
+     "sameAs": "cover",
+     "variant": "split",
+     "sha256": "19634c61d40af195"
+    },
+    "cover@center": {
+     "file": "interface/cover-center.png",
+     "bytes": 44202,
+     "sha256": "6586352a5a43a2d0",
+     "variant": "center"
+    },
+    "frame0": {
+     "file": "interface/frame0.png",
+     "bytes": 49159,
+     "sha256": "2f550bc12658d451",
+     "frame0VsPoster": 1,
+     "recipe": "calm"
+    }
+   }
+  },
+  "heritage": {
+   "preset": "heritage@1.0",
+   "coverVariants": [
+    "top",
+    "center"
+   ],
+   "h264EncoderHere": true,
+   "entries": {
+    "cover": {
+     "file": "heritage/cover.png",
+     "bytes": 171156,
+     "sha256": "ce3a78c1e4b977dd"
+    },
+    "cover@top": {
+     "sameAs": "cover",
+     "variant": "top",
+     "sha256": "ce3a78c1e4b977dd"
+    },
+    "cover@center": {
+     "file": "heritage/cover-center.png",
+     "bytes": 170731,
+     "sha256": "ac4e818121114c4e",
+     "variant": "center"
+    },
+    "frame0": {
+     "file": "heritage/frame0.png",
+     "bytes": 114138,
+     "sha256": "1239e7d1123207ea",
+     "frame0VsPoster": 1,
+     "recipe": "calm"
+    }
+   }
+  }
+ },
+ "capturedFrom": {
+  "engine": "cs-1.0.0",
+  "tree": "pristine 1.0 (backups/carousel-studio-before-round3.tar)",
+  "painter": "svg",
+  "note": "covers: svg painter at 540x720; frame0: the Studio MP4 export's first canvas, reduced 2x; the MP4 writer is not run (it needs the network)"
+ }
+}

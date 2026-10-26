@@ -1,0 +1,12 @@
+/* tests/unit/js/art/support/harness.css - the minimum CSS a bare harness slide needs; the real sheet is templates/primitives.css (E4). Delivered through
+   style[data-cs-slide-css] so both painters (svg and replay) read it. Labels follow the roles of the engine: small 34 px, body 44 px (fit raises Arabic to 36). */
+.cs-slide { position: absolute; left: 0; top: 0; width: 1080px; height: 1440px; overflow: hidden; color: var(--cs-ink); background: var(--cs-bg); font-family: "Readex Pro", system-ui, sans-serif; font-weight: 500; }
+.cs-slide .cs-zone { position: absolute; }
+.cs-slide .cs-art-label { display: block; font-size: 36px; line-height: 1.35; font-weight: 600; color: var(--cs-ink); text-align: center; white-space: nowrap; }
+.cs-slide .cs-art-label[data-role="body"] { font-size: 44px; }
+.cs-slide .cs-icon { display: inline-block; flex: none; vertical-align: middle; }
+.cs-slide .w { display: inline-block; }
+.cs-sheet { position: absolute; left: 0; top: 0; background: #FFFFFF; font-family: "Readex Pro", system-ui, sans-serif; }
+.cs-sheet .cell { position: absolute; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.cs-sheet .cap { position: absolute; left: 6px; bottom: 4px; font: 500 14px/1.2 system-ui, sans-serif; color: #666666; }
+.cs-sheet .row-title { position: absolute; left: 6px; font: 700 18px/1.2 system-ui, sans-serif; color: #222222; }

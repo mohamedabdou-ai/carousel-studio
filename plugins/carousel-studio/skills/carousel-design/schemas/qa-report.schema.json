@@ -1,0 +1,441 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:carousel-studio:schema:qa-report:1",
+  "title": "Carousel Studio QA report",
+  "description": "qa-report.json (machine) next to qa-report.md (human, produced by CS.qa.report.toMarkdown).",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "specId": {
+      "$ref": "#/$defs/id"
+    },
+    "rev": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "engine": {
+      "type": "string",
+      "pattern": "^cs-[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "createdAt": {
+      "$ref": "#/$defs/isoDateTime"
+    },
+    "checkpoint": {
+      "type": "string",
+      "enum": [
+        "angle",
+        "script",
+        "design",
+        "ready",
+        "exported"
+      ]
+    },
+    "lane": {
+      "type": "string",
+      "enum": [
+        "studio",
+        "claude-code",
+        "sandbox"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fix",
+        "block"
+      ]
+    },
+    "exitCode": {
+      "enum": [
+        0,
+        1,
+        2
+      ],
+      "description": "0 pass, 1 FIX pending, 2 BLOCK."
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "block": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fix": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "note": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "block",
+        "fix",
+        "note"
+      ],
+      "additionalProperties": false
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/qaResult"
+      },
+      "maxItems": 600
+    },
+    "stats": {
+      "type": "object",
+      "description": "Executed gates (CS.qa results.stats): each id that ran, clean runs included, with its count.",
+      "properties": {
+        "gates": {
+          "type": "object",
+          "description": "Gate or check id to the times it ran (0 when the gate is registered but had nothing to check).",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "required": [
+        "gates"
+      ],
+      "additionalProperties": false
+    },
+    "overrides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "gate": {
+            "$ref": "#/$defs/gateId"
+          },
+          "slide": {
+            "type": "string",
+            "pattern": "^s[0-9]{2}$"
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "at": {
+            "$ref": "#/$defs/isoDateTime"
+          }
+        },
+        "required": [
+          "gate",
+          "reason",
+          "at"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 100
+    },
+    "environment": {
+      "type": "object",
+      "properties": {
+        "painter": {
+          "type": "string",
+          "enum": [
+            "svg",
+            "replay",
+            "dom"
+          ]
+        },
+        "userAgent": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "fonts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "maxItems": 20
+        },
+        "dialect": {
+          "$ref": "#/$defs/dialect"
+        },
+        "digits": {
+          "$ref": "#/$defs/digits"
+        }
+      },
+      "additionalProperties": false
+    },
+    "thumbnail": {
+      "type": "object",
+      "properties": {
+        "heroPx": {
+          "type": "number",
+          "minimum": 0
+        },
+        "pass": {
+          "type": "boolean"
+        },
+        "localContrast": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "video": {
+      "type": "object",
+      "properties": {
+        "file": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fps": {
+          "type": "number",
+          "minimum": 1
+        },
+        "seconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "codec": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "profile": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "moovBeforeMdat": {
+          "type": "boolean"
+        },
+        "keyframeAtZero": {
+          "type": "boolean"
+        },
+        "closedGop": {
+          "type": "boolean"
+        },
+        "loopSsim": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "loopPsnr": {
+          "type": "number",
+          "minimum": 0
+        },
+        "flashesPerSecondMax": {
+          "type": "number",
+          "minimum": 0
+        },
+        "blankFrames": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "stillShare": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "thinRunSeconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "audio": {
+          "type": "string",
+          "enum": [
+            "none",
+            "silent-aac"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "mime": {
+            "type": "string",
+            "maxLength": 60
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "path",
+          "bytes"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 200
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "specId",
+    "rev",
+    "createdAt",
+    "status",
+    "exitCode",
+    "counts",
+    "results"
+  ],
+  "additionalProperties": false,
+  "x-sharedDefs": [
+    "dialect",
+    "digits",
+    "gateId",
+    "id",
+    "isoDateTime",
+    "msg",
+    "qaResult",
+    "ruleId",
+    "severity"
+  ],
+  "$defs": {
+    "dialect": {
+      "type": "string",
+      "enum": [
+        "eg",
+        "gulf",
+        "levant",
+        "msa-white",
+        "en"
+      ]
+    },
+    "digits": {
+      "type": "string",
+      "enum": [
+        "western",
+        "arabic-indic"
+      ],
+      "description": "western = 0-9 (default, Q38); arabic-indic = U+0660-0669 (opt-in)."
+    },
+    "gateId": {
+      "type": "string",
+      "pattern": "^[A-Z]{1,3}[0-9]{1,2}$"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{5,63}$",
+      "description": "Long stable identifier (brand, spec, plan, occasion pack)."
+    },
+    "isoDateTime": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})$"
+    },
+    "msg": {
+      "type": "object",
+      "properties": {
+        "ar": {
+          "type": "string",
+          "maxLength": 600
+        },
+        "en": {
+          "type": "string",
+          "maxLength": 600
+        }
+      },
+      "required": [
+        "ar",
+        "en"
+      ],
+      "additionalProperties": false,
+      "description": "Bilingual message. 'ar' is white (simplified) MSA."
+    },
+    "qaResult": {
+      "type": "object",
+      "properties": {
+        "gate": {
+          "$ref": "#/$defs/gateId"
+        },
+        "rule": {
+          "$ref": "#/$defs/ruleId"
+        },
+        "sev": {
+          "$ref": "#/$defs/severity"
+        },
+        "slide": {
+          "type": "string",
+          "pattern": "^s[0-9]{2}$"
+        },
+        "el": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "Element key, e.g. s03.title or s03.bullets.2 or caption.firstLine."
+        },
+        "msg": {
+          "$ref": "#/$defs/msg"
+        },
+        "fix": {
+          "$ref": "#/$defs/msg"
+        },
+        "autofixed": {
+          "type": "boolean"
+        },
+        "overridden": {
+          "type": "object",
+          "properties": {
+            "reason": {
+              "type": "string",
+              "maxLength": 300
+            },
+            "at": {
+              "$ref": "#/$defs/isoDateTime"
+            }
+          },
+          "required": [
+            "reason",
+            "at"
+          ],
+          "additionalProperties": false
+        },
+        "prospect": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "gate",
+        "sev",
+        "msg"
+      ],
+      "additionalProperties": false,
+      "description": "One QA finding. Identical shape in spec.qa.results and qa-report.results."
+    },
+    "ruleId": {
+      "type": "string",
+      "pattern": "^[A-Z]{1,3}[0-9]{1,2}(\\.[a-z0-9-]+)?$"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "BLOCK",
+        "FIX",
+        "NOTE"
+      ]
+    }
+  }
+}
