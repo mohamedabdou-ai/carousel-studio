@@ -1,7 +1,7 @@
 {
   "name": "carousel-studio",
   "version": "1.1.0",
-  "description": "كاروسيل ستوديو — Arabic-first Instagram carousels and posts: angles, scored hooks, dialect copy, correct RTL typesetting, looping video covers, QA-gated export.",
+  "description": "فريق من وكلاء الذكاء الاصطناعي يصنع لك الكاروسيل العربي داخل Claude، من الفكرة حتى النشر، بلهجتك وبعربي سليم حرفًا حرفًا، لإثراء المحتوى العربي.",
   "author": {
     "name": "Mohamed Abdou",
     "url": "https://store.pyraai.cloud"

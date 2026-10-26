@@ -6,14 +6,14 @@
     "url": "https://store.pyraai.cloud"
   },
   "metadata": {
-    "description": "Free, open-source Claude plugins by Mohamed Abdou. Carousel Studio plans, writes and designs Arabic-first Instagram carousels and posts.",
+    "description": "إضافات Claude مجانية ومفتوحة المصدر من محمد عبده. كاروسيل ستوديو: فريق من وكلاء الذكاء الاصطناعي يصنع لك الكاروسيل العربي، لإثراء المحتوى العربي.",
     "version": "1.1.0"
   },
   "plugins": [
     {
       "name": "carousel-studio",
       "source": "./plugins/carousel-studio",
-      "description": "كاروسيل ستوديو — Arabic-first Instagram carousels and posts: angles, scored hooks, dialect copy, correct RTL typesetting, looping video covers, QA-gated export.",
+      "description": "فريق من وكلاء الذكاء الاصطناعي يصنع لك الكاروسيل العربي داخل Claude، من الفكرة حتى النشر، بلهجتك وبعربي سليم حرفًا حرفًا، لإثراء المحتوى العربي.",
       "version": "1.1.0",
       "author": {
         "name": "Mohamed Abdou",
