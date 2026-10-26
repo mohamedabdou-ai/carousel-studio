@@ -54,3 +54,6 @@ CarouselStudio/
 
 # Local cache of a design tool; never committed
 /.impeccable/
+
+# Fingerprints of the owner's private hook bank: the P10 check runs locally only
+/tools/owner-phrases.json
