@@ -16,6 +16,8 @@ Step 2, the parts only Claude writes (bridges, caption pack, per-slide captions,
 What step 1 does, and says it did: section 1 is the cover (a label such as «الغلاف» or «Cover» is not copy: the first paragraph is
 the headline, the next one the sub); each middle section is an item (title + body), or a checklist when it holds two or more bullet
 lines; slide 2 over 12 words is split into a rehook (its title and the first lines that fit) and a story-beat, in the creator's order (unless --no-split2);
+any other slide whose text is longer than a slide holds (bodyMaxWords in the platform data) runs on into the next slide at a paragraph or
+sentence end, every word kept and in order (unless --no-split, which keeps every slide as written);
 in the last section a question becomes the cta slide's title and a «احفظ / شارك / تابع / save / follow …» line its call to action.
 It never makes a grid or a timeline (a script names no cards or nodes): the art director or the Studio turns a slide into one.
 Emoji are removed from slides, digits follow the brand, bold and heading marks go. The cover motion is picked by the Studio's own
@@ -55,6 +57,7 @@ BOLD_LINE = re.compile(r"^\s*(?:\*\*|__)(?P<rest>.+?)(?:\*\*|__)\s*$")
 HEADING = re.compile(r"^\s*#{1,6}\s+(?P<rest>.+?)\s*$")
 BULLET = re.compile(r"^\s*(?:[-•·▪◦–]|\*(?!\*))\s+(?P<rest>.+)$")
 COVER_LABEL = re.compile(r"^(?:الغلاف|غلاف|الكوفر|كوفر|الهوك|هوك|البداية|cover|hook|intro)\s*[:.\-–—]?$", re.IGNORECASE)
+END_LABEL = re.compile(r"^(?:(?:الـ|ال)?\s*CTA|call\s+to\s+action|الخاتمة|الختام|outro)\s*[:.\-–—]?$", re.IGNORECASE)
 EMOJI = re.compile("[\U0001F000-\U0001FAFF☀-➿⬀-⯿⌚⌛⏩-⏺️‍⃣]")
 QUESTION_END = re.compile(r"[؟?]\s*$")
 CTA_KINDS = (  # first match wins; the order is the order a line is read in
@@ -71,6 +74,8 @@ LENS_BY_ARCH = {"news": "news", "story": "story", "case-study": "story", "myth-f
 STORY_FEEL = {"stamp", "reorder", "story", "drop-clock", "map-dots"}
 ARCHITECTURES = ("listicle", "steps", "myth-fact", "story", "case-study", "framework", "comparison", "opinion", "news", "offer",
                  "results", "lead-magnet")
+SENTENCE_END = re.compile(r"(?<=[.!?؟…])\s+")
+MAX_SLIDES = 20  # Instagram's limit for one carousel
 
 
 class _Parser(argparse.ArgumentParser):
@@ -186,7 +191,7 @@ def one_line(s: str) -> str:
 
 # ---------------------------------------------------------------- building
 
-def build_slides(sections: list[dict], split2: bool, notes: list) -> list[dict]:
+def build_slides(sections: list[dict], split2: bool, notes: list, split_more: bool = True) -> list[dict]:
     slides = []
     cover = sections[0]
     head, paras = cover["head"], list(cover["paras"])
@@ -207,8 +212,19 @@ def build_slides(sections: list[dict], split2: bool, notes: list) -> list[dict]:
     for sec in middle:
         slides.append(content_slide(sec))
     if last is not None:
+        if last["head"] and END_LABEL.match(last["head"]):  # «الـ CTA» names the slide for the creator; it is not copy
+            last = {**last, "head": None}
         question = next((p for p in reversed(last["paras"]) if QUESTION_END.search(one_line(p)) and words(p) <= 14), None)
         cta = next((p for p in reversed(last["paras"]) if cta_kinds(p) and words(p) <= 16 and p is not question), None)
+        after = []
+        if not (question or cta):  # one paragraph of short lines: the question line, then the lines that follow it
+            lines = [l for p in last["paras"] for l in p.split("\n") if l.strip()]
+            qi = next((i for i in range(len(lines) - 1, -1, -1) if QUESTION_END.search(lines[i]) and words(lines[i]) <= 14), None)
+            if qi is not None:
+                question, after = lines[qi], lines[qi + 1:]
+                ci = next((i for i, l in enumerate(after) if cta_kinds(l) and words(l) <= 16), None)
+                cta = after.pop(ci) if ci is not None else None
+                last = {**last, "paras": lines[:qi]}
         rest = [p for p in last["paras"] if p is not question and p is not cta]
         if not (question or cta) and last["head"] and not rest and not last["bullets"] and (cta_kinds(last["head"]) or QUESTION_END.search(last["head"])):
             if QUESTION_END.search(last["head"]):
@@ -226,6 +242,9 @@ def build_slides(sections: list[dict], split2: bool, notes: list) -> list[dict]:
             kind = "question" if (question and not kinds) else (kinds[0] if kinds else "question")
             text = one_line(cta) if cta else ("اكتب إجابتك في كومنت" if question else title)
             slides.append({"type": "cta", "title": title, "cta": {"kind": kind, "text": text[:160]}})
+            if after:  # the creator's lines after the ask stay on the last slide, in order
+                slides[-1] = {"type": "cta", "title": title, "body": " ".join(one_line(l) for l in after), "cta": slides[-1]["cta"]}
+                notes.append("last slide: %d more line(s) after the ask kept as its body; one CTA works best, offer a shorter last slide (fill.edits)" % len(after))
             many = [k for k in kinds if k != "question"]
             if len(many) > 1:
                 notes.append("last slide: one line asks for %s; one CTA works best, keep one (fill.edits)" % " + ".join(many))
@@ -250,10 +269,26 @@ def build_slides(sections: list[dict], split2: bool, notes: list) -> list[dict]:
         rest = paras2[len(lead):] if s2.get("title") else paras2[1:]
         new = [rehook]
         if rest:
-            new.append({"type": "story-beat", "body": " ".join(one_line(p) for p in rest)})
+            new.append({"type": "story-beat", "body": " ".join(one_line(p) for p in rest), "_paras": [one_line(p) for p in rest]})
         slides[1:2] = new
         notes.append("slide 2 had %d words (a second cover holds 12): split into a rehook and a story-beat; --no-split2 keeps it" %
                      (title_w + sum(words(p) for p in paras2)))
+    runs = split_long(slides, body_max(), 1 if split2 else 2) if split_more else []  # --no-split2 keeps slide 2 whole
+    number(slides)
+    for first, parts, total, long_one in runs:
+        if len(parts) > 1:
+            notes.append("%s had %d words (a slide holds %d): its words now run over %s, in the creator's order and unchanged; --no-split keeps it" %
+                         (first["id"], total, body_max(), ", ".join(p["id"] for p in parts)))
+        if long_one:
+            notes.append("%s: one sentence of %d words is longer than a slide holds (%d); offer the creator a shorter version in one line (fill.edits)" %
+                         (long_one[0]["id"], long_one[1], body_max()))
+        if not parts:
+            notes.append("%s had %d words: the carousel already has %d slides, so it was not split; offer a shorter version (fill.edits)" %
+                         (first["id"], total, MAX_SLIDES))
+    return [dict([("id", s["id"]), ("n", s["n"])] + [(k, v) for k, v in s.items() if k not in ("id", "n")]) for s in slides]
+
+
+def number(slides: list[dict]) -> None:
     run = 0
     for i, s in enumerate(slides):
         s.pop("_paras", None)
@@ -261,7 +296,65 @@ def build_slides(sections: list[dict], split2: bool, notes: list) -> list[dict]:
         run = run + 1 if (s["type"] == "item" and i and slides[i - 1]["type"] == "item") else (1 if s["type"] == "item" else 0)
         if s["type"] == "item":  # alternate the look so a run of items keeps a rhythm (gate D8) even before the free design
             s["variant"] = "base" if run % 2 else "ghost-number"
-    return [dict([("id", s["id"]), ("n", s["n"])] + [(k, v) for k, v in s.items() if k not in ("id", "n")]) for s in slides]
+
+
+def body_max() -> int:
+    """The comfortable body length from the platform data (plugin.text.bodyMaxWords); 25 when the file cannot be read."""
+    try:
+        data = json.loads((HERE.parent / "data" / "platform-instagram.json").read_text(encoding="utf-8"))
+        return int(data["plugin"]["text"]["bodyMaxWords"])
+    except (OSError, ValueError, KeyError, TypeError):
+        return 25
+
+
+def pieces(s: dict, limit: int) -> list[str]:
+    """The slide's text as the creator's own pieces: its paragraphs, and the sentences of a paragraph that alone is too long."""
+    out = []
+    for p in s.get("_paras") or [s.get("body", "")]:
+        p = one_line(p)
+        if p:
+            out.extend([x.strip() for x in SENTENCE_END.split(p) if x.strip()] if words(p) > limit else [p])
+    return out
+
+
+def halves(units: list[str], limit: int) -> list[list[str]]:
+    """Cut at the piece boundary that makes the two sides most even, again on a side still too long; order never changes."""
+    total = sum(words(u) for u in units)
+    if total <= limit or len(units) < 2:
+        return [units]
+    best, left = None, 0
+    for i in range(1, len(units)):
+        left += words(units[i - 1])
+        if best is None or abs(total - 2 * left) < best[0]:
+            best = (abs(total - 2 * left), i)
+    return halves(units[:best[1]], limit) + halves(units[best[1]:], limit)
+
+
+def split_long(slides: list[dict], limit: int, start: int = 1) -> list[tuple]:
+    """Over-long item and story-beat slides run on into story-beat slides. The words are the creator's, so this only moves them:
+    a slide too long for any layout is a design problem, and splitting it is the design answer. Returns, per long slide, the
+    slides it became, its word count, and a sentence that is still too long on its own (to offer a shorter version for)."""
+    out, i = [], start
+    while i < len(slides) - 1:
+        s = slides[i]
+        total = words(s.get("body"))
+        if s["type"] not in ("item", "story-beat") or total <= limit:
+            i += 1
+            continue
+        chunks = halves(pieces(s, limit), limit)
+        if len(chunks) > 1 and len(slides) + len(chunks) - 1 > MAX_SLIDES:
+            out.append((s, [], total, None))
+            i += 1
+            continue
+        if len(chunks) > 1:
+            s["body"] = " ".join(chunks[0])
+            s.pop("_paras", None)
+        parts = [s] + [{"type": "story-beat", "body": " ".join(c)} for c in chunks[1:]]
+        slides[i + 1:i + 1] = parts[1:]
+        long_one = next(((p, words(u)) for p, c in zip(parts, chunks) for u in c if words(u) > limit), None)
+        out.append((s, parts, total, long_one))
+        i += len(parts)
+    return out
 
 
 def content_slide(sec: dict) -> dict:
@@ -332,7 +425,7 @@ def make_spec(args, raw: str, brand: dict) -> tuple[dict, list]:
     sections = [s for s in sections if s["head"] or s["paras"] or s["bullets"]]
     if len(sections) < 2:
         fail("E_SCRIPT", "found %d section(s); number the slides (①, 1., Slide 1) or split them with a line of ---" % len(sections))
-    slides = build_slides(sections, not args.no_split2, notes)
+    slides = build_slides(sections, not (args.no_split2 or args.no_split), notes, not args.no_split)
     if removed:
         notes.append("emoji removed from the slides (no emoji on slides; keep them for the caption)")
     if len(slides) < 6:
@@ -594,6 +687,7 @@ def main(argv=None) -> int:
     p.add_argument("--dialect", help="override the brand's dialect (eg, gulf, levant, msa-white, en)")
     p.add_argument("--id", help="post id (default: the folder name when it looks like post-YYYYMMDD-NNNN)")
     p.add_argument("--no-split2", action="store_true", help="keep a long slide 2 as written")
+    p.add_argument("--no-split", action="store_true", help="keep every slide as written: no split of slide 2 or of a slide too long to hold")
     p.add_argument("--format", choices=("text", "json"), default="text")
     a = p.parse_args(argv)
     brand = {}

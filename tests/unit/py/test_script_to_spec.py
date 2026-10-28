@@ -116,26 +116,28 @@ class ScriptToSpecTests(unittest.TestCase):
         res, spec = self.step1(OWNER, "--style", "notebook", "--architecture", "news")
         self.assertEqual(res.returncode, 1, res.stderr)  # bridges and the caption pack are still to fill
         types = [s["type"] for s in spec["slides"]]
-        self.assertEqual(types, ["cover", "rehook", "story-beat", "item", "item", "item", "item", "cta"])
+        self.assertEqual(types, ["cover", "rehook", "story-beat", "story-beat", "item", "item", "item", "item", "cta"])
         cover = spec["slides"][0]
         self.assertEqual(cover["headline"], "وكلاء AI اتواصلوا…\nمن غير إنترنت!")      # the label «الغلاف» and the emoji are gone
         self.assertEqual(cover["sub"], "إيه اللي حصل في اختبارات OpenAI؟")
         # the first line (9 words) does not fit beside the title, so the rehook keeps the title and the story-beat keeps his order
         self.assertEqual(spec["slides"][1], {"id": "s02", "n": 2, "type": "rehook", "headline": "لا شبكة… ولا ملف مشترك"})
         self.assertTrue(spec["slides"][2]["body"].startswith("بحسب OpenAI"))
-        self.assertTrue(spec["slides"][2]["body"].endswith("بس كانوا على نفس الجهاز الفعلي."))
+        # its 26 words are more than a slide holds (25): they run on at his paragraph end, every word kept
+        self.assertEqual(spec["slides"][2]["body"], "بحسب OpenAI، وكلاء في بيئات افتراضية منفصلة تبادلوا بيانات اختبارية.")
+        self.assertTrue(spec["slides"][3]["body"].endswith("بس كانوا على نفس الجهاز الفعلي."))
         self.assertNotIn("🧠", json.dumps(spec, ensure_ascii=False))
-        self.assertIn("يوم 1 أكتوبر", spec["slides"][5]["body"])                  # western digits; the date stays bound (B1)
+        self.assertIn("يوم 1 أكتوبر", spec["slides"][6]["body"])                  # western digits; the date stays bound (B1)
         last = spec["slides"][-1]
         self.assertEqual(last["title"], "إنت بتراجع صلاحيات الـAgent قبل تشغيله؟")
         self.assertEqual(last["cta"]["kind"], "save")
         self.assertIn("save + send + follow", res.stdout)                               # one CTA works best: said, not rewritten
         self.assertEqual(spec["style"]["presetId"], "notebook@1.0")
         self.assertIn(spec["cover"]["motion"]["recipe"], ("reorder", "highlight-sweep"))  # notebook has no «story» recipe
-        self.assertEqual([s.get("variant") for s in spec["slides"][3:7]], ["base", "ghost-number", "base", "ghost-number"])
+        self.assertEqual([s.get("variant") for s in spec["slides"][4:8]], ["base", "ghost-number", "base", "ghost-number"])
         self.assertEqual(spec["id"], "post-20261024-0007")
         self.assertEqual((spec["mode"], spec["checkpoint"]), ("fast", "design"))
-        self.assertIn("bridges for s02, s03, s04, s05, s06, s07", res.stdout)
+        self.assertIn("bridges for s02, s03, s04, s05, s06, s07, s08", res.stdout)
 
     def test_no_split2_keeps_slide_2_as_written(self) -> None:
         _, spec = self.step1(OWNER, "--no-split2")
@@ -168,9 +170,9 @@ class ScriptToSpecTests(unittest.TestCase):
         res, spec = self.step1(OWNER, "--style", "notebook", "--architecture", "news")
         n = len(spec["slides"])
         fill = {
-            "bridges": ["ودي حصلت إزاي؟", "والرسالة عدّت منين؟", "بس في تفصيلة", "وبعد النتيجة دي؟", "ودلوقتي دورك", "سؤال واحد بس…"],
+            "bridges": ["ودي حصلت إزاي؟", "والرسالة عدّت منين؟", "طب إزاي من غير شبكة؟", "بس في تفصيلة", "وبعد النتيجة دي؟", "ودلوقتي دورك", "سؤال واحد بس…"],
             "emphasis": {"s02": "شبكة", "s09": "nothing"},
-            "edits": {"s08": {"cta": {"kind": "question", "text": "اكتب إجابتك في سطر واحد"}}},
+            "edits": {"s09": {"cta": {"kind": "question", "text": "اكتب إجابتك في سطر واحد"}}},
             "caption": {"firstLine": "قبل ما تفتكر إن الوكلاء بقوا بيتكلموا لوحدهم… شوف التجربة اتعملت إزاي.",
                         "keywordLine": "اختبار من OpenAI على وكلاء الذكاء الاصطناعي من غير شبكة.",
                         "body": "وكلاء في بيئات منفصلة تبادلوا بيانات اختبارية عن طريق توقيت ذاكرة المعالج، والتجربة كانت موجّهة من الفريق.",
@@ -232,12 +234,54 @@ class ScriptToSpecTests(unittest.TestCase):
         _, kept = self.step1(script, "--architecture", "news", "--no-split2")  # «كما هو»: his slide count
         self.assertEqual([s["type"] for s in kept["slides"]][:3], ["cover", "item", "item"])
 
+    # Shaped like the owner's Genie 4 post (2026-10-28), with a synthetic cover: long middle slides were left as warnings, and
+    # «الـ CTA» was a label, not copy.
+    LONG = """سلايد 1 — الهوك 🔥
+العالم الافتراضي بقى بيتولّد قدامك!
+
+سلايد 2 — الفكرة
+العالم ده بيتولّد قدامك.
+
+سلايد 3 — طب بيعمل ده إزاي؟ 🧠
+السر اسمه World Model.
+الذكاء الاصطناعي هنا مش بيولّد فيديو محفوظ وخلاص.
+ده بيحاكي عالم بيتغيّر حسب حركتك وأوامرك، وبيستخدم تقنيات Gemini عشان يحافظ على ترابط الأحداث.
+
+سلايد 4 — الـ CTA 💬
+لو قدرت تدخل أي عالم بالذكاء الاصطناعي… هتختار عالم إيه؟ 🌍
+👇 اكتب رأيك في الكومنتات!
+✅ واتأكد إنك متابعني.
+"""
+
+    def test_a_slide_too_long_to_hold_runs_on_into_the_next_with_every_word_kept(self) -> None:
+        res, spec = self.step1(self.LONG, "--architecture", "news")
+        s3, s4 = spec["slides"][2:4]
+        self.assertEqual((s3["type"], s3["title"]), ("item", "طب بيعمل ده إزاي؟"))
+        self.assertEqual(s4["type"], "story-beat")
+        joined = s3["body"] + " " + s4["body"]
+        self.assertEqual(joined, "السر اسمه World Model. الذكاء الاصطناعي هنا مش بيولّد فيديو محفوظ وخلاص. "
+                                 "ده بيحاكي عالم بيتغيّر حسب حركتك وأوامرك، وبيستخدم تقنيات Gemini عشان يحافظ على ترابط الأحداث.")
+        self.assertTrue(all(len(s["body"].split()) <= 25 for s in (s3, s4)))
+        self.assertIn("s03 had 27 words (a slide holds 25): its words now run over s03, s04", res.stdout)
+        _, kept = self.step1(self.LONG, "--architecture", "news", "--no-split")  # «كما هو»: every slide as written
+        self.assertEqual([s["type"] for s in kept["slides"]], ["cover", "item", "item", "cta"])
+
+    def test_a_cta_label_is_not_copy_and_the_question_line_is_found_inside_a_paragraph(self) -> None:
+        res, spec = self.step1(self.LONG, "--architecture", "news")
+        last = spec["slides"][-1]
+        self.assertEqual(last["type"], "cta")
+        self.assertEqual(last["title"], "لو قدرت تدخل أي عالم بالذكاء الاصطناعي… هتختار عالم إيه؟")
+        self.assertEqual(last["cta"], {"kind": "question", "text": "اكتب رأيك في الكومنتات!"})
+        self.assertEqual(last["body"], "واتأكد إنك متابعني.")                        # his line after the ask stays, in order
+        self.assertNotIn("CTA", json.dumps(spec["slides"], ensure_ascii=False))
+        self.assertIn("offer a shorter last slide", res.stdout)
+
     def test_keep_records_the_creators_override_on_a_long_cover(self) -> None:
         long_cover = OWNER.replace("وكلاء AI اتواصلوا…\nمن غير إنترنت! 👀", "كلود كتب الكود… طب فين الدليل إنه صح فعلاً؟")
         _, spec = self.step1(long_cover, "--style", "notebook", "--architecture", "news")
         n = len(spec["slides"])
         fill = {
-            "bridges": ["ودي حصلت إزاي؟", "والرسالة عدّت منين؟", "بس في تفصيلة", "وبعد النتيجة دي؟", "ودلوقتي دورك", "سؤال واحد بس…"],
+            "bridges": ["ودي حصلت إزاي؟", "والرسالة عدّت منين؟", "طب إزاي من غير شبكة؟", "بس في تفصيلة", "وبعد النتيجة دي؟", "ودلوقتي دورك", "سؤال واحد بس…"],
             "caption": {"firstLine": "قبل ما تصدّق إن الكود صح… شوف الدليل اتعمل إزاي.",
                         "keywordLine": "التحقق الرسمي من الكود بالذكاء الاصطناعي.",
                         "body": "البرهان الرياضي بيثبت إن خاصية محددة بتتحقق لكل المدخلات اللي بتغطيها شروطه، مش لحالات معيّنة بس.",
