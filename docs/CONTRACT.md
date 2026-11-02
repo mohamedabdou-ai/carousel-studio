@@ -892,12 +892,13 @@ interface Timeline {
   duration: number; fps: 30; frames: number;                      // frames = round(duration × fps)
   times: { holdIn: number; resetEnd: number; settleBy: number };  // defaults 0.4 · 0.75 · 5.6 (platform.plugin.motion)
   tracks: Track[]; counters: CounterTrack[];
+  contentClip?: { x: number; y: number; w: number; h: number };  // zoom only: fixed slide-space aperture around the moving content
 }
 interface Track {
   id: string; sel: string;                       // scoped to the slide root; may use only [data-m=…], [data-m-slot=…], [data-m-i=…], [data-w=…], .w, .cs-ln
   from: Props; to?: Props;                       // `to` defaults to the element's resting (poster) state
   t0: number; t1: number;                        // build window in seconds, resetEnd ≤ t0 < t1 ≤ settleBy (after stagger)
-  ease: EaseName; origin?: "center" | "start" | "end" | "top" | "bottom";   // transform-origin, logical
+  ease: EaseName; origin?: "center" | "start" | "end" | "top" | "bottom" | "start-bottom";   // transform-origin, logical
   stagger?: { each: number; from?: "start" | "end" | "center" | "random"; seed?: number };
   reset?: { to?: Props; ease?: EaseName };      // break-apart target; if reset.to differs from `from`, reset.to.opacity must be 0 (the jump is invisible)
 }
@@ -915,19 +916,27 @@ Counters interpolate `from → to` over `[t0, t1]` and write the formatted text 
 
 Arabic motion rules: animate by **word (`.w`) or line (`.cs-ln`)** only, never by letter; opacity only on `data-m-group="opacity"` elements; layout never changes during motion (counters reserve their final width via `min-inline-size`); transforms use logical axes (the recipe converts "start" to ±x according to `dir`); frame 0 equals the exported PNG of slide 1.
 
-### 5.7 Recipes (v1 ships six; the other six are listed so data stays forward compatible)
+### 5.7 Recipes (v1 ships twelve motions plus none; three deferred ids remain forward compatible)
 | id | Ships | Feel | Used for (topic → motion, from 02-assets) | Choreography (break apart in the reset phase, then rebuild) |
 |---|---|---|---|---|
-| `calm` | 1.0 (default) | calm | everything without a stronger story | words fade up by word (y 24→0, 80 ms stagger); highlight bar draws; number pops (scale 0.92→1, out-back); the content layer settles from scale 1.03 → 1.00; chrome last |
-| `counter` | 1.0 | calm | big numbers, number-led lists (P1, P11, P16) | hero number counts from 0 with an accelerating curve and lands with a 1.00→1.06→1.00 tick; remaining words rise by word after the landing |
+| `calm` | 1.0 | calm | when requested, or an unknown/unshipped id's fallback | words fade up by word (y 24→0, 80 ms stagger); highlight bar draws; number pops (scale 0.92→1, out-back); the content layer settles from scale 1.03 → 1.00; chrome stays |
+| `counter` | 1.0 | calm | big numbers, number-led lists (P1, P11, P16) | surrounding headline words land before the count starts; values above 9 start at about one third, smaller values at 0; one 1.00→1.06→1.00 landing tick |
 | `highlight-sweep` | 1.0 | calm | opinion, reframe (F17, F20, F21) | words rise; the emphasis highlight sweeps along the reading direction (`clipInset` 100 %→0 on the `em` background) then the word pulses once |
 | `stamp` | 1.0 | story | decisions, myth vs fact, verdicts (P4, myth-fact) | emphasis word/stamp ring drops in (scale 1.6→1.0, opacity 0→1, out-expo) with an underline stroke drawn by `dash` |
 | `reorder` | 1.0 | story | chaos → order, frameworks, steps | words start displaced from a seeded shuffle of their own positions and glide into place (out-expo), line by line |
-| `story` | 1.0 | story | news, stories, cases (P9, P12) | a 2 s built-in **metaphor** (≥ 6 SVG metaphors in `CS.motion.metaphors`: rising bars, running clock, spreading dots, coin stack, check stamp, spark burst) plays from 0.75 s, fades by 3.2 s; title builds by line from 3.0 s |
-| `morph` `split` `map-dots` `cash-wipe` `drop-clock` `scale` | 1.1 | – | old vs new, race, spread, cost, threat, growth | not in v1 |
+| `story` | 1.0 | story | news, stories, cases, mistakes | a built-in metaphor accompanies the title in a free band; in center mode the symbol is compressed to 0.75–1.63 s and title words start at 1.15 s |
+| `map-dots` | 1.0 | story | two or more spread words | spreading dots accompany the title |
+| `drop-clock` | 1.0 | story | two or more urgency words | a clock races and hands over to the title |
+| `curtain` | 1.0 | story | launches, new arrivals | accent panels cover real headline lines during reset and retract 0.18 s apart; each word reveals at its panel's edge, with its own short slide |
+| `zoom` | 1.0 | story | one or two marked words, opinion and reframe | a content-layer camera centers on the marked phrase, else number, else first word; 0.8 s slow push, 1 s pullback; a stationary `contentClip` viewport prevents chrome overlap |
+| `notify` | 1.0 | story | Latin-product news or a direct reader question | a contrast-safe bubble pops from its logical tail corner, three shape dots type, words arrive in reading order, then the bubble dissolves |
+| `split` | 1.0 | story | change, rename, comparison | two groups move toward each other with a drawn divider; marker belongs to the first group, fallback is by line or word half; one 3% impact |
+| `morph` `cash-wipe` `scale` | 1.1 | – | old vs new, cost, growth | not in v1 |
 | `none` | 1.0 | – | static cover (fallback when no H.264 encoder) | no motion; kit has PNG only |
 
-`recommend(spec)` order: numeral in `hook.cover` or a `stat`/`number` slide ⇒ `counter`; architecture `myth-fact` or family P4 ⇒ `stamp`; family F17/F20/F21 or architecture `opinion` ⇒ `highlight-sweep`; architecture `steps`/`framework` ⇒ `reorder`; architecture `news`/`story`/`case-study` ⇒ `story`; else `calm`. An unknown or unshipped recipe id in a spec falls back to `calm` with a NOTE. `prefers-reduced-motion` affects only the live preview (opacity-only timeline); exports are always full.
+`recommend(spec)` and Python `pick_motion` use first match: urgency (2+) ⇒ `drop-clock`; spread (2+) ⇒ `map-dots`; myth-fact / P4 / decision (2+) ⇒ `stamp`; mistakes ⇒ heartbeat `story`; cover change marker ⇒ `split`; cover numeral (except years) or stat/number slide ⇒ `counter`; steps / framework / how-to ⇒ `reorder`; news naming a Latin product or a direct reader question ⇒ `notify`; launch words ⇒ `curtain`; news / story / case-study ⇒ `story`; one or two marked words ⇒ `zoom`; otherwise `highlight-sweep`. Ordinary conjunctions such as «ولا» never tag a change. The Python picker can avoid the newest earlier sibling post's recipe: next matching allowed rule, else first different allowed recipe, with a note naming the previous recipe. An unknown or unshipped id falls back to `calm` with a NOTE. `prefers-reduced-motion` affects only live preview (opacity-only timeline); exports are always full.
+
+`contentClip` creates a temporary full-slide wrapper with a fixed inset clip around the content layer, active only during motion. Its containing block and stacking level match the original content layer, so the measured center transform origin stays correct and preset backgrounds cannot hide the camera. It is removed on destroy; header/footer are outside it. This keeps the camera safe during reset too, when an interpolated clip on the scaled layer would leak. New overlay definitions carry an optional numeric `z`, measured relative to the content's own stacking level, so below/above content works on every preset without changing existing overlay stacking.
 
 External motion (Q19, v1): when `cover.motion.source = "external"` the cover has a text-free background plate (`media.slot = "plate"`, a `<video>` whose first frame equals its last frame, or a looping ping-pong). The type layer builds on top with `calm`; the loop gate V1 still applies. In the Claude Code lane the plate is a `<video>` clip in the composition; in the Studio `CS.export.cover` decodes it frame-exactly with `VideoDecoder` under the DOM. **If that path is not ready at integration, external plates ship in the Claude Code lane first and the Studio shows «الحركة الخارجية متاحة في Claude Code».**
 

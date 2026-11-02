@@ -220,7 +220,11 @@
       "highlight-sweep",
       "story",
       "map-dots",
-      "drop-clock"
+      "drop-clock",
+      "curtain",
+      "zoom",
+      "notify",
+      "split"
     ]
   },
   "floors": {

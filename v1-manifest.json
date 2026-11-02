@@ -47,6 +47,10 @@
     "story",
     "map-dots",
     "drop-clock",
+    "curtain",
+    "zoom",
+    "notify",
+    "split",
     "none"
   ],
   "dialects": {
@@ -81,7 +85,7 @@
     },
     {
       "id": "recipes-more",
-      "what": "Four more cover motion recipes: morph, split, cash-wipe, scale",
+      "what": "Three more cover motion recipes: morph, cash-wipe, scale",
       "target": "1.2",
       "reason": "Listed in the engine, not shipped; the Motion tab shows only shipped recipes."
     },

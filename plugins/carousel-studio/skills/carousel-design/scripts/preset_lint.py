@@ -70,7 +70,7 @@ CHART_GAP_PX = 3                       # the gap the chart builders contract bet
 SLIDE_TYPES = ("cover", "rehook", "item", "step", "stat", "compare", "myth-fact", "quote", "story-beat", "checklist", "summary",
                "setup", "proof", "share", "cta", "offer", "testimonial", "poster", "grid", "timeline")
 RECIPES = ("calm", "counter", "highlight-sweep", "stamp", "reorder", "story", "morph", "split", "map-dots", "cash-wipe",
-           "drop-clock", "scale", "none")
+           "drop-clock", "curtain", "zoom", "notify", "scale", "none")
 CLASS_VOCABULARY = set(
     "cs-slide cs-bg cs-decor cs-header cs-footer cs-content cs-slot cs-handle cs-meta cs-counter cs-swipe cs-savepill "
     "cs-kicker cs-headline cs-sub cs-title cs-body cs-bullets cs-bullet cs-sides cs-side cs-side-label cs-side-text cs-number "

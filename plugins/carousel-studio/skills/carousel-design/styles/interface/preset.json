@@ -215,7 +215,11 @@
       "counter",
       "highlight-sweep",
       "map-dots",
-      "drop-clock"
+      "drop-clock",
+      "curtain",
+      "zoom",
+      "notify",
+      "split"
     ]
   },
   "floors": {

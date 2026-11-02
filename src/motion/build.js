@@ -70,7 +70,7 @@ function reduceTimeline(tl) {
     if (t.to) r.to = keep(t.to);
     return r;
   });
-  tl.counters = []; tl.overlays = [];
+  tl.counters = []; tl.overlays = []; delete tl.contentClip;
   return tl;
 }
 
@@ -105,7 +105,12 @@ function validateTimeline(root, tl) {
  * that piece moves earlier by the same amount, so the choreography keeps its shape and only loses the empty beat.
  */
 function alignEntrance(tl) {
-  var T = tl.times, entering = tl.tracks.filter(function (t) { return t.from && t.from.opacity === 0; });
+  var T = tl.times, entering = tl.tracks.filter(function (t) { var c = t.from && t.from.clipInset;
+    return t.from && (t.from.opacity === 0 || c && (c[1] + c[3] >= 99.9 || c[0] + c[2] >= 99.9)); });
+  // A curtain already covering the poster, or the camera's opening shot, is itself the first piece.
+  // Moving later word tracks alone would desynchronise their reveal from that visible opening.
+  if (tl.tracks.some(function (t) { return t.t0 <= T.resetEnd + 0.001 && t.from && t.from.opacity !== 0 &&
+    (tl.contentClip || t.from.opacity === 1 && t.sel.indexOf("data-m-ov") >= 0); })) return;
   if (!entering.length) return;
   var first = Math.min.apply(null, entering.map(function (t) { return t.t0; })), shift = round3(first - T.resetEnd);
   if (shift <= 0.001) return;
@@ -140,6 +145,7 @@ function buildTimeline(slideEl, opts) {
     duration: seconds, fps: FPS, frames: Math.round(seconds * FPS), times: times, tracks: P.tracks, counters: P.counters
   };
   if (P.overlays.length) tl.overlays = P.overlays;
+  if (P.contentClip) tl.contentClip = P.contentClip;
   if (P.metaphor) tl.metaphor = P.metaphor;
   if (P.mode) tl.mode = P.mode;
   if (resolved.fallbackFrom) tl.fallbackFrom = resolved.fallbackFrom;

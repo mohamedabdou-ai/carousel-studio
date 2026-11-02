@@ -124,8 +124,13 @@ var TOPIC_LEXICON = {
   growth: ["نمو", "تنمو", "زياده", "ارتفاع", "تضاعف*", "مضاعف*", "اضعاف", "ضعف", "ارتفع*", "يرتفع*", "تزيد*", "يزيد*", "مبيعات", "نتايج", "نتائج", "growth", "grow*",
     "double*", "rise*", "increase*", "boost*", "results", "sales"],
   steps: ["خطوه", "خطوات", "طريقه", "طرق", "كيف", "ازاي", "شلون", "كيفيه", "دليل", "شرح", "نظام", "اسلوب", "framework", "steps", "step", "how", "guide", "system", "method"],
-  news: ["خبر", "اخبار", "جديد", "اطلاق", "اطلقت", "تحديث", "اعلان", "اعلنت", "launch*", "new", "announced", "update", "released", "breaking"],
-  story: ["قصه", "قصتي", "حكايه", "تجربتي", "تجربه", "رحلتي", "story", "journey", "case"]
+  news: ["خبر", "اخبار", "جديد", "جديده", "اطلاق", "اطلقت", "تحديث", "اعلان", "اعلنت", "launch*", "new", "announced", "update", "released", "breaking"],
+  story: ["قصه", "قصتي", "حكايه", "تجربتي", "تجربه", "رحلتي", "story", "journey", "case"],
+  // Egyptian, Gulf, Levantine, MSA, English. These are change verbs/markers, never ordinary conjunctions such as ولا.
+  change: ["بقي", "بقت", "بقوا", "اتغير*", "بدل", "صار", "صارت", "صاروا", "بدال", "تبدل*", "اصبح", "اصبحت", "اصبحوا", "تغير*", "تحول*", "استبدل*", "مقابل", "ضد", "vs", "versus", "now", "rename*", "instead"],
+  launch: ["دخلت", "اطلق*", "نزلت", "رسمي*", "جديد", "جديده", "اطلاق", "يديد", "يديده", "نزل", "دش*", "طلع", "صدور", "اصدار", "launch*", "new", "released", "debut*"],
+  product: ["claude", "chatgpt", "gemini", "higgsfield", "instagram", "openai", "anthropic", "canva", "perplexity", "grok", "copilot", "midjourney", "figma", "notion", "capcut", "seedance", "sora", "veo", "kling", "cursor", "replit", "elevenlabs", "photoshop", "adobe", "deepseek", "runway", "davinci", "leonardo", "ideogram", "krea", "flux", "lovable", "manus", "windsurf", "vscode", "n8n", "zapier"],
+  question: [], emphasis: []
 };
 
 var TOPIC_METAPHOR = { mistakes: "heartbeat", urgency: "clock", spread: "dots", growth: "bars", money: "coins", decision: "check", news: "spark", story: "spark" };
@@ -138,9 +143,25 @@ function stemMatches(token, entry) {
   return bare !== token && (prefix ? bare.indexOf(stem) === 0 : bare === stem);
 }
 
+function changeMarker(text) {
+  var norm = normalizeAr(text), tokens = norm.split(/[^a-z0-9ء-ي]+/).filter(Boolean);
+  return /→/.test(norm) || tokens.some(function (token) { return TOPIC_LEXICON.change.some(function (entry) { return stemMatches(token, entry); }); }) ||
+    (tokens.indexOf("قبل") >= 0 && tokens.indexOf("بعد") > tokens.indexOf("قبل")) || (tokens.indexOf("before") >= 0 && tokens.indexOf("after") > tokens.indexOf("before"));
+}
+
+function directQuestion(text) {
+  if (!/[؟?]/.test(text || "")) return false;
+  return /(?:^|[^a-zء-ي])(?:عندك|معاك|معك|انت|انتم|انتي|انتا|لديك|لديكم|بتستخدم|تستخدم|تستعمل|تبي|تبغي|بدك|بدكم|you|your)(?=$|[^a-zء-ي])/.test(normalizeAr(text));
+}
+
+function shortEmphasis(text) {
+  var matches = String(text || "").match(/==([^=]+)==/g) || [];
+  return matches.some(function (m) { var n = m.slice(2, -2).trim().split(/\s+/).filter(Boolean).length; return n > 0 && n <= 2; });
+}
+
 /** Scores every topic for `text`; returns { tags: [names, strongest first], scores }. */
 function detectTopics(text) {
-  var norm = normalizeAr(text), tokens = norm.split(/[^a-z0-9ء-ي]+/).filter(Boolean), padded = " " + norm + " ";
+  var norm = normalizeAr(text), tokens = norm.split(/[^a-z0-9ء-ي]+/).filter(Boolean), padded = " " + tokens.join(" ") + " ";
   var scores = {}, tag, list, i, j, entry;
   for (tag in TOPIC_LEXICON) {
     list = TOPIC_LEXICON[tag]; scores[tag] = 0;
@@ -150,6 +171,9 @@ function detectTopics(text) {
       for (j = 0; j < tokens.length; j++) if (stemMatches(tokens[j], entry)) { scores[tag] += 1; break; }
     }
   }
+  if (changeMarker(text) && !scores.change) scores.change = 1;
+  scores.question = directQuestion(text) ? 1 : 0;
+  scores.emphasis = shortEmphasis(text) ? 1 : 0;
   var tags = Object.keys(scores).filter(function (t) { return scores[t] > 0; }).sort(function (a, b) { return scores[b] - scores[a] || (a < b ? -1 : 1); });
   return { tags: tags, scores: scores };
 }
@@ -167,6 +191,10 @@ var WHY = {
   stamp: { ar: "الموضوع قرار أو حكم، فتُختم الكلمة المهمة بختم واضح.", en: "A decision or verdict gets a stamp on the key word." },
   reorder: { ar: "المحتوى خطوات ونظام، فتنتظم الكلمات في أماكنها.", en: "The content is a method, so the words fall into order." },
   story: { ar: "المحتوى خبر أو قصة، فتبدأ الحركة برمز قصير ثم يظهر العنوان.", en: "News or a story opens with a short symbol before the title builds." },
+  curtain: { ar: "الموضوع إطلاق أو جديد، فالستائر تكشف العنوان سطرًا بعد سطر.", en: "A launch gets a curtain reveal, one headline line at a time." },
+  zoom: { ar: "كلمة قصيرة تحمل الفكرة، فنبدأ بها كبيرة ثم نكشف الغلاف حولها.", en: "A short key phrase opens in close-up, then the camera reveals its context." },
+  notify: { ar: "خبر أداة أو سؤال ليك، فيوصلك العنوان كرسالة بتتكتب.", en: "Product news or a direct question arrives as a message being typed." },
+  split: { ar: "الفكرة فيها تغيير أو مقارنة، فالجانبان يلتقيا في مكانهما.", en: "A change or comparison brings two sides together in their poster positions." },
   cascade: { ar: "لا رمز بصريًا أقوى من الكلمات نفسها، فتنزل الكلمات واحدة واحدة ويُظلَّل المهم.", en: "No visual symbol beats the words, so they drop in one by one and the key phrase is highlighted." },
   calm: { ar: "حركة هادئة تُبقي الغلاف كما صُمّم.", en: "A calm move that keeps the cover as designed." }
 };
@@ -182,24 +210,27 @@ function firstSlide(spec) {
 function recommendMotion(spec) {
   var cover = firstSlide(spec) || {}, hook = (spec && spec.hook) || {}, parts = [hook.cover, hook.text, spec && spec.brief && spec.brief.topic,
     spec && spec.angle && spec.angle.title, cover.kicker, cover.headline, cover.sub, spec && spec.captionPack && spec.captionPack.firstLine];
-  var text = parts.filter(Boolean).join(" ").replace(/==/g, "");
+  var text = parts.filter(Boolean).join(" ");
   var found = detectTopics(text), tags = found.tags, arch = spec && spec.architecture, family = hook.family || "";
-  var coverText = (hook.cover || cover.headline || "").replace(/==/g, "");
-  var numeral = /[0-9٠-٩]/.test(coverText.replace(/\b(19|20)[0-9]{2}\b/g, "")) || (spec && spec.slides || []).some(function (s) { return s.type === "stat" || (s.number && s.number.value); });
+  var coverText = (cover.headline || hook.cover || "").replace(/==/g, "") + " " + (cover.sub || "");
+  var western = coverText.replace(/[٠-٩]/g, function (c) { return "٠١٢٣٤٥٦٧٨٩".indexOf(c); });
+  var numeral = /[0-9]/.test(western.replace(/\b(19|20)[0-9]{2}\b/g, "")) || (spec && spec.slides || []).some(function (s) { return s.type === "stat" || (s.number && s.number.value); });
   var has = function (t) { return tags.indexOf(t) >= 0; };
   var pick = function (recipe, feel, why, metaphor) { return { recipe: recipe, feel: feel, why: why, metaphor: metaphor || null, tags: tags }; };
   if (has("urgency") && found.scores.urgency >= 2) return pick("drop-clock", "story", WHY.clock, "clock");
   if (has("spread") && found.scores.spread >= 2) return pick("map-dots", "story", WHY.dots, "dots");
   if (arch === "myth-fact" || family === "P4" || (has("decision") && found.scores.decision >= 2)) return pick("stamp", "story", WHY.stamp);
   if (has("mistakes")) return pick("story", "story", WHY.heartbeat, "heartbeat");
+  if (changeMarker(coverText)) return pick("split", "story", WHY.split);
   if (numeral) return pick("counter", "calm", WHY.counter);
-  if (has("urgency")) return pick("drop-clock", "story", WHY.clock, "clock");
-  if (has("spread")) return pick("map-dots", "story", WHY.dots, "dots");
   if (arch === "steps" || arch === "framework" || has("steps")) return pick("reorder", "story", WHY.reorder);
+  if (((arch === "news" || has("news")) && detectTopics(coverText).scores.product > 0) || directQuestion(coverText)) return pick("notify", "story", WHY.notify);
+  if (has("launch")) return pick("curtain", "story", WHY.curtain);
   if (arch === "news" || arch === "story" || arch === "case-study" || has("news") || has("story")) {
     var m = metaphorForTags(tags) || "spark";
     return pick("story", "story", WHY.story, m);
   }
+  if (shortEmphasis(cover.headline || hook.cover)) return pick("zoom", "story", WHY.zoom);
   return pick("highlight-sweep", "calm", WHY.cascade);
 }
 
@@ -416,7 +447,8 @@ function metaphorRegistry() {
 /*
  * CS.motion · the recipes.
  *
- * Every recipe follows the same poster-first story, authored against a 6 s timeline (build maps it onto 5 s covers):
+ * Recipes share a poster-first envelope, authored against 6 s (build maps it onto 5 s covers).
+ * The rebuild itself may be a word cascade, a curtain, a camera move, a message or two sides meeting:
  *
  *   0.00 - 0.40   the finished poster holds (frame 0 = the exported PNG = the grid thumbnail)
  *   0.40 - 0.75   the content breaks apart (each piece goes back to where it entered from, in reading order)
@@ -443,8 +475,8 @@ function headlineWords(ctx) { return ctx.words(ctx.heroSlot); }
 
 function inEmphasis(el) { return !!(el.closest && el.closest("mark.cs-em")); }
 
-function pKicker(ctx, P, at) {
-  if (ctx.has('[data-m="kicker"]')) P.add("kicker", '[data-m="kicker"]', { at: at, dur: 0.45, from: { opacity: 0, x: ctx.startX(70) }, ease: "out-cubic" });
+function pKicker(ctx, P, at, covered) {
+  if (ctx.has('[data-m="kicker"]')) P.add("kicker", '[data-m="kicker"]', { at: at, dur: 0.45, from: { opacity: 0, x: ctx.startX(70) }, resetTo: covered ? { opacity: 0, x: 0 } : undefined, ease: "out-cubic" });
 }
 
 function pSub(ctx, P, at) {
@@ -490,9 +522,20 @@ function pCascade(ctx, P, words, o) {
 }
 
 /** The emphasis mark is revealed from the reading start with its highlight. Returns the authored time it is fully drawn. */
-function pEmphasisWipe(ctx, P, at, dur) {
+function pEmphasisWipe(ctx, P, at, dur, keepWords) {
   var marks = ctx.q("mark.cs-em");
   marks.forEach(function (m, i) {
+    // A camera/message/curtain already showed the marked words. Retrace their underline without clipping their ink away.
+    if (keepWords) {
+      var r = boundsOf(ctx, Array.prototype.slice.call(m.querySelectorAll(".w")), true);
+      if (!r) return;
+      var id = "em-trace-" + i, h = Math.max(4, Math.min(9, r.h * 0.06));
+      P.overlays.push({ id: id, layer: "below", z: contentZ(ctx, false), rect: { x: r.x, y: r.y + r.h + 3, w: r.w, h: h }, html: panelMarkup(r.w, h, ctx.colors.accent, h / 2) });
+      P.add(id, '[data-m-ov="' + id + '"]', { at: at, dur: dur, from: { opacity: 1, clipInset: revealClip(ctx) }, to: { opacity: 1, clipInset: [0, 0, 0, 0] },
+        rest: { opacity: 0, clipInset: revealClip(ctx) }, resetTo: { opacity: 0, clipInset: revealClip(ctx) }, delay: 0, ease: "in-out-cubic",
+        then: [{ dt: 0.3, to: { opacity: 1, clipInset: [0, 0, 0, 0] } }, { dt: 0.3, to: { opacity: 0, clipInset: [0, 0, 0, 0] } }] });
+      return;
+    }
     P.add("em-" + i, ctx.sel(m), {
       at: at, dur: dur, ease: "in-out-cubic",
       from: { clipInset: ctx.rtl ? [-20, 0, -20, 100] : [-20, 100, -20, 0] }, to: { clipInset: [-20, 0, -20, 0] }
@@ -505,7 +548,8 @@ function pEmphasisWipe(ctx, P, at, dur) {
 function pNumber(ctx, P, at, count) {
   var n = ctx.number;
   if (!n) return at;
-  P.counter("count", '[data-m-count="1"]', { at: at, dur: count, from: 0, to: n.value, decimals: n.decimals, ease: "in-quad" });
+  var unit = Math.pow(10, n.decimals), start = n.value > 9 ? Math.round(n.value / 3 * unit) / unit : 0;
+  P.counter("count", '[data-m-count="1"]', { at: at, dur: count, from: start, to: n.value, decimals: n.decimals, ease: "in-quad" });
   P.add("number", ctx.sel(n.word), {
     at: at, dur: 0.5, from: { opacity: 0, scale: 0.72 }, to: { opacity: 1, scale: 1 }, ease: "out-back", origin: "center",
     then: [{ dt: Math.max(0.01, count - 0.5), to: { opacity: 1, scale: 1 }, ease: "linear" }, { dt: 0.12, to: { scale: 1.06 }, ease: "out-quad" }, { dt: 0.24, to: { scale: 1 }, ease: "in-out-quad" }]
@@ -568,6 +612,83 @@ function ringMarkup(w, h, colors, rtl) {
     (rtl ? ' transform="translate(' + Math.round(w) + ' 0) scale(-1 1)"' : "") + "/></svg>";
 }
 
+/** Geometry is in unscaled slide pixels, including on a scaled Studio preview. */
+function boundsOf(ctx, els, ink) {
+  if (!els.length) return null;
+  var x = Infinity, y = Infinity, right = -Infinity, bottom = -Infinity;
+  els.forEach(function (el) { var r = ink ? inkBox(ctx, el) : ctx.rect(el); x = Math.min(x, r.x); y = Math.min(y, r.y); right = Math.max(right, r.x + r.w); bottom = Math.max(bottom, r.y + r.h); });
+  return { x: x, y: y, w: right - x, h: bottom - y };
+}
+
+function bodyBounds(ctx) {
+  var header = ctx.q('[data-m="chrome"], .cs-header')[0], footer = ctx.q('[data-m="footer"], .cs-footer')[0];
+  var a = header ? ctx.rect(header) : { y: 110, h: 80 }, b = footer ? ctx.rect(footer) : { y: 1250 };
+  // Preset rules can extend below the header's text row. The content's allocated top respects those rules.
+  var content = ctx.q('[data-m-layer="content"]')[0], c = content ? ctx.rect(content) : { y: 222, h: 996 };
+  var y = Math.max(a.y + a.h + 12, c.y), end = Math.min(b.y - 12, c.y + c.h);
+  return { x: 45, y: y, w: 990, h: Math.max(1, end - y) };
+}
+
+/** Real engine lines, with a measured-word fallback for inline/notebook runs and the isolated test core. */
+function heroRows(ctx) {
+  var lines = ctx.lines(ctx.heroSlot), words = headlineWords(ctx), rows = [];
+  if (lines.length) lines.forEach(function (line) {
+    var members = words.filter(function (w) { return line.contains(w); });
+    if (members.length) rows.push({ el: line, words: members, rect: ctx.rect(line) });
+  });
+  if (rows.length) return rows.sort(function (a, b) { return a.rect.y - b.rect.y; });
+  words.forEach(function (w) {
+    var r = ctx.rect(w), row = rows.filter(function (a) { return Math.abs(a.rect.y + a.rect.h / 2 - r.y - r.h / 2) < Math.min(a.rect.h, r.h) * 0.45; })[0];
+    if (!row) rows.push({ words: [w], rect: r });
+    else { row.words.push(w); row.rect = boundsOf(ctx, row.words); }
+  });
+  return rows.sort(function (a, b) { return a.rect.y - b.rect.y; });
+}
+
+/** Pad a measured panel, then trim its edges against other ink/media and the chrome. Reserve room for a growing bubble too. */
+function clearPanel(ctx, rect, members, pad, grow) {
+  var safe = bodyBounds(ctx), gap = 12, g = grow || 0;
+  var reserveX = rect.w * g + 2, reserveY = rect.h * g + 2;
+  var left = Math.max(safe.x + reserveX, rect.x - pad), right = Math.min(safe.x + safe.w - reserveX, rect.x + rect.w + pad);
+  var top = Math.max(safe.y + reserveY, rect.y - pad), bottom = Math.min(safe.y + safe.h - reserveY, rect.y + rect.h + pad);
+  ctx.q('.cs-content .w, .cs-content [data-m="media"]').forEach(function (w) {
+    if (members.some(function (m) { return m === w || m.contains(w); })) return;
+    var r = w.matches(".w") ? inkBox(ctx, w) : ctx.rect(w);
+    if (!r.w || !r.h) return;
+    if (r.y < bottom + gap + reserveY && r.y + r.h > top - gap - reserveY) {
+      if (r.x + r.w <= rect.x + 1) left = Math.max(left, r.x + r.w + gap + reserveX);
+      else if (r.x >= rect.x + rect.w - 1) right = Math.min(right, r.x - gap - reserveX);
+    }
+    if (r.x < right + gap + reserveX && r.x + r.w > left - gap - reserveX) {
+      if (r.y + r.h <= rect.y + 1) top = Math.max(top, r.y + r.h + gap + reserveY);
+      else if (r.y >= rect.y + rect.h - 1) bottom = Math.min(bottom, r.y - gap - reserveY);
+    }
+  });
+  return { x: left, y: top, w: Math.max(1, right - left), h: Math.max(1, bottom - top) };
+}
+
+function panelMarkup(w, h, fill, radius) {
+  return '<svg xmlns="' + SVG_NS + '" viewBox="0 0 ' + num1(w) + ' ' + num1(h) + '" width="100%" height="100%" preserveAspectRatio="none" style="display:block"><rect width="' + num1(w) + '" height="' + num1(h) + '" rx="' + num1(radius || 0) + '" fill="' + fill + '"/></svg>';
+}
+
+function revealClip(ctx) { return ctx.rtl ? [0, 0, 0, 100] : [0, 100, 0, 0]; }
+function retreatClip(ctx) { return ctx.rtl ? [0, 100, 0, 0] : [0, 0, 0, 100]; }
+function contentZ(ctx, above) {
+  var layer = ctx.q('[data-m-layer="content"]')[0], z = layer ? parseInt(window.getComputedStyle(layer).zIndex, 10) : 0;
+  return (isFinite(z) ? z : 0) + (above ? 1 : 0);
+}
+function bareCover(ctx) { return !ctx.has('[data-m="kicker"], [data-m="sub"], [data-m="media"], [data-m="bullet"]'); }
+
+/** Compress only the center symbol's choreography, leaving the recipe's authored word times untouched. */
+function shortSymbol(P, made, id, win) {
+  made.choreo({ add: function (key, sel, o) {
+    var fast = Object.assign({}, o, { at: 0.75 + (o.at - 0.75) * 0.4, dur: o.dur * 0.4 });
+    if (o.then) fast.then = o.then.map(function (s) { return Object.assign({}, s, { dt: s.dt * 0.4 }); });
+    if (o.stagger) fast.stagger = Object.assign({}, o.stagger, { each: o.stagger.each * 0.4 });
+    return P.add(key, sel, fast);
+  } }, id, win);
+}
+
 /* ------------------------------------------------------------------ calm: the cinemagraph preset */
 defineRecipe({ id: "calm", label: { ar: "هادئ", en: "Calm" }, feel: "calm", topics: ["default"], requires: ["headline"] }, function (ctx, P) {
   var words = headlineWords(ctx);
@@ -587,9 +708,10 @@ defineRecipe({ id: "calm", label: { ar: "هادئ", en: "Calm" }, feel: "calm", 
 defineRecipe({ id: "counter", label: { ar: "عدّاد", en: "Counter" }, feel: "calm", topics: ["numbers", "lists"], requires: ["headline", "number"] }, function (ctx, P) {
   var words = headlineWords(ctx);
   pKicker(ctx, P, 0.75);
-  var landed = pNumber(ctx, P, 0.8, 0.9);
-  pCascade(ctx, P, words, { at: ctx.number ? landed - 0.55 : 0.95, each: 0.085, dur: 0.55, y: 54, rotate: 3, ease: "out-back", skip: function (w) { return ctx.number && w === ctx.number.word; } });
-  pEmphasisWipe(ctx, P, landed - 0.1, 0.6);
+  var each = Math.min(0.06, 0.6 / Math.max(1, words.length - 1));
+  pCascade(ctx, P, words, { at: 0.75, each: each, dur: 0.45, y: 54, rotate: 3, ease: "out-back", skip: function (w) { return ctx.number && w === ctx.number.word; } });
+  pEmphasisWipe(ctx, P, 0.75, 0.6);
+  pNumber(ctx, P, Math.max(1.35, 0.75 + (words.length - 1) * each + 0.45), 0.9);
   pMedia(ctx, P, 2.5);
   pSub(ctx, P, 2.65);
   pBullets(ctx, P, 2.9);
@@ -690,15 +812,16 @@ function buildStory(ctx, P, forced) {
   } else {
     rect = { x: 114, y: 430, w: 852, h: 300 };
     win = { at: 0.75, hold: 2.55 };
-    t = { kicker: 2.4, number: 2.55, words: 2.6, sub: 3.6, nudge: 4.4 };
+    t = { kicker: 1.15, number: 0.95, words: 1.15, sub: 2.5, nudge: 4.0 };
   }
   P.overlays.push({ id: id, layer: "above", rect: rect, html: made.html });
-  made.choreo(P, id, win);
+  if (mode === "center") shortSymbol(P, made, id, win); else made.choreo(P, id, win);
   pKicker(ctx, P, t.kicker);
-  var landed = pNumber(ctx, P, t.number, 0.9), wordsAt = ctx.number ? Math.max(t.words, landed - 0.55) : t.words;
+  var wordsAt = t.words;
   pCascade(ctx, P, words, { at: wordsAt, each: 0.09, dur: 0.55, y: 58, rotate: 3, ease: "out-back",
-    skip: function (w) { return inEmphasis(w) || (ctx.number && w === ctx.number.word); } });
-  pEmphasisWipe(ctx, P, wordsAt + 0.5, 0.6);
+    skip: function (w) { return (mode !== "center" && inEmphasis(w)) || (ctx.number && w === ctx.number.word); } });
+  pEmphasisWipe(ctx, P, wordsAt + 0.5, 0.6, mode === "center");
+  if (ctx.number) pNumber(ctx, P, Math.max(t.number, wordsAt + (words.length - 1) * 0.09 + 0.55, mode === "band" ? wordsAt + 1.1 : 0), 0.9);
   pMedia(ctx, P, t.sub - 0.2);
   pSub(ctx, P, t.sub);
   pBullets(ctx, P, t.sub + 0.2);
@@ -712,10 +835,205 @@ defineRecipe({ id: "story", label: { ar: "رمز ثم عنوان", en: "Symbol, 
 defineRecipe({ id: "map-dots", label: { ar: "خريطة نقاط", en: "Map dots" }, feel: "story", topics: ["spread"], requires: ["headline"] }, function (ctx, P) { buildStory(ctx, P, "dots"); });
 defineRecipe({ id: "drop-clock", label: { ar: "ساعة تتسارع", en: "Racing clock" }, feel: "story", topics: ["urgency"], requires: ["headline"] }, function (ctx, P) { buildStory(ctx, P, "clock"); });
 
+/* ------------------------------------------------------------------ curtain: the poster is covered, then pulled out by its own lines */
+defineRecipe({ id: "curtain", ships: "1.0", label: { ar: "ستارة", en: "Curtain" }, feel: "story", topics: ["launch", "news"], requires: ["headline"] }, function (ctx, P) {
+  var rows = heroRows(ctx), bare = bareCover(ctx), end = bare ? 4.0 : 3.1, heroDur = end - 0.75 - Math.max(0, rows.length - 1) * 0.18, wipeEase = bare ? "in-out-cubic" : "in-out-expo";
+  function uncover(id, members, rect, at, row) {
+    var panel = clearPanel(ctx, rect, members, 16), sel = '[data-m-ov="' + id + '"]', dur = id.indexOf("curtain-hero-") === 0 ? heroDur : 0.9;
+    P.overlays.push({ id: id, layer: "above", z: contentZ(ctx, true), rect: panel, html: panelMarkup(panel.w, panel.h, ctx.colors.accent, 2) });
+    P.add(id, sel, { at: at, dur: dur, from: { opacity: 1, clipInset: [0, 0, 0, 0] }, to: { opacity: 1, clipInset: retreatClip(ctx) },
+      rest: { opacity: 0, clipInset: revealClip(ctx) }, ease: wipeEase, resetEase: "out-cubic", delay: Math.min(0.1, row * 0.018), then: [{ dt: 0.01, to: { opacity: 0, clipInset: retreatClip(ctx) } }] });
+    // Move the real line as one unit: notebook's connected inline runs must never be promoted/reflowed word by word.
+    var line = members.length === 1 && !members[0].matches(".w") ? members[0] : members.length ? members[0].closest(".cs-ln") : null;
+    if (line && members.every(function (w) { return line === w || line.contains(w); })) {
+      var r = ctx.rect(line), x = ctx.startX(line.matches(".cs-ln") ? 30 : 0);
+      var a = (panel.x + (ctx.rtl ? panel.w : 0) - r.x - x) / r.w * 100, b = (panel.x + (ctx.rtl ? 0 : panel.w) - r.x) / r.w * 100;
+      var from = ctx.rtl ? [-20, -20, -20, a] : [-20, 100 - a, -20, -20], to = ctx.rtl ? [-20, -20, -20, b] : [-20, 100 - b, -20, -20];
+      P.add(id + ".reveal", ctx.sel(line), { at: at, dur: dur, from: { opacity: 1, x: x, clipInset: from }, to: { opacity: 1, x: 0, clipInset: to },
+        resetTo: { opacity: 0, x: 0, clipInset: [-20, -20, -20, -20] }, delay: Math.min(0.1, row * 0.018), ease: wipeEase });
+      return;
+    }
+    members.forEach(function (w, i) {
+      // Each word's clip uses the bar's slide-space edge, compensating for its 30 px slide. Same progress/ease = exact reveal.
+      var r = ctx.rect(w), x = ctx.startX(w.matches(".w") ? 30 : 0), a = (panel.x + (ctx.rtl ? panel.w : 0) - r.x - x) / r.w * 100;
+      var b = (panel.x + (ctx.rtl ? 0 : panel.w) - r.x) / r.w * 100;
+      var from = ctx.rtl ? [-20, -20, -20, a] : [-20, 100 - a, -20, -20], to = ctx.rtl ? [-20, -20, -20, b] : [-20, 100 - b, -20, -20];
+      P.add(id + ".word-" + i, ctx.sel(w), { at: at, dur: dur, from: { opacity: 1, x: x, clipInset: from }, to: { opacity: 1, x: 0, clipInset: to },
+        resetTo: { opacity: 0, x: 0, clipInset: [-20, -20, -20, -20] }, delay: Math.min(0.1, row * 0.018), ease: wipeEase });
+    });
+  }
+  rows.forEach(function (row, i) { uncover("curtain-hero-" + i, row.words, row.rect, 0.75 + i * 0.18, i); });
+  pEmphasisWipe(ctx, P, end, bare ? 0.4 : 0.85, true);
+  ctx.q('[data-m="sub"], [data-m="media"]').forEach(function (slot, i) { uncover("curtain-slot-" + i, [slot], ctx.rect(slot), end + 0.18 + i * 0.16, rows.length + i); });
+  pKicker(ctx, P, end + 0.42, true); pBullets(ctx, P, end + 0.65); pNudge(ctx, P, 4.0);
+});
+
+/* ------------------------------------------------------------------ zoom: a word is the opening shot, then the camera reveals its context */
+defineRecipe({ id: "zoom", ships: "1.0", label: { ar: "زووم على الكلمة", en: "Word zoom" }, feel: "story", topics: ["emphasis", "opinion"], requires: ["headline"] }, function (ctx, P) {
+  var words = headlineWords(ctx), target = ctx.q('mark.cs-em .w').filter(function (w) { return words.indexOf(w) >= 0; });
+  if (!target.length) target = ctx.number ? [ctx.number.word] : words.slice(0, 1);
+  var r = boundsOf(ctx, target), layer = ctx.q('[data-m-layer="content"]')[0];
+  if (!r || !layer) return;
+  var safe = bodyBounds(ctx), box = ctx.rect(layer), ox = box.x + box.w / 2, oy = box.y + box.h / 2;
+  var scale = Math.max(1, Math.min(3.2 / 1.04, safe.w * 0.8 / Math.max(1, r.w), safe.h * 0.8 / Math.max(1, r.h)));
+  function shot(s) { return { scale: s, x: safe.x + safe.w / 2 - ox - (r.x + r.w / 2 - ox) * s, y: safe.y + safe.h / 2 - oy - (r.y + r.h / 2 - oy) * s }; }
+  var bare = bareCover(ctx), push = bare ? 1.2 : 0.8, pull = bare ? 1.7 : 1.0, end = 0.75 + push + pull;
+  P.contentClip = safe;              // a fixed viewport outside the transformed layer, also during the break-apart
+  P.add("zoom-camera", '[data-m-layer="content"]', { at: 0.75, dur: push, from: shot(scale), to: shot(scale * 1.04), origin: "center", delay: 0,
+    ease: "linear", then: [{ dt: pull, to: { scale: 1, x: 0, y: 0 }, ease: "in-out-cubic" }] });
+  words.forEach(function (w, i) {
+    if (target.indexOf(w) >= 0) return;
+    P.add("zoom-context-" + i, ctx.sel(w), { at: 0.75, dur: push, from: { opacity: 0 }, to: { opacity: 0 }, delay: 0,
+      then: [{ dt: pull, to: { opacity: 1 }, ease: "in-out-cubic" }] });
+  });
+  pEmphasisWipe(ctx, P, end, 0.5, true); pSub(ctx, P, end + 0.15); pMedia(ctx, P, end + 0.25); pKicker(ctx, P, end + 0.3); pBullets(ctx, P, end + 0.45); pNudge(ctx, P, 4.0);
+});
+
+/* ------------------------------------------------------------------ notify: typing, word delivery, then the bubble leaves the poster */
+
+/** Use the browser's full font bounds, including mixed-script runs and Arabic dots/descenders, rather than the 0.85em estimate. */
+function notifyBounds(ctx, words) {
+  var r = boundsOf(ctx, words), range = document.createRange();
+  if (!r) return null;
+  function include(b) {
+    var right = Math.max(r.x + r.w, b.x + b.w), bottom = Math.max(r.y + r.h, b.y + b.h);
+    r.x = Math.min(r.x, b.x); r.y = Math.min(r.y, b.y); r.w = right - r.x; r.h = bottom - r.y;
+  }
+  function measure(root, members) { members.forEach(function (word) { include(slideRect(root, word)); range.selectNodeContents(word); include(slideRect(root, range)); }); }
+  measure(ctx.root, words);
+  // The driver promotes inline words during their 6 px rise. Measure that layout on an offscreen clone; never reflow the poster.
+  var clone = ctx.root.cloneNode(true);
+  clone.style.cssText += ";position:absolute;left:-100000px;top:0;transform:none;visibility:hidden;width:" + ctx.root.offsetWidth + "px;height:" + ctx.root.offsetHeight + "px";
+  ctx.root.parentNode.appendChild(clone);
+  try {
+    var animated = Array.prototype.slice.call(clone.querySelectorAll('.w[data-m-slot="' + ctx.heroSlot + '"]'));
+    animated.forEach(function (word) { if (window.getComputedStyle(word).display === "inline") word.style.display = "inline-block"; });
+    measure(clone, animated);
+  } finally { clone.remove(); }
+  r.h += 6;
+  return r;
+}
+
+/** Clearance is preferred; the padded ink is a hard minimum. Include the tail and the anchored 1.03 dissolve in edge tests. */
+function notifyPanel(ctx, ink, words, tail, outline) {
+  var slide = ctx.rect(ctx.root), growth = 0.03, padding = 14;
+  function padded(pad) {
+    var p = pad + outline;
+    return { x: ink.x - p, y: ink.y - p, w: ink.w + 2 * p, h: ink.h + 2 * p + 1 + growth * (tail + outline) };
+  }
+  function fits(r) {
+    var x = r.x - (ctx.rtl ? r.w * growth : 0), y = r.y - (r.h + tail) * growth;
+    return x >= 16 && x + r.w * 1.03 <= slide.w - 16 && y >= 16 && r.y + r.h + tail <= slide.h - 16;
+  }
+  function between(a, b, k) { return { x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k, w: a.w + (b.w - a.w) * k, h: a.h + (b.h - a.h) * k }; }
+  var minimum = padded(padding), lo, hi, mid, i;
+  if (!fits(minimum)) {
+    outline = 1; minimum = padded(padding);  // retain 14 px before sacrificing padding
+    if (!fits(minimum)) {
+      lo = 0; hi = padding;
+      for (i = 0; i < 20; i++) { mid = (lo + hi) / 2; if (fits(padded(mid))) lo = mid; else hi = mid; }
+      padding = Math.floor(lo * 10) / 10; minimum = padded(padding);
+      // Even pathological ink already outside the slide must never be trimmed out of its own bubble.
+      if (!fits(minimum) && padding === 0) { outline = 0; minimum = padded(0); }
+    }
+  }
+  var preferred = clearPanel(ctx, ink, words, 26, 0.035);
+  var right = Math.max(preferred.x + preferred.w, minimum.x + minimum.w), bottom = Math.max(preferred.y + preferred.h, minimum.y + minimum.h);
+  var wanted = { x: Math.min(preferred.x, minimum.x), y: Math.min(preferred.y, minimum.y) };
+  wanted.w = right - wanted.x; wanted.h = bottom - wanted.y;
+  lo = 0; hi = 1;
+  for (i = 0; i < 20; i++) { mid = (lo + hi) / 2; if (fits(between(minimum, wanted, mid))) lo = mid; else hi = mid; }
+  return { body: between(minimum, wanted, lo), padding: padding, outline: outline };
+}
+
+defineRecipe({ id: "notify", ships: "1.0", label: { ar: "إشعار", en: "Notification" }, feel: "story", topics: ["product", "question", "news"], requires: ["headline"] }, function (ctx, P) {
+  var words = headlineWords(ctx), r = notifyBounds(ctx, words);
+  if (!r) return;
+  var bare = bareCover(ctx), tail = 16, fitted = notifyPanel(ctx, r, words, tail, bare ? 8 : 3), body = fitted.body, outline = fitted.outline;
+  var panel = { x: body.x, y: body.y, w: body.w, h: body.h + tail }, w = panel.w, h = panel.h, radius = Math.min(28, body.h / 4, fitted.padding + outline), inset = outline / 2;
+  var dotRadius = bare ? Math.min(14, (w - 24) / 8) : 7, dotGap = bare ? dotRadius * 3 : 28;
+  var shape = '<path d="M' + radius + ' ' + inset + 'H' + (w - radius) + 'Q' + (w - inset) + ' ' + inset + ' ' + (w - inset) + ' ' + radius + 'V' + (body.h - radius) + 'Q' + (w - inset) + ' ' + (body.h - inset) + ' ' + (w - radius) + ' ' + (body.h - inset) +
+    'H' + (radius + tail) + 'L' + radius / 2 + ' ' + (h - inset) + 'L' + radius + ' ' + (body.h - inset) + 'Q' + inset + ' ' + (body.h - inset) + ' ' + inset + ' ' + (body.h - radius) + 'V' + radius + 'Q' + inset + ' ' + inset + ' ' + radius + ' ' + inset + 'Z" fill="' + trimCssVar(ctx.root, "--cs-card", trimCssVar(ctx.root, "--cs-surface", trimCssVar(ctx.root, "--cs-bg", "#FFFFFF"))) + '" stroke="' + ctx.colors.accent + '" stroke-width="' + outline + '"/>';
+  var dots = "";
+  for (var i = 0; i < 3; i++) dots += '<circle data-m="typing" data-m-i="' + i + '" cx="' + (w / 2 + (i - 1) * dotGap) + '" cy="' + (body.h / 2) + '" r="' + dotRadius + '" opacity="0" fill="' + ctx.colors.accent + '"/>';
+  var pop = bare ? 1.2 : 0.45, dotsAt = bare ? 1.95 : 0.83, typeAt = dotsAt + 0.63;
+  var id = "notify-bubble", each = Math.min(0.11, (bare ? 1.0 : 1.5) / Math.max(1, words.length - 1)), done = typeAt + Math.max(0, words.length - 1) * each + 0.08;
+  var fade = bare ? 4.55 - done - 0.12 : 1.05, gone = done + 0.12 + fade;
+  var html = '<svg xmlns="' + SVG_NS + '" data-body-height="' + num1(body.h) + '" data-padding="' + fitted.padding + '" viewBox="0 0 ' + num1(w) + ' ' + num1(h) + '" width="100%" height="100%" preserveAspectRatio="none" style="display:block"><g' + (ctx.rtl ? ' transform="translate(' + num1(w) + ' 0) scale(-1 1)"' : '') + '>' + shape + '</g>' + dots + '</svg>';
+  P.overlays.push({ id: id, layer: "below", z: contentZ(ctx, false), rect: panel, html: html });
+  P.add("notify-pop", '[data-m-ov="' + id + '"]', { at: 0.75, dur: pop, from: { opacity: 0, scale: 0.6 }, to: { opacity: 1, scale: 1 }, rest: { opacity: 0, scale: 1 }, origin: "start-bottom", delay: 0, ease: "out-back",
+    then: [{ dt: done - 0.75 - pop + 0.12, to: { opacity: 1, scale: 1 }, ease: "linear" }, { dt: fade, to: { opacity: 0, scale: 1.03 }, ease: "in-out-cubic" }] });
+  for (var d = 0; d < 3; d++) P.add("notify-dot-" + d, '[data-m-ov="' + id + '"] [data-m-i="' + d + '"]', { at: dotsAt + d * 0.13, dur: 0.15, from: { opacity: 0.25, scale: 0.85 }, to: { opacity: 1, scale: 1 }, rest: { opacity: 0, scale: 1 }, origin: "center", delay: 0,
+    then: [{ dt: 0.15, to: { opacity: 0.25, scale: 0.85 }, ease: "in-out-quad" }, { dt: 0.07, to: { opacity: 0, scale: 1 }, ease: "out-quad" }] });
+  words.forEach(function (word, i) { P.add("notify-word-" + i, ctx.sel(word), { at: typeAt + i * each, dur: 0.08, from: { opacity: 0, y: 6 }, ease: "out-cubic", delay: Math.min(0.1, i * 0.012) }); });
+  ctx.q("mark.cs-em").forEach(function (mark, i) {
+    var first = words.findIndex(function (word) { return mark.contains(word); });
+    if (first >= 0) P.add("notify-mark-" + i, ctx.sel(mark), { at: typeAt + first * each, dur: 0.08, from: { opacity: 0 }, ease: "out-cubic", delay: 0 });
+  });
+  pEmphasisWipe(ctx, P, gone + 0.01, bare ? 0.35 : 0.55, true); pSub(ctx, P, gone); pMedia(ctx, P, gone + 0.08); pKicker(ctx, P, gone + 0.16); pBullets(ctx, P, gone + 0.23); pNudge(ctx, P, 4.25);
+});
+
+/* ------------------------------------------------------------------ split: the two sides travel together and meet with one impact */
+defineRecipe({ id: "split", ships: "1.0", label: { ar: "قبل/بعد", en: "Before / after" }, feel: "story", topics: ["change", "comparison"], requires: ["headline"] }, function (ctx, P) {
+  var words = headlineWords(ctx), rows = heroRows(ctx), cut = -1;
+  words.some(function (w, i) { if (changeMarker(w.textContent) || /[…،→]|\.{3}/.test(w.textContent)) { cut = i + 1; return true; } return false; });
+  if (cut <= 0 || cut >= words.length) cut = rows.length > 1 ? rows[0].words.length : Math.ceil(words.length / 2);
+  cut = Math.min(Math.max(1, cut), Math.max(1, words.length - 1));
+  var impact = 1.8, movedMarks = [], groups = [words.slice(0, cut), words.slice(cut)], bounds = groups.map(function (group) { return boundsOf(ctx, group, true); });
+  var content = ctx.q('[data-m-layer="content"]')[0], area = content ? ctx.rect(content) : bodyBounds(ctx), slide = ctx.rect(ctx.root);
+  var travel = groups.map(function (group, i) {
+    if (!group.length) return 0;
+    var side = ctx.startX(i === 0 ? 1 : -1), box = bounds[i];
+    var distance = Math.max(380, side > 0 ? area.x + area.w - box.x + 1 : box.x + box.w - area.x + 1);
+    group.forEach(function (word) { var r = inkBox(ctx, word); distance = Math.min(distance, side > 0 ? slide.w - r.x : r.x + r.w); });
+    return side * Math.max(0, distance);
+  });
+  words.forEach(function (w, i) {
+    var mark = w.closest("mark.cs-em"), mover = w;
+    if (mark) {
+      var marked = words.filter(function (word) { return mark.contains(word); });
+      if (window.getComputedStyle(mark).display !== "inline" && mark.getClientRects().length === 1 && marked.every(function (word) { return (words.indexOf(word) < cut) === (i < cut); })) {
+        if (movedMarks.indexOf(mark) >= 0) return;
+        movedMarks.push(mark); mover = mark;  // its poster highlight travels with the words, never an empty box left behind
+      }
+    }
+    var x = travel[i < cut ? 0 : 1], recoil = ctx.startX(i < cut ? 10 : -10);
+    P.add("split-visible-" + i, ctx.sel(mover), { at: 0.75, dur: 0.2, from: { opacity: 0 }, ease: "out-cubic", delay: 0 });
+    P.add("split-word-" + i, ctx.sel(mover), { at: 0.75, dur: impact - 0.75, from: { x: x, scale: 1 }, to: { x: 0, scale: 1 }, ease: "in-cubic", origin: "center", delay: 0,
+      then: [{ dt: 0.1, to: { x: recoil, scale: 1.05 }, ease: "out-quad" }, { dt: 0.25, to: { x: 0, scale: 1 }, ease: "out-cubic" }] });
+  });
+  ctx.q("mark.cs-em").forEach(function (mark, i) { if (movedMarks.indexOf(mark) < 0) P.add("split-mark-" + i, ctx.sel(mark), { at: 0.75, dur: 0.2, from: { opacity: 0 }, ease: "out-cubic", delay: 0 }); });
+  if (words.length > 1) {
+    var a = inkBox(ctx, words[cut - 1]), b = inkBox(ctx, words[cut]), vertical = Math.abs(a.y - b.y) < Math.min(a.h, b.h) / 2, panel;
+    var first = bounds[0], second = bounds[1];
+    if (vertical) panel = { x: (Math.min(a.x + a.w, b.x + b.w) + Math.max(a.x, b.x)) / 2 - 4, y: Math.max(first.y, second.y), w: 8, h: Math.min(first.h, second.h) };
+    else panel = { x: Math.max(first.x, second.x), y: (Math.min(a.y + a.h, b.y + b.h) + Math.max(a.y, b.y)) / 2 - 4, w: Math.min(first.w, second.w), h: 8 };
+    var edgeMark = words[cut - 1].closest("mark.cs-em");
+    if (!vertical && edgeMark && groups[1].every(function (word) { return !edgeMark.contains(word); })) {
+      var markBox = ctx.rect(edgeMark); panel.y = Math.max(panel.y, markBox.y + markBox.h + 6);
+    }
+    var path = vertical ? 'M4 0V' + num1(panel.h) : 'M0 4H' + num1(panel.w);
+    P.overlays.push({ id: "split-divider", layer: "above", z: contentZ(ctx, true), rect: panel, html: '<svg xmlns="' + SVG_NS + '" viewBox="0 0 ' + num1(panel.w) + ' ' + num1(panel.h) + '" width="100%" height="100%" style="display:block"><path data-m="stroke" pathLength="1" d="' + path + '" fill="none" stroke="' + ctx.colors.accent + '" stroke-width="8"/></svg>' });
+    P.add("split-divider.fade", '[data-m-ov="split-divider"]', { at: 0.75, dur: 0.08, from: { opacity: 0 }, to: { opacity: 1 }, rest: { opacity: 0 }, delay: 0,
+      then: [{ dt: impact - 0.75 - 0.08, to: { opacity: 1 } }, { dt: 0.16, to: { opacity: 0 } }] });
+    P.add("split-divider.draw", '[data-m-ov="split-divider"] [data-m="stroke"]', { at: 0.75, dur: 0.12, from: { dash: 0 }, to: { dash: 1 }, rest: { dash: 0 }, delay: 0,
+      then: [{ dt: impact - 0.75 - 0.12, to: { dash: 1 } }, { dt: 0.16, to: { dash: 0 }, ease: "in-cubic" }] });
+  }
+  pEmphasisWipe(ctx, P, impact + 0.35, 1.0, true);
+  if (bareCover(ctx) && !ctx.has("mark.cs-em")) {
+    // A bare, unmarked title has no later entrances to spread. Its accent trace carries that later beat instead of slowing the hit.
+    var ink = boundsOf(ctx, words), h = 28;
+    P.overlays.push({ id: "split-trace", layer: "below", z: contentZ(ctx, false), rect: { x: ink.x, y: ink.y + ink.h + 3, w: ink.w, h: h }, html: panelMarkup(ink.w, h, ctx.colors.accent, h / 2) });
+    P.add("split-trace", '[data-m-ov="split-trace"]', { at: impact + 0.35, dur: 1.0, from: { opacity: 1, clipInset: revealClip(ctx) }, to: { opacity: 1, clipInset: [0, 0, 0, 0] },
+      rest: { opacity: 0, clipInset: revealClip(ctx) }, resetTo: { opacity: 0, clipInset: revealClip(ctx) }, delay: 0, ease: "linear",
+      then: [{ dt: 0.3, to: { opacity: 1, clipInset: [0, 0, 0, 0] } }, { dt: 0.3, to: { opacity: 0, clipInset: [0, 0, 0, 0] } }] });
+  }
+  pSub(ctx, P, 3.8); pMedia(ctx, P, 4.05); pKicker(ctx, P, 4.2); pBullets(ctx, P, 4.3); pNudge(ctx, P, 4.44);
+});
+
 /* ------------------------------------------------------------------ none, and the ids that ship in v1.1 */
 defineRecipe({ id: "none", label: { ar: "بدون حركة", en: "No motion" }, feel: "calm", topics: [] }, function () { /* nothing moves */ });
 defineRecipe({ id: "morph", label: { ar: "تحوّل", en: "Morph" }, feel: "story", ships: "1.1", topics: ["old-vs-new"] }, null);
-defineRecipe({ id: "split", label: { ar: "شاشة منقسمة", en: "Split" }, feel: "story", ships: "1.1", topics: ["race"] }, null);
 defineRecipe({ id: "cash-wipe", label: { ar: "نقود تُمسح", en: "Cash wipe" }, feel: "story", ships: "1.1", topics: ["cost"] }, null);
 defineRecipe({ id: "scale", label: { ar: "ميزان", en: "Scale" }, feel: "story", ships: "1.1", topics: ["growth"] }, null);
 
@@ -792,7 +1110,7 @@ function reduceTimeline(tl) {
     if (t.to) r.to = keep(t.to);
     return r;
   });
-  tl.counters = []; tl.overlays = [];
+  tl.counters = []; tl.overlays = []; delete tl.contentClip;
   return tl;
 }
 
@@ -827,7 +1145,12 @@ function validateTimeline(root, tl) {
  * that piece moves earlier by the same amount, so the choreography keeps its shape and only loses the empty beat.
  */
 function alignEntrance(tl) {
-  var T = tl.times, entering = tl.tracks.filter(function (t) { return t.from && t.from.opacity === 0; });
+  var T = tl.times, entering = tl.tracks.filter(function (t) { var c = t.from && t.from.clipInset;
+    return t.from && (t.from.opacity === 0 || c && (c[1] + c[3] >= 99.9 || c[0] + c[2] >= 99.9)); });
+  // A curtain already covering the poster, or the camera's opening shot, is itself the first piece.
+  // Moving later word tracks alone would desynchronise their reveal from that visible opening.
+  if (tl.tracks.some(function (t) { return t.t0 <= T.resetEnd + 0.001 && t.from && t.from.opacity !== 0 &&
+    (tl.contentClip || t.from.opacity === 1 && t.sel.indexOf("data-m-ov") >= 0); })) return;
   if (!entering.length) return;
   var first = Math.min.apply(null, entering.map(function (t) { return t.t0; })), shift = round3(first - T.resetEnd);
   if (shift <= 0.001) return;
@@ -862,6 +1185,7 @@ function buildTimeline(slideEl, opts) {
     duration: seconds, fps: FPS, frames: Math.round(seconds * FPS), times: times, tracks: P.tracks, counters: P.counters
   };
   if (P.overlays.length) tl.overlays = P.overlays;
+  if (P.contentClip) tl.contentClip = P.contentClip;
   if (P.metaphor) tl.metaphor = P.metaphor;
   if (P.mode) tl.mode = P.mode;
   if (resolved.fallbackFrom) tl.fallbackFrom = resolved.fallbackFrom;

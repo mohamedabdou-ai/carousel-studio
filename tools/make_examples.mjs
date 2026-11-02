@@ -56,7 +56,7 @@ const VIDEOS = [
   { name: "interface", spec: "spec.en.8slides.json", brand: "brand.en.minimal.json" },
   { name: "heritage", spec: "spec.eg.8slides.json", brand: "brand.eg.creator.json" }
 ];
-const FEEL = { story: "story", stamp: "story", reorder: "story", "drop-clock": "story", "map-dots": "story" };   // every other recipe is calm
+const FEEL = { story: "story", stamp: "story", reorder: "story", "drop-clock": "story", "map-dots": "story", curtain: "story", zoom: "story", notify: "story", split: "story" };   // every other recipe is calm
 
 function build(entry) {
   const out = path.join(OUT, `studio-${entry.name}.html`);

@@ -1748,6 +1748,9 @@
         "map-dots",
         "cash-wipe",
         "drop-clock",
+        "curtain",
+        "zoom",
+        "notify",
         "scale",
         "none"
       ]

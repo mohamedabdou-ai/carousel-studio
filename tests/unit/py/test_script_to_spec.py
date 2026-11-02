@@ -5,6 +5,7 @@ Run: python -m unittest discover -s tests/unit/py -p "test_script_to_spec.py"   
 from __future__ import annotations
 
 import json
+import importlib.util
 import os
 import subprocess
 import sys
@@ -16,6 +17,85 @@ REPO = Path(__file__).resolve().parents[3]
 SCRIPT = REPO / "plugins" / "carousel-studio" / "skills" / "carousel-create" / "scripts" / "script_to_spec.py"
 BRAND = REPO / "docs" / "examples" / "brand.example.json"
 ENV = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
+
+_loader = importlib.util.spec_from_file_location("script_to_spec_motion", SCRIPT)
+_picker = importlib.util.module_from_spec(_loader)
+_loader.loader.exec_module(_picker)
+
+
+class MotionPickerTests(unittest.TestCase):
+    allowed = ["calm", "counter", "highlight-sweep", "stamp", "reorder", "story", "map-dots", "drop-clock", "split", "notify", "curtain", "zoom"]
+
+    def pick(self, headline, arch="opinion", **kwargs):
+        spec = {"architecture": arch, "slides": [{"type": "cover", "headline": headline}]}
+        return _picker.pick_motion(spec, {"motion": {"allowed": self.allowed, "default": "highlight-sweep"}}, **kwargs)
+
+    def test_new_rules_in_arabic_and_english(self):
+        for headline, recipe in [("الأداة بقت استوديو", "split"), ("Before → after", "split"), ("Then vs now", "split"),
+                                 ("رسميًا دخلت أداة جديدة", "curtain"), ("A new launch", "curtain"),
+                                 ("Claude أعلنت تحديث", "notify"), ("ChatGPT update", "notify"),
+                                 ("Photoshop update", "notify"),
+                                 ("عندك فكرة؟", "notify"), ("إنت لسه مستني؟", "notify"), ("هل لديك حساب؟", "notify"), ("Are you ready?", "notify"),
+                                 ("إنت ==غلطان!==", "zoom"), ("A ==different== perspective", "zoom")]:
+            with self.subTest(headline=headline):
+                result = self.pick(headline)
+                self.assertEqual(result["recipe"], recipe)
+                self.assertEqual(result["feel"], "story")
+
+    def test_precedence_and_ordinary_words(self):
+        for headline, arch, expected in [("آخر فرصة بقت ساعات", "news", "drop-clock"), ("انتشار في كل المدن", "news", "map-dots"),
+                                          ("قرار الحقيقة", "opinion", "stamp"), ("5 أخطاء", "news", "story"),
+                                          ("Now 12 tools", "news", "split"), ("5 new tools", "news", "counter"),
+                                          ("How to launch Claude", "news", "reorder"), ("Claude launch", "news", "notify"),
+                                          ("لا شبكة ولا ملف", "opinion", "highlight-sweep"), ("عندك مشكلة", "opinion", "highlight-sweep"),
+                                          ("رأي ==مختلف==", "news", "story"), ("أفضل أدوات 2026", "opinion", "highlight-sweep"),
+                                          ("عام٢٠٢٦", "opinion", "highlight-sweep"), ("عام2026", "opinion", "highlight-sweep")]:
+            with self.subTest(headline=headline):
+                self.assertEqual(self.pick(headline, arch)["recipe"], expected)
+
+    def test_product_only_in_brief_or_caption_does_not_make_the_cover_a_notification(self):
+        spec = {"architecture": "news", "brief": {"topic": "Claude update"}, "captionPack": {"firstLine": "Gemini update"},
+                "slides": [{"type": "cover", "headline": "More possibilities for creators"}]}
+        self.assertEqual(_picker.pick_motion(spec, {})["recipe"], "story")
+        spec["hook"] = {"cover": "Claude update"}
+        self.assertEqual(_picker.pick_motion(spec, {})["recipe"], "story")
+        spec["hook"] = {"cover": "More possibilities for creators"}
+        spec["slides"][0]["headline"] = "ChatGPT update"
+        self.assertEqual(_picker.pick_motion(spec, {})["recipe"], "notify")
+
+    def test_variety_uses_newest_earlier_sibling_and_next_matching_rule(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for name, recipe in [("post-20261101-0001", "curtain"), ("post-20261101-0002", "notify"), ("post-20261104-0001", "split")]:
+                p = root / name
+                p.mkdir()
+                (p / "spec.json").write_text(json.dumps({"cover": {"motion": {"recipe": recipe}}}), encoding="utf-8")
+            notes = []
+            result = self.pick("Claude new launch", "news", post_dir=root / "post-20261102-0001", notes=notes)
+            self.assertEqual(result["recipe"], "curtain")
+            self.assertEqual(notes, ["motion: curtain (the last post used notify)"])
+
+    def test_variety_falls_back_to_first_allowed_different_recipe(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            p = root / "post-20261101-0001"
+            p.mkdir()
+            (p / "spec.json").write_text('{"cover":{"motion":{"recipe":"highlight-sweep"}}}', encoding="utf-8")
+            notes = []
+            result = self.pick("كلام عادي", post_dir=root / "post-20261102-0001", notes=notes)
+            self.assertEqual(result["recipe"], "calm")
+            self.assertEqual(notes, ["motion: calm (the last post used highlight-sweep)"])
+
+    def test_missing_or_unreadable_siblings_are_silent_and_only_allowed_recipes_are_picked(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "post-20261101-0001").mkdir()
+            (root / "post-20261101-0001" / "spec.json").write_text("bad json", encoding="utf-8")
+            notes = []
+            self.assertEqual(self.pick("Claude launch", post_dir=root / "post-20261102-0001", notes=notes)["recipe"], "notify")
+            self.assertEqual(notes, [])
+        spec = {"slides": [{"type": "cover", "headline": "Claude launch"}]}
+        self.assertEqual(_picker.pick_motion(spec, {"motion": {"allowed": ["zoom"], "default": "zoom"}})["recipe"], "zoom")
 
 # The owner's real test post (2026-10-24): circled numbers in bold, sections split by ---, emoji, a request line first.
 OWNER = """اعملي كاروسيل عن
@@ -133,7 +213,7 @@ class ScriptToSpecTests(unittest.TestCase):
         self.assertEqual(last["cta"]["kind"], "save")
         self.assertIn("save + send + follow", res.stdout)                               # one CTA works best: said, not rewritten
         self.assertEqual(spec["style"]["presetId"], "notebook@1.0")
-        self.assertIn(spec["cover"]["motion"]["recipe"], ("reorder", "highlight-sweep"))  # notebook has no «story» recipe
+        self.assertEqual(spec["cover"]["motion"]["recipe"], "notify")  # news naming OpenAI uses notebook's new message story
         self.assertEqual([s.get("variant") for s in spec["slides"][4:8]], ["base", "ghost-number", "base", "ghost-number"])
         self.assertEqual(spec["id"], "post-20261024-0007")
         self.assertEqual((spec["mode"], spec["checkpoint"]), ("fast", "design"))

@@ -1284,7 +1284,7 @@ CS.core.format = function format(template, params) {
 
   var SLIDE_TYPES = ["cover", "rehook", "item", "step", "stat", "compare", "myth-fact", "quote", "story-beat", "checklist", "summary", "setup", "proof", "share", "cta", "offer", "testimonial", "poster", "grid", "timeline"];
   var DIALECTS = ["eg", "gulf", "levant", "msa-white", "en"];
-  var RECIPES = ["calm", "counter", "highlight-sweep", "stamp", "reorder", "story", "morph", "split", "map-dots", "cash-wipe", "drop-clock", "scale", "none"];
+  var RECIPES = ["calm", "counter", "highlight-sweep", "stamp", "reorder", "story", "morph", "split", "map-dots", "cash-wipe", "drop-clock", "curtain", "zoom", "notify", "scale", "none"];
   var ROLE_KEYS = ["bg", "surface", "ink", "inkMuted", "accent", "accent2"];
   // Matches styles/index.json; the default is a shipped preset.
   core.DEFAULT_PRESET = "creator";

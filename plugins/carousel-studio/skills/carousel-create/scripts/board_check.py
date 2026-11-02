@@ -65,7 +65,7 @@ LOG_KEYS_AT = {"pitch": ("director", "pitch"), "room": ("director", "pitch", "du
 LOG_MAX_CHARS = 160
 MOVES = ("big-number", "enemy", "reveal", "mirror", "before-after", "cheat-sheet", "insider-leak", "confession", "free-vs-paid", "countdown")
 FAMILIES = {"P%d" % i for i in range(1, 17)} | {"F%d" % i for i in range(17, 24)} | {"S1", "S2", "S3"}
-RECIPES = ("counter", "highlight-sweep", "stamp", "reorder", "story", "map-dots", "drop-clock", "calm")
+RECIPES = ("counter", "highlight-sweep", "stamp", "reorder", "story", "map-dots", "drop-clock", "curtain", "zoom", "notify", "split", "calm")
 AGENTS = ("cs-creative-director", "cs-strategist", "cs-copywriter", "cs-arabic-editor", "cs-art-director", "cs-motion-designer",
           "cs-visual-artist", "cs-audience-panel", "cs-qa-producer")
 CARD_TARGETS = AGENTS + ("creator",)

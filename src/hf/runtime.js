@@ -106,6 +106,7 @@ function hfRuntime(window, document) {
     switch (name) {
       case "start": return rtl ? "100% 50%" : "0% 50%";
       case "end": return rtl ? "0% 50%" : "100% 50%";
+      case "start-bottom": return rtl ? "100% 100%" : "0% 100%";
       case "top": return "50% 0%";
       case "bottom": return "50% 100%";
       default: return "50% 50%";
@@ -206,7 +207,7 @@ function hfRuntime(window, document) {
     var fps = timeline.fps || 30;
     var frames = timeline.frames || Math.round(duration * fps);
     var driver = options.driver === "waapi" ? "waapi" : "style";
-    var overlays = [], instances = [], counters = [], animations = [], lastT = 0, destroyed = false;
+    var overlays = [], instances = [], counters = [], animations = [], lastT = 0, destroyed = false, viewport = null;
     var resetWindow = Math.max(0.001, T.resetEnd - T.holdIn - RESET_SPREAD);
     var bases = new WeakMap();           // original inline styles, captured once per element
     // Notebook's Playpen shapes/positions inline words differently from atomic inline-blocks.
@@ -230,6 +231,7 @@ function hfRuntime(window, document) {
       d.setAttribute("aria-hidden", "true");
       d.style.cssText = "position:absolute;left:" + num(r.x) + "px;top:" + num(r.y) + "px;width:" + num(r.w) + "px;height:" + num(r.h) +
         "px;pointer-events:none;opacity:0;margin:0;padding:0;border:0;overflow:visible";
+      if (typeof ov.z === "number" && isFinite(ov.z)) d.style.zIndex = String(ov.z);
       d.innerHTML = ov.html || "";
       if (ov.layer === "below") {
         var content = slide.querySelector(".cs-content");
@@ -237,6 +239,19 @@ function hfRuntime(window, document) {
       } else slide.appendChild(d);
       overlays.push(d);
     });
+
+    // A camera needs a stationary aperture: clipping the scaled element itself scales its clip too and can leak into chrome
+    // during reset/interpolation. This full-slide wrapper keeps the original containing-block geometry and clips only content.
+    var aperture = timeline.contentClip;
+    if (aperture) {
+      var moving = slide.querySelector('[data-m-layer="content"]');
+      if (moving) {
+        viewport = document.createElement("div"); viewport.setAttribute("data-m-viewport", "content");
+        var contentZ = window.getComputedStyle(moving).zIndex;
+        viewport.style.cssText = "position:absolute;inset:0;pointer-events:none;z-index:" + (contentZ === "auto" ? "0" : contentZ);
+        moving.parentNode.insertBefore(viewport, moving); viewport.appendChild(moving);
+      }
+    }
 
     /* ---- compile tracks into per-element instances ---- */
     (timeline.tracks || []).forEach(function (tr) {
@@ -374,6 +389,8 @@ function hfRuntime(window, document) {
       if (destroyed) return;
       t = Math.max(0, Math.min(duration, +t || 0));
       lastT = t;
+      if (viewport) viewport.style.clipPath = t > T.holdIn && t < T.settleBy ? "inset(" + num(aperture.y) + "px " + num((slide.offsetWidth || 1080) - aperture.x - aperture.w) + "px " +
+        num((slide.offsetHeight || 1440) - aperture.y - aperture.h) + "px " + num(aperture.x) + "px)" : "";
       inlineBoxes.forEach(function (el) { el.style.display = t <= T.holdIn || t >= Math.min(T.settleBy, inlineUntil) ? bases.get(el).display : "inline-block"; });
       if (driver === "waapi") { for (var k = 0; k < animations.length; k++) animations[k].currentTime = t * 1000; }
       else for (var i = 0; i < instances.length; i++) writeStyle(instances[i], stateOf(instances[i], t));
@@ -393,6 +410,7 @@ function hfRuntime(window, document) {
       }
       instances.forEach(function (inst) { restore(inst.el); });
       counters.forEach(function (c) { c.node.nodeValue = c.text; restore(c.holder); });
+      if (viewport && viewport.parentNode) { while (viewport.firstChild) viewport.parentNode.insertBefore(viewport.firstChild, viewport); viewport.parentNode.removeChild(viewport); }
       overlays.forEach(function (o) { if (o.parentNode) o.parentNode.removeChild(o); });
       animations = []; instances = []; counters = []; overlays = [];
     }

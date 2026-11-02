@@ -43,7 +43,7 @@ Rank creator/poster/notebook on the post's hook using `render.mjs --preflight`. 
 - **Chrome.** Handle at header start, meta at header end, counter centre, swipe at footer end. The save pill is a sharp ink rectangle with a drawn ribbon; it shows on the cta slide only.
 - **Cover.** Hero 120–180 px (target 150), headline width 65–85%, start-aligned, top anchored.
 - **Variants (first = default).** cover `top number center` · item `ghost-number base side-number` · step `ghost-number base pill` · stat `bar base` · compare `columns versus stacked` · myth-fact `columns stacked` · checklist `ruled base boxes` · cta `pill base keyword` (rest in `preset.json`).
-- **Motion.** Default `highlight-sweep`; allowed `calm counter highlight-sweep reorder stamp map-dots drop-clock`. Opinion → `highlight-sweep`, numbered lists → `counter`, framework or chaos-to-order → `reorder`.
+- **Motion.** Default `highlight-sweep`; allowed `calm counter highlight-sweep reorder stamp map-dots drop-clock curtain zoom notify split`. Opinion → `highlight-sweep`, numbered lists → `counter`, framework or chaos-to-order → `reorder`.
 - **Avoid.** Card-heavy content (it has almost no cards) and pastel brand accents (the highlight block needs a strong fill).
 
 ### creator (صانع المحتوى)
@@ -54,7 +54,7 @@ Rank creator/poster/notebook on the post's hook using `render.mjs --preflight`. 
 - **Chrome.** Same slots as swiss. The save pill is an accent pill with a 3 px ink border, a hard shadow and a drawn ribbon.
 - **Photo.** `cover/photo` and `poster/photo` put the headline in a white box so it never depends on the image; quote and testimonial `photo` use the card.
 - **Variants.** cover `top photo split number` · item `side-number base ghost-number media` · step `pill base ghost-number` · compare `versus columns stacked` · myth-fact `stamp stacked columns` · checklist `boxes base ruled` · cta `keyword pill base`.
-- **Motion.** Default `highlight-sweep`; allowed `calm counter highlight-sweep stamp story map-dots drop-clock`. Number-led lists → `counter`; a personal story → `story`.
+- **Motion.** Default `highlight-sweep`; allowed `calm counter highlight-sweep stamp story map-dots drop-clock curtain zoom notify split`. Number-led lists → `counter`; a personal story → `story`.
 - **Avoid.** Dark brand backgrounds (the card is the surface); very long titles (the card adds padding).
 
 ### notebook (دفتر ملاحظات)
@@ -64,7 +64,7 @@ Rank creator/poster/notebook on the post's hook using `render.mjs --preflight`. 
 - **Numbering.** `pill` (default): the number circled in red pen. Check boxes are hand-drawn squares with a red tick; plain lists use short red dashes.
 - **Chrome.** Counter in a thin circle, handle with a red underline, the save pill is a paper label with a red ribbon.
 - **Variants.** item `base side-number ghost-number` · step `pill base ghost-number` · checklist `boxes ruled base` · setup `cards base` · compare `columns stacked versus`.
-- **Motion.** Default `highlight-sweep`; allowed `calm reorder highlight-sweep counter stamp map-dots drop-clock`. Steps and checklists → `reorder`; the underline draws in with `highlight-sweep`.
+- **Motion.** Default `highlight-sweep`; allowed `calm reorder highlight-sweep counter stamp map-dots drop-clock curtain zoom notify split`. Steps and checklists → `reorder`; the underline draws in with `highlight-sweep`.
 - **Avoid.** Formal or financial topics; the hand is friendly by design.
 - **Art and tones (inner slides).** Pen on paper: 2 px round strokes drawn twice (retrace), wobble 0.6, tilt at most 3°, hand annotations in Playpen 400, marks `arrow circle underline strike doodle tick`, a stamp badge, the page tab as motif. Supports marker green `#2E8B57` and highlighter amber `#F4B63F`. `field` puts the paper on the `accent2` ground (kraft in the preset palette) with a taped sheet; `invert` is the ink page. The rail is tally marks, the current one in red; the footer sits in the shared band, as in creator and poster.
 
@@ -75,7 +75,7 @@ Rank creator/poster/notebook on the post's hook using `render.mjs --preflight`. 
 - **Numbering.** `plain`: rust numerals when emphasis is colour. `stat` base is large numerals; the `bar` variant adds a double rule.
 - **Chrome.** Counter between two rules, the save pill is a green capsule in a double ring (cta slide only).
 - **Variants.** item `side-number base ghost-number` · stat `bar base` · compare `versus columns stacked` · myth-fact `stamp columns stacked` · checklist `ruled boxes base` · quote `base mark`.
-- **Motion.** Default `highlight-sweep`; allowed `calm counter stamp highlight-sweep story map-dots drop-clock`. A verdict or myth-fact → `stamp`; a number → `counter`.
+- **Motion.** Default `highlight-sweep`; allowed `calm counter stamp highlight-sweep story map-dots drop-clock curtain zoom notify split`. A verdict or myth-fact → `stamp`; a number → `counter`.
 - **Avoid.** More than one emphasis per slide (rust competes with the rules); a three-line cover of short words in the `top` variant (the hero cannot fill the sheet: use `number` or `center`).
 
 ### interface (واجهة) · held back, not in this release
@@ -85,7 +85,7 @@ Rank creator/poster/notebook on the post's hook using `render.mjs --preflight`. 
 - **Numbering.** `pill`: a small accent chip. `stat` bar: an accent progress rule under the figure.
 - **Chrome.** `meta` sits at header centre. Footer: save pill (accent button), counter chip, swipe as an outlined button.
 - **Variants.** item `base side-number media` · step `pill base` · checklist `boxes ruled base` · setup `cards base` · compare `columns versus stacked` · proof `screenshot base`.
-- **Motion.** Default `highlight-sweep`; allowed `calm reorder counter highlight-sweep map-dots drop-clock`. Steps and tool lists → `reorder`.
+- **Motion.** Default `highlight-sweep`; allowed `calm reorder counter highlight-sweep map-dots drop-clock curtain zoom notify split`. Steps and tool lists → `reorder`.
 - **Avoid.** Full-bleed photos (the window is part of the design).
 
 ### heritage (تراثي) · held back, not in this release
@@ -96,7 +96,7 @@ Rank creator/poster/notebook on the post's hook using `render.mjs --preflight`. 
 - **Numbering.** `plain`: the numeral between two gold diamonds. `pill`: a gold capsule.
 - **Chrome.** Counter between gold diamonds, the save pill is a gold capsule in a thin ring.
 - **Variants.** cover `top center` · item `base side-number media` · compare `columns stacked versus` · checklist `ruled boxes base` · quote `mark base`. There is no `photo` variant: text never sits on an image here.
-- **Motion.** Default `highlight-sweep`; allowed `calm story highlight-sweep stamp counter map-dots drop-clock`. A story or a national-day post uses `story`.
+- **Motion.** Default `highlight-sweep`; allowed `calm story highlight-sweep stamp counter map-dots drop-clock curtain zoom notify split`. A story or a national-day post uses `story`.
 - **Avoid.** Light brand palettes (the lattice and gold assume a dark field); more than one kashida word.
 
 ## 4. Rules every preset follows

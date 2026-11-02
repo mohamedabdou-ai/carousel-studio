@@ -17,6 +17,13 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 - «غيّر الستايل» with no name shows the other styles on your own cover and slide 2 to pick from.
 - «انشر» posts to Instagram only unless you name another platform, with the moving cover first.
 
+### Cover motion
+
+- Four new cover stories, each with its own movement: Curtain (accent bars pull away line by line), Word zoom (the cover opens on its key word, then the camera pulls back), Notification (the headline arrives as a message being typed) and Before/after (the two halves of the headline collide).
+- The cover story is chosen from the cover's own words, and two posts in a row never get the same one.
+- The counter shows the rest of the title before the number counts, and large numbers count up from about a third instead of zero.
+- The centered story shows its title within about a second and a half, instead of holding a nearly empty card.
+
 ## [1.1.0] - 2026-10-26
 
 First public release.

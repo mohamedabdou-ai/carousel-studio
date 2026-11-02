@@ -126,7 +126,7 @@ export default {
       name: "mid-animation frames: the two painters agree for every recipe (transforms, clip-path, group opacity, overlays)",
       async run(t) {
         const r = await t.page.evaluate(async () => {
-          const cases = [["mistakes", "story"], ["counter", "counter"], ["urgent", "drop-clock"], ["spread", "map-dots"], ["myth", "stamp"], ["steps", "reorder"], ["opinion", "highlight-sweep"], ["opinion", "calm"]];
+          const cases = [["mistakes", "story"], ["counter", "counter"], ["urgent", "drop-clock"], ["spread", "map-dots"], ["myth", "stamp"], ["steps", "reorder"], ["opinion", "highlight-sweep"], ["opinion", "calm"], ["opinion", "curtain"], ["opinion", "zoom"], ["counter", "notify"], ["english", "split"]];
           const worst = [];
           for (const [fx, recipe] of cases) {
             const deck = await CS.core.render.deck(CS_FIXTURES[fx], null, { slideIds: ["s01"] });

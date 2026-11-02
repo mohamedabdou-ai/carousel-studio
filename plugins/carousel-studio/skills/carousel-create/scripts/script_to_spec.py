@@ -21,8 +21,8 @@ sentence end, every word kept and in order (unless --no-split, which keeps every
 in the last section a question becomes the cta slide's title and a «احفظ / شارك / تابع / save / follow …» line its call to action.
 It never makes a grid or a timeline (a script names no cards or nodes): the art director or the Studio turns a slide into one.
 Emoji are removed from slides, digits follow the brand, bold and heading marks go. The cover motion is picked by the Studio's own
-order (myth-fact → stamp, a number on the cover → counter, steps or framework → reorder, news, story or case → story, else
-highlight-sweep), kept to what the preset allows.
+order (urgency, spread, verdict, mistakes, change, number, how-to, product news/question, launch, story, short emphasis,
+then highlight-sweep), kept to what the preset allows. It avoids repeating the newest earlier sibling post's recipe.
 
 Exit codes: 0 done (FIX or NOTE may remain), 1 something to fill or a FIX, 2 a BLOCK or an invalid spec, 64 usage, 65 bad input.
 """
@@ -73,7 +73,24 @@ FAMILY_BY_ARCH = {"news": "P12", "story": "P9", "case-study": "P9", "myth-fact":
                   "steps": "P11", "framework": "F17", "opinion": "F21", "results": "P7", "offer": "S1", "lead-magnet": "P11"}
 LENS_BY_ARCH = {"news": "news", "story": "story", "case-study": "story", "myth-fact": "myth", "framework": "framework",
                 "comparison": "free-vs-paid", "opinion": "contrarian", "steps": "setup"}
-STORY_FEEL = {"stamp", "reorder", "story", "drop-clock", "map-dots"}
+STORY_FEEL = {"stamp", "reorder", "story", "drop-clock", "map-dots", "curtain", "zoom", "notify", "split"}
+# Same normalized dialect tokens as src/motion/topics.js; kept local so the installed skill is self-contained.
+MOTION_LEXICON = {
+    "mistakes": ["اخطاء","خطا","غلط","اغلاط","غلطه","تموت*","يموت*","تقتل*","يقتل*","قاتل*","تدمر*","يدمر*","تخرب*","يخرب*","فشل*","تفشل*","يفشل*","تضيع*","يضيع*","خساير*","خساره","تخسر*","يخسر*","mistake*","wrong","kill*","fail*","ruin*","wreck*","destroy*","blunder*"],
+    "urgency": ["عاجل","فورا","حالا","دلوقتي","دلوقت","الان","الحين","هالحين","هلق","هسا","ينتهي*","تنتهي*","يفوت*","تفوت*","ساعات","دقايق","دقائق","ثواني","سباق","متاخر*","تاخر*","محدود*","سارع*","اخر فرصه","ينتهي الوقت","الوقت بينتهي","الوقت يمر","الوقت ينفد","ضيق الوقت","قبل فوات الوقت","urgent","deadline","hurry","hours","minutes","seconds","race","running out","last chance"],
+    "spread": ["انتشار","ينتشر*","تنتشر*","انتشرت","عالمي*","العالم","دول العالم","كل الدول","عدة دول","دوله","مدن","مدينه","محافظات","فروع","كل مكان","حول العالم","spread*","global*","worldwide","countries","cities","everywhere"],
+    "decision": ["قرار","قرارات","احسم*","حسم*","اختار*","اختيار","الحقيقه","خرافه","خرافات","اسطوره","ايهما","الافضل","مقابل","ضد","الحكم","صح ولا غلط","vs","versus","myth*","truth","decide*","decision*","choose*","verdict","better"],
+    "money": ["فلوس","مال","ربح*","ارباح","ادفع*","تدفع*","سعر","اسعار","ميزانيه","رخيص*","غالي*","ببلاش","مجاني*","تكلفه","دخل","راتب","ثروه","اموال","مصاري","مصروف*","ريال*","درهم","دراهم","دينار*","دولار*","جنيه","money","cash","profit*","price*","cost*","budget","free","paid","income","salary","revenue"],
+    "growth": ["نمو","تنمو","زياده","ارتفاع","تضاعف*","مضاعف*","اضعاف","ضعف","ارتفع*","يرتفع*","تزيد*","يزيد*","مبيعات","نتايج","نتائج","growth","grow*","double*","rise*","increase*","boost*","results","sales"],
+    "steps": ["خطوه","خطوات","طريقه","طرق","كيف","ازاي","شلون","كيفيه","دليل","شرح","نظام","اسلوب","framework","steps","step","how","guide","system","method"],
+    "news": ["خبر","اخبار","جديد","جديده","اطلاق","اطلقت","تحديث","اعلان","اعلنت","launch*","new","announced","update","released","breaking"],
+    "story": ["قصه","قصتي","حكايه","تجربتي","تجربه","رحلتي","story","journey","case"],
+    "change": ["بقي","بقت","بقوا","اتغير*","بدل","صار","صارت","صاروا","بدال","تبدل*","اصبح","اصبحت","اصبحوا","تغير*","تحول*","استبدل*","مقابل","ضد","vs","versus","now","rename*","instead"],
+    "launch": ["دخلت","اطلق*","نزلت","رسمي*","جديد","جديده","اطلاق","يديد","يديده","نزل","دش*","طلع","صدور","اصدار","launch*","new","released","debut*"],
+    "product": ["claude","chatgpt","gemini","higgsfield","instagram","openai","anthropic","canva","perplexity","grok","copilot","midjourney","figma","notion","capcut","seedance","sora","veo","kling","cursor","replit","elevenlabs","photoshop","adobe","deepseek","runway","davinci","leonardo","ideogram","krea","flux","lovable","manus","windsurf","vscode","n8n","zapier"],
+    "question": [],
+    "emphasis": [],
+}
 ARCHITECTURES = ("listicle", "steps", "myth-fact", "story", "case-study", "framework", "comparison", "opinion", "news", "offer",
                  "results", "lead-magnet")
 SENTENCE_END = re.compile(r"(?<=[.!?؟…])\s+")
@@ -423,25 +440,89 @@ def guess_architecture(slides: list[dict]) -> str:
     return "story"
 
 
-def pick_motion(spec: dict, preset: dict) -> dict:
-    arch = spec.get("architecture")
-    cover = spec["slides"][0]
-    cover_text = re.sub(r"==", "", (cover.get("headline") or "") + " " + (cover.get("sub") or ""))
-    numeral = bool(re.search(r"[0-9٠-٩]", re.sub(r"\b(19|20)[0-9]{2}\b", "", cover_text))) or any(s.get("type") == "stat" for s in spec["slides"])
-    if arch == "myth-fact":
-        recipe = "stamp"
-    elif numeral:
-        recipe = "counter"
-    elif arch in ("steps", "framework"):
-        recipe = "reorder"
-    elif arch in ("news", "story", "case-study"):
-        recipe = "story"
-    else:
-        recipe = "highlight-sweep"
+def motion_normalize(text: str) -> str:
+    text = re.sub(r"[ً-ٰٟـ]", "", str(text or "").lower())
+    text = re.sub(r"[أإآٱ]", "ا", text)
+    return re.sub(r"\s+", " ", text.translate(str.maketrans("ىةؤئ", "يهوي"))).strip()
+
+
+def motion_stem(token: str, entry: str) -> bool:
+    prefix, stem = entry.endswith("*"), entry.rstrip("*")
+    bare = re.sub(r"^(?:وال|بال|كال|فال|لل|ال|بي|و|ف|ب|ل|ك|ه|ح)", "", token, count=1)
+    return any(t.startswith(stem) if prefix else t == stem for t in (token, bare))
+
+
+def motion_change(text: str) -> bool:
+    norm = motion_normalize(text)
+    tokens = re.findall(r"[a-z0-9ء-ي]+", norm)
+    return ("→" in norm or any(motion_stem(t, e) for t in tokens for e in MOTION_LEXICON["change"]) or
+            any(a in tokens and b in tokens and tokens.index(b) > tokens.index(a) for a, b in (("قبل", "بعد"), ("before", "after"))))
+
+
+def motion_question(text: str) -> bool:
+    return bool(re.search(r"[؟?]", text or "") and re.search(
+        r"(?:^|[^a-zء-ي])(?:عندك|معاك|معك|انت|انتم|انتي|انتا|لديك|لديكم|بتستخدم|تستخدم|تستعمل|تبي|تبغي|بدك|بدكم|you|your)(?=$|[^a-zء-ي])", motion_normalize(text)))
+
+
+def motion_topics(text: str) -> dict:
+    norm = motion_normalize(text)
+    tokens = re.findall(r"[a-z0-9ء-ي]+", norm)
+    padded = " " + " ".join(tokens) + " "
+    return {tag: sum(2 * (" " + e + " " in padded) if " " in e else int(any(motion_stem(t, e) for t in tokens)) for e in entries)
+            for tag, entries in MOTION_LEXICON.items()}
+
+
+def pick_motion(spec: dict, preset: dict, post_dir: Path | None = None, notes: list | None = None) -> dict:
+    """First matching Studio rule, restricted to the preset. Optionally avoid the last earlier sibling post's recipe."""
+    arch, hook = spec.get("architecture"), spec.get("hook") or {}
+    cover = next((s for s in spec["slides"] if s.get("type") in ("cover", "poster")), spec["slides"][0])
+    cover_text = re.sub(r"==", "", (cover.get("headline") or hook.get("cover") or "") + " " + (cover.get("sub") or ""))
+    text = " ".join(str(s) for s in [hook.get("cover"), hook.get("text"), (spec.get("brief") or {}).get("topic"),
+                                    (spec.get("angle") or {}).get("title"), cover.get("kicker"), cover.get("headline"), cover.get("sub"),
+                                    (spec.get("captionPack") or {}).get("firstLine")] if s)
+    scores = motion_topics(text)
+    western = cover_text.translate(str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789"))
+    numeral = bool(re.search(r"[0-9]", re.sub(r"\b(19|20)[0-9]{2}\b", "", western, flags=re.ASCII))) or any(
+        s.get("type") == "stat" or (s.get("number") or {}).get("value") for s in spec["slides"])
+    short_em = any(1 <= len(m.split()) <= 2 for m in re.findall(r"==([^=]+)==", cover.get("headline") or hook.get("cover") or ""))
+    rules = [(scores["urgency"] >= 2, "drop-clock"), (scores["spread"] >= 2, "map-dots"),
+             (arch == "myth-fact" or hook.get("family") == "P4" or scores["decision"] >= 2, "stamp"),
+             (scores["mistakes"] > 0, "story"), (motion_change(cover_text), "split"), (numeral, "counter"),
+             (arch in ("steps", "framework") or scores["steps"] > 0, "reorder"),
+             (((arch == "news" or scores["news"] > 0) and motion_topics(cover_text)["product"] > 0) or motion_question(cover_text), "notify"),
+             (scores["launch"] > 0, "curtain"), (arch in ("news", "story", "case-study") or scores["news"] > 0 or scores["story"] > 0, "story"),
+             (short_em, "zoom"), (True, "highlight-sweep")]
+    matches = [recipe for match, recipe in rules if match]
+    recipe = matches[0]
     motion = (preset or {}).get("motion") or {}
     allowed = motion.get("allowed") or []
     if allowed and recipe not in allowed:
         recipe = "reorder" if (recipe == "story" and "reorder" in allowed) else (motion.get("default") or "highlight-sweep")
+        if recipe not in allowed:
+            recipe = allowed[0]
+    previous = None
+    if post_dir is not None and Path(post_dir).name.startswith("post-"):
+        current = Path(post_dir)
+        try:
+            siblings = sorted((p for p in current.parent.glob("post-*") if p.is_dir() and p.name < current.name), key=lambda p: p.name, reverse=True)
+        except OSError:
+            siblings = []
+        for p in siblings:
+            try:
+                earlier = json.loads((p / "spec.json").read_text(encoding="utf-8"))
+                previous = earlier["cover"]["motion"]["recipe"]
+                if isinstance(previous, str):
+                    break
+            except (OSError, ValueError, KeyError, TypeError):
+                continue
+    if previous == recipe:
+        start = matches.index(recipe) + 1 if recipe in matches else 0
+        alternate = next((r for r in matches[start:] if r != recipe and (not allowed or r in allowed)), None)
+        alternate = alternate or next((r for r in allowed if r != recipe), None)
+        if alternate:
+            recipe = alternate
+            if notes is not None:
+                notes.append("motion: %s (the last post used %s)" % (recipe, previous))
     return {"recipe": recipe, "feel": "story" if recipe in STORY_FEEL else "calm", "seconds": 6, "fps": 30, "source": "internal"}
 
 
@@ -505,7 +586,7 @@ def make_spec(args, raw: str, brand: dict) -> tuple[dict, list]:
     spec["locale"].setdefault("digits", digits)
     spec["locale"].setdefault("appLanguage", "en" if en else "ar")
     spec["locale"].setdefault("swipeCue", "arrow-ltr" if spec["locale"]["appLanguage"] == "en" else "arrow-rtl")
-    spec["cover"] = {"motion": pick_motion(spec, load_preset(preset_id))}
+    spec["cover"] = {"motion": pick_motion(spec, load_preset(preset_id), Path(args.out), notes)}
     return spec, notes
 
 
