@@ -29,7 +29,7 @@ def format_msg(template: str, params: dict | None) -> str:
 
 
 def is_overridable(rule_id: str) -> bool:
-    """``C1.*``, ``C2.body-hard``, ``C3.*``, ``O1.*`` (and anything ``qa-rules.json`` marks ``overridable``)."""
+    """``C1.*``, ``C2.body-hard``, the C2 length checks on the creator's words, ``C3.*``, ``O1.*``: what ``qa-rules.json`` marks ``overridable``."""
     idx = rules.index()
     entry = idx["checks"].get(rule_id)
     if entry:

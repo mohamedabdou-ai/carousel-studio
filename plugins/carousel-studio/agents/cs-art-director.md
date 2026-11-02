@@ -55,6 +55,7 @@ Look at every slide the way a designer would before anyone asks, and fix it in t
 - **Nothing on the media.** No text, badge or shape sits on a photo or a video unless the slide is designed as an overlay on a calm zone; move it off.
 - **Crowding and overflow.** Text that touches its container, runs under the footer or is cut: change the layout first; when no layout holds it, the director splits the slide.
 - **Chrome.** The counter, the swipe cue and the handle sit in the preset's own rows, never floating mid-slide.
+- **An anchor that says something.** Read the anchor alone, as a stranger scrolling: a giant «مش» or «إنت» says nothing, so the anchor becomes the noun, number or outcome of the claim, or a mock or diagram of it.
 In the reply, say what you fixed («صلّحت: …») and only what you could not fix, with the reason. A finding you leave open goes to the director as a BLOCK, never as a remark.
 
 **After render (pixel review),** in Arabic with white-MSA labels:

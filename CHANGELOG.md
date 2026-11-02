@@ -2,6 +2,21 @@
 
 All notable changes to Carousel Studio (كاروسيل ستوديو) are recorded here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project follows [Semantic Versioning](https://semver.org/). The plugin version in `plugins/carousel-studio/.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` always matches the newest entry.
 
+## [Unreleased]
+
+### Your own script
+
+- Scripts written the way creators write them in chat are read as meant: «١ — الكافر» and «سلايد ٨ — القفلة» name the slide, a line that starts with a number stays copy, the bold title under a bare «**سلايد ٣**» is kept, emoji lines become the list, and «*…*» emphasis no longer leaves asterisks.
+- A slide too long to hold runs on into the next slide at your own sentence end, every word kept. «زي ما هو» keeps every slide as written, and every length limit on your words now accepts «تجاوز».
+- The last slide keeps your question as its title and your options under it; three asks in one line are offered as a shorter choice, never cut for you.
+- Your caption and the hashtags you name go in word for word, and can be kept for every post.
+
+### Design
+
+- The art director owns every slide, the cover included, fixes empty bands, weak hierarchy, text on media and crowding without being asked, and never leaves a giant word that says nothing.
+- «غيّر الستايل» with no name shows the other styles on your own cover and slide 2 to pick from.
+- «انشر» posts to Instagram only unless you name another platform, with the moving cover first.
+
 ## [1.1.0] - 2026-10-26
 
 First public release.

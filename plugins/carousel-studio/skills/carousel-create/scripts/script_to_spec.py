@@ -50,15 +50,17 @@ SEPARATOR = re.compile(r"^\s*(?:-{3,}|_{3,}|\*{3,}|—{2,}|={3,})\s*$")
 CIRCLED = "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳"
 NUMBER = r"(?:[%s]|[0-9٠-٩]{1,2})" % CIRCLED
 HEADER = re.compile(
-    r"^\s*(?:#{1,6}\s*)?(?:\*\*|__)?\s*(?:(?:slide|سلايد|شريحة|الشريحة|السلايد)\s*(?:رقم\s*)?%s\s*[:.)\-–—]?|%s\s*[:.)\-–—]?|\(%s\))\s*(?P<rest>.*?)\s*(?:\*\*|__)?\s*$"
-    % (NUMBER, NUMBER, NUMBER), re.IGNORECASE)
+    r"^\s*(?:#{1,6}\s*)?(?:\*\*|__)?\s*(?:(?:slide|سلايد|شريحة|الشريحة|السلايد)\s*(?:رقم\s*)?%s\s*[:.)\-–—]?|[%s]\s*[:.)\-–—]?|[0-9٠-٩]{1,2}\s*[:.)\-–—](?![0-9٠-٩])|\(%s\))\s*(?P<rest>.*?)\s*(?:\*\*|__)?\s*$"
+    % (NUMBER, CIRCLED, NUMBER), re.IGNORECASE)  # a bare digit needs its separator («١ — …», «1.»): «٩٠ دقيقة…» is copy
 CIRCLED_ONLY = re.compile(r"^\s*(?:#{1,6}\s*)?(?:\*\*|__)?\s*[%s]" % CIRCLED)
 BOLD_LINE = re.compile(r"^\s*(?:\*\*|__)(?P<rest>.+?)(?:\*\*|__)\s*$")
 HEADING = re.compile(r"^\s*#{1,6}\s+(?P<rest>.+?)\s*$")
 BULLET = re.compile(r"^\s*(?:[-•·▪◦–]|\*(?!\*))\s+(?P<rest>.+)$")
-COVER_LABEL = re.compile(r"^(?:الغلاف|غلاف|الكوفر|كوفر|الهوك|هوك|البداية|cover|hook|intro)\s*[:.\-–—]?$", re.IGNORECASE)
-END_LABEL = re.compile(r"^(?:(?:الـ|ال)?\s*CTA|call\s+to\s+action|الخاتمة|الختام|outro)\s*[:.\-–—]?$", re.IGNORECASE)
+COVER_LABEL = re.compile(r"^(?:الغلاف|غلاف|الكوفر|كوفر|الكافر|كافر|الكفر|الكڤر|الهوك|هوك|البداية|cover|hook|intro)\s*[:.\-–—]?$", re.IGNORECASE)
+END_LABEL = re.compile(r"^(?:(?:الـ|ال)?\s*CTA|call\s+to\s+action|الخاتمة|الختام|القفلة|السلايد الأخير|السلايد الاخير|الأخير|outro)\s*[:.\-–—]?$", re.IGNORECASE)
 EMOJI = re.compile("[\U0001F000-\U0001FAFF☀-➿⬀-⯿⌚⌛⏩-⏺️‍⃣]")
+EMOJI_LEAD = re.compile(r"^\s*(?:\*\*|__)?\s*(?:" + EMOJI.pattern + ")")  # «🎮 الألعاب: …» marks a list item
+ITALIC = re.compile(r"(?<![*\w])\*(?=\S)([^*\n]+?)(?<=\S)\*(?![*\w])")
 QUESTION_END = re.compile(r"[؟?]\s*$")
 CTA_KINDS = (  # first match wins; the order is the order a line is read in
     ("save", r"احفظ|احفظه|احفظها|سيّف|سيف|\bsave\b|bookmark"),
@@ -104,6 +106,7 @@ def clean(line: str, digits: str, removed: list) -> str:
     if out != line:
         removed.append(True)
     out = re.sub(r"\*\*|__", "", out)
+    out = ITALIC.sub(lambda m: m.group(1), out)  # «*فكرة توضيحية*» is emphasis in the chat, not copy
     out = re.sub(r"[ \t ]+", " ", out).strip()
     return cstext.convert_digits(out, digits)
 
@@ -143,7 +146,7 @@ def split_sections(raw: str) -> list[list[str]]:
     return [s for s in out if any(x.strip() for x in s)]
 
 
-def parse_section(lines: list[str], digits: str, removed: list, first: bool) -> dict:
+def parse_section(lines: list[str], digits: str, removed: list, first: bool, emoji_list: bool = False) -> dict:
     body = [l for l in lines]
     while body and not body[0].strip():
         body.pop(0)
@@ -156,27 +159,42 @@ def parse_section(lines: list[str], digits: str, removed: list, first: bool) -> 
         h = header_text(body[0])
         if h is not None:
             head = clean(h, digits, removed)
+            if head and (COVER_LABEL.match(head) or END_LABEL.match(head)):
+                head = ""  # «١ — الكافر», «سلايد ٨ — القفلة» name the slide; the line under it is the copy
             opened, body = body[0].count("**") % 2 == 1, body[1:]
             if opened:  # a bold title over two or three lines («**مستنّي ردّك؟» / «بيئة التنفيذ تاخد استراحة.**») stays one title
                 close = next((i for i, l in enumerate(body[:2]) if "**" in l), None)
                 if close is not None and all(l.strip() for l in body[:close + 1]):
                     head = "\n".join([head] + [t for t in (clean(l, digits, removed) for l in body[:close + 1]) if t])
                     body = body[close + 1:]
-    paras, cur, bullets = [], [], []
-    for l in body + [""]:
+            if not head:  # «**سلايد ٢**» alone: the bold line under it is the title
+                while body and not body[0].strip():
+                    body.pop(0)
+                m = (BOLD_LINE.match(body[0]) or HEADING.match(body[0])) if body else None
+                if m and clean(m.group("rest"), digits, []):
+                    head, body = clean(m.group("rest"), digits, removed), body[1:]
+    items = []
+    for l in body:
         if not l.strip():
+            items.append(("break", ""))
+            continue
+        b = BULLET.match(l)
+        kind = "bullet" if b else ("emoji" if EMOJI_LEAD.match(l) else "line")
+        items.append((kind, clean(b.group("rest") if b else l, digits, removed)))
+    emoji_bullets = emoji_list and sum(1 for k, _ in items if k == "emoji") >= 2  # «🎮 …» «🎬 …» lines are a list
+    paras, cur, bullets, open_item = [], [], [], False
+    for kind, t in items + [("break", "")]:
+        if kind == "break":
+            open_item = False
             if cur:
                 paras.append("\n".join(cur))
                 cur = []
-            continue
-        b = BULLET.match(l)
-        if b:
-            t = clean(b.group("rest"), digits, removed)
-            if t:
-                bullets.append(t)
-            continue
-        t = clean(l, digits, removed)
-        if t:
+        elif t and (kind == "bullet" or (kind == "emoji" and emoji_bullets)):
+            bullets.append(t)
+            open_item = kind == "emoji"
+        elif t and open_item:  # «🎮 **Playable Games**» then «متاح على كل خطط…» under it: one item
+            bullets[-1] = bullets[-1] + " " + t
+        elif t:
             cur.append(t)
     return {"head": head, "paras": paras, "bullets": bullets}
 
@@ -214,12 +232,24 @@ def build_slides(sections: list[dict], split2: bool, notes: list, split_more: bo
     if last is not None:
         if last["head"] and END_LABEL.match(last["head"]):  # «الـ CTA» names the slide for the creator; it is not copy
             last = {**last, "head": None}
-        question = next((p for p in reversed(last["paras"]) if QUESTION_END.search(one_line(p)) and words(p) <= 14), None)
-        cta = next((p for p in reversed(last["paras"]) if cta_kinds(p) and words(p) <= 16 and p is not question), None)
+        paras = last["paras"]
+        is_q = lambda p: bool(QUESTION_END.search(one_line(p))) and words(p) <= 14
+        cta = next((p for p in reversed(paras) if cta_kinds(p) and words(p) <= 16 and not QUESTION_END.search(one_line(p))), None)
+        if last["head"] and is_q(last["head"]):  # «**أول لعبة تعملها هتكون إيه؟**»: the title is the ask
+            question, start, last = last["head"], 0, {**last, "head": None}
+        else:
+            qi = next((i for i, p in enumerate(paras) if is_q(p) and p is not cta), None)  # the first question is the ask
+            question, start = (paras[qi], qi + 1) if qi is not None else (None, 0)
+        # short questions right after the ask («سباق في الشوارع… ولا لعبة بطلها إنت؟», the options) stay under it, in order
         after = []
+        for p in (paras[start:] if question else []):
+            if p is cta or not is_q(p):
+                break
+            after.append(p)
+        last = {**last, "paras": [p for p in paras if not any(p is a for a in after)]}
         if not (question or cta):  # one paragraph of short lines: the question line, then the lines that follow it
             lines = [l for p in last["paras"] for l in p.split("\n") if l.strip()]
-            qi = next((i for i in range(len(lines) - 1, -1, -1) if QUESTION_END.search(lines[i]) and words(lines[i]) <= 14), None)
+            qi = next((i for i, l in enumerate(lines) if QUESTION_END.search(l) and words(l) <= 14), None)
             if qi is not None:
                 question, after = lines[qi], lines[qi + 1:]
                 ci = next((i for i, l in enumerate(after) if cta_kinds(l) and words(l) <= 16), None)
@@ -243,11 +273,14 @@ def build_slides(sections: list[dict], split2: bool, notes: list, split_more: bo
             text = one_line(cta) if cta else ("اكتب إجابتك في كومنت" if question else title)
             slides.append({"type": "cta", "title": title, "cta": {"kind": kind, "text": text[:160]}})
             if after:  # the creator's lines after the ask stay on the last slide, in order
-                slides[-1] = {"type": "cta", "title": title, "body": " ".join(one_line(l) for l in after), "cta": slides[-1]["cta"]}
-                notes.append("last slide: %d more line(s) after the ask kept as its body; one CTA works best, offer a shorter last slide (fill.edits)" % len(after))
+                body = " ".join(one_line(l) for l in after)
+                slides[-1] = {"type": "cta", "title": title, "body": body, "cta": slides[-1]["cta"]}
+                long_end = words(title) + words(body) + words(text) > cta_max()
+                notes.append("last slide: %d line(s) after the ask kept as its body, in order%s" % (
+                    len(after), "; it runs over %d words, offer a shorter last slide in one line (fill.edits on yes, keep on no)" % cta_max() if long_end else ""))
             many = [k for k in kinds if k != "question"]
             if len(many) > 1:
-                notes.append("last slide: one line asks for %s; one CTA works best, keep one (fill.edits)" % " + ".join(many))
+                notes.append("last slide: one line asks for %s; it stays as written: offer the one action that fits the post in one line, never cut it yourself (fill.edits on yes, keep on no)" % " + ".join(many))
         else:
             slides.append(content_slide(last))
             notes.append("last slide: no question or call to action found; add one in fill.edits if you want it")
@@ -296,6 +329,15 @@ def number(slides: list[dict]) -> None:
         run = run + 1 if (s["type"] == "item" and i and slides[i - 1]["type"] == "item") else (1 if s["type"] == "item" else 0)
         if s["type"] == "item":  # alternate the look so a run of items keeps a rhythm (gate D8) even before the free design
             s["variant"] = "base" if run % 2 else "ghost-number"
+
+
+def cta_max() -> int:
+    """The last slide's comfortable length from the platform data (plugin.text.ctaMaxWords); 12 when the file cannot be read."""
+    try:
+        data = json.loads((HERE.parent / "data" / "platform-instagram.json").read_text(encoding="utf-8"))
+        return int(data["plugin"]["text"]["ctaMaxWords"])
+    except (OSError, ValueError, KeyError, TypeError):
+        return 12
 
 
 def body_max() -> int:
@@ -421,7 +463,8 @@ def make_spec(args, raw: str, brand: dict) -> tuple[dict, list]:
     loc = dict(brand.get("locale") or {})
     digits = loc.get("digits") or "western"
     removed, notes = [], []
-    sections = [parse_section(s, digits, removed, i == 0) for i, s in enumerate(split_sections(raw))]
+    raw_sections = split_sections(raw)
+    sections = [parse_section(s, digits, removed, i == 0, 0 < i < len(raw_sections) - 1) for i, s in enumerate(raw_sections)]
     sections = [s for s in sections if s["head"] or s["paras"] or s["bullets"]]
     if len(sections) < 2:
         fail("E_SCRIPT", "found %d section(s); number the slides (①, 1., Slide 1) or split them with a line of ---" % len(sections))

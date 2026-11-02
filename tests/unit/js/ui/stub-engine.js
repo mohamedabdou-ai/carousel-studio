@@ -361,7 +361,7 @@
       return { spec: n, applied: applied, remaining: results.filter(function (r) { return applied.indexOf(r) < 0; }) };
     },
     override: function (spec, rule, o) {
-      if (!/^(C1|C3|O1)\./.test(rule) && rule !== "C2.body-hard") throw new CSError("E_USAGE", "not overridable");
+      if (!/^(C1|C3|O1)\./.test(rule) && !/^C2\.(body-hard|title-words|body-words|bullets|dense-words|slide-words|cta-words|share-words)$/.test(rule)) throw new CSError("E_USAGE", "not overridable");
       var n = clone(spec); n.qa = n.qa || { status: "fix", results: [] };
       n.qa.results = (n.qa.results || []).concat([{ gate: rule.split(".")[0], rule: rule, sev: "BLOCK", slide: o.slide, msg: msg("تجاوز", "Overridden"), overridden: { reason: o.reason, at: o.at } }]);
       return n;

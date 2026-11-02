@@ -45,7 +45,7 @@ Prefer type-built anchors: number, word, stamp, mock, CSS diagram. An icon in a 
 | Anchor | Use when the slide says | Build and limits |
 |---|---|---|
 | Big number | a count, price, time, sourced figure | `number` at 300-440 px on a `field` tone, unit beside it; source id or «رسم توضيحي» |
-| Giant word | a pause; the word the idea turns on («كمل»، «احفظ») | 300-450 px on `field` or `invert`; one per 5 slides |
+| Giant word | a pause; the word the idea turns on («كمل»، «احفظ»), a word that means something alone: a noun, a verb or the outcome, never a negation, pronoun or particle («مش»، «لا»، «إنت») | 300-450 px on `field` or `invert`; one per 5 slides |
 | CSS diagram | a real relationship | divs, borders, bars and labels; name the exact structure |
 | Stamp | a verdict, myth and fact | rotated (-8deg) bordered word over a struck line; one, off body text |
 | Ticket or receipt | a price, a plan, a total | dashed border, 3-4 rows, total on a field |

@@ -1068,7 +1068,7 @@ Rules are **data**. `data/qa-rules.json` (B4) holds the gate registry; the word 
 
 ### 7.1 Severities, status, exit codes
 - **BLOCK** disables «حزمة النشر» until fixed (the Check screen offers «صلّح تلقائياً» first). **FIX** exports with a badge. **NOTE** is advice.
-- Only gates marked *overridable* accept «صدّر رغم ذلك» (recorded as `overridden:{reason,at}` in `spec.qa.results` and in `qa-report`). Technical gates (D*, V1, X1, A1, N1, B1-rendered) are **never** overridable and must produce **zero false BLOCKs on `tests/corpus-clean/`**. The overridable set is exactly: `C1.*`, `C2.body-hard`, `C3.*`, `O1.*`.
+- Only gates marked *overridable* accept «صدّر رغم ذلك» (recorded as `overridden:{reason,at}` in `spec.qa.results` and in `qa-report`). Technical gates (D*, V1, X1, A1, N1, B1-rendered) are **never** overridable and must produce **zero false BLOCKs on `tests/corpus-clean/`**. The overridable set is exactly: `C1.*`, `C2.body-hard`, the length checks on the creator's own words (`C2.title-words`, `C2.body-words`, `C2.bullets`, `C2.dense-words`, `C2.slide-words`, `C2.cta-words`, `C2.share-words`: a creator who keeps a long line keeps it, recorded as «تجاوز»), `C3.*`, `O1.*`.
 - `status`: `block` if any non-overridden BLOCK; else `fix` if any non-overridden FIX; else `pass`. CLI exit code: `pass`/`NOTE`-only → 0, `fix` → 1, `block` → 2.
 - Checks flagged `"engines":["model"]` (meaning word first, gap not answered on the cover, voice, dialect purity beyond deny markers, text inside AI images, sensitivities needing judgement) are **never emitted by code**; the `cs-arabic-editor` / `cs-art-director` agents (or the inline role pass) run them from the same descriptions, and `references/qa-gates.md` (B9) lists them.
 

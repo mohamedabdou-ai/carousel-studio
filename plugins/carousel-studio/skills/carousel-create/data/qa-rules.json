@@ -91,6 +91,7 @@
         {
           "id": "C2.title-words",
           "sev": "FIX",
+          "overridable": true,
           "appliesTo": {
             "slideTypes": ["item", "step", "stat", "compare", "myth-fact", "story-beat", "checklist", "summary", "setup", "proof", "offer", "grid", "timeline"]
           },
@@ -106,6 +107,7 @@
         {
           "id": "C2.body-words",
           "sev": "FIX",
+          "overridable": true,
           "appliesTo": {
             "slideTypes": ["item", "step", "stat", "compare", "myth-fact", "quote", "story-beat", "setup", "proof", "testimonial", "grid", "timeline"]
           },
@@ -138,6 +140,7 @@
         {
           "id": "C2.bullets",
           "sev": "FIX",
+          "overridable": true,
           "params": {
             "max": {"$platform": "plugin.text.bulletsMax"},
             "denseTypes": {"$platform": "plugin.text.denseTypes"}
@@ -164,6 +167,7 @@
         {
           "id": "C2.dense-words",
           "sev": "FIX",
+          "overridable": true,
           "appliesTo": {
             "slideTypes": ["checklist", "summary", "grid", "timeline"]
           },
@@ -179,6 +183,7 @@
         {
           "id": "C2.slide-words",
           "sev": "FIX",
+          "overridable": true,
           "params": {
             "max": {"$platform": "plugin.text.slideMaxWords"}
           },
@@ -203,6 +208,7 @@
         {
           "id": "C2.cta-words",
           "sev": "FIX",
+          "overridable": true,
           "appliesTo": {
             "slideTypes": ["cta"]
           },
@@ -218,6 +224,7 @@
         {
           "id": "C2.share-words",
           "sev": "FIX",
+          "overridable": true,
           "appliesTo": {
             "slideTypes": ["share"]
           },

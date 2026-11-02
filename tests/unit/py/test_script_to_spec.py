@@ -276,6 +276,61 @@ class ScriptToSpecTests(unittest.TestCase):
         self.assertNotIn("CTA", json.dumps(spec["slides"], ensure_ascii=False))
         self.assertIn("offer a shorter last slide", res.stdout)
 
+    # Shaped like the owner's own drafts (2026-10-27 to 11-02), synthetic words: «١ — الكافر» names the slide, a copy line opens
+    # with a number, «**سلايد ٣**» stands alone over its bold title, emoji lines are the list, «*…*» is chat emphasis, and the
+    # last slide asks first, then gives the options.
+    DRAFT = """١ — الكافر
+
+٣٠ ثانية… وتطلع لعبة! 🤯
+
+فكرتك بتتحول للعبة
+من غير كود 🎮
+٢ — مين بيعمل كده؟
+
+أداة جديدة بتاخد وصفك وتطلع لعبة كاملة.
+
+**سلايد ٣**
+
+**الفرق بين الخطتين 💡**
+
+🎮 **الألعاب**
+متاحة على كل الخطط.
+
+📣 **الإعلانات**
+للشركات بس.
+
+*مثال للتوضيح.*
+
+**سلايد ٤ — القفلة**
+
+**هتعمل لعبة عن إيه؟ 🎮**
+
+سباق عربيات …
+ولا مغامرة في الصحرا؟
+
+احفظ البوست، وتابعني للمزيد 🔥
+"""
+
+    def test_the_owners_draft_format_is_read_as_he_means_it(self) -> None:
+        res, spec = self.step1(self.DRAFT, "--architecture", "news")
+        slides = spec["slides"]
+        self.assertEqual([s["type"] for s in slides], ["cover", "item", "checklist", "cta"], res.stdout)
+        self.assertTrue(slides[0]["headline"].endswith("ثانية… وتطلع لعبة!"))      # «٣٠ ثانية…» is copy, not slide 30
+        self.assertEqual(slides[0]["sub"], "فكرتك بتتحول للعبة من غير كود")
+        self.assertEqual(slides[1]["title"], "مين بيعمل كده؟")
+        self.assertEqual(slides[2]["title"], "الفرق بين الخطتين")                     # the bold line under «**سلايد ٣**»
+        self.assertEqual(slides[2]["bullets"], ["الألعاب متاحة على كل الخطط.", "الإعلانات للشركات بس."])
+        self.assertEqual(slides[2]["body"], "مثال للتوضيح.")                          # no stray asterisks
+        last = slides[-1]
+        self.assertEqual(last["title"], "هتعمل لعبة عن إيه؟")                        # the ask, then his options under it
+        self.assertEqual(last["body"], "سباق عربيات … ولا مغامرة في الصحرا؟")
+        self.assertEqual(last["cta"], {"kind": "save", "text": "احفظ البوست، وتابعني للمزيد"})
+        dump = json.dumps(slides, ensure_ascii=False)
+        for label in ("الكافر", "القفلة", "سلايد", "*"):
+            self.assertNotIn(label, dump)
+        self.assertIn("save + follow", res.stdout)
+        self.assertIn("never cut it yourself", res.stdout)                            # offered, not trimmed
+
     def test_keep_records_the_creators_override_on_a_long_cover(self) -> None:
         long_cover = OWNER.replace("وكلاء AI اتواصلوا…\nمن غير إنترنت! 👀", "كلود كتب الكود… طب فين الدليل إنه صح فعلاً؟")
         _, spec = self.step1(long_cover, "--style", "notebook", "--architecture", "news")
@@ -309,6 +364,31 @@ class ScriptToSpecTests(unittest.TestCase):
                                capture_output=True, text=True, encoding="utf-8", env=ENV, timeout=120)
         self.assertEqual(check.returncode, 0, check.stdout + check.stderr)          # spec.qa is schema-valid
 
+
+    def test_a_creator_who_says_as_is_keeps_a_long_slide_and_a_long_last_slide(self) -> None:
+        _, spec = self.step1(self.LONG, "--architecture", "news", "--no-split")  # «زي ما هو»
+        n = len(spec["slides"])
+        fill = {
+            "bridges": ["طب ده بيحصل إزاي؟", "وإنت هتختار إيه؟"],
+            "caption": {"firstLine": "العالم الافتراضي بقى بيتولّد قدامك… والسر في World Model.",
+                        "keywordLine": "نماذج العالم بالذكاء الاصطناعي.",
+                        "body": "نموذج بيحاكي عالم بيتغيّر حسب حركتك وأوامرك، مش فيديو محفوظ.",
+                        "cta": "اكتب رأيك في الكومنتات!", "hashtags": ["#ذكاء_اصطناعي", "#WorldModel"]},
+            "perSlide": ["سطر %d" % (i + 1) for i in range(n)],
+            "alt": ["وصف الشريحة %d" % (i + 1) for i in range(n)],
+            "keep": ["C2.body-words@s03", "C2.cta-words"],
+        }
+        f = self.dir / "fill.json"
+        spec_path = self.dir / "post-20261024-0007" / "spec.json"
+        f.write_text(json.dumps(fill, ensure_ascii=False), encoding="utf-8")
+        res = run("--spec", str(spec_path), "--fill", str(f), "--brand", str(self.brand))
+        self.assertNotIn("cannot be kept", res.stdout, res.stdout)
+        self.assertIn("C2.body-words s03", res.stdout)
+        self.assertIn("C2.cta-words s04", res.stdout)
+        spec = json.loads(spec_path.read_text(encoding="utf-8"))
+        kept = {(r["rule"], r["slide"]) for r in spec["qa"]["results"] if r.get("overridden")}
+        self.assertTrue({("C2.body-words", "s03"), ("C2.cta-words", "s04")} <= kept, kept)
+        self.assertEqual(len(spec["slides"][2]["body"].split()), 27)                  # every word stays
 
 if __name__ == "__main__":
     unittest.main()

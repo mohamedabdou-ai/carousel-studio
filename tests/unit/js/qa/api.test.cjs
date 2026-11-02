@@ -49,7 +49,7 @@ test("qa-rules.json: $platform references are resolved and no placeholder stays"
   assert.deepEqual(plain(CS.qa.rules().gates.find((g) => g.id === "C1").checks[0].params), { max: 6 });
 });
 
-test("qa-rules.json: the overridable set is C1.*, C2.body-hard, C3.*, O1.* (+ the additive C10.*)", () => {
+test("qa-rules.json: the overridable set is C1.*, C2.body-hard, the creator-length C2 checks, C3.*, O1.* (+ the additive C10.*)", () => {
   const rules = plain(CS.qa.rules());
   const ovr = [];
   rules.gates.forEach((g) =>
@@ -57,9 +57,9 @@ test("qa-rules.json: the overridable set is C1.*, C2.body-hard, C3.*, O1.* (+ th
       if (c.overridable === true || (c.overridable === undefined && g.overridable === true)) ovr.push(c.id);
     })
   );
-  ovr.forEach((id) => assert.match(id, /^(C1\.|C2\.body-hard$|C3\.|O1\.|C10\.)/, id));
-  ["C1.hero-words", "C2.body-hard", "C3.words", "O1.deny-marker"].forEach((id) => assert.ok(ovr.includes(id), id));
-  ["D1.png-size", "D4.hard", "N1.mixed", "X1.credit", "V1.loop", "SRC1.missing", "C4.bait"].forEach((id) => assert.ok(!ovr.includes(id), id));
+  ovr.forEach((id) => assert.match(id, /^(C1\.|C2\.(body-hard|title-words|body-words|bullets|dense-words|slide-words|cta-words|share-words)$|C3\.|O1\.|C10\.)/, id));
+  ["C1.hero-words", "C2.body-hard", "C2.body-words", "C2.cta-words", "C3.words", "O1.deny-marker"].forEach((id) => assert.ok(ovr.includes(id), id));
+  ["D1.png-size", "D4.hard", "N1.mixed", "X1.credit", "V1.loop", "SRC1.missing", "C4.bait", "C2.bridge-words", "C2.bullets-dense", "C2.text-dropped"].forEach((id) => assert.ok(!ovr.includes(id), id));
 });
 
 test("the owner's name never appears in the shipped QA files (X1 stores its needles as code points)", () => {
