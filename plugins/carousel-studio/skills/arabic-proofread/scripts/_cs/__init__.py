@@ -6,7 +6,7 @@ Canonical copy: ``carousel-design/scripts/_cs/``. Other skills receive byte-iden
 Python 3.11, standard library only, Windows and Linux. All text is UTF-8, all paths are ``pathlib.Path``.
 """
 
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 
 #: Error codes of CONTRACT 0.4. CLI scripts print ``cs-error: <code>: <message>`` to stderr.
 ERROR_CODES = (

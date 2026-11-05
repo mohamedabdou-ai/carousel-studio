@@ -1,4 +1,4 @@
-/*! Carousel Studio runtime chunk cs-core.js · cs-1.1.0 · Apache-2.0 */
+/*! Carousel Studio runtime chunk cs-core.js · cs-1.1.1 · Apache-2.0 */
 (function () {
   "use strict";
   var CS = (window.CS = window.CS || {});
@@ -9,7 +9,7 @@
  * the version, CSError, the tiny event bus (CS.on / once / off / emit), CS.util and the empty CS.core object that
  * lib/*.js and core/*.js fill. Nothing in this file touches the DOM at load time.
  */
-CS.version = "cs-1.1.0";
+CS.version = "cs-1.1.1";
 
 /** Error with a machine-readable code (CONTRACT 0.4): E_SCHEMA, E_FONT_MISSING, E_FIT_OVERFLOW, E_PAINT_TAINTED, ... */
 class CSError extends Error {

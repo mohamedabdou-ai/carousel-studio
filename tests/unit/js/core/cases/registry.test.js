@@ -59,7 +59,7 @@
   test("registry: loadPage reads the blocks of the Studio page", async function () {
     await FX.setup();
     var html = '<!doctype html><body>' +
-      '<script type="application/json" id="cs-config">{"engine":"cs-1.1.0","view":"design","mode":"full","lane":"studio","uiDialect":"eg","buildId":"t","builtAt":"2026-10-22T00:00:00Z","creditFree":true,"fonts":[],"presets":[],"capabilities":[]}<\/script>' +
+      '<script type="application/json" id="cs-config">{"engine":"cs-1.1.1","view":"design","mode":"full","lane":"studio","uiDialect":"eg","buildId":"t","builtAt":"2026-10-22T00:00:00Z","creditFree":true,"fonts":[],"presets":[],"capabilities":[]}<\/script>' +
       '<script type="application/json" id="cs-spec">{"note":"a comment marker <\\!-- is escaped by the builder, and so is <\\/script>"}<\/script>' +
       '<script type="application/json" id="cs-ideas">[{"id":"i1","text":"x"}]<\/script></body>';
     var doc = new DOMParser().parseFromString(html, "text/html");

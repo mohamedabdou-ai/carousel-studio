@@ -1,4 +1,4 @@
-/*! Carousel Studio runtime chunk cs-visual-ui.js · cs-1.1.0 · Apache-2.0 */
+/*! Carousel Studio runtime chunk cs-visual-ui.js · cs-1.1.1 · Apache-2.0 */
 (function () {
   "use strict";
   var CS = (window.CS = window.CS || {});

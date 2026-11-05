@@ -24,7 +24,7 @@ export function buildFreeStudio() {
   const strings = json(path.join(SK, 'runtime/ui-strings.json'));
   Object.assign(strings.strings, json(path.join(SK, 'runtime/ui-strings-visual.json')).strings);
   const blocks = {
-    'cs-config': { engine: 'cs-1.1.0', view: 'design', uiDialect: 'eg', mode: 'full', lane: 'studio', buildId: 'free-test', builtAt: '2026-10-23T00:00:00Z', fonts: [], capabilities: [] },
+    'cs-config': { engine: 'cs-1.1.1', view: 'design', uiDialect: 'eg', mode: 'full', lane: 'studio', buildId: 'free-test', builtAt: '2026-10-23T00:00:00Z', fonts: [], capabilities: [] },
     'cs-spec': json(path.join(ROOT, 'tests/fixtures/free/sample.spec.json')),
     'cs-brand': json(path.join(ROOT, 'tests/fixtures/brand.eg.creator.json')),
     'cs-presets': presetIds.map(id => json(path.join(SK, 'styles', id, 'preset.json'))),

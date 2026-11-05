@@ -34,7 +34,7 @@ const NEEDS_DEMO = ["step", "story-beat", "setup", "share", "testimonial"];
 const FORBIDDEN = ["visual", "overrides", "frozen", "remix"];
 const MAX_BYTES = 200000;
 const MIN_STATEMENT_DECKS = 6; // build plan 5.9 (X1/X2 card): 6 decks carry a `statement` pause
-const ENGINE = "cs-1.1.0";
+const ENGINE = "cs-1.1.1";
 
 function die(code, message) {
   process.stderr.write("cs-error: " + (code === 64 ? "E_USAGE" : code === 65 ? "E_SCHEMA" : code === 66 ? "E_USAGE" : "E_INTERNAL") + ": " + message + "\n");

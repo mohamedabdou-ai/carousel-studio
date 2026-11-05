@@ -1,6 +1,6 @@
 {
   "name": "carousel-studio",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "description": "Carousel Studio: an Arabic-first Claude plugin that plans, writes and designs Instagram carousels. This package.json only drives the repository tooling; the plugin itself has no Node dependencies.",
   "license": "Apache-2.0",

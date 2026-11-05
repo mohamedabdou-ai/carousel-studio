@@ -38,7 +38,7 @@ FAMILIES = {
     "ibm-plex-sans-arabic": ("IBM Plex Sans Arabic", ["arabic"]), "readex-pro": ("Readex Pro", ["arabic", "latin"]), "alexandria": ("Alexandria", ["arabic", "latin"]),
     "playpen-sans-arabic": ("Playpen Sans Arabic", ["arabic"]), "noto-kufi-arabic": ("Noto Kufi Arabic", ["arabic"]), "reem-kufi": ("Reem Kufi", ["arabic"]),
     "el-messiri": ("El Messiri", ["arabic", "latin"]), "noto-sans-arabic": ("Noto Sans Arabic", ["arabic", "latin"]), "cairo": ("Cairo", ["arabic", "latin"]),
-    "rubik": ("Rubik", ["arabic", "latin"]), "ibm-plex-sans": ("IBM Plex Sans", ["latin"]), "inter": ("Inter", ["latin"]),
+    "ibm-plex-sans": ("IBM Plex Sans", ["latin"]), "inter": ("Inter", ["latin"]),
 }
 STATIC_WEIGHTS = {"Thin": 100, "ExtraLight": 200, "Light": 300, "Regular": 400, "Medium": 500, "SemiBold": 600, "Bold": 700}
 

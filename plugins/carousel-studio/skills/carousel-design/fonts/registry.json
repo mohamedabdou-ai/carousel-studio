@@ -9,7 +9,7 @@
   "notes": [
     "Every font file is an unmodified upstream file from the google/fonts repository at the pinned commit. Nothing is subset, renamed or re-encoded.",
     "Each OFL.txt is the upstream licence text with its line endings converted from CRLF to LF; the wording is unchanged.",
-    "Only upright faces ship. The engine never draws italic or slanted text, so the italic files of Rubik, IBM Plex Sans and Inter are left out.",
+    "Only upright faces ship. The engine never draws italic or slanted text, so the italic files of IBM Plex Sans and Inter are left out.",
     "wght is an inclusive [min, max] range on every file: a variable font spans its weight axis, a static font repeats its single weight. weights lists the 100-step stops that fall inside the family range.",
     "scripts lists what a family is meant to typeset in a design; latin is the Latin coverage measured in coverage.json (extended: accented letters of Latin-1, basic: printable ASCII, none). Offer a family for a role by scripts and roles; use latin to know whether Latin runs, digits and handles can stay in the same face.",
     "axes[].use: free means the engine sets the axis per token; auto means it is left to font-optical-sizing; default-only means the engine never sets it, so the font default applies (Cairo's slnt stays 0 and no slant is drawn).",
@@ -384,40 +384,6 @@
       ],
       "weights": [200, 300, 400, 500, 600, 700, 800, 900],
       "classes": ["kufi-sans"],
-      "roles": ["display", "heading", "body", "latin"],
-      "latin": "extended",
-      "tashkeel": "ok",
-      "defaultLook": true,
-      "pairsWith": [],
-      "presets": []
-    },
-    {
-      "id": "rubik",
-      "family": "Rubik",
-      "scripts": ["arabic", "latin"],
-      "license": "OFL-1.1",
-      "licenseFile": "rubik/OFL.txt",
-      "source": "https://fonts.google.com/specimen/Rubik",
-      "copyright": "Copyright 2015 The Rubik Project Authors (https://github.com/googlefonts/rubik)",
-      "reservedFontNames": [],
-      "designers": ["Hubert and Fischer", "Meir Sadan", "Cyreal", "Daniel Grumer", "Omaima Dajani"],
-      "files": [
-        {
-          "file": "rubik/Rubik[wght].ttf",
-          "style": "normal",
-          "wght": [300, 900],
-          "variable": true,
-          "axes": [
-            { "tag": "wght", "min": 300, "default": 300, "max": 900, "use": "free" }
-          ],
-          "bytes": 359804,
-          "sha256": "1b3a7437ba2af80e465e773ed60c5036d1ba6ace492d89046dbcf18fb31e4e88",
-          "upstreamBlob": "a59aeb632df494345a542697c357f608875481b0",
-          "upstreamPath": "ofl/rubik/Rubik[wght].ttf"
-        }
-      ],
-      "weights": [300, 400, 500, 600, 700, 800, 900],
-      "classes": ["rounded-sans"],
       "roles": ["display", "heading", "body", "latin"],
       "latin": "extended",
       "tashkeel": "ok",

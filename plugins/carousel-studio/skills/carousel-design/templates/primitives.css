@@ -1,4 +1,4 @@
-/* primitives.css - owned by E4a - engine cs-1.1.0. The token-driven structure shared by every preset (spec 6.0, 6.8; rule A11).
+/* primitives.css - owned by E4a - engine cs-1.1.1. The token-driven structure shared by every preset (spec 6.0, 6.8; rule A11).
    build_studio.py appends it to #cs-archetype-css after the layout sheet, so it is serialised into every painted frame: cap 24 KB.
    Rules of this file
    - Colours are var(--cs-*) only (the base roles and the tone bundle); no literal, no color-mix(), no filter, mask, clip-path, outline, border-image or inset shadow.

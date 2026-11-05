@@ -2,6 +2,16 @@
 
 All notable changes to Carousel Studio (كاروسيل ستوديو) are recorded here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project follows [Semantic Versioning](https://semver.org/). The plugin version in `plugins/carousel-studio/.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` always matches the newest entry.
 
+## [1.1.1] - 2026-11-05
+
+### Fonts
+
+- Rubik is no longer included. Every style keeps its own fonts, and Cairo stays available for a brand that wants a common look.
+
+### بالعربي
+
+لم يعد خط Rubik ضمن الإضافة. كل ستايل يحتفظ بخطوطه، وخط Cairo متاح للبراند الذي يريد شكلًا مألوفًا.
+
 ## [1.1.0] - 2026-10-26
 
 First public release.

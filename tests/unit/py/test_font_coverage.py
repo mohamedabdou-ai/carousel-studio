@@ -304,9 +304,9 @@ class ShippedFontsTest(unittest.TestCase):
         report = json.loads(out.getvalue())
         self.assertEqual((code, report["problems"], report["status"]), (0, [], "in sync"))
 
-    def test_the_twelve_contract_families_ship(self) -> None:
+    def test_the_eleven_contract_families_ship(self) -> None:
         expected = {"alexandria", "readex-pro", "ibm-plex-sans-arabic", "noto-kufi-arabic", "noto-sans-arabic", "reem-kufi",
-                    "el-messiri", "playpen-sans-arabic", "cairo", "rubik", "ibm-plex-sans", "inter"}
+                    "el-messiri", "playpen-sans-arabic", "cairo", "ibm-plex-sans", "inter"}
         self.assertEqual(set(self.by_id), expected)
         self.assertEqual(set(self.coverage["families"]), expected)
         for fid in expected:

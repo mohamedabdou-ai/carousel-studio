@@ -40,7 +40,7 @@ except Exception:  # pragma: no cover - exercised only when _cs is absent
         except Exception:
             pass
 
-ENGINE = "cs-1.1.0"
+ENGINE = "cs-1.1.1"
 # IS-1 load order. The four visual chunks follow qa and ui because they register into CS.qa._ and CS.ui._ at load. The nine of 1.0 must exist;
 # the four of 1.1 are embedded when their file exists, so a tree built before them still makes a page that behaves as 1.0 (the absence rule),
 # and the build says so on stderr instead of failing.

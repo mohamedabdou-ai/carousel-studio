@@ -8,7 +8,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../../..");
-const VERSION = "cs-1.1.0";
+const VERSION = "cs-1.1.1";
 
 export function buildChunk({ withLib = false } = {}) {
   const modules = [];

@@ -1,6 +1,6 @@
 # Carousel Studio (كاروسيل ستوديو) — Build Contract v1.0
 
-**Status:** frozen on 2026-10-22 for the one-day v1 sprint. Engine version `cs-1.1.0`. Plugin version `1.1.0`.
+**Status:** frozen on 2026-10-22 for the one-day v1 sprint. Engine version `cs-1.1.1`. Plugin version `1.1.1`.
 **Audience:** the 12 builders (B1–B12). Every builder codes against this file and nothing else. You will not be able to ask another builder a question.
 **Precedence when documents disagree:** `research/00-decisions.md` (including its round-5 changes) → this contract → `research/10-structure-draft.md` → other research. Where this contract overrides the draft, the change is listed in Appendix A.
 **How to use it:** read section 0 and section 3 (everybody), then the sections named for your package in the table below. If something you need is missing or contradictory, pick the most conservative reading, implement it, and list the question in your final summary. Never silently invent a second convention.
@@ -80,9 +80,9 @@
 | Constant | Value |
 |---|---|
 | `CONTRACT_VERSION` | `1.0` |
-| `ENGINE` (`CS.version`, `frozen.engine`, `qa.engine`) | `cs-1.1.0` |
+| `ENGINE` (`CS.version`, `frozen.engine`, `qa.engine`) | `cs-1.1.1` |
 | `specVersion`, every `schemaVersion` | `1` |
-| `PLUGIN_VERSION` | `1.1.0` |
+| `PLUGIN_VERSION` | `1.1.1` |
 | `MEDIABUNNY` | `1.61.0` → `https://cdn.jsdelivr.net/npm/mediabunny@1.61.0/+esm` |
 | `FFLATE` | `0.8.2` → `https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.js` |
 | `HYPERFRAMES_VERSION` (Claude Code lane CLI) | `0.8.185` (latest on npm on 2026-10-22; B3 smoke-renders it and, only if it fails, moves to the nearest version that passes and records the date in a comment) |
@@ -413,7 +413,7 @@ One global namespace, `window.CS`, with sub-modules **`CS.core`, `CS.qa`, `CS.pa
 - **Source** lives in `src/<module>/*.js` as plain scripts (no `import`/`export`, no TypeScript, no JSX). Each module has `manifest.json` (`{"module","chunk","files":[…]}`).
 - **Build** (`tools/build.mjs`, B1) concatenates the files of a module, in manifest order, into one chunk:
   ```
-  /*! Carousel Studio runtime chunk <chunk> · cs-1.1.0 · Apache-2.0 */
+  /*! Carousel Studio runtime chunk <chunk> · cs-1.1.1 · Apache-2.0 */
   (function () {
     "use strict";
     var CS = (window.CS = window.CS || {});
@@ -425,7 +425,7 @@ One global namespace, `window.CS`, with sub-modules **`CS.core`, `CS.qa`, `CS.pa
 - **Load order** in every page: `cs-core, cs-qa, cs-paint, cs-motion, cs-hf, cs-mp4, cs-export, cs-ui, cs-brandbook`. A chunk may only *define* things at load time; it calls other chunks only at call time.
 - **Root utilities** (written by B4 in `src/lib/root.js`, first file of `cs-core.js`):
   ```ts
-  CS.version: "cs-1.1.0"
+  CS.version: "cs-1.1.1"
   class CSError extends Error { constructor(code: string, message?: string, detail?: any); code: string; detail?: any }   // CS.CSError
   CS.on(type: string, fn: (detail:any, ev:CustomEvent)=>void): ()=>void      // returns an unsubscribe function
   CS.once(type: string, fn): ()=>void
@@ -466,7 +466,7 @@ interface Font { family: string /* registry id */; cssFamily: string; wght: numb
 type Range = [number, number];
 
 interface PageConfig {
-  engine: "cs-1.1.0"; view: "script" | "design" | "brand-home"; mode: "full" | "shell"; lane: "studio" | "claude-code";
+  engine: "cs-1.1.1"; view: "script" | "design" | "brand-home"; mode: "full" | "shell"; lane: "studio" | "claude-code";
   uiDialect: Dialect; buildId: string; builtAt: string; creditFree: boolean;
   fonts: string[]; presets: string[]; capabilities: string[];     // capabilities = names declared at publish (informational)
 }
@@ -1033,7 +1033,6 @@ Fonts are **unmodified upstream OFL files** with their `OFL.txt` (never subset, 
 | `el-messiri` | El Messiri | arabic + latin | heritage (body) |
 | `noto-sans-arabic` | Noto Sans Arabic | arabic | brand choice |
 | `cairo` | Cairo | arabic + latin | brand choice (“default look” NOTE unless the brand chose it) |
-| `rubik` | Rubik | arabic + latin | brand choice (“default look”) |
 | `ibm-plex-sans` | IBM Plex Sans | latin | swiss (latin) |
 | `inter` | Inter | latin | interface and others (latin) |
 
@@ -1376,7 +1375,7 @@ Never fetches URLs (Claude fetches and passes text). JSON: `{keyPoints:[{id,text
 All functions are pure unless noted; all paths are `pathlib.Path`; all text I/O is UTF-8.
 ```python
 # _cs/__init__.py
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 class CSError(Exception): code: str; detail: object            # codes of section 0.4
 # _cs/paths.py
 skill_root() -> Path                    # the skill folder that contains scripts/

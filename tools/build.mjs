@@ -27,7 +27,7 @@ import vm from "node:vm";
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = join(ROOT, "src");
 const DEFAULT_OUT = join(ROOT, "plugins", "carousel-studio", "skills", "carousel-design", "runtime");
-const ENGINE = "cs-1.1.0";
+const ENGINE = "cs-1.1.1";
 const KIB = 1024;
 const MAX_CHUNK_BYTES = 200 * KIB;
 const CHUNK_NAME = /^cs-[a-z0-9]+(-[a-z0-9]+)*\.js$/;

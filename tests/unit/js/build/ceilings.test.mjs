@@ -44,7 +44,7 @@ test("--report --format json carries the IS-1 ceiling table, the interim cs-ui e
   const fx = makeFixture(Object.keys(CEILINGS).map((c) => ({ module: moduleOf(c), chunk: c })));
   try {
     const doc = report(fx);
-    assert.equal(doc.engine, "cs-1.1.0");
+    assert.equal(doc.engine, "cs-1.1.1");
     assert.equal(doc.chunks.length, 13);
     for (const row of doc.chunks) {
       assert.equal(row.ceiling, CEILINGS[row.chunk], row.chunk);
@@ -144,13 +144,13 @@ test("--check also normalises line endings, like a Windows checkout", () => {
   } finally { fx.cleanup(); }
 });
 
-test("the chunk header names the engine cs-1.1.0, and two builds are byte-identical", () => {
+test("the chunk header names the engine cs-1.1.1, and two builds are byte-identical", () => {
   const fx = makeFixture([{ module: "visual" }]);
   try {
     fx.run("--out", join(fx.root, "o1"));
     fx.run("--out", join(fx.root, "o2"));
     const a = readFileSync(join(fx.root, "o1", "cs-visual.js"), "utf8");
-    assert.ok(a.startsWith("/*! Carousel Studio runtime chunk cs-visual.js · cs-1.1.0 · Apache-2.0 */\n"));
+    assert.ok(a.startsWith("/*! Carousel Studio runtime chunk cs-visual.js · cs-1.1.1 · Apache-2.0 */\n"));
     assert.equal(a, readFileSync(join(fx.root, "o2", "cs-visual.js"), "utf8"));
   } finally { fx.cleanup(); }
 });

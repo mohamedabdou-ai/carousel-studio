@@ -319,7 +319,7 @@
   await runCase("thumbnail-contrast", [makeSlide("s01", "cover", { heroPx: 150, headStyle: "color:#D0D0CE" })]);
 
   /* 9 ---------------------------------------------------------- default look */
-  var noBrand = tokens({ provenance: {}, type: { display: { family: "cairo" }, heading: { family: "cairo" }, body: { family: "rubik" } } });
+  var noBrand = tokens({ provenance: {}, type: { display: { family: "cairo" }, heading: { family: "cairo" }, body: { family: "tajawal" } } });
   await runCase("default-look", base(), noBrand);
   var brandFont = tokens({ provenance: { "type.display.family": "brand", "type.heading.family": "brand", "roles.accent": "brand" }, type: { display: { family: "cairo" }, heading: { family: "cairo" }, body: { family: "readex-pro" } } });
   await runCase("default-look-brand", base(), brandFont);

@@ -205,7 +205,7 @@ class TestBuild(BuilderCase):
     def test_config_block(self):
         run = self.build("--view", "script")
         config = self.block(run.page, "cs-config")
-        self.assertEqual(config["engine"], "cs-1.1.0")
+        self.assertEqual(config["engine"], "cs-1.1.1")
         self.assertEqual(config["view"], "script")
         self.assertEqual(config["mode"], "full")
         self.assertEqual(config["uiDialect"], "gulf")
@@ -372,7 +372,7 @@ class TestVisualChunks(BuilderCase):
         self.assertEqual(self.build("--view", "design", root=root).code, 70)
 
     def test_the_engine_constant_is_1_1_0(self):
-        self.assertEqual(BUILDER.ENGINE, "cs-1.1.0")
+        self.assertEqual(BUILDER.ENGINE, "cs-1.1.1")
 
 
 class TestDataBlocks(BuilderCase):
