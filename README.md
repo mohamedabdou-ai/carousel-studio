@@ -116,10 +116,7 @@
 **من تطبيق Claude، على الكمبيوتر أو الويب:**
 
 1. افتح **Customize** من القائمة الجانبية، ثم تبويب **Plugins**.
-2. ابحث في **Discover** عن **Carousel Studio**، واضغط **Add**.
-3. افتح محادثة جديدة وقل **«ابدأ»**.
-
-لا تظهر لك في البحث؟ أضفها باسمها مباشرة: في تبويب **Plugins** اضغط **Add**، ثم **Add marketplace**، ثم **Add from a repository**، واكتب:
+2. اضغط **Add**، ثم **Add marketplace**، ثم **Add from a repository**، والصق هذا السطر:
 
 <div dir="ltr">
 
@@ -129,22 +126,30 @@ mohamedabdou-ai/carousel-studio
 
 </div>
 
+3. ستظهر لك **Carousel Studio** في **Discover**. افتحها واضغط **Add**.
+4. افتح محادثة جديدة وقل **«ابدأ»**.
+
 **ثبّتها مرة واحدة، واستخدمها من أي مكان.** الإضافة تُحفظ على حسابك، فتتبعك إلى كل مكان تفتح فيه Claude: الكمبيوتر، والمتصفح، والموبايل، وCowork، وClaude Code.
 
-<sub>الإضافات متاحة في اشتراكات Claude المدفوعة: Pro وMax وTeam وEnterprise.</sub>
+**وكل جديد يصلك وحده.** فعّل **Sync automatically** للمستودع الذي أضفته، أو اضغط **Check for updates** متى شئت.
+
+<sub>الإضافات متاحة في كل اشتراكات Claude المدفوعة: Pro وMax وUltra وTeam وEnterprise. وفي Team وEnterprise، إن لم تجد **Add marketplace** فاطلب من مالك حساب المؤسسة (Owner) أن يسمح به.</sub>
 
 <details>
 <summary><b>للمطورين: التثبيت من الطرفية</b></summary>
 
+أضفتها من تطبيق Claude؟ ستصلك في Claude Code وحدها عند أول جلسة تفتحها بحساب Claude نفسه، فلا تحتاج هذه الأوامر.
+
 <div dir="ltr">
 
 ```text
-/plugin install carousel-studio --marketplace mohamedabdou-ai/carousel-studio
+/plugin marketplace add mohamedabdou-ai/carousel-studio
+/plugin install carousel-studio@mohamed-abdou
 ```
 
 </div>
 
-للتحديث: <code dir="ltr">/plugin marketplace update mohamed-abdou</code>. وللتصدير على جهازك أو تجهيز عدة بوستات دفعة واحدة تحتاج Node.js 22 أو أحدث، ومتصفح Chrome أو Edge، وحزمة `playwright-core`.
+ولتصلك التحديثات وحدها: افتح <code dir="ltr">/plugin</code>، ثم تبويب **Marketplaces**، واختر <code dir="ltr">mohamed-abdou</code>، ثم **Enable auto-update**. وللتصدير على جهازك أو تجهيز عدة بوستات دفعة واحدة تحتاج Node.js 22 أو أحدث، ومتصفح Chrome أو Edge، وحزمة `playwright-core`.
 
 </details>
 
@@ -250,7 +255,7 @@ mohamedabdou-ai/carousel-studio
 <details>
 <summary><b>هل الإضافة مجانية فعلًا؟</b></summary>
 
-نعم، مجانية بالكامل ومفتوحة المصدر بترخيص Apache 2.0، ولا يوجد اشتراك ولا حساب داخل الإضافة. كل ما تحتاجه اشتراك Claude مدفوع، لأن الإضافات متاحة في اشتراكات Pro وMax وTeam وEnterprise.
+نعم، مجانية بالكامل ومفتوحة المصدر بترخيص Apache 2.0، ولا يوجد اشتراك ولا حساب داخل الإضافة. كل ما تحتاجه اشتراك Claude مدفوع، لأن الإضافات متاحة في كل الاشتراكات المدفوعة: Pro وMax وUltra وTeam وEnterprise.
 
 </details>
 

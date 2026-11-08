@@ -91,27 +91,32 @@ You don't type at a tool; you brief a team.
 **In the Claude app, on desktop or the web:**
 
 1. Open **Customize** in the sidebar, then the **Plugins** tab.
-2. Search **Discover** for **Carousel Studio** and click **Add**.
-3. Start a new chat and say «ابدأ» (start).
-
-Not showing up in search? Add it by name: in **Plugins**, click **Add**, then **Add marketplace**, then **Add from a repository**, and enter:
+2. Click **Add**, then **Add marketplace**, then **Add from a repository**, and paste:
 
 ```text
 mohamedabdou-ai/carousel-studio
 ```
 
+3. **Carousel Studio** now shows up in **Discover**. Open it and click **Add**.
+4. Start a new chat and say «ابدأ» (start).
+
 **Install once, use it everywhere.** The plugin is saved to your account, so it follows you wherever you open Claude: desktop, browser, phone, Cowork and Claude Code.
 
-<sub>Plugins are available on Claude's paid plans: Pro, Max, Team and Enterprise.</sub>
+**New versions reach you on their own.** Turn on **Sync automatically** for the repository you added, or click **Check for updates** whenever you like.
+
+<sub>Plugins are available on every paid Claude plan: Pro, Max, Ultra, Team and Enterprise. On Team and Enterprise, if **Add marketplace** isn't there, ask your organization's Owner to allow it.</sub>
 
 <details>
 <summary><b>For developers: install from the terminal</b></summary>
 
+Added it in the Claude app? It reaches Claude Code on its own the next time you start a session signed in with the same Claude account, so you don't need these commands.
+
 ```text
-/plugin install carousel-studio --marketplace mohamedabdou-ai/carousel-studio
+/plugin marketplace add mohamedabdou-ai/carousel-studio
+/plugin install carousel-studio@mohamed-abdou
 ```
 
-Update with `/plugin marketplace update mohamed-abdou`. Rendering on your own computer, or batching several posts, needs Node.js 22 or newer, Chrome or Edge, and the `playwright-core` package.
+For automatic updates, open `/plugin`, go to the **Marketplaces** tab, select `mohamed-abdou`, then **Enable auto-update**. Rendering on your own computer, or batching several posts, needs Node.js 22 or newer, Chrome or Edge, and the `playwright-core` package.
 
 </details>
 
@@ -170,7 +175,7 @@ You don't need them; just say what you want. For those who like shortcuts: `/car
 
 <details><summary><b>Is it really free?</b></summary>
 
-Yes. It's fully free and open source under Apache 2.0, with no subscription or account inside the plugin. You only need a paid Claude plan, since plugins are available on Pro, Max, Team and Enterprise.
+Yes. It's fully free and open source under Apache 2.0, with no subscription or account inside the plugin. You only need a paid Claude plan, since plugins are available on every paid plan: Pro, Max, Ultra, Team and Enterprise.
 
 </details>
 
