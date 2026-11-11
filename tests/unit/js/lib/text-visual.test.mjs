@@ -224,3 +224,16 @@ test("freeze v2 without a browser: canonical keys, 520 px, state copies and visu
   assert.equal(core.fit.floorPx("numeral", tokens), 200);
   assert.equal(F.tokensHash(tokens, spec), F.tokensHash(tokens, spec));
 });
+
+test("picture variants preserve defaults for a preset that omits a type", () => {
+  const { core } = engine(), preset = readJson("docs/examples/preset.example.json");
+  delete preset.variants.step; delete preset.variants.checklist;
+  core.registry.registerPreset(preset, "");
+  assert.equal(core.registry.getPreset(preset.id), preset, "registration preserves live preset updates");
+  const spec = readJson("tools/examples/showcase.spec.json"); spec.style = { presetId: preset.id + "@" + preset.version };
+  const tokens = core.resolve.post(spec);
+  for (const type of ["step", "checklist"]) {
+    assert.equal(tokens.variants[type].length, 0);
+    assert.equal(core.resolve.variantFor(tokens, { type }).variant, "base");
+  }
+});

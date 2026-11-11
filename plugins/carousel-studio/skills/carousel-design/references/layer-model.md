@@ -43,3 +43,8 @@ preset defaults  <-  brand (bound roles, locks)  <-  occasion overlay (allowed k
 - Never edit `decor.css`, the archetype partials or the rules from a post. Looks are shipped data; per-post changes go through the closed override set.
 - Never mix two presets in one post (slide overrides can nudge tokens, not change the preset).
 - Never override a floor.
+
+## 6. Picture and logo slots
+Pictures resolve from `spec.assets` through the same media filler in both the Studio and local engine. `step`, `checklist`, `summary`, `cta` and `offer` have a `media` variant in every style; a numbered step keeps its semantic type and ordinal. A free slide positions its own empty `data-picture` placeholder instead of using `slide.media`.
+
+`spec.cover.logo.assetId` is a post-specific product or partner mark. It uses its style's bounded slot and a light or dark ground, separate from `brand.visual.logo` and the main cover media. It is not a palette override or an occasion decoration. Nothing is bundled: the creator supplies the asset and is responsible for usage rights. Still and video paint the same image element.

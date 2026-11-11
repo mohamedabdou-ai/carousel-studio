@@ -1303,6 +1303,8 @@ CS.visual._.register("settle",settle)})();
     if (name === "data-field") return field(v) ? v : null;
     if (name === "data-icon") return Object.hasOwn(V._.block("cs-icon-pack")?.icons || {}, v) ? v : null;
     if (name === "data-object") return (V._.block("cs-icon-objects")?.objects || []).some(function (o) { return o.id === v; }) ? v : null;
+    if (name === "data-picture") return /^[A-Za-z0-9_-]{1,64}$/.test(v) ? v : null;
+    if (name === "data-fit") return /^(cover|contain)$/.test(v) ? v : null;
     var a = d.art, enums = { "data-size": a.icon.sizes, "data-treatment": a.icon.treatments, "data-mark": a.mark.values, "data-tone": a.tone.values, "data-from": a.chat.values };
     if (enums[name]) return enums[name].includes(v) ? v : null;
     if (name === "data-role") return /^(hero|title|h1|h2|body|small|micro|number|chip|tool)$/.test(v) ? v : null;
@@ -1321,7 +1323,7 @@ CS.visual._.register("settle",settle)})();
       var tag = /^[a-z][a-z0-9-]*/i.exec(s.slice(i));
       if (!tag) { add({ text: "<" }); i = start + 1; continue; }
       tag = tag[0].toLowerCase(); i += tag.length;
-      var attrs = {}, self = false;
+      var attrs = {}, rawAttrs = Object.create(null), names = [], self = false;
       while (i < s.length && s[i] !== ">") {
         if (/\s/.test(s[i])) { i++; continue; }
         if (s[i] === "/" && s[i + 1] === ">") { self = true; i++; break; }
@@ -1334,9 +1336,15 @@ CS.visual._.register("settle",settle)})();
           if (q === '"' || q === "'") { var qe = s.indexOf(q, ++i); if (qe < 0) fail("Unterminated HTML attribute"); av = s.slice(i, qe); i = qe + 1; }
           else { var vm = /^[^\s<>`'"=]+/.exec(s.slice(i)); if (!vm) fail("Malformed HTML value"); av = vm[0]; i += av.length; }
         }
-        var safe = attr(name, decode(av), d); if (safe !== null && !Object.hasOwn(attrs, name)) attrs[name] = safe;
+        av = decode(av); names.push(name); rawAttrs[name] = av;
+        var safe = attr(name, av, d); if (safe !== null && !Object.hasOwn(attrs, name)) attrs[name] = safe;
       }
       if (s[i] !== ">") fail("Unterminated HTML tag"); i++;
+      if (!close && stack.some(function (p) { return p.node?.attrs?.["data-picture"]; })) fail("A picture placeholder must be empty");
+      if (!close && Object.hasOwn(rawAttrs, "data-picture")) {
+        if (tag !== "div" || !attrs["data-picture"] || names.some(function (k, at) { return !/^(class|data-picture|data-fit)$/.test(k) || names.indexOf(k) !== at; }) ||
+            Object.hasOwn(rawAttrs, "data-fit") && !attrs["data-fit"]) fail("Use an empty div with data-picture and optional data-fit=cover|contain");
+      } else if (!close && Object.hasOwn(rawAttrs, "data-fit")) fail("data-fit belongs to a picture placeholder");
       if (attrs["data-object"] && attrs["data-size"] && !d.art.object.sizes.includes(attrs["data-size"])) delete attrs["data-size"];
       if (close) { for (var j = stack.length - 1; j > 0; j--) if (stack[j].tag === tag) { stack.length = j; break; } continue; }
       var allowed = d.html.tags.includes(tag), node = allowed && stack[stack.length - 1].node ? { tag: tag, attrs: attrs, children: [] } : null;
@@ -1347,7 +1355,11 @@ CS.visual._.register("settle",settle)})();
       if (!self && !/^(br|img|hr|input|meta|link|source|area|base|embed|wbr|param|track|col)$/.test(tag)) stack.push({ tag: tag, node: node });
       if (stack.length > 64) fail("HTML nesting exceeds 64");
     }
-    return root;
+    function pictures(n) {
+      if (n.attrs?.["data-picture"] && n.children.some(function (c) { return c.tag || c.text.trim(); })) fail("A picture placeholder must be empty");
+      (n.children || []).forEach(pictures);
+    }
+    pictures(root); return root;
   }
   function literals(input) {
     var out = [];
@@ -1389,6 +1401,8 @@ CS.visual._.register("settle",settle)})();
       f + "[data-free-literal]{font:inherit;color:inherit;text-wrap:inherit}" +
       f + "h2," + f + "h3{font-family:var(--cs-font-heading);font-weight:var(--cs-wght-heading);font-size:var(--cs-fs-h2);line-height:var(--cs-lh-heading)}" +
       f + "em{font-style:normal}" + f + ".cs-ltr{font-weight:inherit}" + f + "style{display:none}" +
+      f + "[data-picture]{position:relative;min-inline-size:0;min-block-size:0;overflow:hidden;flex-shrink:0}" +
+      f + "[data-picture] > img{position:absolute;inset:0;display:block;width:100%;height:100%;object-position:50% 50%}" +
       f + ".f-chat{display:flex;flex-direction:column;gap:calc(var(--cs-unit)*3)}" +
       c + "]{max-inline-size:85%;padding:calc(var(--cs-unit)*3);border-radius:calc(var(--cs-unit)*3);background:var(--cs-surface);color:var(--cs-ink);border:3px solid var(--cs-ink)}" +
       c + "=\"me\"]{align-self:flex-end;background:var(--cs-accent);color:var(--cs-on-accent)}" +
@@ -1487,6 +1501,12 @@ CS.visual._.register("settle",settle)})();
       }
       var n = document.createElement(node.tag), a = node.attrs;
       Object.keys(a).forEach(function (k) { n.setAttribute(k, a[k]); }); parent.appendChild(n);
+      if (a["data-picture"]) {
+        n.classList.add("cs-media-slot"); n.dataset.slot = "media"; n.dataset.kind = "media"; n.dataset.m = "media";
+        C.compose.media(n, { slot: "photo", assetId: a["data-picture"], imageOnly: true, calmZone: "bottom" }, cx);
+        if (n.firstElementChild) n.firstElementChild.style.objectFit = a["data-fit"] || "cover";
+        return;
+      }
       if (a["data-tone"]) { var name = a["data-tone"]; tk = cx.tokens.tones?.[name] || (name === "s1" || name === "s2" ? Object.assign({}, tk, { bg: cx.tokens.css["--cs-art-" + name] || tk.surface, ink: C.color.onColor(cx.tokens.css["--cs-art-" + name] || tk.surface), inkMuted: C.color.onColor(cx.tokens.css["--cs-art-" + name] || tk.surface) }) : tk); tk = tone(n, tk, cx.tokens.roles); }
       var path = a["data-field"], isEdit = Object.hasOwn(a, "data-edit") && !path;
       if (path && editable) fail("data-edit must contain literal copy only");

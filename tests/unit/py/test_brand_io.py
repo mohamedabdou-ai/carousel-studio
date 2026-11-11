@@ -176,6 +176,20 @@ class BrandIoTests(unittest.TestCase):
         self.assertEqual(self.cli("validate", "--slug", "demo-brand")[0], 2)
 
     # -- capsule / hash ---------------------------------------------------------------------
+    def test_dialect_strength_round_trips_and_reaches_capsule(self):
+        before = self.new()
+        self.assertNotIn("dialectStrength", before.get("voice", {}))
+        for strength in ("light", "full"):
+            code, out, err = self.cli("set", "--slug", "demo-brand", "--path", "voice.dialectStrength", "--value", strength)
+            self.assertEqual(code, 0, err)
+            self.assertEqual(self.brand()["voice"]["dialectStrength"], strength)
+            code, out, err = self.cli("capsule", "--slug", "demo-brand")
+            self.assertEqual(code, 0, err)
+            self.assertIn("dialect-strength: " + strength, out)
+        code, out, err = self.cli("set", "--slug", "demo-brand", "--path", "voice.dialectStrength", "--value", "medium")
+        self.assertEqual(code, 2)
+        self.assertEqual(self.brand()["voice"]["dialectStrength"], "full")
+
     def test_capsule_shape_and_size(self):
         self.new()
         self.cli("set", "--slug", "demo-brand", "--path", "voice", "--json",

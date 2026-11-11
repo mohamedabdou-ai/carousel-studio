@@ -355,12 +355,26 @@
 .cs-slide[data-variant="table"] .cs-item > [data-part="text"], .cs-slide[data-variant="table"] .cs-item > [data-part="value"]{ padding-inline:16px; }
 .cs-slide[data-variant="table"] .cs-item > [data-part="text"]{ grid-column:3; }
 .cs-slide[data-variant="table"] .cs-item > [data-part="value"]{ grid-column:4; }
+
+/* Picture-led steps, lists and closing slides: remove the centring spacers so
+   the picture, rather than empty flex space, owns the remaining body area. */
+.cs-slide[data-variant="media"] :is(.cs-a-step,.cs-a-checklist,.cs-a-summary,.cs-a-cta,.cs-a-offer){ gap:16px; padding-block:0 4px; }
+.cs-slide[data-variant="media"] :is(.cs-a-step,.cs-a-checklist,.cs-a-summary,.cs-a-cta,.cs-a-offer)::before,
+.cs-slide[data-variant="media"] :is(.cs-a-step,.cs-a-checklist,.cs-a-summary,.cs-a-cta,.cs-a-offer)::after{ display:none; }
+.cs-slide[data-variant="media"] :is(.cs-a-step,.cs-a-checklist,.cs-a-summary,.cs-a-cta,.cs-a-offer) > .cs-media-slot:not([data-media-kind="icon"]){ order:-1; flex:1 1 0; min-block-size:clamp(360px,calc(var(--cs-h) - 1040px),400px); }
+.cs-slide[data-variant="media"] .cs-a-step > .cs-ord{ order:-2; }
+.cs-slide[data-variant="media"] :is(.cs-a-summary,.cs-a-offer){ gap:12px; }
+.cs-slide[data-variant="media"] :is(.cs-a-summary,.cs-a-offer) > .cs-bullets{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px; align-content:start; }
+.cs-slide[data-variant="media"] :is(.cs-a-summary,.cs-a-offer) > .cs-bullets > :last-child:nth-child(odd){ grid-column:1 / -1; }
+.cs-slide[data-type="cover"] .cs-content.cs-a-cover > .cs-media-slot[data-slot="logo"]{ display:flex; align-items:center; justify-content:center; align-self:var(--cs-logo-align,flex-start); flex:0 0 80px; min-block-size:0; inline-size:176px; block-size:80px; max-inline-size:192px; max-block-size:88px; padding:12px; overflow:hidden; }
+.cs-slide[data-type="cover"] .cs-content.cs-a-cover > .cs-media-slot[data-slot="logo"] > img{ display:block; inline-size:100%; block-size:100%; object-fit:contain; object-position:50% 50%; }
+
 </style>
 
 <template data-archetype="cover" data-version="1" data-default-variant="top"
           data-variants="top center split photo number" data-chrome="handle meta counter swipe savepill">
   <main class="cs-content cs-a-cover" data-layer="content">
-    <p   class="cs-slot cs-kicker"   data-slot="kicker"   data-field="kicker"   data-kind="text" data-role="small" data-max-lines="2" data-m="kicker" data-optional data-edit="text"></p>
+    <div class="cs-slot cs-media-slot" data-slot="logo" data-field="logo" data-kind="logo" data-m="logo" data-optional></div><p   class="cs-slot cs-kicker"   data-slot="kicker"   data-field="kicker"   data-kind="text" data-role="small" data-max-lines="2" data-m="kicker" data-optional data-edit="text"></p>
     <h1  class="cs-slot cs-headline" data-slot="headline" data-field="headline" data-kind="text" data-role="hero"  data-max-lines="3" data-max-lines-by-variant="number:4" data-fit-widen data-m="headline" data-edit="text"></h1>
     <p   class="cs-slot cs-sub"      data-slot="sub"      data-field="sub"      data-kind="text" data-role="body"  data-max-lines="3" data-m="sub" data-optional data-edit="text"></p>
     <div class="cs-slot cs-media-slot" data-slot="media"  data-field="media"    data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
@@ -389,10 +403,10 @@
 </template>
 
 <template data-archetype="step" data-version="1" data-default-variant="base"
-          data-variants="base ghost-number pill track" data-chrome="handle meta counter swipe">
+          data-variants="base ghost-number pill track media" data-chrome="handle meta counter swipe">
   <main class="cs-content cs-a-step" data-layer="content">
     <div class="cs-slot cs-ord"    data-slot="ord"    data-field="ord"    data-kind="ord"  data-role="small" data-fit="css" data-m="ord" data-optional></div>
-    <h2  class="cs-slot cs-title"  data-slot="title"  data-field="title"  data-kind="text" data-role="title" data-max-lines="3" data-m="title" data-edit="text"></h2>
+    <h2  class="cs-slot cs-title"  data-slot="title"  data-field="title"  data-kind="text" data-role="title" data-max-lines="3" data-m="title" data-edit="text" data-role-by-variant="media:h2" data-max-lines-by-variant="media:2"></h2>
     <p   class="cs-slot cs-body"   data-slot="body"   data-field="body"   data-kind="text" data-role="body"  data-max-lines="6" data-m="body" data-optional data-edit="text"></p>
     <div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
     <p   class="cs-slot cs-bridge" data-slot="bridge" data-field="bridge" data-kind="text" data-role="small" data-max-lines="2" data-m="bridge" data-optional data-edit="text"></p>
@@ -448,19 +462,19 @@
 </template>
 
 <template data-archetype="checklist" data-version="1" data-default-variant="base"
-          data-variants="base boxes ruled" data-chrome="handle meta counter swipe">
+          data-variants="base boxes ruled media" data-chrome="handle meta counter swipe">
   <main class="cs-content cs-a-checklist" data-layer="content">
-    <h2  class="cs-slot cs-title"   data-slot="title"   data-field="title"   data-kind="text" data-role="title" data-max-lines="3" data-m="title" data-edit="text"></h2>
+    <h2  class="cs-slot cs-title"   data-slot="title"   data-field="title"   data-kind="text" data-role="title" data-max-lines="3" data-m="title" data-edit="text" data-role-by-variant="media:h2" data-max-lines-by-variant="media:2"></h2>
     <ul  class="cs-slot cs-bullets" data-slot="bullets" data-field="bullets" data-kind="list" data-role="body"  data-max-lines="2" data-m="bullets"></ul><div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
     <p   class="cs-slot cs-bridge"  data-slot="bridge"  data-field="bridge"  data-kind="text" data-role="small" data-max-lines="2" data-m="bridge" data-optional data-edit="text"></p>
   </main>
 </template>
 
 <template data-archetype="summary" data-version="1" data-default-variant="list"
-          data-variants="list grid" data-chrome="handle meta counter swipe">
+          data-variants="list grid media" data-chrome="handle meta counter swipe">
   <main class="cs-content cs-a-summary" data-layer="content">
-    <h2  class="cs-slot cs-title"   data-slot="title"   data-field="title"   data-kind="text" data-role="title" data-max-lines="3" data-m="title" data-edit="text"></h2>
-    <ul  class="cs-slot cs-bullets" data-slot="bullets" data-field="bullets" data-kind="list" data-role="body"  data-max-lines="2" data-m="bullets"></ul><div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
+    <h2  class="cs-slot cs-title"   data-slot="title"   data-field="title"   data-kind="text" data-role="title" data-max-lines="3" data-m="title" data-edit="text" data-role-by-variant="media:h2" data-max-lines-by-variant="media:2"></h2>
+    <ul  class="cs-slot cs-bullets" data-slot="bullets" data-field="bullets" data-kind="list" data-role="body"  data-max-lines="2" data-m="bullets"></ul><div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div><div class="cs-slot cs-cta" data-slot="cta" data-field="cta" data-kind="cta" data-role="body" data-max-lines="2" data-m="cta" data-optional></div>
   </main>
 </template>
 
@@ -493,18 +507,18 @@
 </template>
 
 <template data-archetype="cta" data-version="1" data-default-variant="base"
-          data-variants="base pill keyword action" data-chrome="handle meta counter savepill">
+          data-variants="base pill keyword action media" data-chrome="handle meta counter savepill">
   <main class="cs-content cs-a-cta" data-layer="content">
-    <h2  class="cs-slot cs-title" data-slot="title" data-field="title" data-kind="text" data-role="h1"   data-max-lines="3" data-m="title" data-edit="text"></h2>
+    <h2  class="cs-slot cs-title" data-slot="title" data-field="title" data-kind="text" data-role="h1"   data-max-lines="3" data-m="title" data-edit="text" data-role-by-variant="media:h2" data-max-lines-by-variant="media:2"></h2>
     <p   class="cs-slot cs-body"  data-slot="body"  data-field="body"  data-kind="text" data-role="body" data-max-lines="4" data-m="body" data-optional data-edit="text"></p><div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
     <div class="cs-slot cs-cta"   data-slot="cta"   data-field="cta"   data-kind="cta"  data-role="body" data-max-lines="3" data-m="cta"></div>
   </main>
 </template>
 
 <template data-archetype="offer" data-version="1" data-default-variant="base"
-          data-variants="base card" data-chrome="handle meta counter savepill">
+          data-variants="base card media" data-chrome="handle meta counter savepill">
   <main class="cs-content cs-a-offer" data-layer="content">
-    <h2  class="cs-slot cs-title"   data-slot="title"   data-field="title"   data-kind="text"   data-role="h1"   data-max-lines="3" data-m="title" data-edit="text"></h2>
+    <h2  class="cs-slot cs-title"   data-slot="title"   data-field="title"   data-kind="text"   data-role="h1"   data-max-lines="3" data-m="title" data-edit="text" data-role-by-variant="media:h2" data-max-lines-by-variant="media:2"></h2>
     <div class="cs-slot cs-number"  data-slot="number"  data-field="number"  data-kind="number" data-role="number" data-m="number" data-optional></div>
     <ul  class="cs-slot cs-bullets" data-slot="bullets" data-field="bullets" data-kind="list"   data-role="body" data-max-lines="2" data-m="bullets" data-optional></ul><div class="cs-slot cs-media-slot" data-slot="media" data-field="media" data-kind="media" data-m="media" data-optional></div><div class="cs-slot cs-anchor-slot" data-slot="anchor" data-m="media" data-optional></div>
     <div class="cs-slot cs-cta"     data-slot="cta"     data-field="cta"     data-kind="cta"    data-role="body" data-max-lines="3" data-m="cta"></div>

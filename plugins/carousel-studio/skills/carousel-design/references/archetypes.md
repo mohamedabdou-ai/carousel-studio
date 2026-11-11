@@ -8,7 +8,7 @@ Archetypes own layout; presets own look. A slide in `spec.json` is `{ id, n, typ
 | 1 | `cover` | `headline` req, `kicker`, `sub`, `media` | `top center split photo number` | slide 1. Hero at most 6 words, whole cover at most 12, at most 3 lines |
 | 2 | `rehook` | `headline` req, `sub`, `media`, `bridge` | `base split big-number` | slide 2: a second cover that pays off first, at most 12 words |
 | 3 | `item` | `title` req, `body` req, `ord`, `media`, `bridge` | `base ghost-number side-number media` | one list item per slide |
-| 4 | `step` | `title` req (verb first), `body`, `ord`, `media`, `bridge` | `base ghost-number pill` | one step; label «الخطوة {ord} من {n}» |
+| 4 | `step` | `title` req (verb first), `body`, `ord`, `media`, `bridge` | `base ghost-number pill track media` | one step; label «الخطوة {ord} من {n}» |
 | 5 | `stat` | `number` req, `title` req, `body`, `bridge`, `sourceIds` | `base bar` | one sourced number |
 | 6 | `compare` | `title`, `sides` req (2), `bridge` | `columns stacked versus` | A against B (side 0 = old/A) |
 | 7 | `myth-fact` | `title`, `sides` req (2), `bridge` | `stacked columns stamp` | myth first and small, fact last and bigger |
@@ -76,8 +76,8 @@ Length: At most 10 slides, including the still or video cover: Instagram’s pub
 ## 6. Rhythm and demonstration slides
 A deck of seven `item` slides in one variant is a template, not a design (gate D8: no run of more than three slides with the same type and variant). Break a run in this order of effort:
 1. **Another variant.** Every preset styles two to four variants of `item` and `step` (`presets.md`): alternate them.
-2. **An item that carries a picture.** `item` in its `media` variant (creator styles it) holds a demonstration beside its text; the item stays item number k, so the cover's count is still true.
-3. **A payoff of another type** between items: a `stat` (one sourced number), a `compare` (wrong against right), a `quote` (the exact words to use), a `proof` (a screenshot). These are extra payoffs, not counted by the cover's «N things» (`C6.list-count` counts `item` and `step`), so the deck grows by one slide each: stay at 8 to 12.
+2. **An item that carries a picture.** `item` in its `media` variant (supported in every style) holds a demonstration beside its text; the item stays item number k, so the cover's count is still true.
+3. **A payoff of another type** between items: a `stat` (one sourced number), a `compare`, a `quote` or a `proof`. A payoff without `ord` is context. C6 counts distinct positive `ord` values across all types; only with no ordinals does it fall back to `item` for a listicle or `step` for steps. Keep at most 10 slides including the cover.
 
 For a post that **teaches** (how to do something with a tool, a platform or a format), add one or two demonstration slides: show the thing. The engine draws every slide from its own DOM and has no diagram slide, so each demonstration is a picture the art director makes and the copywriter's slide frames:
 
@@ -93,4 +93,10 @@ An asset that comes from the team's own render (a cover, a slide) is the creator
 
 ## 7. Picture frames
 
-Choose picture slides before free design and follow `plates.md`. All current engine templates have media slots, including step, checklist and CTA; slots measures whether the current variant and text leave visible room. A free slide ignores media and cannot contain an image. Keep semantic types where their measured frame works. For a whole illustration use proof/screenshot or proof/base with slot screenshot; this is a layout choice, never a claim that AI imagery is real evidence. Cover/poster split with photo is a cropped strip when the preset supports it. Measure -> prompts -> approved originals -> inspected manifest -> apply -> render; restyle from originals after changes.
+Choose picture slides before free design and follow `plates.md`. Every engine type has a media slot; `slots` measures whether the current variant and copy leave visible room. In every style, `step`, `checklist`, `summary`, `cta` and `offer` also have a picture-led `media` variant: the picture owns the remaining body area with a 360–400 px minimum depending on canvas height, while normal text fitting and calm-zone metadata remain. A step keeps its type, `ord` and step label, so the cover count remains correct. Use short copy; never change a step into proof just for a larger picture.
+
+Free slides use `<div data-picture="asset-id" data-fit="contain"></div>` inside their authored layout; `slide.media` remains bypassed. The engine fills the placeholder from `spec.assets`. `proof/screenshot` still suits actual evidence or a complete illustration shown in a mat; generated art must never pretend to document a result. Cover/poster `split` crops the picture when supported. Measure -> prompts -> approved originals -> inspected manifest -> apply -> render; restyle from originals after changes.
+
+For an optional product or partner mark, use `cover.logo = {"assetId":"product-mark","ground":"light"}` (or `dark`), separate from the cover picture. The fixed 176 x 80 px slot contains the mark, clears platform chrome and works in the cover video. Supply the file and verify usage rights; no logo is bundled.
+
+Picture-led variants use the normal `h2` heading role and its floors. Summary and offer bullets use two columns, leaving room for a closing CTA without reducing type floors. The picture floor is 400 px on the 1440 px canvas and 360 px on the shorter canvas, above the proof mat's 352 px floor; actual frames grow with available room.

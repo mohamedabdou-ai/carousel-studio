@@ -33,5 +33,5 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
   writeFileSync(out, text, "utf8");
   const kib = Buffer.byteLength(text, "utf8") / 1024;
   console.log(`wrote ${out} (${kib.toFixed(1)} KiB)`);
-  if (kib > 200) { console.error("chunk exceeds 200 KiB"); process.exit(70); }
+  if (kib > 240) { console.error("chunk exceeds 240 KiB"); process.exit(70); }
 }

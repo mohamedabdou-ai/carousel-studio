@@ -48,7 +48,7 @@ By contributing you agree that your contribution is licensed under the [Apache L
 
 - UTF-8 without BOM, LF line endings (on Windows set `git config core.autocrlf input`; the repository sets no line-ending attributes, because the directory portal refuses attributes that rewrite file contents). Python 3.11 standard library only, runs on Windows and Linux, always `open(..., encoding="utf-8")`, `pathlib` for paths. Node (`.mjs`) only for the Claude Code lane and repository tooling.
 - JSON keys in `camelCase`; enumerated values in `kebab-case`. Valid JSON everywhere.
-- Every non-image, non-font file under 256 KiB; runtime chunks at most 200 KiB; at most 480 files in the plugin.
+- Every non-image, non-font file under 256 KiB; runtime chunks at most 240 KiB; at most 480 files in the plugin.
 
 ## Checking a change
 

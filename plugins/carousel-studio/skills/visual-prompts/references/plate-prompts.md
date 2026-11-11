@@ -2,7 +2,7 @@
 
 A **plate** is a text-free illustration or background. The engine typesets every letter. An illustration usually sits in its own measured frame beside the copy; a full-canvas background is a different composition. Write the prompt in English as one paragraph built from the card below, and keep the card keyed by its prompt id.
 
-Before writing any card, request carousel-design's `plates.mjs slots --dir POST --format json` using the current text and style. Keep the slide id, resolved variant, pixel dimensions, ratio and subject band with the card. Resolve an unsupported/free layout before generating. A guessed ratio is a provisional prompt only.
+Before writing any card, request carousel-design's `plates.mjs slots --dir POST --format json` using the current text and style. Keep the slide id, resolved variant, pixel dimensions, ratio and subject band with the card. Size any free picture placeholder before generating. A guessed ratio is a provisional prompt only.
 
 ## 1. The card
 | Part | What to write |
@@ -17,7 +17,7 @@ Before writing any card, request carousel-design's `plates.mjs slots --dir POST 
 | Avoid | the cultural list from `sensitivities.md` and the object list in §6 |
 | Closing clause | always: "No text, no letters, no numbers, no logos, no watermark." |
 
-`zones.json` is a background negative-space guide, not a media-support catalogue. For illustrations use the frame report. `proof` (`screenshot` or `base`, slot `screenshot`) contains the whole picture in a mat; a generated illustration here must never claim to document a real result. Cover/poster `split` with `photo` crops to a strip when the preset supports it. Current engine templates also offer media on step, checklist, CTA and other types: measure the frame and retain the semantic type. Free layouts ignore media and cannot contain images; choosing an engine layout is explicit. Apply records `calmZone: "bottom"`, never `none`, satisfying A1.calm-zone.
+`zones.json` is a background negative-space guide, not a media-support catalogue. For illustrations use the frame report. `proof` (`screenshot` or `base`, slot `screenshot`) contains the whole picture in a mat; a generated illustration here must never claim to document a real result. Cover/poster `split` with `photo` crops to a strip when the preset supports it. Current engine templates also offer media on step, checklist, CTA and other types: measure the frame and retain the semantic type. Free layouts show pictures through empty `div[data-picture]` placeholders sized by the art director; `slide.media` is bypassed. Step, checklist and closing `summary`/`cta`/`offer` types have a substantial `media` variant in every style. Measure that frame without changing a step to proof. Apply records `calmZone: "bottom"`, never `none`, satisfying A1.calm-zone.
 
 Text-heavy slides (`item`, `step`, `story-beat`, `grid`, `timeline`) can use a quiet texture for a full-canvas background. Their illustration frames still take the measured subject composition; a texture recommendation does not disable a native media slot.
 
@@ -82,3 +82,5 @@ Cut out the **real** product with `image.cutout`, generate a background plate th
 
 ## 11. After the result
 Run the A1 inspection in `ingress.md`, then record its dated confirmation in the manifest once. Hand the original and record to carousel-design: manifest → apply → check → render. Keep originals and prompts for restyle; never reconstruct them from the reduced embedded JPEG.
+
+Product and company logos are supplied by the creator as assets for `cover.logo`, separate from the plate. Do not ask a generator to draw them or paste them into the background. The creator is responsible for the right to use the mark.

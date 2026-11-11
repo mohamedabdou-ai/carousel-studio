@@ -102,6 +102,7 @@ file, and what the confirmation says. Always finish with the progress line of th
 
 ### 4.3 Voice (section 3)
 - **Goal:** how the brand sounds, measured rather than guessed.
+- **Dialect strength:** for Egyptian, ask `VO-09` once before the voice questions when `voice.dialectStrength` is absent. Save the chosen `light` or `full` in the voice section; show its two-line example. A skip or an older profile keeps the existing voice unchanged. Never infer strength from nationality, the interface dialect or a single caption.
 - **Messages:** `VO-01` + `VO-02` · `VO-03` + `VO-05` · `VO-04` (3 to 10 captions) + `VO-06` · and, after the fingerprint, `VO-07` + `VO-08`.
 - **With captions:** follow `voice-fingerprint.md` (clean, fingerprint, show findings, confirm signatures, three sample lines). **Without captions:** keep the tone chips and word lists, set no fingerprint, and mark `voice` done with the note «من غير عيّنات»; the first posts then use the dialect file's defaults and the fingerprint is computed from the first approved captions.
 - **Save file:**

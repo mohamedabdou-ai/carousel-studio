@@ -406,6 +406,27 @@
               }
             }
           ]
+        },
+        "logo": {
+          "type": "object",
+          "description": "Optional creator-supplied product or partner mark on the cover. Never bundled; the creator is responsible for usage rights. Fixed style position and size; contain fit, never mirrored.",
+          "properties": {
+            "assetId": {
+              "$ref": "#/$defs/shortId"
+            },
+            "ground": {
+              "type": "string",
+              "enum": [
+                "light",
+                "dark"
+              ],
+              "description": "Solid light (default) or dark ground; supply the matching logo artwork."
+            }
+          },
+          "required": [
+            "assetId"
+          ],
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
@@ -951,7 +972,8 @@
         "ref": {
           "type": "string",
           "pattern": "^(asset:[A-Za-z0-9_-]{1,64}|data:[a-z]+/[a-z0-9.+-]+;base64,[A-Za-z0-9+/=]+)$",
-          "maxLength": 90000
+          "maxLength": 2000000,
+          "description": "Embedded data URI or opaque host asset id; up to 2,000,000 characters (about 1.5 MB binary). The cap bounds page memory and portable post size, not image quality or file-system access."
         },
         "mime": {
           "type": "string",

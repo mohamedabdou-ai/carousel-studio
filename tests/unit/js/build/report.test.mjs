@@ -39,7 +39,7 @@ for (const format of ["text", "json"]) {
         assert.doesNotMatch(result.stdout, /wrote /);
         if (format === "json") {
           const row = JSON.parse(result.stdout).chunks.find((r) => r.chunk === "cs-qa.js");
-          assert.equal(row.ceiling, 176000);
+          assert.equal(row.ceiling, 190000);
           assert.equal(row.committed, existing ? Buffer.byteLength("stale runtime\n") : null);
           assert.equal(row.delta, existing ? row.bytes - row.committed : null);
         } else assert.match(result.stdout, /^chunk\s+bytes/m);
@@ -97,11 +97,11 @@ test("--check --report stays read-only and returns 2 for stale or missing output
 });
 
 test("--report still enforces ceilings, reports the overrun and writes nothing", () => {
-  const fx = makeFixture([{ module: "qa", files: { "a.js": 176001 - overheadOf("qa") } }]);
+  const fx = makeFixture([{ module: "qa", files: { "a.js": 190001 - overheadOf("qa") } }]);
   try {
     const result = repeatReadOnly(fx, ["--report", "--format", "json"], 70);
     const row = JSON.parse(result.stdout).chunks[0];
-    assert.equal(row.bytes, 176001);
+    assert.equal(row.bytes, 190001);
     assert.equal(row.headroom, -1);
     assert.equal(row.status, "OVER");
   } finally { fx.cleanup(); }

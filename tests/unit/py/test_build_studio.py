@@ -812,7 +812,7 @@ class TestShippedStudioFiles(unittest.TestCase):
             if not path.exists():
                 self.skipTest(f"{name} has not been built yet")
             raw = path.read_bytes()
-            self.assertLess(len(raw), 200 * 1024, f"{name} exceeds the 200 KiB chunk budget")
+            self.assertLess(len(raw), 240 * 1024, f"{name} exceeds the 240 KiB chunk budget")
             text = raw.decode("utf-8")
             self.assertNotRegex(text, r"</script", name)
             self.assertNotIn("<!--", text, name)

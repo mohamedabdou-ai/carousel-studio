@@ -371,6 +371,8 @@ try {
     console.log(`${problems ? "FAIL" : "ok  "} ${id.padEnd(10)} ${slides.length} archetypes${verbose ? ", " + slides.reduce((n, s) => n + s.texts.length + s.chrome.length, 0) + " boxes" : ""}, ${feasible.length} recipe runs, ${itemRes.runs} item layouts (${itemRes.lines} lines of text inside cells), header band ${bandHits.size ? "CROSSED" : "clear on " + bandTypes.length + " types"}`);
   }
   if (!measured) fail("nothing was measured: no text and no chrome was found");
+  try { await (await import('./pictures.mjs')).checkPictures(studio.page); }
+  catch (e) { fail('picture slots: ' + e.message); }
   if (studio.errors.length) fail("page errors: " + studio.errors.slice(0, 3).join(" | "));
   console.log(`info ${recipeRuns} recipe runs realised the box the arithmetic of spec 4.2 asks for`);
   if (bandBlockers.length) console.log(`info EXTERNAL BLOCKER: ${bandBlockers.map((id) => id + " -> " + BAND_OWNER[id]).join("; ")}. The header-band assertion is live (plan r2 S-7) and is not excused; this run fails until that preset is rebuilt.`);

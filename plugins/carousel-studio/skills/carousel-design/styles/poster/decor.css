@@ -108,3 +108,8 @@
 .cs-slide[data-preset="poster"] .cs-cta-icon{position:relative;width:62px;height:62px;background:var(--cs-ink)}
 .cs-slide[data-preset="poster"] .cs-cta-icon::before{content:"";position:absolute;inset-block-start:50%;inset-inline-start:50%;width:15px;height:15px;margin-block-start:-7px;margin-inline-start:-4px;border-left:5px solid var(--cs-surface);border-bottom:5px solid var(--cs-surface);transform:rotate(45deg)}
 .cs-slide[data-preset="poster"][data-dialect="en"] .cs-cta-icon::before{margin-inline-start:-10px;border-left:0;border-right:5px solid var(--cs-surface);border-bottom:5px solid var(--cs-surface);transform:rotate(-45deg)}
+
+/* Picture-led variants and the optional creator-supplied cover mark. */
+.cs-slide[data-preset="poster"]{ --cs-logo-align:flex-start; --cs-logo-radius:0px; }
+.cs-slide[data-preset="poster"][data-variant="media"] :is(.cs-a-step,.cs-a-checklist,.cs-a-summary,.cs-a-cta,.cs-a-offer) > .cs-media-slot:not([data-media-kind="icon"]){ border:4px solid var(--cs-ink); border-radius:0px; box-shadow:none; background:var(--cs-surface); }
+.cs-slide[data-preset="poster"][data-type="cover"] .cs-media-slot[data-slot="logo"]{ border:2px solid var(--cs-line); border-radius:var(--cs-logo-radius,8px); box-shadow:none; transform:none; }

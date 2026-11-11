@@ -148,17 +148,17 @@ class CheckDirectoryTest(unittest.TestCase):
         self.assertQuiet("F01", "big.ttf")
         self.assertQuiet("F01", "big.png")
 
-    def test_chunk_between_200_and_256_kib_is_only_an_error_for_runtime_chunks(self) -> None:
-        body = "// " + "x" * (210 * 1024)
+    def test_chunk_between_240_and_256_kib_is_only_an_error_for_runtime_chunks(self) -> None:
+        body = "// " + "x" * (250 * 1024)
         self.fx.write("skills/carousel-design/runtime/cs-core.js", body)
-        self.fx.write("skills/carousel-design/scripts/helper.py", "# " + "x" * (210 * 1024))
+        self.fx.write("skills/carousel-design/scripts/helper.py", "# " + "x" * (250 * 1024))
         self.assertFires("F01", "cs-core.js")
         self.assertQuiet("F01", "helper.py")
 
     def test_the_four_visual_chunks_are_runtime_chunks_too(self) -> None:
-        # cs-qa-visual.js and cs-visual-ui.js have hyphens in the name; the chunk rule (200 KiB) and the telemetry rule must still see them
+        # cs-qa-visual.js and cs-visual-ui.js have hyphens in the name; the chunk rule (240 KiB) and the telemetry rule must still see them
         for name in ("cs-art.js", "cs-visual.js", "cs-qa-visual.js", "cs-visual-ui.js"):
-            self.fx.write(f"skills/carousel-design/runtime/{name}", "// " + "x" * (210 * 1024))
+            self.fx.write(f"skills/carousel-design/runtime/{name}", "// " + "x" * (250 * 1024))
         for name in ("cs-art.js", "cs-visual.js", "cs-qa-visual.js", "cs-visual-ui.js"):
             self.assertFires("F01", name)
             self.fx.write(f"skills/carousel-design/runtime/{name}", "// " + "x" * (190 * 1024))

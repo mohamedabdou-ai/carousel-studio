@@ -12,8 +12,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..")
 const script = path.join(root, "plugins/carousel-studio/skills/carousel-design/scripts/plates.mjs");
 const write = (p, v) => fs.writeFileSync(p, JSON.stringify(v, null, 2) + "\n", "utf8");
 const read = p => JSON.parse(fs.readFileSync(p, "utf8"));
-function png() {
-  const w = 1000, h = 800, data = Buffer.alloc(h * (1 + w * 3));
+function png(w = 1000, h = 800) {
+  const data = Buffer.alloc(h * (1 + w * 3));
   let seed = 7;
   for (let y = 0; y < h; y++) for (let x = 0; x < w * 3; x++) {
     seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
@@ -45,9 +45,26 @@ test("slots and apply use real text, preserve originals, replay after rebuild an
     const frame = id => slots.slides.find(r => r.slideId === id);
     assert.equal(frame("s07").supported, false);
     assert.match(frame("s07").reason, /free/i);
+    assert.match(frame("s07").reason, /data-picture/);
     assert.ok(frame("s02").ratio > 1);
     assert.notEqual(frame("s02").ratio, frame("s03").ratio, "real text changes the mat ratio");
     for (const id of ["s04", "s05", "s06"]) assert.equal(frame(id).supported, true, id);
+    for (const id of ["s04", "s05", "s06"]) {
+      assert.equal(frame(id).pictureVariants[0].variant, "media");
+      assert.ok(frame(id).pictureVariants[0].supported);
+      assert.ok(frame(id).pictureVariants[0].frame.height >= 360);
+    }
+    const withSlots = structuredClone(originalSpec), small = png(12, 12);
+    withSlots.assets = [{ id: "supplied-mark", kind: "image", mime: "image/png", width: 12, height: 12, aiGenerated: false, ref: "data:image/png;base64," + small.toString("base64") }];
+    withSlots.cover ||= {}; withSlots.cover.logo = { assetId: "supplied-mark", ground: "dark" };
+    Object.assign(withSlots.slides.find(s => s.id === "s07"), { body: "اختبر الصورة داخل التصميم", free: { html: '<div class="f-photo" data-picture="supplied-mark" data-fit="contain"></div><p data-field="body"></p>', css: '.f-photo{width:100%;height:500px;flex-shrink:0}' } });
+    write(specFile, withSlots); const beforeSlots = fs.readFileSync(specFile), extraSlots = cli("slots");
+    const free = extraSlots.slides.find(s => s.slideId === "s07");
+    assert.equal(free.supported, true); assert.equal(free.variant, "free"); assert.equal(free.slots[0].fit, "contain");
+    assert.ok(free.slots[0].frame.height >= 500);
+    assert.equal(extraSlots.slides[0].slots.find(s => s.name === "logo").assetId, "supplied-mark");
+    assert.deepEqual(fs.readFileSync(specFile), beforeSlots);
+    write(specFile, originalSpec);
     const beforeFit = fs.readFileSync(specFile);
     const fit = cli("fit", ["--slide", "s02", "--source", "original.png", "--gravity", "top", "--crop"]);
     assert.equal(fs.readFileSync(fit.pictures[0].out).subarray(0, 8).toString("hex"), "89504e470d0a1a0a");
@@ -65,7 +82,7 @@ test("slots and apply use real text, preserve originals, replay after rebuild an
     const applied = read(specFile), bytes = fs.readFileSync(specFile);
     assert.equal(applied.rev, 2); assert.deepEqual(fs.readFileSync(source), image);
     assert.equal(applied.ext.fixtureNote, originalSpec.ext.fixtureNote);
-    for (const a of applied.assets) { assert.ok(a.ref.length <= 90000); assert.ok(a.width > 0 && a.height > 0); assert.equal(applied.ext.assetChecks[a.id].textChecked, true); }
+    for (const a of applied.assets) { assert.ok(a.ref.length <= read(path.join(root, "plugins/carousel-studio/skills/carousel-design/schemas/spec.schema.json")).$defs.asset.properties.ref.maxLength); assert.ok(a.width > 0 && a.height > 0); assert.equal(applied.ext.assetChecks[a.id].textChecked, true); }
     cli("apply"); assert.deepEqual(fs.readFileSync(specFile), bytes, "replay is byte-idempotent");
     fs.appendFileSync(source, Buffer.from([0]));
     cli("apply", [], 2); assert.deepEqual(fs.readFileSync(specFile), bytes, "a changed original cannot reuse its check");

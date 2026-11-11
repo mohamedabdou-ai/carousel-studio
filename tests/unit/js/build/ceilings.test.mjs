@@ -14,7 +14,7 @@ const KIB = 1024;
 const INTERIM = JSON.parse(readFileSync(join(REAL_ROOT, "tools", "build.mjs"), "utf8").match(/const INTERIM_CEILINGS = (\{[^}]*\});/)[1]);
 const UI_TARGET = 201000;
 const CEILINGS = {
-  "cs-core.js": 203400, "cs-qa.js": 176000, "cs-ui.js": INTERIM["cs-ui.js"] ?? UI_TARGET,
+  "cs-core.js": 215000, "cs-qa.js": 190000, "cs-ui.js": INTERIM["cs-ui.js"] ?? UI_TARGET,
   "cs-visual.js": 190 * KIB, "cs-art.js": 190 * KIB, "cs-visual-ui.js": 190 * KIB, "cs-qa-visual.js": 190 * KIB,
   "cs-brandbook.js": 190 * KIB, "cs-export.js": 190 * KIB, "cs-hf.js": 190 * KIB, "cs-motion.js": 190 * KIB, "cs-mp4.js": 190 * KIB, "cs-paint.js": 190 * KIB
 };
@@ -78,12 +78,12 @@ test("a chunk above its planning cap is flagged in the report but still builds (
   } finally { fx.cleanup(); }
 });
 
-test("the 200 KiB limit is still the last line, with its own message", () => {
-  const fx = makeFixture([{ module: "hf", files: { "a.js": 205000 } }]);
+test("the 240 KiB limit is still the last line, with its own message", () => {
+  const fx = makeFixture([{ module: "hf", files: { "a.js": 246000 } }]);
   try {
     const res = fx.run("--out", join(fx.root, "out"));
     assert.equal(res.status, 70);
-    assert.match(res.stderr, /the limit is 200 KiB/);
+    assert.match(res.stderr, /the limit is 240 KiB/);
   } finally { fx.cleanup(); }
 });
 

@@ -11,6 +11,13 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 - Specialist handoffs name script paths, write permissions and one spec writer. Named free blocks merge atomically into the latest spec without replaying an old cover or overwriting newer copy.
 - Production boards retain separate script and final reviews, accept explained verdicts and measured video-frame times, and check compact fast/ready logs without demanding rounds that did not run.
 - Standing style and manual/tool publishing preferences can be remembered per brand. Publishing follows the creator's chosen tool's own instructions and permission each time; no platform or publishing tool is assumed.
+### Pictures and brand voice
+
+- Steps, checklists and closing slides gain a picture-led media variant in every style, keeping step labels, ordinals and calls to action.
+- Free designs can place an asset through a safe empty picture placeholder; authored image sources and CSS URLs remain forbidden.
+- Covers can show a separate creator-supplied product or partner logo on a clear ground, in stills and cover video.
+- The shared renderer resolves asset refs through the same blob route as the Studio. Picture refs can hold up to 2,000,000 characters, and the plates tools read that limit from the schema.
+- Egyptian brands can choose light or full dialect strength once during setup. The saved setting travels in the brand capsule; existing brands keep their voice until they choose a level.
 
 ### Publishing limits and checks
 

@@ -57,7 +57,7 @@ test("manifest validation rejects unsafe paths, duplicate slides and invented co
 });
 
 test("cap comes from the schema and includes the data URI header and base64 padding", () => {
-  assert.equal(refCap(schema), 90000);
+  assert.equal(refCap(schema), 2000000);
   const other = structuredClone(schema); other.$defs.asset.properties.ref.maxLength = 103;
   assert.equal(refCap(other), 103);
   assert.equal(jpegByteCap(103), 60);
@@ -113,7 +113,7 @@ test("schema-invalid check reports cap errors without launching a browser", asyn
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "cs-plates-unit-"));
   try {
     const s = JSON.parse(fs.readFileSync(path.join(root, "tests/plates/post.spec.json"), "utf8"));
-    s.assets.push({ id: "too-large", kind: "image", ref: "data:image/jpeg;base64," + "A".repeat(90000), aiGenerated: true });
+    s.assets.push({ id: "too-large", kind: "image", ref: "data:image/jpeg;base64," + "A".repeat(refCap(schema)), aiGenerated: true });
     s.slides[1].media = { slot: "screenshot", assetId: "too-large", ai: true };
     const file = path.join(dir, "spec.json"), bytes = JSON.stringify(s); fs.writeFileSync(file, bytes);
     const out = await runPlates(["check", "--dir", dir], { log() { assert.fail("browser should not start"); } });

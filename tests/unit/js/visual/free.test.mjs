@@ -12,6 +12,19 @@ const { CS } = loadPlanner({ runtimeDir }), F = CS.visual.free;
 const plain = v => JSON.parse(JSON.stringify(v));
 const sample = JSON.parse(fs.readFileSync('tests/fixtures/free/sample.spec.json', 'utf8'));
 
+test('pictures accept only an empty div with an asset id and optional contain or cover fit', () => {
+  const html = '<div class="f-photo" data-picture="photo-1" data-fit="contain"></div>';
+  assert.equal(F.sanitize(html), html);
+  assert.deepEqual(plain(F.literals(html)), []);
+  for (const bad of ['<span data-picture="photo"></span>', '<div data-picture="../photo"></div>',
+    '<div data-picture="asset:photo"></div>', '<div data-picture="photo" data-fit="stretch"></div>',
+    '<div data-fit="contain"></div>', '<div data-picture="photo" data-field="body"></div>',
+    '<div data-picture="photo" data-icon="check"></div>', '<div data-picture="photo">caption</div>',
+    '<div data-picture="photo">&amp;</div>', '<div data-picture="photo"><span></span></div>', '<div data-picture="photo" src="x"></div>']) {
+    assert.throws(() => F.sanitize(bad), { code: 'E_FREE_HTML' }, bad);
+  }
+});
+
 test('whitelist parser preserves allowed tags, attributes, classes and literal entities', () => {
   const html = '<div class="f-card wrong cs-slot" dir="rtl" data-tone="field"><h2 data-field="items.0.title"></h2><p data-edit="">مرحبا &amp; أهلا &#x31;</p><br></div>';
   assert.equal(F.sanitize(html), html.replace('f-card wrong cs-slot', 'f-card cs-slot').replace('&#x31;', '1'));

@@ -86,7 +86,7 @@ Name only the slides this pass owns. The command prepends the shared free CSS ba
 **Fallback:** a slide without `free` goes to the planner (`plan.mjs`), only when the creator asks for the automatic layout or a slide still fails after two rounds; say so. Fast mode («بسرعة») still designs every inner slide by hand, with one render/review-sheet check. At the design checkpoint `validate.py` notes each inner slide left to the planner (`FREE.planner`).
 
 ### 7.2 HTML
-Tags: `div span p h2 h3 ul ol li strong b em mark small br figure figcaption bdi`. Attributes: `class dir data-field data-icon data-object data-mark data-size data-treatment data-tone data-from data-edit data-role`. Classes match `f-*` or `cs-*` (use `f-`). Removed: `style`, `id`, `on*`, `href`, `src`, script, img, svg, iframe, style elements, comments. Build rows from `div` and `p` (list markers cannot be styled: there is no `list-style`).
+Tags: `div span p h2 h3 ul ol li strong b em mark small br figure figcaption bdi`. Attributes: `class dir data-field data-icon data-object data-mark data-size data-treatment data-tone data-from data-edit data-role data-picture data-fit`. Classes match `f-*` or `cs-*` (use `f-`). Removed: `style`, `id`, `on*`, `href`, `src`, script, img, svg, iframe, style elements, comments. Build rows from `div` and `p` (list markers cannot be styled: there is no `list-style`).
 
 ### 7.3 Fields
 `data-field="path"` on an empty element: the engine fills it from the slide through the text pipeline (words, bidi, digits), so the Studio and the copy gates keep working. Paths (N from 0): `title body headline sub kicker bridge ord number attribution bullets.N sides.N.label sides.N.text items.N.title items.N.text items.N.value cta.text demo.lines.N.text`. The validator refuses a path the slide does not hold; every field the slide holds appears once (C2.text-dropped, C2.text-duplicated). `number` prints the value and the unit together («1 دولة»); to size the unit apart, set `number.unit` to "" and write the unit as literal text with `data-edit="unit"`. `demo.caption` is not a field: write it as literal text and drop it from the spec, or the copy gates count it twice. `==word==` inside a field is the preset's emphasis device.
@@ -211,3 +211,14 @@ Render (`node <skill>/scripts/render.mjs --spec spec.json --brand brand.json --o
 6. **The text is all there:** every field once, no stray literal claim, `validate.py` and the QA report clean.
 7. **Rhythm:** neighbouring skeletons differ; A ≤3/7; invert/s1/s2 ≥2/7; accent blocks ≤4/7; no pause before CTA. Final slide: one ask.
 Fix and render again, at most two rounds a slide; then hand that slide to the planner and say so.
+
+## 10. A picture inside a free slide
+Use exactly one form for each picture (several independent placeholders are allowed):
+```html
+<div class="f-picture" data-picture="scene-asset" data-fit="contain"></div>
+```
+`data-picture` is an id in `spec.assets`, not a URL or an `asset:` reference. Only an empty `div` is accepted. Its only attributes are `class`, `data-picture` and optional `data-fit` (`cover` by default, or `contain`). No children, caption, text binding, icon, mark, edit target or source attribute belongs on that element. Put a caption in a separate sibling using the normal text pipeline.
+
+Size and place it with the allowed CSS, for example `.f-picture{width:100%;height:520px;flex-shrink:0;border-radius:24px}`. Give it a real height; the engine creates, resolves and fits the image without changing its position. The free lane still bypasses `slide.media`, so use the placeholder for every free picture. Keep `img`, `src`, `srcset`, `url()` and `background-image` out of authored HTML/CSS. Use creator-supplied or approved text-free artwork, with the same usage rights and AI inspection record as every other image. `plates.mjs slots` reports authored picture boxes; it does not rewrite your free HTML.
+
+AI imagery in free picture and cover logo slots keeps the A1 inspection gate. Record the creator's no-text inspection in `ext.assetChecks[assetId]`, using the spec asset record id; reinspect a replaced image. The engine supplies the standard bottom calm-zone metadata for these inline frames.

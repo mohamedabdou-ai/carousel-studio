@@ -35,7 +35,9 @@
       "data-tone",
       "data-from",
       "data-edit",
-      "data-role"
+      "data-role",
+      "data-picture",
+      "data-fit"
     ],
     "classPattern": "^(f|cs)-[a-z0-9-]+$",
     "forbidden": [
@@ -264,5 +266,16 @@
     "notes": "background accepts a colour or linear-gradient(<angle>deg, ...) only (the replay painter draws nothing else); position fixed and sticky are refused; transform takes rotate, scale and translate only",
     "tokens": "colours: --cs-bg --cs-surface --cs-ink --cs-ink-muted --cs-accent --cs-on-accent --cs-line and the art supports --cs-art-s1 --cs-art-s2; type sizes: --cs-fs-hero --cs-fs-title --cs-fs-h --cs-fs-body --cs-fs-small --cs-fs-micro; spacing: --cs-gap --cs-unit"
   },
-  "qa": "Free slides skip the planner gates (VA*, D8.anchor-run). They keep every safety gate: D2 overflow and outside-content, D3 size floors (body at least 42 px, nothing under 30 px), D4 contrast, D5 Arabic rules, D9 dead space, C2 text-dropped and text-duplicated, the copy gates on the slide's text (fields plus literal text)."
+  "qa": "Free slides skip the planner gates (VA*, D8.anchor-run). They keep every safety gate: D2 overflow and outside-content, D3 size floors (body at least 42 px, nothing under 30 px), D4 contrast, D5 Arabic rules, D9 dead space, C2 text-dropped and text-duplicated, the copy gates on the slide's text (fields plus literal text).",
+  "picture": {
+    "element": "div",
+    "attribute": "data-picture",
+    "value": "asset id from spec.assets; an empty div with only class, data-picture and optional data-fit",
+    "fit": [
+      "cover",
+      "contain"
+    ],
+    "defaultFit": "cover",
+    "note": "The engine alone creates the image; authored src, img, url() and background-image remain forbidden. A placeholder is not text or an editable subtree."
+  }
 }

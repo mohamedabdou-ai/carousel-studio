@@ -66,6 +66,24 @@ def css_findings(css: str) -> list[str]:
 
 
 class FreeHtmlAccepts(unittest.TestCase):
+    def test_picture_placeholder(self) -> None:
+        self.ok('<div class="f-photo" data-picture="photo-1" data-fit="contain"></div>')
+        self.ok('<div data-picture="photo-1"></div>')
+        for html in [
+            '<span data-picture="photo-1"></span>',
+            '<div data-picture="../photo"></div>',
+            '<div data-picture="asset:photo"></div>',
+            '<div data-picture="photo" data-fit="stretch"></div>',
+            '<div data-fit="contain"></div>',
+            '<div data-picture="photo" data-field="body"></div>',
+            '<div data-picture="photo" data-icon="check"></div>',
+            '<div data-picture="photo">caption</div>',
+            '<div data-picture="photo">&amp;</div>',
+            '<div data-picture="photo"><span></span></div>',
+            '<div data-picture="photo" src="x"></div>',
+        ]:
+            self.assertTrue(html_findings(html), html)
+
     def ok(self, html: str, slide: dict | None = None) -> None:
         self.assertEqual(html_findings(html, slide), [], html)
 

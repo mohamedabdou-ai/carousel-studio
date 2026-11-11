@@ -15,7 +15,7 @@
 //   --report       print a size table without writing; with explicit --out, also build there; with --check, also compare
 //   --format       text (default) or json; json needs --report and prints one JSON document instead of the per-chunk lines
 //
-// A build fails (exit 70) when a chunk is over its ceiling (CHUNK_CEILINGS, IS-1), is larger than 200 KiB, does not parse as a
+// A build fails (exit 70) when a chunk is over its ceiling (CHUNK_CEILINGS, IS-1), is larger than 240 KiB, does not parse as a
 // script, or contains a closing script tag or an HTML comment opener (build_studio.py inlines chunks in <script> elements and
 // refuses both). Every chunk is built before anything is written, so a failure writes nothing. Output is not minified.
 // Exit codes: 0 ok · 2 --check found a difference · 64 usage · 66 manifest or source file missing · 70 internal / limits · 73 cannot write.
@@ -29,16 +29,17 @@ const SRC = join(ROOT, "src");
 const DEFAULT_OUT = join(ROOT, "plugins", "carousel-studio", "skills", "carousel-design", "runtime");
 const ENGINE = "cs-1.1.1";
 const KIB = 1024;
-const MAX_CHUNK_BYTES = 200 * KIB;
+const MAX_CHUNK_BYTES = 240 * KIB;  // 200 KiB until 1.2.0; the directory's own rule is 256 KiB for any text file
 const CHUNK_NAME = /^cs-[a-z0-9]+(-[a-z0-9]+)*\.js$/;
 const CLOSING_SCRIPT = new RegExp("</" + "script", "i");
 const COMMENT_OPENER = "<" + "!--";
 
-// The CI ceiling of each chunk in bytes (IS-1). A chunk over its ceiling fails the build; the 200 KiB limit stays the last line.
+// The CI ceiling of each chunk in bytes (IS-1). A chunk over its ceiling fails the build; the 240 KiB limit stays the last line. Ceilings stop creep; they are raised deliberately
+// when a release needs the room (1.2.0: the cover fit search, picture variants and the Latin-run text model), never met by squeezing code.
 const DEFAULT_CEILING = 190 * KIB;
 const CHUNK_CEILINGS = {
-  "cs-core.js": 203400,
-  "cs-qa.js": 176000,
+  "cs-core.js": 215000,
+  "cs-qa.js": 190000,
   "cs-ui.js": 201000,
   "cs-visual.js": 190 * KIB,
   "cs-art.js": 190 * KIB,
@@ -126,7 +127,7 @@ function buildChunk(chunk, modules) {
   }
   const text = `/*! Carousel Studio runtime chunk ${chunk} · ${ENGINE} · Apache-2.0 */\n(function () {\n  "use strict";\n  var CS = (window.CS = window.CS || {});\n${parts.join("\n")}})();\n`;
   const bytes = Buffer.byteLength(text, "utf8");
-  if (bytes > MAX_CHUNK_BYTES) throw new BuildError(70, `${chunk} is ${(bytes / KIB).toFixed(1)} KiB; the limit is 200 KiB`);
+  if (bytes > MAX_CHUNK_BYTES) throw new BuildError(70, `${chunk} is ${(bytes / KIB).toFixed(1)} KiB; the limit is 240 KiB`);
   if (CLOSING_SCRIPT.test(text)) throw new BuildError(70, `${chunk} contains a closing script tag; spell it in two pieces`);
   if (text.includes(COMMENT_OPENER)) throw new BuildError(70, `${chunk} contains an HTML comment opener; spell it in two pieces`);
   try { new vm.Script(text, { filename: chunk }); } catch (e) { throw new BuildError(70, `${chunk} does not parse: ${e.message}`); }

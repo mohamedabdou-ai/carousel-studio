@@ -38,7 +38,7 @@
 
 ### 0.2 Hard rules (apply to every package)
 1. Write **only the files your package owns** (section 2). Code against the contract for everything else; list assumptions in your summary.
-2. Directory rules: no top-level `bin/`; every non-image, non-font file **< 256 KiB**; runtime JS chunks **≤ 200 KiB** each; UTF-8 (no BOM), LF newlines; valid JSON; plugin ≤ 480 files (CI fails at 480, directory limit 512).
+2. Directory rules: no top-level `bin/`; every non-image, non-font file **< 256 KiB**; runtime JS chunks **≤ 240 KiB** each; UTF-8 (no BOM), LF newlines; valid JSON; plugin ≤ 480 files (CI fails at 480, directory limit 512).
 3. Skills are **self-contained**: nothing under `skills/<name>/` may read a path outside that skill folder at runtime. Shared files reach other skills as synced copies (section 2.4).
 4. Python: **3.11 standard library only**, runs on Windows and Linux. Always `open(..., encoding="utf-8")`, use `pathlib`, no shell-specific calls, no `os.system`. Node (`.mjs`) only for the Claude Code lane and repo tooling.
 5. **No GSAP, no Remotion, no telemetry or analytics code, no network calls from skills** unless the user asks. The browser runtime may load only `mediabunny@1.61.0`, from `https://cdn.jsdelivr.net/npm/` at that exact version.
@@ -420,7 +420,7 @@ One global namespace, `window.CS`, with sub-modules **`CS.core`, `CS.qa`, `CS.pa
     …file text…
   })();
   ```
-  Files of one chunk share the IIFE scope. `src/lib` (`order` 0) + `src/core` (`order` 1) form `cs-core.js`. Output is not minified (readable, ≤ 200 KiB per chunk; the build fails above that).
+  Files of one chunk share the IIFE scope. `src/lib` (`order` 0) + `src/core` (`order` 1) form `cs-core.js`. Output is not minified (readable, ≤ 240 KiB per chunk; the build fails above that).
 - **Load order** in every page: `cs-core, cs-qa, cs-paint, cs-motion, cs-hf, cs-mp4, cs-export, cs-ui, cs-brandbook`. A chunk may only *define* things at load time; it calls other chunks only at call time.
 - **Root utilities** (written by B4 in `src/lib/root.js`, first file of `cs-core.js`):
   ```ts
@@ -769,7 +769,7 @@ All events go through `CS.emit`; `detail` shapes:
 | `cs:error` | any | `{ code: string; message: string; detail?: any }` |
 
 ### 4.10 Budgets and compatibility
-- Chunks ≤ 200 KiB; whole `studio.html` ≤ 12 MiB (hard limit 16 MiB; `build_studio.py` fails above 15 MiB). Measured: 8.7–9.8 MB (runtime ≈ 0.8 MB + the fonts of the six presets and the brand as base64; contract estimate was 3–6 MB).
+- Chunks ≤ 240 KiB; whole `studio.html` ≤ 12 MiB (hard limit 16 MiB; `build_studio.py` fails above 15 MiB). Measured: 8.7–9.8 MB (runtime ≈ 0.8 MB + the fonts of the six presets and the brand as base64; contract estimate was 3–6 MB).
 - First render of a 10-slide deck ≤ 2.5 s on a mid-range phone; a text edit refits and repaints one slide ≤ 150 ms; 6 s cover export ≤ 25 s on a laptop, ≤ 90 s on a phone (the cover's colour conversion adds about 7 ms per frame per MP4 on a laptop, a little over a second for the 3:4 video).
 - Browsers: Chromium ≥ 120, Firefox ≥ 120 (painter `svg`, unverified), Safari/iOS ≥ 17 (painter `replay`). Feature-detect, never user-agent sniff (except `CS.util.isWebKit()` for the painter default).
 
@@ -1370,7 +1370,7 @@ Never fetches URLs (Claude fetches and passes text). JSON: `{keyPoints:[{id,text
 ### 9.3 Repository tooling (B1)
 | Tool | Arguments | Behaviour |
 |---|---|---|
-| `tools/build.mjs` | `[--module NAME \| --all] [--out DIR] [--check]` | builds `runtime/cs-*.js` from `src/<module>/manifest.json` per 4.0; fails when a chunk > 200 KiB; `--check` exits 2 when committed output differs |
+| `tools/build.mjs` | `[--module NAME \| --all] [--out DIR] [--check]` | builds `runtime/cs-*.js` from `src/<module>/manifest.json` per 4.0; fails when a chunk > 240 KiB; `--check` exits 2 when committed output differs |
 | `tools/sync_shared.py` | `[--check] [--verbose]` | copies per the manifest in 2.4; `--check` exits 2 on any byte difference |
 | `tools/check_directory.py` | `[--root plugins/carousel-studio] [--max-files 480] [--format text\|json]` | enforces 0.2: ≤ 480 files, no top-level `bin/`, non-image/font files < 256 KiB, runtime chunks ≤ 200 KiB, valid JSON/UTF-8, README ≥ 40 words, Apache-2.0 LICENSE + NOTICE + TRADEMARKS.md, no GSAP/Remotion strings, no telemetry words (`analytics`, `gtag`, `sendBeacon`, `track(`), external `http(s)://` only for the allowed hosts, owner credit only in the files of 0.6, no client text/IDs from the hook bank (`H147`–`H197`) in public files, skills reference no path outside their folder |
 | `tools/font_coverage.py` | `--fonts DIR --out FILE` | parses each TTF's `cmap` (formats 4 and 12) with the standard library and writes `coverage.json` (6.5) |

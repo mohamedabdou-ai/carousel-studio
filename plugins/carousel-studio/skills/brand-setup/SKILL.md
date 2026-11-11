@@ -67,3 +67,6 @@ a failing check.
 `sections.md` (screens, welcome, thank-you, save recipes) · `question-bank.md` (every question in five
 dialects) · `reference-analysis.md` · `voice-fingerprint.md` · `identity-starter.md` · `brand-book.md`
 · `storage.md` (where the profile lives on each surface, multi-brand, privacy, migration).
+
+## Dialect strength
+For Egyptian voice setup, ask `VO-09` from `references/question-bank.md` once and store the answer in `voice.dialectStrength` (`light` or `full`) with the voice section. Keep an absent value absent on existing brands. The capsule includes the explicit setting; it applies to slides, captions, bridges and CTAs, not only the sample lines.

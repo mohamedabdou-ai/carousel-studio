@@ -655,3 +655,44 @@ test("results are sorted by severity, then gate order, then slide", () => {
   for (let i = 1; i < res.length; i++) assert.ok(sevRank[res[i - 1].sev] <= sevRank[res[i].sev]);
   assert.equal(res[0].gate, "C1");
 });
+
+
+test("A1: free pictures and cover logos require their own image inspection", async () => {
+  const spec = cleanSpec(); spec.slides.forEach(s => { delete s.media; });
+  spec.assets = ["free-ai", "logo-ai"].map(id => ({ id, kind: "image", ref: "asset:" + id, aiGenerated: true }));
+  spec.cover = Object.assign({}, spec.cover, { logo: { assetId: "logo-ai" } });
+  slide(spec, "s03").free = { html: '<div data-picture="free-ai"></div>' };
+  const check = async () => plain(await CS.qa.runExport({ spec, files: [] })).filter(r => r.gate === "A1");
+  assert.deepEqual((await check()).map(r => r.el).sort(), ["s01.logo", "s03.picture.free-ai"]);
+  spec.ext = { assetChecks: { "free-ai": { textChecked: true }, "logo-ai": { textChecked: true } } };
+  assert.deepEqual(await check(), []);
+});
+
+test("A1: free picture forms decode numeric ids, deduplicate and ignore unused assets", async () => {
+  const spec = cleanSpec(); spec.slides.forEach(s => { delete s.media; });
+  spec.assets = ["gen-one", "gen-two", "unused"].map(id => ({ id, kind: "image", ref: "asset:" + id, aiGenerated: true }));
+  slide(spec, "s03").free = { html: "<div data-picture='gen&#45;one'></div><div data-picture=gen-one></div><DIV\ndata-picture=\"gen-two\"></DIV><p>&lt;div data-picture='unused'&gt;</p>" };
+  const res = plain(await CS.qa.runExport({ spec, files: [] })).filter(r => r.gate === "A1");
+  assert.deepEqual(res.map(r => r.el), ["s03.picture.gen-one", "s03.picture.gen-two"]);
+  assert.equal(res[0].rule, "A1.text-check");
+});
+
+test("A1: upload ids do not borrow another asset record's inspection", async () => {
+  const spec = cleanSpec(); spec.slides.forEach(s => { delete s.media; });
+  spec.assets = [{ id: "view", kind: "image", ref: "asset:uploaded", aiGenerated: true }, { id: "uploaded", kind: "image", ref: "data:image/png;base64,AA==", aiGenerated: true }];
+  slide(spec, "s03").free = { html: '<div data-picture="view"></div>' };
+  const check = async () => plain(await CS.qa.runExport({ spec, files: [] })).filter(r => r.gate === "A1");
+  spec.ext = { assetChecks: { uploaded: { textChecked: true } } };
+  assert.equal((await check())[0].rule, "A1.text-check");
+  spec.ext.assetChecks.view = { textChecked: true };
+  assert.deepEqual(await check(), []);
+});
+
+test("A1: a free placeholder keeps the original media checks when it uses that asset", async () => {
+  const spec = cleanSpec(), s = slide(spec, "s03");
+  s.media = { slot: "photo", ai: true, assetId: "same", calmZone: "none" };
+  s.free = { html: '<div data-picture="same"></div><div data-picture="same"></div>' };
+  spec.assets = [{ id: "same", kind: "image", ref: "asset:same", aiGenerated: false }];
+  const res = plain(await CS.qa.runExport({ spec, files: [] })).filter(r => r.gate === "A1");
+  assert.deepEqual(res.map(r => r.rule).sort(), ["A1.calm-zone", "A1.flag", "A1.text-check"]);
+});

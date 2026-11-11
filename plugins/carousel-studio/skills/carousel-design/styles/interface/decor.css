@@ -443,3 +443,8 @@
 .cs-slide[data-preset="interface"][data-bgkind="pattern"] .cs-bg {
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1080' height='1440' viewBox='0 0 1080 1440'%3E%3Cdefs%3E%3Cpattern id='t' width='120' height='120' patternUnits='userSpaceOnUse'%3E%3Cg fill='none' stroke='{{inkMuted}}' stroke-width='2' stroke-opacity='0.2'%3E%3Cpath d='M0 12V-12M-12 0H12'/%3E%3Cpath d='M0 108V132M-12 120H12M120 12V-12M108 0H132'/%3E%3C/g%3E%3Crect x='56' y='56' width='8' height='8' fill='{{inkMuted}}' fill-opacity='0.2'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='1080' height='1440' fill='url(%23t)'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat var(--cs-bg);
 }
+
+/* Picture-led variants and the optional creator-supplied cover mark. */
+.cs-slide[data-preset="interface"]{ --cs-logo-align:flex-end; --cs-logo-radius:12px; }
+.cs-slide[data-preset="interface"][data-variant="media"] :is(.cs-a-step,.cs-a-checklist,.cs-a-summary,.cs-a-cta,.cs-a-offer) > .cs-media-slot:not([data-media-kind="icon"]){ border:3px solid var(--cs-ink); border-radius:12px; box-shadow:4px 4px 0 var(--cs-ink); background:var(--cs-surface); }
+.cs-slide[data-preset="interface"][data-type="cover"] .cs-media-slot[data-slot="logo"]{ border:2px solid var(--cs-line); border-radius:var(--cs-logo-radius,8px); box-shadow:none; transform:none; }

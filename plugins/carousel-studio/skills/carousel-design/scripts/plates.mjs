@@ -142,6 +142,49 @@ function resultCode(findings) {
   return findings.some(f => f.severity === "BLOCK") ? EXIT.BLOCK : findings.length ? EXIT.FIX : EXIT.OK;
 }
 
+// Read the new slots without changing the post. Variant probes retain the slide's type.
+async function pictureSlots(page, spec, brand, rows) {
+  const types = ["step", "checklist", "summary", "cta", "offer"];
+  const probe = structuredClone(spec);
+  probe.slides.forEach(s => { if (!s.free && types.includes(s.type)) s.variant = "media"; });
+  const variants = await measureSlots(page, probe, brand);
+  rows.forEach(row => {
+    if (types.includes(row.type) && !spec.slides.find(s => s.id === row.slideId).free) {
+      const v = variants.find(v => v.slideId === row.slideId);
+      row.pictureVariants = [{ variant: "media", supported: v.supported, frame: v.frame, ratio: v.ratio }];
+      row.suggestion = { type: row.type, variant: "media", slot: "photo", calmZone: "bottom" };
+    }
+  });
+  const extra = await page.evaluate(async ({ spec, brand }) => {
+    const ids = spec.slides.filter(s => s.free || s.type === "cover" && spec.cover?.logo).map(s => s.id);
+    if (!ids.length) return [];
+    const deck = await CS.core.render.deck(spec, brand, { mode: "export", useFrozen: false, slideIds: ids });
+    try {
+      return deck.slides.map(r => {
+        const origin = r.el.getBoundingClientRect();
+        return { slideId: r.id, slots: Array.from(r.el.querySelectorAll('[data-picture],[data-slot="logo"]')).map(n => {
+          const b = n.getBoundingClientRect();
+          return { name: n.dataset.picture ? "picture" : "logo", assetId: n.dataset.asset, fit: n.dataset.fit || (n.dataset.picture ? "cover" : "contain"),
+            frame: { x: b.x - origin.x, y: b.y - origin.y, width: b.width, height: b.height }, ratio: b.height > 0 ? b.width / b.height : null };
+        }) };
+      });
+    } finally { deck.dispose(); }
+  }, { spec, brand });
+  for (const row of rows) {
+    row.slots = extra.find(r => r.slideId === row.slideId)?.slots || [];
+    if (spec.slides.find(s => s.id === row.slideId)?.free) {
+      row.variant = "free";
+      row.reason = "Free layout: add a sized data-picture placeholder.";
+      delete row.suggestion;
+    }
+    const picture = row.slots.find(s => s.name === "picture" && s.frame.width > 0 && s.frame.height > 0);
+    if (picture) {
+      Object.assign(row, { supported: true, variant: "free", frame: picture.frame, ratio: picture.ratio, objectFit: picture.fit });
+      delete row.reason; delete row.suggestion;
+    }
+  }
+}
+
 export async function runPlates(argv, { log = m => process.stderr.write(m + "\n") } = {}) {
   const o = parseArgs(argv);
   if (o.help) return { code: 0, help: USAGE };
@@ -213,7 +256,10 @@ export async function runPlates(argv, { log = m => process.stderr.write(m + "\n"
     const previewFile = path.join(work, "spec.json"); fs.writeFileSync(previewFile, JSON.stringify(planned) + "\n", "utf8");
     session = await openPage(o, previewFile, brandFile, work, log);
     const slides = await measureSlots(session.page, planned, brand);
-    if (o.command === "slots") return { code: 0, result: { ok: true, command: o.command, presetId: spec.style.presetId, slides } };
+    if (o.command === "slots") {
+      await pictureSlots(session.page, planned, brand, slides);
+      return { code: 0, result: { ok: true, command: o.command, presetId: spec.style.presetId, slides } };
+    }
     if (o.command === "check") {
       const findings = plateFindings(spec, slides, cap);
       return { code: resultCode(findings), result: { ok: !findings.length, command: o.command, findings, slides } };
@@ -264,7 +310,12 @@ export async function runPlates(argv, { log = m => process.stderr.write(m + "\n"
 }
 
 function textResult(r) {
-  if (r.slides && r.command === "slots") return r.slides.map(s => s.supported ? `${s.slideId} ${s.type}/${s.variant} ${s.frame.width.toFixed(1)} × ${s.frame.height.toFixed(1)} px · ${s.ratio.toFixed(4)}:1 · subject band 55%` : `${s.slideId}: ${s.reason} → ${s.suggestion.type}/${s.suggestion.variant}`).join("\n");
+  if (r.slides && r.command === "slots") return r.slides.map(s => {
+    const primary = s.variant === "free" && !s.supported ? `${s.slideId}: ${s.reason}` : s.slots?.some(v => v.name === "picture") ? `${s.slideId} ${s.type}/free ? authored picture slots` : s.supported ? `${s.slideId} ${s.type}/${s.variant} ${s.frame.width.toFixed(1)} × ${s.frame.height.toFixed(1)} px · ${s.ratio.toFixed(4)}:1 · subject band 55%` : `${s.slideId}: ${s.reason} → ${s.suggestion.type}/${s.suggestion.variant}`;
+    const more = (s.pictureVariants || []).filter(v => v.supported && v.variant !== s.variant).map(v => `  ${s.type}/${v.variant} ${v.frame.width.toFixed(1)} × ${v.frame.height.toFixed(1)} px · ${v.ratio.toFixed(4)}:1`);
+    more.push(...(s.slots || []).map(v => `  ${v.name} (${v.assetId}) ${v.frame.width.toFixed(1)} × ${v.frame.height.toFixed(1)} px · ${v.fit}`));
+    return [primary, ...more].join("\n");
+  }).join("\n");
   if (r.findings) return r.findings.length ? r.findings.map(f => `${f.severity} ${f.slideId || "spec"} ${f.code}: ${f.message}`).join("\n") : "الصور مطابقة للإطارات، وسجلات الفحص مكتملة.";
   return (r.pictures || []).map(p => `${p.slideId}: ${p.width} × ${p.height} · ${p.mode} · ${p.out || p.assetId}`).join("\n") || "لا توجد صور في السجل.";
 }
