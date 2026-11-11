@@ -44,6 +44,9 @@ node   <skill>/scripts/check_video.mjs out/3x4/01-cover.mp4 --poster out/3x4/01-
 
 The design huddle's **pre-flight** exports nothing: `node <skill>/scripts/render.mjs --preflight --spec spec.json --brand brand.json [--presets creator,poster,notebook] --format text` renders the cover and slide 2 in each candidate preset (all three shipped presets by default) and prints, per preset, the rendered-gate findings, the cover's hero size at 130 px, its empty band and whether the preset allows the post's motion recipe. `--video internal` uses the Studio's own encoder; `--video none` skips video. Other options: `--lang`, `--timeout`, `--chromium`, `--headed`.
 
+### Pictures on slides
+Choose picture slides before free design. The local path is `plates.mjs slots --dir POST --format json`, prompts using the measured ratio, approved tool results saved under plates/, inspection and plates/plates.json, `plates.mjs apply`, `check`, then render. `restyle` remeasures after text/style changes; `apply` restores pictures after spec rebuilds. Still images are fitted and embedded by canvas, with no image packages or FFmpeg. Details and commands: `plates.md`. Without a local browser, use the hosted asset workflow when available or keep the preset design; do not claim a local frame measurement.
+
 ### Exit codes (all scripts)
 | Code | Meaning |
 |---|---|

@@ -17,6 +17,12 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 - «غيّر الستايل» with no name shows the other styles on your own cover and slide 2 to pick from.
 - «انشر» posts to Instagram only unless you name another platform, with the moving cover first.
 
+### Pictures on slides
+
+- Measure each picture frame against the post's real text and style before generating an illustration, then fit, pad, flip and embed it with one local plates command. No image packages or hand-made scripts are needed.
+- Keep originals and an inspected picture manifest so rebuilding the spec or changing styles can restore and recrop every picture in one command. The tool records dimensions, AI provenance and the no-text check, and reports stale crops or ignored pictures.
+- Picture prompts now use the measured ratio and a safe subject band; step, checklist and call-to-action slides keep their engine layouts when a picture fits.
+
 ### Cover motion
 
 - Four new cover stories, each with its own movement: Curtain (accent bars pull away line by line), Word zoom (the cover opens on its key word, then the camera pulls back), Notification (the headline arrives as a message being typed) and Before/after (the two halves of the headline collide).

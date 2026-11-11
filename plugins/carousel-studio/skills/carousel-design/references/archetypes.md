@@ -90,3 +90,7 @@ For a post that **teaches** (how to do something with a tool, a platform or a fo
 | a checklist to keep | everything on one screenshot-worthy card | up to 8 short bullets, empty boxes (a pre-ticked box reads as «done», not «check this») | `checklist` in `boxes` |
 
 An asset that comes from the team's own render (a cover, a slide) is the creator's own work; a screenshot of someone else's post or interface is flagged by C10. Every demonstration needs alt text that says what it shows.
+
+## 7. Picture frames
+
+Choose picture slides before free design and follow `plates.md`. All current engine templates have media slots, including step, checklist and CTA; slots measures whether the current variant and text leave visible room. A free slide ignores media and cannot contain an image. Keep semantic types where their measured frame works. For a whole illustration use proof/screenshot or proof/base with slot screenshot; this is a layout choice, never a claim that AI imagery is real evidence. Cover/poster split with photo is a cropped strip when the preset supports it. Measure -> prompts -> approved originals -> inspected manifest -> apply -> render; restyle from originals after changes.
