@@ -55,7 +55,7 @@
 | **archetype** | A slide-type layout partial (20 types). Archetypes own layout; presets own look. |
 | **architecture** | The structure of a whole carousel (listicle, steps, myth-fact …). Not the same as archetype. |
 | **slot** | A named field region inside an archetype (`data-slot`). |
-| **slide id** | `s01`…`s20`, stable identity of a slide; `n` is its current position. |
+| **slide id** | `s01`, `s02`, ... two-digit ids, never reused; stable identity of a slide; `n` is its current position. |
 | **token** | One resolved style value (colour, font, size …) with a dotted path such as `roles.accent`. |
 | **resolve** | `preset ← brand ← occasion ← post overrides ← slide overrides → floors` (section 6.4). |
 | **fit** | Search for the largest font size at which a slot fits (section 4.3). |
@@ -74,7 +74,7 @@
 
 **Encoding and time.** UTF-8 without BOM, LF line endings. Timestamps are ISO-8601 UTC with `Z`. Durations in seconds (float). Lengths in CSS px at the 1080-wide canvas unless a name says otherwise. Fractions are 0–1.
 
-**Identifiers.** Patterns are in the schemas (`id`, `shortId`, `slug`, `presetSlug`). Slide ids `s01…s20` are never reused after deletion within a spec.
+**Identifiers.** Patterns are in the schemas (`id`, `shortId`, `slug`, `presetSlug`). Slide ids are `s01`, `s02`, ... two-digit ids, never reused after deletion within a spec.
 
 **Versions and pins.**
 | Constant | Value |
@@ -1075,7 +1075,7 @@ Rules are **data**. `data/qa-rules.json` (B4) holds the gate registry; the word 
 
 ### 7.1 Severities, status, exit codes
 - **BLOCK** disables «حزمة النشر» until fixed (the Check screen offers «صلّح تلقائياً» first). **FIX** exports with a badge. **NOTE** is advice.
-- Only gates marked *overridable* accept «صدّر رغم ذلك» (recorded as `overridden:{reason,at}` in `spec.qa.results` and in `qa-report`). Technical gates (D*, V1, X1, A1, N1, B1-rendered) are **never** overridable and must produce **zero false BLOCKs on `tests/corpus-clean/`**. The overridable set is exactly: `C1.*`, `C2.body-hard`, the length checks on the creator's own words (`C2.title-words`, `C2.body-words`, `C2.bullets`, `C2.dense-words`, `C2.slide-words`, `C2.cta-words`, `C2.share-words`: a creator who keeps a long line keeps it, recorded as «تجاوز»), `C3.*`, `O1.*`.
+- Only gates marked *overridable* accept «صدّر رغم ذلك» (recorded as `overridden:{reason,at}` in `spec.qa.results` and in `qa-report`). Technical gates (D*, V1, X1, A1, N1, B1-rendered) are **never** overridable and must produce **zero false BLOCKs on `tests/corpus-clean/`**. The overridable set is exactly: `C1.*`, `C2.body-hard`, the length checks on the creator's own words (`C2.title-words`, `C2.body-words`, `C2.bullets`, `C2.dense-words`, `C2.slide-words`, `C2.cta-words`, `C2.share-words`: a creator who keeps a long line keeps it, recorded as «تجاوز»), `C3.*`, `C4.count`, `C5.skeleton`, `O1.*`, `C10.*`. A creator may explicitly keep an ending without a CTA; other C4 rules stay locked.
 - `status`: `block` if any non-overridden BLOCK; else `fix` if any non-overridden FIX; else `pass`. Lint/validation exit code: `pass`/`NOTE`-only → 0, `fix` → 1, `block` → 2. `render.mjs` exits 0 for a completed pass or FIX export; `--strict` restores FIX = 1. BLOCK and real failures are nonzero. Both QA reports are always written, even for PNG-only formats. A requested missing cover MP4 is an X1.complete BLOCK (including skipped encodes), prints an error on stderr, sets JSON video.failed/missing/errors and exits nonzero; `--video none` requests stills only.
 - Checks flagged `"engines":["model"]` (meaning word first, gap not answered on the cover, voice, dialect purity beyond deny markers, text inside AI images, sensitivities needing judgement) are **never emitted by code**; the `cs-arabic-editor` / `cs-art-director` agents (or the inline role pass) run them from the same descriptions, and `references/qa-gates.md` (B9) lists them.
 
@@ -1089,8 +1089,8 @@ Numbers in `[…]` are keys in `platform-instagram.json → plugin` (qa-rules us
 | **C1** cover limits | text | `hero-words` first beat of `headline` > [cover.heroMaxWords=6] → BLOCK·ovr · `total-words` kicker+headline+sub > [cover.totalMaxWords=12] → BLOCK·ovr · `lines` forced breaks +1 > [cover.maxLines=3] → FIX · `number-words` a spelled-out number (copy.json numberWords) in the cover text → FIX · model: meaning word first, gap unanswered |
 | **C2** text limits | text | `title-words` > [text.titleMaxWords=6] → FIX · `body-words` > [text.bodyMaxWords=25] → FIX · `body-hard` > [text.bodyHardMaxWords=35] → BLOCK·ovr · `bullets` > [text.bulletsMax=4] (dense types > [text.denseBulletsMax=8]) → FIX / BLOCK · `dense-words` checklist+summary text > [text.denseMaxWords=45] → FIX · `slide-words` all text > [text.slideMaxWords=50] → FIX · `bridge-words` > [text.bridgeMaxWords=8] → FIX · `cta-words` / `share-words` > 12 → FIX |
 | **C3** slide 2 | text | `words` slide-2 text > [slide2.maxWords=12] → BLOCK·ovr · `intro` matches copy.json introPhrases (قبل ما نبدأ، أنا فلان …) → BLOCK·ovr · `type` slide 2 is not `rehook`/`item`/`stat`/`proof`/`myth-fact` → NOTE |
-| **C4** CTA | text | `count` carousel without exactly one `cta` → BLOCK · `position` CTA not on the last slide or the one before → FIX · `intent` CTA kind not in [cta.allowedByIntent] → FIX · `bait` commentBait list → BLOCK · `keyword-asset` kind `keyword-dm` without `captionPack.asset.delivery = "instant"` → BLOCK · `early` a `cta` before the payoff (first half) → BLOCK |
-| **C5** structure | text | `slide-count` carousel < [slides.hardMin] → BLOCK; < [slides.warnBelow=4] → FIX; 4–5 → NOTE (short posts are valid); > [slides.hardMax] → BLOCK · `skeleton` first slide not `cover`, last not `cta`/`offer`/`summary`+`cta` → FIX · `bridge` missing on `rehook item step stat compare myth-fact proof setup story-beat` that are not last → FIX · model: voice drift ≤ [voice.driftIqr] IQR (via `voice_check.py`) |
+| **C4** CTA | text | `count` carousel without exactly one `cta` → BLOCK·ovr · `position` CTA not on the last slide or the one before → FIX · `intent` CTA kind not in [cta.allowedByIntent] → FIX · `bait` commentBait list → BLOCK · `keyword-asset` kind `keyword-dm` without `captionPack.asset.delivery = "instant"` → BLOCK · `early` a `cta` before the payoff (first half) → BLOCK |
+| **C5** structure | text | `slide-count` carousel < [slides.hardMin] → BLOCK; < [slides.warnBelow=4] → FIX; 4–5 → NOTE (short posts are valid); > [slides.hardMax] → BLOCK · `skeleton` first slide not `cover`, last not `cta`/`offer`/`summary`+`cta` → FIX·ovr · `bridge` missing on `rehook item step stat compare myth-fact proof setup story-beat` that are not last → FIX · model: voice drift ≤ [voice.driftIqr] IQR (via `voice_check.py`) |
 | **C6** list count | text | cover numeral N with architecture `listicle`/`steps` but the number of distinct positive integer `ord` members (any slide type) ≠ N; with no ord use `item` for listicle or `step` for steps → BLOCK |
 | **C7** repetition | text | `cta-repeat` same CTA kind as one of the last [history.ctaRepeatWindow=2] posts → FIX (NOTE for ext.source=creator-script) · `family-repeat` same hook family as the last [history.familyRepeatWindow=2] → FIX (NOTE for ext.source=creator-script) · `hook-similar` similarity ≥ [similarity.hookReuseMax=0.8] to a used hook → FIX · `max-use` family `maxUsePer` exceeded → FIX |
 | **C8** voice | text | `ai-words` `stock-opener` `translationese` `stiff-msa` `hype` (copy.json lists) → FIX · `abstract` → NOTE |

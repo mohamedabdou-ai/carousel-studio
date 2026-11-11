@@ -129,6 +129,16 @@ class SchemaDefsTests(unittest.TestCase):
         spec["assets"][0]["ref"] += "A"
         self.assertIn(["/assets/0/ref", "maxLength"], verdict("spec", spec))
 
+    def test_caption_arrays_follow_the_ten_slide_cap_and_ids_are_stable(self):
+        defs = self.schemas["spec"]["$defs"]
+        for field in ("perSlide", "alt"):
+            pack = copy.deepcopy(self.spec)
+            pack.setdefault("captionPack", {})[field] = ["وصف"] * 11
+            self.assertIn(["/captionPack/" + field, "maxItems"], verdict("spec", pack))
+        description = defs["slide"]["properties"]["id"]["description"]
+        self.assertIn("two-digit ids", description)
+        self.assertNotIn("s20", description)
+
     def test_dialect_strength_is_optional_and_explicit(self) -> None:
         self.assertEqual(verdict("brand", self.brand), [])
         for strength in ["light", "full"]:

@@ -1,6 +1,6 @@
 schema_version: "1.0"
 name: bhv-22-slide-count-warning
-description: "A request for very few slides gets a warning and the 8-12 recommendation."
+description: "A request for very few slides gets advice within the 10-slide limit, including the cover."
 tags: [behaviour, needs-bash, carousel-create, slide-count, limits]
 plugins: ["../../../plugins/carousel-studio"]
 execution:
@@ -37,7 +37,7 @@ graders:
   - type: llm
     name: warns-and-recommends
     criteria: |
-      The reply tells the user that fewer than 6 slides is weak for a carousel and recommends 8 to 12 slides.
+      The reply states the 10-slide limit including the cover, calls 2 to 3 slides thin, and treats 4 to 6 as a valid short carousel. It offers useful content without padding.
     weight: 3
   - type: llm
     name: spec-matches-the-reply

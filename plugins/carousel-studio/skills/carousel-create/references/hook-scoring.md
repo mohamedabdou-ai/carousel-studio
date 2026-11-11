@@ -1,6 +1,6 @@
 # Hook scoring: five gates, then 100 points
 
-Stage A decides who is allowed to compete; stage B ranks the ones that are. Then `render.mjs --covers` checks the survivors on the post's real cover before the creator sees any choice. Code does what code can know; the model judges what only a reader can. The weights and thresholds live in `data/hooks/scoring.json`, and a unit test asserts that they add up. If this page and that file ever differ, the file wins.
+Stage A decides who is allowed to compete; stage B ranks the ones that are. Then `render.mjs --covers covers.json --spec spec.json --brand brand.json --out cover-lab --presets all` checks the survivors on the post's real cover before the creator sees any choice. Code does what code can know; the model judges what only a reader can. The weights and thresholds live in `data/hooks/scoring.json`, and a unit test asserts that they add up. If this page and that file ever differ, the file wins.
 
 ## Stage A: hard gates (any failure discards the draft)
 | Gate | Rule | Checked by |

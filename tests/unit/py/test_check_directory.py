@@ -243,6 +243,13 @@ class CheckDirectoryTest(unittest.TestCase):
         for rel in ("cs-export.js", "cs-ui.js", "SKILL.md"):
             self.assertFires("P04", rel)
 
+    def test_fflate_is_no_longer_an_allowed_browser_dependency(self):
+        for url in ("https://cdn.jsdelivr.net/npm/fflate@0.8.2/esm/browser.js", "https://github.com/101arrowz/fflate"):
+            self.fx.write("skills/carousel-design/runtime/cs-export.js", 'import("%s");\n' % url)
+            self.assertFires("P04", "cs-export.js")
+        contributing = (REPO / "CONTRIBUTING.md").read_text(encoding="utf-8")
+        self.assertNotIn("fflate", contributing)
+
     def test_author_credit_only_in_allowed_files(self) -> None:
         self.fx.write("skills/a/references/company.md", "Rows from Pyramedia are client rows.\n")
         self.fx.write("skills/a/references/x.md", "Made by Mohamed Abdou.\n")

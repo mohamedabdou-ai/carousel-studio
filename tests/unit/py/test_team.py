@@ -185,6 +185,12 @@ class TestValidBoard(unittest.TestCase):
 
 
 class TestBriefAndPitch(unittest.TestCase):
+    def test_two_beat_question_covers_use_the_shared_hero_definition(self):
+        for cover, count in (("هل جدولك واضح؟ هذه بقية الفكرة في كلمات", 3), ("Is this clear? Here is the second beat", 3), ("نتيجة واضحة! تفاصيل الفكرة تأتي هنا", 2)):
+            self.assertEqual(BC.hero_of(cover), count)
+            pitch = PITCH.replace("5 أخطاء في البرومبت", cover)
+            self.assertNotIn("T23", codes(run(board("pitch", pitch=pitch), "pitch")))
+
     def test_the_marker_and_the_loop_counters(self):
         self.assertIn("T01", codes(run(board("brief", head="# x\nmode: guided · dialect: eg · digits: western\nloops: pitch 0/1 · duel 0/1 · editor 0/2 · swipe 0/1 · script 0/2 · huddle 0/1 · review 0/2\n"), "brief")))
         over = board("room").replace("editor 1/2", "editor 3/2")
@@ -448,10 +454,11 @@ class TestHuddleCardsAndLog(unittest.TestCase):
             measured = "\n" + heading + "\n0.000s — الغلاف\n0.433s — التفكيك\n5.967s — النهاية"
             self.assertEqual(run(board("huddle", huddle=HUDDLE + measured), "huddle").items, [])
 
-    def test_carousel_slide_budget_is_four_to_ten(self):
-        for n in (1, 3, 11, 20):
+    def test_carousel_slide_budget_is_two_to_ten(self):
+        for n in (1, 11, 20):
             self.assertIn("T03", codes(run(board("room").replace("slides: 10", "slides: %d" % n), "room")))
-        self.assertNotIn("T03", codes(run(board("room").replace("slides: 10", "slides: 4"), "room")))
+        for n in (2, 3, 4, 10):
+            self.assertNotIn("T03", codes(run(board("room").replace("slides: 10", "slides: %d" % n), "room")))
 
     def test_a_handoff_card_is_complete(self):
         self.assertIn("T94", codes(run(board("pitch", cards=CARDS.replace("ثقتي: عالية", "ثقتي: ممتازة")), "pitch")))
@@ -669,6 +676,63 @@ class TestSourcesAgree(unittest.TestCase):
         self.assertIn("الحكم: SHIP | REVISE | KILL", cd)
         for token in ("المرحلة: script | final", "ملاحظة لـ<agent slug>:", "غلاف 130px: <n> من 3 وقفوا", "QA: ok | FIX | BLOCK", "المدير الفني: PASS | FIX | BLOCK"):
             self.assertIn(token, cd, token)
+
+    def test_slide_count_docs_and_evals_follow_current_policy(self):
+        design = support.SKILLS / "carousel-design"
+        free = (design / "references/free-design.md").read_text(encoding="utf-8")
+        self.assertNotIn("11-12", free)
+        self.assertIn("FIX below 4", free)
+        self.assertIn("2 to 10 slides including the cover; 4 to 6 is complete", self.roles["cs-copywriter"])
+        for path in (REPO / "docs/CONTRACT.md", support.SKILLS / "carousel-create/references/flow.md"):
+            self.assertNotRegex(path.read_text(encoding="utf-8"), r"s01[^\n]{0,6}s20")
+        fast = (REPO / "evals/behaviour/bhv-02-fast-mode-valid-spec/case.yaml").read_text(encoding="utf-8")
+        warning = (REPO / "evals/behaviour/bhv-22-slide-count-warning/case.yaml").read_text(encoding="utf-8")
+        self.assertIn("four-to-ten-slides", fast)
+        self.assertIn("between 4 and 10 slides", fast)
+        for phrase in ("10-slide limit", "including the cover", "2 to 3", "4 to 6"):
+            self.assertIn(phrase, warning)
+        self.assertNotIn("8-12", warning)
+
+    def test_dialect_strength_and_clip_cover_handoffs_reach_their_owners(self):
+        writer, editor, motion = (self.roles[k] for k in ("cs-copywriter", "cs-arabic-editor", "cs-motion-designer"))
+        for text in (writer, editor, (support.SKILLS / "carousel-create/references/brand-lookup.md").read_text(encoding="utf-8")):
+            self.assertIn("voice.dialectStrength", text)
+            self.assertRegex(text, r"[Aa]bsen(?:t|ce)")
+        self.assertIn("silent 6 to 15 second clip cover", motion)
+        self.assertIn("never download footage", motion)
+        self.assertIn("actual duration", motion)
+        skill = (support.SKILLS / "carousel-design/SKILL.md").read_text(encoding="utf-8")
+        step6 = next(l for l in skill.splitlines() if l.startswith("6. **Style"))
+        step8 = next(l for l in skill.splitlines() if l.startswith("8. **Claude"))
+        self.assertIn("cover.motion.clip", step6)
+        self.assertIn("shared browser compositor", step8)
+
+    def test_cover_lab_commands_include_their_required_inputs(self):
+        paths = list(TEAM.rglob("*.md")) + list(support.SKILLS.rglob("*.md"))
+        for path in paths:
+            for command in re.findall(r"`([^`\n]*render\.mjs --(?:covers|style-sheet)[^`\n]*)`", path.read_text(encoding="utf-8")):
+                with self.subTest(path=path, command=command):
+                    self.assertIn("--spec ", command)
+                    self.assertIn("--out ", command)
+                    if "--covers" in command:
+                        self.assertRegex(command, r"--covers [^ -][^ ]*")
+
+    def test_qa_docs_match_counting_and_explicit_kept_endings(self):
+        qa = (support.SKILLS / "carousel-design/references/qa-gates.md").read_text(encoding="utf-8")
+        override = next(l for l in qa.splitlines() if l.startswith("- **Overridable**"))
+        self.assertIn("C4.count", override)
+        self.assertIn("C5.skeleton", override)
+        count = next(l for l in qa.splitlines() if l.startswith("- **List count (C6)**"))
+        self.assertIn("distinct positive integer", count)
+        self.assertIn("no `ord`", count)
+        ready = (support.SKILLS / "carousel-create/references/ready-script.md").read_text(encoding="utf-8")
+        for token in ("reset-record", "--discard-edits", "spec.edits.json.bak"):
+            self.assertIn(token, ready)
+
+    def test_plate_docs_name_the_actual_browser_environment_aliases(self):
+        plates = (support.SKILLS / "carousel-design/references/plates.md").read_text(encoding="utf-8")
+        self.assertIn("CS_CHROMIUM", plates)
+        self.assertIn("plates.mjs only", plates)
 
     def test_the_command_and_skill_have_the_same_ordered_router(self):
         skill = (REPO / "plugins/carousel-studio/skills/carousel-create/SKILL.md").read_text(encoding="utf-8")

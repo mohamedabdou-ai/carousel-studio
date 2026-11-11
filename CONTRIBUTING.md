@@ -37,7 +37,7 @@ By contributing you agree that your contribution is licensed under the [Apache L
 
 **Policy**
 
-- No network calls from skills unless the user asks. The browser runtime may load only `mediabunny@1.61.0` and `fflate@0.8.2` from `https://cdn.jsdelivr.net/npm/`, at exactly those versions.
+- No network calls from skills unless the user asks. The browser runtime may load only `mediabunny@1.61.0` from `https://cdn.jsdelivr.net/npm/`, at exactly that version.
 - No telemetry or analytics code, no GSAP, no Remotion.
 - Nothing exported carries the author's name. The credit and the author's links appear only in tool screens and the legal and readme files.
 - No placeholder motion, no lorem ipsum, no "coming soon" text in anything a user sees.

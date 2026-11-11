@@ -683,10 +683,10 @@ ALLOWED_URLS: tuple[tuple[re.Pattern[str], tuple[str, ...]], ...] = (
     (re.compile(r"^https://json-schema\.org/draft/2020-12/schema$"), ANY_FILE),
     # The Apache licence address, as printed in licence headers.
     (re.compile(r"^https?://(?:www\.)?apache\.org/licenses/(?:LICENSE-2\.0(?:\.txt)?)?$"), ANY_FILE),
-    # The two pinned browser dependencies (CONTRACT 0.2 rule 5).
-    (re.compile(r"^https://cdn\.jsdelivr\.net/npm/(?:mediabunny@1\.61\.0|fflate@0\.8\.2)/"), DOC_FILES + RUNTIME_FILES),
+    # The pinned browser dependency (CONTRACT 0.2 rule 5).
+    (re.compile(r"^https://cdn\.jsdelivr\.net/npm/mediabunny@1\.61\.0/"), DOC_FILES + RUNTIME_FILES),
     # Source links for third-party components named in NOTICE.
-    (re.compile(r"^https://(?:github\.com/(?:Vanilagy/mediabunny|heygen-com/hyperframes|lucide-icons/lucide|101arrowz/fflate)|mediabunny\.dev|lucide\.dev)(?:[/#?].*)?$"), DOC_FILES + RUNTIME_FILES),
+    (re.compile(r"^https://(?:github\.com/(?:Vanilagy/mediabunny|heygen-com/hyperframes|lucide-icons/lucide)|mediabunny\.dev|lucide\.dev)(?:[/#?].*)?$"), DOC_FILES + RUNTIME_FILES),
     # Licence texts.
     (re.compile(r"^https://(?:www\.mozilla\.org/MPL/2\.0|opensource\.org/licenses?/[A-Za-z0-9.+_-]+|openfontlicense\.org|scripts\.sil\.org/OFL|lucide\.dev/license)/?$"), DOC_FILES + RUNTIME_FILES),
 )

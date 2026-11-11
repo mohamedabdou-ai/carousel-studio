@@ -13,7 +13,7 @@ Current engine templates have media slots on cover, rehook, item, step, stat, co
 
 ## Commands
 
-`<skill>` is this skill folder; `POST` has spec.json. Requirements match render: Node 22+, existing Playwright, Python 3.11 to build the page, Chrome/Edge. Set PYTHONIOENCODING=utf-8 on Windows. Browser discovery matches render.mjs; `--chromium PATH`, CS_CHROMIUM and CS_CHROME select an installed browser. Nothing is downloaded. Browser requests stay on the command's loopback server; canvas does the image work.
+`<skill>` is this skill folder; `POST` has spec.json. Requirements match render: Node 22+, existing Playwright, Python 3.11 to build the page, Chrome/Edge. Set PYTHONIOENCODING=utf-8 on Windows. `--chromium PATH` and `CS_CHROMIUM` select an installed browser for every lane; `CS_CHROME` is also read by plates.mjs only. Nothing is downloaded. Browser requests stay on the command's loopback server; canvas does the image work.
 
 ```text
 node <skill>/scripts/plates.mjs slots --dir POST --brand brand.json --format json
@@ -64,7 +64,9 @@ Use the actual UTC inspection time. View each original: no letters, digits, pseu
 
 Optional focus: `{ "x": 0.1, "y": 0.15, "w": 0.8, "h": 0.7 }`. Mode is auto/crop/pad; pad:true|false is accepted instead of mode. Optional `layout: { "type": "proof", "variant": "screenshot", "slot": "screenshot" }` explicitly chooses an engine layout and removes free on replay; normal copy fields stay intact. Select that layout in the spec before slots and prompts, then mirror it in the manifest for future rebuilds. Do not change a counted step or CTA into proof merely to add a picture. A creator-owned image untouched by AI may set aiGenerated:false; generated or AI-edited pictures keep true.
 
-Assets are plate-s03, kind image, embedded JPEG ref, MIME, actual encoded width/height/bytes, aiGenerated, tool and promptId. The ref cap is read from the spec schema and checked after encoding including base64 overhead. Media gets legal calmZone:bottom. Keep prompt cards in spec.ext.visualPrompts keyed by prompt id. The tool does not invent prompt wording or certify creative quality.
+Assets are plate-s03, kind image, embedded JPEG ref (PNG when the source has transparency), MIME, actual encoded width/height/bytes, aiGenerated, tool and promptId. The ref cap is read from the spec schema and checked after encoding including base64 overhead. Media gets legal calmZone:bottom. Keep prompt cards in spec.ext.visualPrompts keyed by prompt id. The tool does not invent prompt wording or certify creative quality.
+
+Apply/restyle/embed preserve the media frame and backdrop; zoom is cleared only when the asset id changes. A changed picture clears the frozen design, design approval and resolved style hash, and updates the script approval revision. Transparent sources keep their alpha as PNG within the same ref cap. Only manifest-managed stills receive a stale-ratio FIX; creator pictures keep their chosen framing and video refs use their own lane.
 
 Writes are UTF-8/LF and atomic per file; conflicts refuse the save. The manifest is saved first so a failed spec save can be replayed. Unchanged inputs preserve spec bytes and rev. A changed result bumps rev, clears frozen layout and returns ready/exported posts to design for review. Final rendering and all QA gates remain required.
 

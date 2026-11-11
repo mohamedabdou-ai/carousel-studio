@@ -294,6 +294,12 @@ export async function runPlates(argv, { log = m => process.stderr.write(m + "\n"
       delete spec.frozen;
       if (["ready", "exported"].includes(spec.checkpoint)) spec.checkpoint = "design";
       spec.rev++;
+      if (spec.approvals) {
+        delete spec.approvals.design;
+        if (spec.approvals.script) spec.approvals.script.rev = spec.rev;
+        if (!Object.keys(spec.approvals).length) delete spec.approvals;
+      }
+      if (spec.style) delete spec.style.resolvedHash;
       spec.meta = { ...spec.meta, updatedAt: new Date().toISOString().replace(/\.\d{3}Z$/, "Z"), updatedBy: "tool" };
     }
     const outputValid = runtime.validate(spec);

@@ -319,6 +319,8 @@ def validate_docs(pairs):
     problems = []
     for kind, doc in pairs:
         for err in schema.validate_named(kind, doc):
+            if kind == "spec" and err["path"] == "/slides" and err["keyword"] == "maxItems":
+                continue  # reopen legacy decks for shortening; C5 still blocks export
             problems.append(f"{kind}{err['path']}: {err['message']}")
     if problems:
         shown = "\n  ".join(problems[:12])

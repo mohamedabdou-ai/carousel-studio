@@ -32,6 +32,7 @@ With only the capsule you have the dialect, digits, swipe cue, voice summary and
 | `identity.goal` and `strategy.intentMix` | the default intent: followers lean to save and reach, clients to save and send, sales to sell; choose the intent the mix and the last posts are short of, unless the angle's lens clearly implies another |
 | `audience.pains`, `desires`, `objections`, `faq`, `awareness` | angles, the cover's pain words, the default awareness |
 | `voice.tone`, `use`, `avoid`, `ctaStyle`, `samples` | how the copy sounds. Learn from the samples; never paste a line from them into a new post |
+| `voice.dialectStrength` (optional) | Pass the saved level (`light` or `full`) to the writer and Arabic editor; read `dialect-strength` from the capsule when present. Absence preserves the existing brand voice. |
 | `voice.allow` | words the proofreader must not flag (dialect spellings the user confirmed) |
 | `voice.fingerprint` | `voice_check.py` |
 | `visual.presetId` | provisional `style.presetId` (`<id>@1.0`) and tie-breaker for the art shortlist, never a silent final choice |
@@ -51,7 +52,7 @@ With only the capsule you have the dialect, digits, swipe cue, voice summary and
 Ask one numbered question for dialect and, if a handle is wanted on slides, the real handle. Brand-setup can make a minimal profile. Defaults: Western digits, `appLanguage: mixed`, `neutral` swipe cue, provisional `creator@1.0`, no fingerprint. Only `creator`, `notebook`, `poster` ship. Rank by fit/pre-flight, default only breaks a tie; show the style sheet before design. Say once that a saved brand makes the next post faster.
 
 ## Standing choices
-The art director's brief supplies a ranked recommendation for the three shipped styles; before the lock the director runs that as a read-only role pass, no art dispatch/design. The creator chooses on `render.mjs --style-sheet` with the fitted covers. A brief's `الاتجاه البصري` is a direction, not a preset. A brand default is never “always this style”. Only an explicit standing choice (“always this one”) stores `brand.ext.styleChoice` as `creator`, `notebook` or `poster`; missing means `ask`. Then checkpoint A skips only the style half. A one-post override does not change the standing choice; asking to choose each time stores `ask`.
+The art director's brief supplies a ranked recommendation for the three shipped styles; before the lock the director runs that as a read-only role pass, no art dispatch/design. The creator chooses on `render.mjs --style-sheet --spec spec.json --brand brand.json --out style-lab` with the fitted covers. A brief's `الاتجاه البصري` is a direction, not a preset. A brand default is never “always this style”. Only an explicit standing choice (“always this one”) stores `brand.ext.styleChoice` as `creator`, `notebook` or `poster`; missing means `ask`. Then checkpoint A skips only the style half. A one-post override does not change the standing choice; asking to choose each time stores `ask`.
 
 After approval, ask once in the creator's dialect whether they want manual files or their connected publishing tool. Save `brand.ext.publish` as `manual` or `tool`; missing means ask. A remembered `tool` preference still requires the creator's word each use, named accounts/platforms, and that tool's own instructions/limits. Never assume a platform or ship a tool-specific recipe.
 

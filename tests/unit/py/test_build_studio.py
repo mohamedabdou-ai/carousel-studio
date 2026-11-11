@@ -366,7 +366,7 @@ class TestVisualChunks(BuilderCase):
         run = self.build("--view", "design", root=root)
         self.assertEqual(run.code, 70)
         self.assertIn("closing script tag", run.err)
-        root = make_root(self.tmp / "big", {"art": "x" * (241 * 1024)})
+        root = make_root(self.tmp / "big", {"art": "x" * (BUILDER.CHUNK_LIMIT + 1)})
         self.assertEqual(self.build("--view", "design", root=root).code, 2)
         root = make_root(self.tmp / "comment", {"visual": "var s = '<" + "!-- x';"})
         self.assertEqual(self.build("--view", "design", root=root).code, 70)
@@ -660,7 +660,8 @@ class TestBuildErrors(BuilderCase):
         self.assertIn("at least one slide", run.err)
 
     def test_chunk_over_240_kib_is_refused(self):
-        root = make_root(self.tmp / "big", {"ui": "x" * (241 * 1024)})
+        self.assertEqual(BUILDER.CHUNK_LIMIT, 240 * 1024)
+        root = make_root(self.tmp / "big", {"ui": "x" * (BUILDER.CHUNK_LIMIT + 1)})
         self.assertEqual(self.build("--view", "design", root=root).code, 2)
 
     def test_chunk_with_a_closing_script_tag_is_refused(self):
@@ -691,6 +692,19 @@ class TestBuildErrors(BuilderCase):
 
 
 class TestHelpers(unittest.TestCase):
+    def test_legacy_oversize_decks_open_but_keep_the_slide_count_block(self):
+        from _cs import qa
+        spec = json.loads((REPO / "tests/fixtures/spec.eg.8slides.json").read_text(encoding="utf-8"))
+        spec.pop("captionPack", None)
+        while len(spec["slides"]) < 11:
+            n = len(spec["slides"]) + 1
+            spec["slides"].append({"id": "s%02d" % n, "n": n, "type": "story-beat", "body": "تفصيل إضافي"})
+        BUILDER.validate_docs([("spec", spec)])
+        self.assertTrue(any(r["rule"] == "C5.slide-count" and r["sev"] == "BLOCK" for r in qa.run_text_gates(spec, gates=["C5"])))
+        spec["slides"][0]["headline"] = "x" * 1000
+        with self.assertRaises(BUILDER.BuildError):
+            BUILDER.validate_docs([("spec", spec)])
+
     def test_script_json_escapes(self):
         text = BUILDER.script_json({"a": "x</script><!-- y  "})
         self.assertNotIn("</", text)
