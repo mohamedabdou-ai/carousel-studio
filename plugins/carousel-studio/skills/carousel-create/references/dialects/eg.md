@@ -4,14 +4,25 @@
 
 The data behind this page is `data/dialects/eg.json` (markers, deny and warn lists, the word-swap table, the CTA lines). The proofreader and the gates use it; this page tells you how to write.
 
-## One register per post
-| Level | When | How |
-|---|---|---|
-| **Full Egyptian** | personal brands, stories, opinions, local pull | negation, future and questions all Egyptian |
-| **Light** | the audience is wider than Egypt but the brand speaks Egyptian | keep the Egyptian structure and the shared everyday words (بس، خلاص، يلا، طيب، أكيد) and avoid slang that only Cairo uses |
-| **White MSA** | pan-Arab reach, instructions, reference posts, government, finance, health, legal | switch the dialect to `msa-white`; do not mix |
+## One strength per post
+Read `brand.voice.dialectStrength` before drafting. It applies to every slide, bridge, CTA and caption. An absent setting preserves this brand's approved examples and current Egyptian behavior; do not silently lighten an existing brand.
 
-Never mix levels inside one slide or one caption: a line in MSA followed by a line in dialect reads as two writers.
+| Setting | Allowed | Avoid |
+|---|---|---|
+| `light` | shared everyday words, short direct sentences close to white Arabic; جرّب، شوف، لو، بس، أكيد; familiar Egyptian phrasing where any Arab reader follows it | street idioms, local jokes, heavily contracted spellings, and region-specific words such as روش، جامد موت، يا معلم، النهارده; prefer اليوم، الآن، جدًا، كيف when clarity needs them |
+| `full` | conventional Cairo Egyptian, including مش، عايز، إزاي، دلوقتي، ده، دي and normal spoken questions and negation | importing another dialect, forced slang, or language that conflicts with the brand's avoid list |
+
+`light` stays `locale.dialect = eg`; it does not switch to `msa-white`. In light copy, shared neutral words such as الآن or كيف are allowed when needed for pan-Arab clarity. The full-Egyptian swap and stiffness advice below applies to `full` and to the existing brand default, not as a command to make light copy more local. Keep one strength throughout the post.
+
+Light:
+> جرّب الفكرة اليوم وشوف النتيجة.
+> لو تحتاج وقت أكثر، خذ خطوة واحدة.
+
+Full:
+> جرّب الفكرة النهارده وشوف هتطلع بإيه.
+> لو لسه محتاج وقت، خدها واحدة واحدة.
+
+Strength is an editorial review, not an automatic word-list gate: context and quoted creator wording change whether a local expression is appropriate. Existing dialect-mixing checks still apply. Review their warnings against the selected strength before changing shared neutral vocabulary.
 
 ## The markers that make it Egyptian
 | Meaning | Write | Not |

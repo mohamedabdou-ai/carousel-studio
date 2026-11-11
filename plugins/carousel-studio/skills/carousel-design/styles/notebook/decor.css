@@ -85,3 +85,8 @@
 
 /* Keep the registered Latin face; match the weight of the Arabic slot. */
 .cs-slide[data-preset="notebook"] .cs-ltr[data-run="latin"]{font-weight:inherit}
+
+/* Picture-led variants and the optional creator-supplied cover mark. */
+.cs-slide[data-preset="notebook"]{ --cs-logo-align:flex-end; --cs-logo-radius:4px; }
+.cs-slide[data-preset="notebook"][data-variant="media"] :is(.cs-a-step,.cs-a-checklist,.cs-a-summary,.cs-a-cta,.cs-a-offer) > .cs-media-slot:not([data-media-kind="icon"]){ border:3px solid var(--cs-ink); border-radius:4px; box-shadow:4px 4px 0 var(--cs-line); background:var(--cs-surface); }
+.cs-slide[data-preset="notebook"][data-type="cover"] .cs-media-slot[data-slot="logo"]{ border:2px solid var(--cs-line); border-radius:var(--cs-logo-radius,8px); box-shadow:none; transform:none; }

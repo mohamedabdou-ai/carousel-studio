@@ -1893,32 +1893,27 @@ function gateSEN1(ctx, out) {
 
 const slideHasText = (s) => slideFields(s).some((f) => f.field !== "number");
 
-function gateA1(ctx, out) {
-  const assets = {};
-  (ctx.spec.assets || []).forEach((a) => {
-    if (isObj(a)) assets[a.id] = a;
-  });
-  const checks = (isObj(ctx.spec.ext) && ctx.spec.ext[QA.ASSET_CHECKS_KEY]) || {};
-  ctx.slides.forEach((s) => {
-    const m = s.media;
-    if (!isObj(m) || m.slot === "none") return;
-    const asset = m.assetId ? assets[m.assetId] : null;
-    const flagged = !!(asset && asset.aiGenerated === true);
-    const isAi = m.ai === true || flagged;
-    const el = s.id + ".media";
-    if (m.ai === true && !flagged && active(ctx, "A1.flag", s)) {
-      emit(ctx, out, "A1.flag", { slide: s.id, el, vars: { el } });
-    }
-    if (isAi && m.assetId && active(ctx, "A1.text-check", s)) {
-      const rec = checks[m.assetId];
-      if (!(isObj(rec) && rec.textChecked === true)) {
-        emit(ctx, out, "A1.text-check", { slide: s.id, el, vars: { el, asset: m.assetId } });
-      }
-    }
-    if ((m.slot === "plate" || isAi) && slideHasText(s) && (!m.calmZone || m.calmZone === "none") && active(ctx, "A1.calm-zone", s)) {
-      emit(ctx, out, "A1.calm-zone", { slide: s.id, el, vars: { el } });
-    }
-  });
+function a1Media(s,spec) {
+  const refs=isObj(s.media)&&s.media.slot!=="none"?[[s.media,s.id+".media"]]:[];
+  const add=(id,key)=>{if (id&&!refs.some(r=>r[0].assetId===id)) refs.push([{slot:"photo",assetId:id,calmZone:"bottom"},s.id+"."+key]);};
+  if (s.type==="cover") add(spec.cover?.logo?.assetId,"logo");
+  else if (typeof s.free?.html==="string") for (const m of s.free.html.matchAll(/<div\b[^>]*?\sdata-picture\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/gi)) {
+    const id=(m[1] ?? m[2] ?? m[3]).replace(/&#(x[0-9a-f]+|[0-9]+);/gi,(_,n)=>String.fromCodePoint(Math.min(1114111,+("0"+n))));
+    add(id,"picture."+id);
+  }
+  return refs;
+}
+
+function gateA1(ctx,out) {
+  const assets=new Map((ctx.spec.assets||[]).filter(isObj).map(a=>[a.id,a]));
+  const checks=ctx.spec.ext?.[QA.ASSET_CHECKS_KEY]||{};
+  ctx.slides.forEach(s=>a1Media(s,ctx.spec).forEach(([m,el])=>{
+    const a=assets.get(m.assetId),flagged=a?.aiGenerated===true,ai=m.ai===true||flagged;
+    const put=r=>active(ctx,"A1."+r,s)&&emit(ctx,out,"A1."+r,{slide:s.id,el,vars:{el,asset:m.assetId}});
+    if (m.ai===true&&!flagged) put("flag");
+    if (ai&&m.assetId&&!(isObj(checks[m.assetId])&&checks[m.assetId].textChecked===true)) put("text-check");
+    if ((m.slot==="plate"||ai)&&slideHasText(s)&&(!m.calmZone||m.calmZone==="none")) put("calm-zone");
+  }));
 }
 
   /* ---- file: gates-rendered.js ---- */

@@ -40,6 +40,8 @@ At most 1,500 bytes; produced by `brand_io.py capsule`. Format and use are in `b
 section 4. It is regenerated after every change that touches dialect, digits, swipe cue, voice,
 palette, fonts, preset or the Brand Home address, and it is the thing the user pastes into a new Project.
 
+The optional `voice.dialectStrength` is stored in this same profile, not in `ext`. `brand_io.py set --slug S --path voice.dialectStrength --value light` (or `full`) saves it; `capsule` repeats an explicit value. An absent value is never migrated or defaulted.
+
 ## 4. Multi-brand
 - One profile per brand, creator or client (`kind`). The UX is tuned for one brand: with a single brand every command assumes it; with more, ask "أي براند؟" unless a default is set (`brand_io.py use`) or the conversation already names one.
 - Switching brands changes the dialect, digits, swipe cue, voice, look and hook pack together; say which brand you are working on at the top of a drafting session.

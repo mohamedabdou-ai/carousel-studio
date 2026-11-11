@@ -271,6 +271,14 @@
         },
         "fingerprint": {
           "$ref": "#/$defs/fingerprint"
+        },
+        "dialectStrength": {
+          "type": "string",
+          "enum": [
+            "light",
+            "full"
+          ],
+          "description": "Optional dialect strength. light uses shared everyday words close to white Arabic, without local slang; full follows the dialect guide. Omitted preserves the existing brand voice. Egyptian first; other dialects need their own level guidance."
         }
       },
       "additionalProperties": false

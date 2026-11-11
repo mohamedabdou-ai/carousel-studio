@@ -53,7 +53,9 @@ BUDGET = {"spec": 52_000, "preset": 26_000, "brand": BASELINE["brand"] + 2_000}
 # decision to record. qa-report is not on the card: 8,850 became 9,350 for the optional top-level `stats` (the executed-gate counts, wave 2b), then 9,400 when the lead let a
 # gate count 0 (minimum 1 became 0) and the schema description said why (round 3). The spec went 47,950 -> 48,650 for slide.free, the free design lane
 # (html, css, locked: +718 B on disk, round 3 close; the budget of 52,000 is untouched).
-DISK_CEILING = {"spec": 48_650, "preset": 23_750, "brand": BUDGET["brand"], "qa-report": 9_400}
+
+# WP7: cover.logo and the documented larger asset cap add 964 B; the 52 KB budget stays unchanged.
+DISK_CEILING = {"spec": 49_600, "preset": 23_750, "brand": BUDGET["brand"], "qa-report": 9_400}
 TASHKEEL = re.compile("[\u064b-\u065f\u0670]")  # U+064B..U+065F and the dagger alef: the marks GR-7 forbids in authored copy (U+0640 is the lint's)
 ARABIC = re.compile("[\u0600-\u06ff]")
 ENV = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
@@ -112,6 +114,27 @@ class SchemaDefsTests(unittest.TestCase):
         cls.brand = load(EXAMPLES / "brand.example.json")
         cls.qa = load(EXAMPLES / "qa-report.example.json")
         cls.schemas = {k: load(SCHEMA_DIR / f"{k}.schema.json") for k in KINDS}
+
+    def test_picture_asset_cap_and_cover_logo(self) -> None:
+        spec = copy.deepcopy(self.spec)
+        spec["assets"] = [{"id": "news-logo", "kind": "image", "ref": "data:image/png;base64," + "A" * 120000, "aiGenerated": False}]
+        spec.setdefault("cover", {})["logo"] = {"assetId": "news-logo", "ground": "light"}
+        self.assertEqual(verdict("spec", spec), [])
+        for logo in [{}, {"assetId": "news-logo", "ground": "transparent"}, {"assetId": "../logo"}, {"assetId": "news-logo", "width": 600}]:
+            self.assertTrue(verdict("spec", put(spec, ["cover", "logo"], logo)), logo)
+        cap = self.schemas["spec"]["$defs"]["asset"]["properties"]["ref"]["maxLength"]
+        prefix = "data:image/png;base64,"
+        spec["assets"][0]["ref"] = prefix + "A" * (cap - len(prefix))
+        self.assertEqual(verdict("spec", spec), [])
+        spec["assets"][0]["ref"] += "A"
+        self.assertIn(["/assets/0/ref", "maxLength"], verdict("spec", spec))
+
+    def test_dialect_strength_is_optional_and_explicit(self) -> None:
+        self.assertEqual(verdict("brand", self.brand), [])
+        for strength in ["light", "full"]:
+            self.assertEqual(verdict("brand", put(self.brand, ["voice", "dialectStrength"], strength)), [])
+        for strength in ["white", "medium", "", None, 1]:
+            self.assertIn(["/voice/dialectStrength", "enum"], verdict("brand", put(self.brand, ["voice", "dialectStrength"], strength)))
 
     # ---- layout, subset, references, shared definitions ------------------------------------------------------------------
 

@@ -571,6 +571,9 @@ def voice_line(brand, limit=CAPSULE_VOICE_MAX):
     voice = brand.get("voice") or {}
     tone = voice.get("tone") or {}
     head = ", ".join("%s %d/5" % (word, tone[key]) for key, word in TONE_WORDS if key in tone)
+    strength = voice.get("dialectStrength")
+    if strength:
+        head += (" | " if head else "") + "dialect-strength: " + strength
     rest = limit - len(head)
     use, avoid = voice.get("use") or [], voice.get("avoid") or []
     use_seg = _fit_words("use", use, (rest + 1) // 2 if avoid else rest)

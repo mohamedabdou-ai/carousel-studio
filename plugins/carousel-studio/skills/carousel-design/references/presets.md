@@ -140,3 +140,10 @@ The user, the Studio or an occasion overlay may change: roles, fonts, the type s
 6. Run `preset_lint.py --all --write-index`, render the golden slides, add the preset to the Style tab's table above.
 
 `style.overrides` accepts scalar token values only (string, number, boolean), keyed by dotted token paths. Set `{"type.scale.heroTarget": 140}`; never a range array such as `{"type.scale.hero": [120,150]}`. Run `python scripts/validate.py spec spec.json --format json` before building.
+
+## 8. Shared picture variants and cover marks
+All six styles support `media` on `step`, `checklist`, `summary`, `cta` and `offer`; registry registration appends it after each style's existing defaults. These are picture-led stacks with no centring spacers, the same fit pipeline and a 360–400 px picture floor depending on canvas height. The per-style mat keeps the style's own outline, corners and shadow. Keep the semantic type and `ord`, shorten copy to give the picture room, and measure through `plates.mjs slots`.
+
+The optional `cover.logo` is a separate creator-supplied asset, contained on a light or dark solid ground. It is fixed at 176 x 80 px including its padding, near the kicker in the body area. Alignment: swiss/creator/poster start, notebook/interface end, heritage center. It never joins the background plate or changes the brand's persistent logo. Review the supplied mark at feed size and 130 px before approval. It remains in the cover-video composition; the creator supplies the artwork and its rights.
+
+Picture-led variants use the normal `h2` heading role and its floors. Summary and offer bullets use two columns, leaving room for a closing CTA without reducing type floors. The picture floor is 400 px on the 1440 px canvas and 360 px on the shorter canvas, above the proof mat's 352 px floor; actual frames grow with available room.

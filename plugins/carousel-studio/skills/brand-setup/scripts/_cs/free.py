@@ -19,6 +19,7 @@ document), ``notes`` holds ``{path, code, message}`` advice (badly nested markup
 from __future__ import annotations
 
 import re
+from html import unescape
 from html.parser import HTMLParser
 
 from . import CSError, paths
@@ -142,6 +143,7 @@ class _Html(HTMLParser):
         self.tones, self.froms = tuple(art["tone"]["values"]), tuple(art["chat"]["values"])
         self.fields = tuple(doc["fields"]["allowed"])
         self.stack: list[tuple[str, bool]] = []  # (tag, carries class f-chat)
+        self.pictures: set[int] = set()
 
     def where(self) -> str:
         line, col = self.getpos()
@@ -149,9 +151,13 @@ class _Html(HTMLParser):
 
     # structure
     def handle_starttag(self, tag, attrs) -> None:
+        if self.pictures:
+            self.add("a picture placeholder must be empty (%s)" % self.where())
         chat = self.element(tag, attrs)
         if tag not in _VOID:
             self.stack.append((tag, chat))
+            if any(name == "data-picture" for name, _value in attrs):
+                self.pictures.add(len(self.stack))
 
     def handle_endtag(self, tag) -> None:
         if tag not in [t for t, _c in self.stack]:
@@ -164,10 +170,21 @@ class _Html(HTMLParser):
                 break
             if top not in _OPTIONAL_CLOSE:
                 self.note("<%s> is not closed before </%s> (%s)" % (top, tag, self.where()))
+        self.pictures = {depth for depth in self.pictures if depth <= len(self.stack)}
 
     def handle_data(self, data) -> None:
+        if self.pictures and data.strip():
+            self.add("a picture placeholder must be empty (%s)" % self.where())
         if "<" in data:
             self.add("a '<' in the text must be written &lt; (%s); an unfinished tag looks like this" % self.where())
+
+    def handle_entityref(self, name) -> None:
+        if self.pictures:
+            self.handle_data(unescape("&" + name + ";"))
+
+    def handle_charref(self, name) -> None:
+        if self.pictures:
+            self.handle_data(unescape("&#" + name + ";"))
 
     def handle_comment(self, data) -> None:
         self.add("comments are not allowed (%s)" % self.where())
@@ -204,7 +221,7 @@ class _Html(HTMLParser):
             elif name.startswith("on"):
                 self.add("event handler %s is not allowed on <%s> (%s)" % (name, tag, self.where()))
             elif name in ("href", "src", "srcset", "xlink:href", "action", "formaction", "poster"):
-                self.add("%s is not allowed on <%s> (%s): a free slide has no links or images, use data-icon or data-object" % (
+                self.add("%s is not allowed on <%s> (%s): use data-picture for an asset, data-icon or data-object for art" % (
                     name, tag, self.where()))
             elif name not in self.attrs:
                 self.add("attribute %s is not allowed on <%s> (%s)" % (name, tag, self.where()))
@@ -213,6 +230,13 @@ class _Html(HTMLParser):
         for name in ("data-size", "data-treatment", "data-from"):
             if name in values:
                 self.relations(tag, name, values)
+        if "data-picture" in values:
+            if tag != "div" or not re.fullmatch(r"[A-Za-z0-9_-]{1,64}", values["data-picture"]):
+                self.add("data-picture needs an empty div and an asset id, not a URL (%s)" % self.where())
+            if set(values) - {"class", "data-picture", "data-fit"}:
+                self.add("a picture placeholder allows only class, data-picture and data-fit (%s)" % self.where())
+        elif "data-fit" in values:
+            self.add("data-fit belongs to a picture placeholder (%s)" % self.where())
         return "f-chat" in values.get("class", "").split()
 
     def bad(self, tag, name, value, what) -> None:
@@ -228,6 +252,9 @@ class _Html(HTMLParser):
                 self.bad(tag, name, value, "must be one of " + ", ".join(_DIRS))
         elif name == "data-field":
             self.field(tag, value)
+        elif name == "data-fit":
+            if value not in ("cover", "contain"):
+                self.bad(tag, name, value, "must be cover or contain")
         elif name == "data-icon":
             names = _library("pack")
             if names is not None and value not in names:

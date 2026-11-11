@@ -4,6 +4,14 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 
 ## [Unreleased]
 
+### Pictures and brand voice
+
+- Steps, checklists and closing slides gain a picture-led media variant in every style, keeping step labels, ordinals and calls to action.
+- Free designs can place an asset through a safe empty picture placeholder; authored image sources and CSS URLs remain forbidden.
+- Covers can show a separate creator-supplied product or partner logo on a clear ground, in stills and cover video.
+- The shared renderer resolves asset refs through the same blob route as the Studio. Picture refs can hold up to 2,000,000 characters, and the plates tools read that limit from the schema.
+- Egyptian brands can choose light or full dialect strength once during setup. The saved setting travels in the brand capsule; existing brands keep their voice until they choose a level.
+
 ### Publishing limits and checks
 
 - Carousels stop at 10 slides including the still or video cover. Short posts of 4 to 6 slides no longer receive a slide-count FIX, and the Studio explains why an eleventh slide cannot be added, duplicated or split.

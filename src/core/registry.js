@@ -187,6 +187,11 @@
 
   function registerPreset(preset, decorCss) {
     lightPreset(preset);
+    preset.variants = preset.variants || {};
+    ["step", "checklist", "summary", "cta", "offer"].forEach(function (type) {
+      var list = preset.variants[type];
+      if (list?.length && list.indexOf("media") < 0) list.push("media");
+    });
     schemaCheck("preset", preset, "Preset " + preset.id);
     var entry = { preset: preset, decor: String(decorCss || "") };
     if (Object.prototype.hasOwnProperty.call(state.presetIndex, preset.id)) state.presets[state.presetIndex[preset.id]] = entry;

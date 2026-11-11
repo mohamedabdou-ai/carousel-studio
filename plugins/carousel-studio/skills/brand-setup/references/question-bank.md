@@ -234,6 +234,22 @@ Confirmation only; corrections update `use`, `avoid` and the tone. *Why:* if the
 - msa-white: هذه ثلاث جمل كتبتها بأسلوبك: {1} {2} {3}. هل تشبهك؟ 1. نعم 2. قريبة وسأعدّل 3. لا
 - en: Here are 3 sentences in your voice: {1} {2} {3}. Do they sound like you? 1. Yes 2. Close, I will adjust 3. No
 
+#### VO-09 · dialect strength (Egyptian only, ask once)
+`voice.dialectStrength` · single choice `light | full`; optional for existing brands.
+*Why:* a familiar voice can stay easy for readers outside Egypt. This changes vocabulary, not the chosen dialect.
+- ar: ما درجة اللهجة المصرية التي تفضلها؟ 1. خفيفة وقريبة من العربية البيضاء 2. مصرية كاملة
+- en: How local should your Egyptian Arabic sound? 1. Light and widely understood 2. Full Egyptian.
+
+Light (`light`):
+> جرّب الفكرة اليوم وشوف النتيجة.
+> لو تحتاج وقت أكثر، خذ خطوة واحدة.
+
+Full (`full`):
+> جرّب الفكرة النهارده وشوف هتطلع بإيه.
+> لو لسه محتاج وقت، خدها واحدة واحدة.
+
+Use the neutral Arabic question for Arabic interfaces and the English question for English; keep the Arabic examples in both. Show both two-line examples before saving the answer. Ask only when the post dialect is `eg` and the setting is absent; a skipped question leaves it absent. For an existing brand, ask during a requested voice setup or edit, never interrupt every post.
+
 ## Section 4 · visual identity
 
 #### VI-01 · logo

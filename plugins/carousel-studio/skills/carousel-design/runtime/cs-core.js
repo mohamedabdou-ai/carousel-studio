@@ -1467,6 +1467,11 @@ CS.core.format = function format(template, params) {
 
   function registerPreset(preset, decorCss) {
     lightPreset(preset);
+    preset.variants = preset.variants || {};
+    ["step", "checklist", "summary", "cta", "offer"].forEach(function (type) {
+      var list = preset.variants[type];
+      if (list?.length && list.indexOf("media") < 0) list.push("media");
+    });
     schemaCheck("preset", preset, "Preset " + preset.id);
     var entry = { preset: preset, decor: String(decorCss || "") };
     if (Object.prototype.hasOwnProperty.call(state.presetIndex, preset.id)) state.presets[state.presetIndex[preset.id]] = entry;
@@ -2495,10 +2500,8 @@ CS.core.format = function format(template, params) {
     media: function (node, media, cx) {
       if (!media || !media.slot || media.slot === "none") return false;
       var kind = media.slot, asset = findAsset(cx, media.assetId);
-      node.setAttribute("data-media-kind", kind);
-      if (media.calmZone) node.setAttribute("data-calm", media.calmZone);
-      if (media.ai) node.setAttribute("data-ai", "1");
-      if (media.assetId) node.setAttribute("data-asset", media.assetId);
+      if (media.imageOnly && asset && (asset.kind === "video" || !(asset.mime ? /^image\//.test(asset.mime) : /^(image|svg)$/.test(asset.kind)))) asset = null;
+      set(node, { "data-media-kind": kind, "data-calm": media.calmZone, "data-ai": media.ai ? 1 : null, "data-asset": media.assetId });
       if (!asset) { node.setAttribute("data-media-state", "missing"); return true; }
       if (asset.mirror === "auto" && kind === "icon" && cx.dir === "rtl") node.setAttribute("data-mirror", "1");
       if (asset.aiGenerated) node.setAttribute("data-ai", "1");
@@ -2517,25 +2520,34 @@ CS.core.format = function format(template, params) {
         node.appendChild(img);
       }
       return true;
+    },
+
+    logo: function (node, _value, cx) {
+      var logo = cx.type === "cover" && cx.spec.cover?.logo;
+      if (!logo?.assetId) return false;
+      FILL.media(node, { slot: "photo", assetId: logo.assetId, imageOnly: true, calmZone: "bottom" }, cx);
+      set(node, { "data-media-kind": "logo", "data-kind": "media", "data-ground": logo.ground || "light" });
+      node.style.backgroundColor = logo.ground === "dark" ? "#151515" : "#ffffff";
+      return true;
     }
   };
 
   
   function findAsset(cx, id) {
     if (!id) return null;
-    var a = null, spec = cx.spec;
-    var rec = (spec.assets || []).filter(function (x) { return x.id === id; })[0] || null;
-    if (typeof cx.opts.assets === "function") {
-      var r = cx.opts.assets(id);
-      if (r && r.url) a = { url: r.url, mime: r.mime || (rec && rec.mime) || "", w: r.w, h: r.h };
+    var rec = (cx.spec.assets || []).find(function (x) { return x.id === id; });
+    var r = typeof cx.opts.assets === "function" && cx.opts.assets(id), a = r?.url ? { url: r.url, mime: r.mime || rec?.mime || "", w: r.w, h: r.h } : null;
+    if (!a && rec) {
+      if (/^data:/i.test(rec.ref)) a = { url: rec.ref, mime: rec.mime || (/^data:([^;,]+)/i.exec(rec.ref) || [])[1] };
+      else {
+        var ref = /^asset:([A-Za-z0-9_-]{1,64})$/.exec(rec.ref || "");
+        if (ref) a = { url: "/_blob/" + ref[1], mime: rec.mime || "", w: rec.width, h: rec.height };
+      }
     }
-    if (!a && rec && /^data:/i.test(rec.ref || "")) a = { url: rec.ref, mime: rec.mime || (/^data:([^;,]+)/i.exec(rec.ref) || [])[1] || "" };
-    if (!a) return null;
-    if (rec) { a.kind = rec.kind; a.mirror = rec.mirror; a.aiGenerated = !!rec.aiGenerated; }
+    if (a && rec) Object.assign(a, { kind: rec.kind, mirror: rec.mirror, aiGenerated: !!rec.aiGenerated });
     return a;
   }
 
-  
   function inlineSvg(asset) {
     var m = /^data:image\/svg\+xml(;base64)?,(.*)$/is.exec(asset.url || "");
     if (!m) return null;
@@ -2698,8 +2710,8 @@ CS.core.format = function format(template, params) {
       var filled = FILL[kind] ? FILL[kind](node, cx.slide[field], cx) : vis("slot",cx,node);
       if (!filled && node.hasAttribute("data-optional")) node.remove();
     });
-    var media = main.querySelector(".cs-media-slot");
-    if (bgMedia && media) { media.removeAttribute("data-optional"); bg.appendChild(media); }
+    var media = main.querySelector('.cs-media-slot[data-slot="media"]');
+    if (bgMedia && media && !main.classList.contains("cs-free")) { media.removeAttribute("data-optional"); bg.appendChild(media); }
 
     root.appendChild(bg);
     root.appendChild(decor);
@@ -2751,6 +2763,7 @@ CS.core.format = function format(template, params) {
   }
 
   core.compose = { slide: slide, chrome: chrome, slotKey: slotKey, slots: slots, prepare: prepare, html: html, label: label, context: makeContext };
+  core.compose.media = FILL.media;
 })();
 
   /* ---- file: fit.js ---- */
