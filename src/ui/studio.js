@@ -302,7 +302,10 @@ function mountStudio(root, data, opts) {
     setSpec: async function (spec, o) {
       var source = (o && o.source) || "claude";
       var res = guard("schema.validate", function () { return CS.core.schema.validate("spec", spec); }, { ok: true, errors: [] });
-      if (!res.ok) throw new CS.CSError("E_SCHEMA", "spec does not match the schema", res.errors);
+      // An older oversized post must open for repair. C5 owns the export BLOCK;
+      // every other schema error still rejects the incoming spec.
+      var errors = (res.errors || []).filter(function (e) { return !(spec.format === "carousel" && e.path === "/slides" && e.keyword === "maxItems"); });
+      if (errors.length) throw new CS.CSError("E_SCHEMA", "spec does not match the schema", errors);
       ctx.replaceSpec(spec, { source: source, origin: "external", rebase: source !== "studio" && source !== "user" });
       await ctx.flushRender();
     },

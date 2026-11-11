@@ -213,7 +213,8 @@ class SchemaDefsTests(unittest.TestCase):
             self.assertEqual(verdict("preset", load(path)), [], path.parent.name)
 
     def test_the_visual_example_carries_the_new_fields(self) -> None:
-        kinds = {s["visual"]["anchor"]["kind"] for s in self.visual["slides"] if "visual" in s}
+        samples = self.visual["slides"] + self.visual["ext"]["visualExamples"]
+        kinds = {s["visual"]["anchor"]["kind"] for s in samples if "visual" in s}
         self.assertEqual(kinds, {"none", "icon", "scene", "rows", "numeral", "chart", "mock", "word", "pattern"})
         self.assertTrue(any("items" in s for s in self.visual["slides"]))
         self.assertTrue(any("demo" in s for s in self.visual["slides"]))
@@ -267,7 +268,10 @@ class SchemaDefsTests(unittest.TestCase):
     # ---- agreement with the JavaScript validator -------------------------------------------------------------------------
 
     def vectors(self) -> list:
-        v, s, p, b, q = self.visual, self.spec, self.preset, self.brand, self.qa
+        v, s, p, b, q = json.loads(json.dumps(self.visual)), self.spec, self.preset, self.brand, self.qa
+        v["slides"] = [sl for sl in v["slides"] if sl["id"] not in ("s02", "s13")] + [sl for sl in v["ext"]["visualExamples"] if sl["id"] != "s11"]
+        for j, sl in enumerate(v["slides"]):
+            sl["n"] = j + 1
         i = lambda sid: ["slides", slide_index(v, sid)]  # noqa: E731
         frozen = put(v, ["frozen"], {"engine": "cs-1.1.1", "tokensHash": "0123456789abcdef", "approvedAt": "2026-10-23T11:00:00Z",
                                      "lines": {"s03.title": ["نسبة", "الحفظ"]}, "sizes": {"s03.number": 520},

@@ -282,15 +282,63 @@ test("X1: credit markup, metadata, secrets, fonts and missing files", async () =
   assert.equal(ids(onlyScript).includes("X1.credit-markup"), false);
 });
 
-test("X1: skipped files are not reported missing; base64 payloads are not scanned for secrets", async () => {
+test("X1: a requested MP4 is BLOCK even when skipped; base64 payloads are not scanned for secrets", async () => {
   const spec = specWithMotion();
   const b64 = "data:font/ttf;base64," + "AIza".concat("A".repeat(35)) + "A".repeat(200);
   const res = await exportRun(spec, [file("a.html", text("<style>@font-face{src:url(" + b64 + ")}</style>"))], {
     expected: ["3x4/01-cover.mp4", "a.html"],
     skipped: [{ path: "carousel-kit/3x4/01-cover.mp4", reason: "no H.264 encoder" }]
   });
-  assert.equal(ids(res).includes("X1.complete"), false);
+  assert.equal(res.find((r) => r.rule === "X1.complete").sev, "BLOCK");
   assert.equal(ids(res).includes("X1.secrets"), false);
+});
+
+test("render CLI: FIX is successful unless strict, BLOCK and real failures stay nonzero", async () => {
+  const { exportExitCode, parseArgs, wanted, coverVideoOutcome } = await import("../../../../plugins/carousel-studio/skills/carousel-design/scripts/render.mjs");
+  assert.equal(exportExitCode({ status: "pass" }, true, false), 0);
+  assert.equal(exportExitCode({ status: "fix", exitCode: 1 }, true, false), 0);
+  assert.equal(exportExitCode({ status: "fix" }, true, true), 1);
+  assert.equal(exportExitCode({ status: "block" }, false, false), 2);
+  assert.notEqual(exportExitCode(null, false, false), 0);
+  const opts = parseArgs(["--formats", "png", "--strict"]);
+  assert.equal(opts.strict, true);
+  assert.equal(wanted("qa-report.md", opts), true);
+  assert.equal(wanted("qa-report.json", opts), true);
+  const result = { files: [{ path: "3x4/01-cover.mp4", bytes: 4 }], skipped: [{ path: "4x5/01-cover.mp4", reason: "encode failed" }] };
+  assert.deepEqual(coverVideoOutcome(result, ["3x4", "4x5"], true).missing, ["4x5/01-cover.mp4"]);
+  assert.equal(coverVideoOutcome(result, ["3x4", "4x5"], false).failed, false);
+});
+
+test("render diagnoses an older eleven-slide spec with C5 before strict schema loading", async () => {
+  const { slideCountReport } = await import("../../../../plugins/carousel-studio/skills/carousel-design/scripts/render.mjs");
+  const spec = cleanSpec();
+  spec.slides.push({ id: "s10", n: 10, type: "summary" });
+  assert.equal(slideCountReport(spec, null), null);
+  spec.slides.push({ id: "s11", n: 11, type: "summary" });
+  const report = slideCountReport(spec, null);
+  assert.equal(report.status, "block");
+  assert.equal(report.results[0].rule, "C5.slide-count");
+});
+
+test("MP4 dependency loader retries three times, shares success, and resets after exhaustion", async () => {
+  const fs = require("node:fs"), path = require("node:path"), vm = require("node:vm");
+  const source = fs.readFileSync(path.resolve(__dirname, "../../../../src/mp4/mp4.js"), "utf8").replace("import(DEPS.mediabunny.url)", "__import()");
+  let attempts = 0, failThrough = 2;
+  const delays = [], module = { writer: true };
+  const ctx = vm.createContext({ CS: { export: {} }, setTimeout: (fn, ms) => { delays.push(ms); fn(); }, __import: async () => { if (++attempts <= failThrough) throw new Error("transient"); return module; } });
+  vm.runInContext(source, ctx);
+  assert.equal(await ctx.loadMediabunny(), module);
+  assert.equal(attempts, 3);
+  assert.equal(await ctx.loadMediabunny(), module);
+  assert.equal(attempts, 3);
+  assert.deepEqual(delays, [250, 500]);
+  ctx.mediabunnyPromise = null;
+  failThrough = 6;
+  await assert.rejects(ctx.loadMediabunny(), (e) => e.code === "E_DEP_LOAD");
+  assert.equal(attempts, 6);
+  assert.equal(await ctx.loadMediabunny(), module);
+  assert.equal(attempts, 7);
+  assert.deepEqual(Object.keys(ctx.CS.export.DEPS), ["mediabunny"]);
 });
 
 test("X1: @font-face families must be OFL families of the registry", async () => {

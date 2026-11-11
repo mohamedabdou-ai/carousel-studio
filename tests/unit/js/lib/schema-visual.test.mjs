@@ -23,6 +23,11 @@ const verdict = (kind, doc) => plain(schema.validate(kind, doc).errors.map((e) =
 const valid = (kind, doc, message) => eq(verdict(kind, doc), [], message);
 
 const VISUAL = readJson("docs/examples/spec.visual.example.json");
+// Additional visual samples form another valid short post, rather than an oversized carousel.
+const MORE = clone(VISUAL);
+MORE.slides = [VISUAL.slides[0], ...VISUAL.ext.visualExamples, VISUAL.slides.at(-1)].map((s, i) => ({ ...s, n: i + 1 }));
+const NEGATIVE = clone(VISUAL);
+NEGATIVE.slides = NEGATIVE.slides.filter((s) => !["s02", "s13"].includes(s.id)).concat(VISUAL.ext.visualExamples.filter((s) => s.id !== "s11")).map((s, i) => ({ ...s, n: i + 1 }));
 const SPEC = readJson("docs/examples/spec.example.json");
 const PRESET = readJson("docs/examples/preset.example.json");
 const BRAND = readJson("docs/examples/brand.example.json");
@@ -131,7 +136,7 @@ test("the documents validate: the full visual example, the approved variant, the
 test("every new field is used by the examples (spec 5.2: visual, items, demo, media, style, remix, frozen.visual; preset art and tones; brand visual.art)", () => {
   const specNew = [".slides[].visual", ".slides[].items", ".slides[].demo", ".slides[].media.frame", ".slides[].media.zoom", ".slides[].media.backdropAssetId",
     ".style.visualMode", ".style.planV", ".style.world", ".style.motif", ".style.rail", ".style.thread", ".style.panorama", ".remix", ".frozen.visual"];
-  eq(uncovered("spec", [VISUAL, withFrozen(VISUAL), SPEC], specNew), [], "spec");
+  eq(uncovered("spec", [VISUAL, MORE, withFrozen(VISUAL), SPEC], specNew), [], "spec");
   eq(uncovered("preset", [PRESET, notebookLike()], [".art", ".tones", ".type.scale.numeral"]), [], "preset");
   eq(uncovered("brand", [brandWithArt()], [".visual.art"]), [], "brand");
   // the walker is not vacuous: it does see an unused field
@@ -140,22 +145,22 @@ test("every new field is used by the examples (spec 5.2: visual, items, demo, me
 });
 
 test("the example spreads the anchor kinds and both mock families over its slides", () => {
-  const kinds = new Set(VISUAL.slides.filter((s) => s.visual).map((s) => s.visual.anchor.kind));
+  const kinds = new Set(VISUAL.slides.concat(MORE.slides).filter((s) => s.visual).map((s) => s.visual.anchor.kind));
   ["none", "icon", "scene", "rows", "numeral", "chart", "mock", "word", "pattern"].forEach((k) => assert.ok(kinds.has(k), k));
-  const mocks = new Set(VISUAL.slides.filter((s) => s.visual && s.visual.anchor.mock).map((s) => s.visual.anchor.mock.kind));
+  const mocks = new Set(VISUAL.slides.concat(MORE.slides).filter((s) => s.visual && s.visual.anchor.mock).map((s) => s.visual.anchor.mock.kind));
   assert.deepEqual([...mocks].sort(), ["artefact", "chat"]);
 });
 
 /* ---- the negatives the card names ------------------------------------------------------------------------------- */
 
-function neg(name, mutate, expected, kind = "spec", base = VISUAL) {
+function neg(name, mutate, expected, kind = "spec", base = NEGATIVE) {
   const doc = clone(base);
   mutate(doc);
   eq(verdict(kind, doc), expected, name);
 }
 
 test("spec negatives: an unknown anchor kind, items above 6, an uppercase icon name, a demo with 4 lines, a chart with 9 values, a world artefact outside its enum", () => {
-  const i = (id) => VISUAL.slides.findIndex((s) => s.id === id);
+  const i = (id) => NEGATIVE.slides.findIndex((s) => s.id === id);
   neg("unknown anchor kind", (d) => { slide(d, "s03").visual.anchor.kind = "diagram"; }, [[`/slides/${i("s03")}/visual/anchor/kind`, "enum"]]);
   neg("items above 6", (d) => { const g = slide(d, "s08"); while (g.items.length < 7) g.items.push({ title: "عنصر" }); }, [[`/slides/${i("s08")}/items`, "maxItems"]]);
   neg("an icon name with an uppercase letter", (d) => { slide(d, "s04").visual.anchor.icon = "LightBulb"; }, [[`/slides/${i("s04")}/visual/anchor/icon`, "pattern"]]);
@@ -166,8 +171,8 @@ test("spec negatives: an unknown anchor kind, items above 6, an uppercase icon n
 });
 
 test("spec negatives: icon names, the numeral spelling (S-20), anchor and chart and mock and demo shapes", () => {
-  const i = (id) => VISUAL.slides.findIndex((s) => s.id === id);
-  const icon = (name) => { const d = clone(VISUAL); slide(d, "s04").visual.anchor.icon = name; return verdict("spec", d); };
+  const i = (id) => NEGATIVE.slides.findIndex((s) => s.id === id);
+  const icon = (name) => { const d = clone(NEGATIVE); slide(d, "s04").visual.anchor.icon = name; return verdict("spec", d); };
   eq(icon("tb-bookmark"), []); eq(icon("cs-qalam"), []); eq(icon("a-b-c-d-e-f"), []);
   [["a-b-c-d-e-f-g", "pattern"], ["hour_glass", "pattern"], ["Hourglass", "pattern"], ["-x", "pattern"], ["x-", "pattern"], ["", "pattern"]]
     .forEach(([name, kw]) => eq(icon(name), [[`/slides/${i("s04")}/visual/anchor/icon`, kw]], JSON.stringify(name)));
@@ -190,7 +195,7 @@ test("spec negatives: icon names, the numeral spelling (S-20), anchor and chart 
 });
 
 test("spec negatives: visual, media, style and remix", () => {
-  const i = (id) => VISUAL.slides.findIndex((s) => s.id === id);
+  const i = (id) => NEGATIVE.slides.findIndex((s) => s.id === id);
   neg("a recipe outside the nine", (d) => { slide(d, "s03").visual.recipe = "left"; }, [[`/slides/${i("s03")}/visual/recipe`, "enum"]]);
   neg("four marks", (d) => { slide(d, "s03").visual.marks = ["arrow", "circle", "strike", "stars"]; }, [[`/slides/${i("s03")}/visual/marks`, "maxItems"]]);
   neg("a repeated mark", (d) => { slide(d, "s03").visual.marks = ["arrow", "arrow"]; }, [[`/slides/${i("s03")}/visual/marks`, "uniqueItems"]]);

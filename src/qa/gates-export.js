@@ -454,7 +454,7 @@ function runX1(ec, files, input, out) {
       const have = new Set(files.map((f) => norm(f.path)));
       const skipped = new Set((input.skipped || []).map((s) => norm(s.path)));
       expected.map(norm).forEach((p) => {
-        if (!have.has(p) && !skipped.has(p)) emit(ec, out, "X1.complete", { vars: { path: p } });
+        if (!have.has(p) && (!skipped.has(p) || /\.mp4$/i.test(p))) emit(ec, out, "X1.complete", { vars: { path: p } });
       });
     }
   }

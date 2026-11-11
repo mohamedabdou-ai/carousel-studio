@@ -566,7 +566,7 @@ class ScriptToSpecTests(unittest.TestCase):
         self.assertIn("never cut it yourself", res.stdout)                            # offered, not trimmed
 
     def test_keep_records_the_creators_override_on_a_long_cover(self) -> None:
-        long_cover = OWNER.replace("وكلاء AI اتواصلوا…\nمن غير إنترنت! 👀", "كلود كتب الكود… طب فين الدليل إنه صح فعلاً؟")
+        long_cover = OWNER.replace("وكلاء AI اتواصلوا…\nمن غير إنترنت! 👀", "كلود يكتب الكود ويختبر النتيجة في دقائق… لكن ما الدليل؟")
         _, spec = self.step1(long_cover, "--style", "notebook", "--architecture", "news")
         n = len(spec["slides"])
         fill = {
@@ -591,7 +591,7 @@ class ScriptToSpecTests(unittest.TestCase):
         self.assertIn("kept as the creator wrote it: C1.hero-words s01", res.stdout)
         self.assertIn("keep C9.nothing: the check does not raise it", res.stdout)
         spec = json.loads(spec_path.read_text(encoding="utf-8"))
-        self.assertEqual(spec["slides"][0]["headline"], "كلود كتب الكود… طب فين الدليل إنه صح فعلاً؟")  # the words stay
+        self.assertEqual(spec["slides"][0]["headline"], "كلود يكتب الكود ويختبر النتيجة في دقائق… لكن ما الدليل؟")  # the words stay
         kept = [r for r in spec["qa"]["results"] if r.get("overridden")]
         self.assertTrue(kept and all(r["rule"].startswith("C1.") and r["slide"] == "s01" for r in kept))
         check = subprocess.run([sys.executable, str(SCRIPT.parent / "validate.py"), "spec", str(spec_path), "--brand", str(self.brand)],

@@ -48,3 +48,8 @@ The phrasing lists live in `data/dialects/<code>.json` (`cta`) and are described
 
 ## English posts
 Same kinds and rules: "Save this for when you start", "Send this to {who} {reason}", "Comment «{keyword}» and {asset} lands in your DMs right away" (instant delivery only), "Follow so {series} reaches you".
+
+## Allowed kinds and variety
+`cta.kind` is exactly `save`, `send`, `question`, `keyword-dm` or `follow`. Use `send` for sharing; `share` is a slide type, not a CTA kind.
+
+A ready script carries `ext.source: "creator-script"`. For that lane `C7.cta-repeat` and `C7.family-repeat` are NOTE: variety is advice, and the creator’s question stays theirs. Both remain FIX for team-written copy. This changes no other repetition or CTA gate.

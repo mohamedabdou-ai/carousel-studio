@@ -138,3 +138,5 @@ The user, the Studio or an occasion overlay may change: roles, fonts, the type s
 4. List 1–4 variants per slide type, the first being the default, using only names from the archetype table; style every one you list.
 5. Set `motion.allowed` to the shipped recipes that suit the look (default `highlight-sweep`, never `calm`) and say why in this file.
 6. Run `preset_lint.py --all --write-index`, render the golden slides, add the preset to the Style tab's table above.
+
+`style.overrides` accepts scalar token values only (string, number, boolean), keyed by dotted token paths. Set `{"type.scale.heroTarget": 140}`; never a range array such as `{"type.scale.hero": [120,150]}`. Run `python scripts/validate.py spec spec.json --format json` before building.

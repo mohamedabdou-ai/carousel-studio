@@ -2,7 +2,7 @@
 (function () {
   var core = (CS.core = CS.core || {});
 
-  var HARD_MAX = 20;
+  var HARD_MAX = 10;
   var SENTENCE_END = /[.!?\u061F\u2026]/;
   var WS_CHAR = /[ \t\n\r\f\v\u00A0\u202F]/;
 
@@ -105,7 +105,7 @@
 
   function insertSlide(spec, type, at, init) {
     var slides = (spec.slides || []).slice();
-    if (slides.length >= HARD_MAX) throw usage("A carousel has at most " + HARD_MAX + " slides.", { max: HARD_MAX });
+    if (slides.length >= HARD_MAX) throw usage("A carousel has at most " + HARD_MAX + " slides, including the cover.", { max: HARD_MAX });
     if (core.constants.SLIDE_TYPES.indexOf(type) < 0) throw usage("Unknown slide type \"" + type + "\".", { type: type });
     var id = nextId(spec), pos = Math.max(0, Math.min(slides.length, at === undefined || at === null ? slides.length : at | 0));
     var fresh = Object.assign({}, init || {}, { id: id, n: pos + 1, type: type });
@@ -158,7 +158,7 @@
   /** «قسّمها لسلايدين»: bullets or the body are halved; the second slide has a fresh id, keeps the title, and takes the bridge, the CTA and the closing media. */
   function splitSlide(spec, slideId) {
     var i = indexOf(spec, slideId), slides = spec.slides.slice();
-    if (slides.length >= HARD_MAX) throw usage("A carousel has at most " + HARD_MAX + " slides.", { max: HARD_MAX });
+    if (slides.length >= HARD_MAX) throw usage("A carousel has at most " + HARD_MAX + " slides, including the cover.", { max: HARD_MAX });
     var s = slides[i], a = Object.assign({}, s), b = Object.assign({}, s), id = nextId(spec);
     if (Array.isArray(s.bullets) && s.bullets.length >= 2) {
       var half = Math.ceil(s.bullets.length / 2);

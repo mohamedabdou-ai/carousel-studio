@@ -30,6 +30,7 @@ function teamLogCard(spec) {
 
 /** Open the "add a slide" menu; `at` is the insertion index. */
 function openAddMenu(ctx, anchor, at) {
+  if (ctx.slides().length >= 10) { toast(t("slide.limit", { max: 10 }), "warn"); return; }
   openMenu(anchor, addableTypes().map(function (type) {
     return { label: typeLabel(type), icon: "plus", onSelect: function () { var id = ctx.insertSlide(type, at); if (id) { ctx.select(id); toast(t("slide.added"), "ok"); } } };
   }));
@@ -51,7 +52,7 @@ function slideMenu(ctx, anchor, slide) {
     { label: t("slide.move-down"), icon: "arrow-down", disabled: i >= n - 1, onSelect: function () { ctx.moveSlide(slide.id, 1); } },
     { divider: true },
     { label: t("slide.duplicate"), icon: "copy-plus", onSelect: function () { var id = ctx.duplicateSlide(slide.id); if (id) ctx.select(id); } },
-    { label: t("slide.split"), icon: "scissors", onSelect: function () { if (ctx.splitSlide(slide.id)) toast(t("slide.split.done"), "ok", { action: { label: t("common.undo"), fn: function () { ctx.undo(); } } }); else toast(t("slide.split.none"), "info"); } },
+    { label: t("slide.split"), icon: "scissors", onSelect: function () { if (ctx.slides().length >= 10) { ctx.splitSlide(slide.id); return; } if (ctx.splitSlide(slide.id)) toast(t("slide.split.done"), "ok", { action: { label: t("common.undo"), fn: function () { ctx.undo(); } } }); else toast(t("slide.split.none"), "info"); } },
     { label: t("slide.add-after"), icon: "plus", onSelect: function () { openAddMenu(ctx, anchor, i + 1); } },
     { divider: true },
     { label: t("common.delete"), icon: "trash-2", danger: true, disabled: n <= 1, onSelect: function () { confirmDelete(ctx, slide); } }
@@ -94,7 +95,7 @@ function ScriptScreen(ctx) {
     chip(t("meta.digits"), t("digits." + s.locale.digits));
     var count = ctx.slides().length;
     var warn = ctx.plugin ? (count < ctx.plugin.slides.warnBelow ? "warn" : count > ctx.plugin.slides.recommendedMax ? "mute" : "ok") : "mute";
-    chips.appendChild(pill(t("script.count", { n: count }), warn, count < (ctx.plugin ? ctx.plugin.slides.warnBelow : 6) ? "triangle-alert" : "layers"));
+    chips.appendChild(pill(t("script.count", { n: count }), warn, count < (ctx.plugin ? ctx.plugin.slides.warnBelow : 4) ? "triangle-alert" : "layers"));
 
     summary.appendChild(h("div", { class: "ui-card ui-card--hero" },
       h("div", { class: "ui-eyebrow" }, t("script.topic")),

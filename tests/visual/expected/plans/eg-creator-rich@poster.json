@@ -28,7 +28,7 @@
           "filled": 74
         },
         "recipe": "over",
-        "tone": "field",
+        "tone": "base",
         "field": true,
         "bleed": "both",
         "why": "الرقم 74 هو الفكرة، فكبرناه",
@@ -46,7 +46,7 @@
           }
         },
         "recipe": "under",
-        "tone": "base",
+        "tone": "invert",
         "why": "حطينا كلام السلايد نفسه جوه ملاحظات",
         "alt": "ملاحظات: 5 نصايح للكتابة"
       }
@@ -71,7 +71,7 @@
           "wordStyle": "struck"
         },
         "recipe": "under",
-        "tone": "invert",
+        "tone": "base",
         "why": "مفيش صورة تقول الكلام ده بصدق، فخلينا الكلمة هي الصورة",
         "alt": "الكلمة «خرافة» بحجم كبير"
       }
@@ -84,7 +84,7 @@
           "icon": "users"
         },
         "recipe": "under",
-        "tone": "base",
+        "tone": "invert",
         "field": true,
         "why": "اخترنا فريق لأن الكلام عن متابعينك",
         "alt": "أيقونة فريق"
@@ -112,46 +112,30 @@
       "id": "s09",
       "visual": {
         "anchor": {
-          "kind": "field",
-          "object": "bar-chart"
+          "kind": "icon",
+          "object": "bar-chart",
+          "size": "hero"
         },
         "recipe": "under",
-        "tone": "invert",
+        "tone": "base",
         "field": true,
         "why": "اخترنا الأرقام لأن الكلام عن الأرقام",
         "alt": "رسم الأرقام"
       }
     },
     {
-      "id": "s10",
-      "visual": {
-        "anchor": {
-          "kind": "mock",
-          "mock": {
-            "kind": "chat",
-            "caption": "رسالة بعد أسبوع"
-          }
-        },
-        "recipe": "under",
-        "tone": "base",
-        "why": "حطينا كلام السلايد نفسه جوه محادثة",
-        "alt": "محادثة: كنت بكتب كاروسيل ومحدش بيحفظه"
-      }
-    },
-    {
       "id": "s11",
       "visual": {
         "anchor": {
-          "kind": "icon",
-          "icon": "bookmark",
-          "treatment": "giant",
-          "size": "hero"
+          "kind": "word",
+          "word": "الهوك",
+          "wordStyle": "sticker"
         },
         "recipe": "center",
         "tone": "field",
         "field": true,
-        "why": "اخترنا حفظ لأن الكلام عن احفظ البوست",
-        "alt": "أيقونة حفظ"
+        "why": "مفيش صورة تقول الكلام ده بصدق، فخلينا الكلمة هي الصورة",
+        "alt": "الكلمة «الهوك» بحجم كبير"
       },
       "variant": "action"
     }

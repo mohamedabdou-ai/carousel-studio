@@ -31,7 +31,7 @@
 - **The same DOM** is the source for the editor, the PNG/JPEG painters, the animated cover and Claude Code's headless render. One layout engine, one set of rules.
 - **Canvas** 1080×1440 (3:4) with a centred 1012×1350 safe box; auto-crop to 4:5 (1080×1350) for APIs and schedulers.
 - **Deliverable per post:** slide 1 as a looping MP4 cover (6 s, poster-first), other slides as PNG, caption, per-slide captions, ≤5 hashtags, Arabic alt text per slide, PDF, QA report; the editable source files (`spec.json`, `cover.hf.html`, `studio-source.html`, together over 10 MB) are an opt-in export, so the default kit stays light enough to move to a phone (≤ 4 MB for 8 slides).
-- **Hard limits (Q39/Q40):** 8–12 slides (warn under 6); cover hero ≤6 words, cover total ≤12; body ≤25 words (hard cap 35); ≤5 hashtags; caption 300–900 characters by default.
+- **Hard limits (Q39/Q40):** 2–10 slides including the cover (4–6 is valid; optional sweet spot 6–10, warn under 4); cover hero ≤6 words, cover total ≤12; body ≤25 words (hard cap 35); ≤5 hashtags; caption 300–900 characters by default.
 - **Digits:** Western 0–9 by default; Arabic-Indic ٠–٩ is an opt-in. One digit system per design.
 - **AI never writes Arabic inside images.** External image/video tools are optional and only supply text-free plates.
 - **Credits** («من صنع محمد عبده» and his socials) appear only in tool screens (Studio About, Brand Home, onboarding welcome, README). Nothing exported carries his name. Users own everything they create.
@@ -41,7 +41,7 @@
 2. Directory rules: no top-level `bin/`; every non-image, non-font file **< 256 KiB**; runtime JS chunks **≤ 200 KiB** each; UTF-8 (no BOM), LF newlines; valid JSON; plugin ≤ 480 files (CI fails at 480, directory limit 512).
 3. Skills are **self-contained**: nothing under `skills/<name>/` may read a path outside that skill folder at runtime. Shared files reach other skills as synced copies (section 2.4).
 4. Python: **3.11 standard library only**, runs on Windows and Linux. Always `open(..., encoding="utf-8")`, use `pathlib`, no shell-specific calls, no `os.system`. Node (`.mjs`) only for the Claude Code lane and repo tooling.
-5. **No GSAP, no Remotion, no telemetry or analytics code, no network calls from skills** unless the user asks. The browser runtime may load only `mediabunny@1.61.0` and `fflate@0.8.2`, from `https://cdn.jsdelivr.net/npm/` at exactly those versions.
+5. **No GSAP, no Remotion, no telemetry or analytics code, no network calls from skills** unless the user asks. The browser runtime may load only `mediabunny@1.61.0`, from `https://cdn.jsdelivr.net/npm/` at that exact version.
 7. Arabic rules (enforced by the engine and checked by QA): `dir="rtl" lang="ar"`; never letter-spacing, justification, italic/slant or font-synthesis on Arabic; no `opacity`/RGBA on Arabic text nodes (group opacity on whole words or lines only, in motion); isolate every LTR run (English, numbers with units, @handles, #tags, URLs, phones) with `<bdi dir="ltr">`; one digit system per design; Arabic punctuation ، ؛ ؟; kashida on at most one headline word and only where the preset allows; AI never writes Arabic inside images.
 8. Quality bar: public product, design-sensitive owner. Professional, consistent, well-organised code and docs. No placeholder motion, no lorem ipsum, no "TODO" strings in shipped user-facing text.
 9. Nothing in `plugins/carousel-studio/` may mention the owner's name except the files listed in 0.6.
@@ -84,7 +84,6 @@
 | `specVersion`, every `schemaVersion` | `1` |
 | `PLUGIN_VERSION` | `1.1.1` |
 | `MEDIABUNNY` | `1.61.0` → `https://cdn.jsdelivr.net/npm/mediabunny@1.61.0/+esm` |
-| `FFLATE` | `0.8.2` → `https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.js` |
 | `HYPERFRAMES_VERSION` (Claude Code lane CLI) | `0.8.185` (latest on npm on 2026-10-22; B3 smoke-renders it and, only if it fails, moves to the nearest version that passes and records the date in a comment) |
 
 **Errors.** Browser code throws `CSError` (`class CSError extends Error { code: string; detail?: any }`). Codes: `E_SCHEMA`, `E_FONT_MISSING`, `E_FIT_OVERFLOW`, `E_PAINT_TAINTED`, `E_PAINT_UNSUPPORTED`, `E_ENCODER_UNSUPPORTED`, `E_DEP_LOAD`, `E_NO_CAPABILITY`, `E_CONFLICT`, `E_ABORTED`, `E_USAGE`. Python raises `_cs.CSError` (same codes). CLI scripts print errors to **stderr** as `cs-error: <code>: <message>` and exit with a code from the table below. JSON output (`--format json`) always goes to **stdout** and is a single object or array.
@@ -669,7 +668,7 @@ interface HfController { id: string; duration(): number; time(t?: number): numbe
 ### 4.7 `CS.export` and `CS.export.mp4` (B3)
 ```ts
 CS.export = {
-  DEPS: { mediabunny: { version: "1.61.0"; url: string }; fflate: { version: "0.8.2"; url: string } };
+  DEPS: { mediabunny: { version: "1.61.0"; url: string } };
   capabilities(): Promise<{ downloads: boolean; webShare: boolean; webShareFiles: boolean; videoEncoder: boolean; h264: boolean; painter: "svg" | "replay"; mediabunny: boolean }>;
   slides(spec: Spec, ctx: ExportContext, opts: { format: "png" | "jpeg4x5"; only?: string[] /* slide ids */; onProgress?: (p: Progress) => void; signal?: AbortSignal }): Promise<ExportFile[]>;
   cover(spec: Spec, ctx: ExportContext, opts?: { variant?: "3x4" | "4x5"; onProgress?: (p: Progress) => void; signal?: AbortSignal }): Promise<ExportFile>;       // MP4
@@ -709,7 +708,7 @@ Requirements:
 
   `NN` is the zero-padded 2-digit slide position; labels inside `slide-captions.txt` and `alt-text.txt` are `NN: text` lines with Western digits (technical labels). `studio-source.html` is `ctx.sourceHtml()` — the Studio serialised **credit-free** (`CS.ui.serializeSource()`), so X1 can scan every kit file.
 - **Save order** (`mode:"auto"`): Web Share with files when `navigator.canShare({files})` and the call comes from a user gesture on a touch device → `claude.use("downloads").save({filename, data})` per file (a single ZIP when more than 3 files) → `<a download>` fallback. `declined` is not an error. `extension_not_enabled` ⇒ files one by one.
-- **Dependencies** load lazily: `import(CS.export.DEPS.mediabunny.url)` only when an MP4 is requested. `fflate` is optional (the ZIP writer is built in); if a builder uses it, it must be loaded from `DEPS.fflate.url` and fall back to the built-in writer when the load fails. No other network request is ever made.
+- **Dependencies** load lazily: `import(CS.export.DEPS.mediabunny.url)` only when an MP4 is requested. It tries up to 3 times, waiting 250 ms then 500 ms, before `E_DEP_LOAD`. The ZIP writer is built in; no compression dependency is loaded. No other network request is ever made.
 - **Automation** (Claude Code lane): `CS.automation = { ready: Promise<void>; setSpec(spec): Promise<void>; runQa(): Promise<QAReport>; exportAll(opts?): Promise<{ ok: boolean; files: Array<{ path: string; bytes: number; mime: string }>; report: QAReport }>; readChunk(path: string, offset: number, length: number): Promise<string /* base64 */> }`. `exportAll` keeps the bytes in memory (`window.__csFiles: Map<path, Uint8Array>`); `render.mjs` pulls them with `readChunk` in 4 MiB slices.
 
 ### 4.8 `CS.ui` and `CS.ui.brandBook` (B5)
@@ -1077,7 +1076,7 @@ Rules are **data**. `data/qa-rules.json` (B4) holds the gate registry; the word 
 ### 7.1 Severities, status, exit codes
 - **BLOCK** disables «حزمة النشر» until fixed (the Check screen offers «صلّح تلقائياً» first). **FIX** exports with a badge. **NOTE** is advice.
 - Only gates marked *overridable* accept «صدّر رغم ذلك» (recorded as `overridden:{reason,at}` in `spec.qa.results` and in `qa-report`). Technical gates (D*, V1, X1, A1, N1, B1-rendered) are **never** overridable and must produce **zero false BLOCKs on `tests/corpus-clean/`**. The overridable set is exactly: `C1.*`, `C2.body-hard`, the length checks on the creator's own words (`C2.title-words`, `C2.body-words`, `C2.bullets`, `C2.dense-words`, `C2.slide-words`, `C2.cta-words`, `C2.share-words`: a creator who keeps a long line keeps it, recorded as «تجاوز»), `C3.*`, `O1.*`.
-- `status`: `block` if any non-overridden BLOCK; else `fix` if any non-overridden FIX; else `pass`. CLI exit code: `pass`/`NOTE`-only → 0, `fix` → 1, `block` → 2.
+- `status`: `block` if any non-overridden BLOCK; else `fix` if any non-overridden FIX; else `pass`. Lint/validation exit code: `pass`/`NOTE`-only → 0, `fix` → 1, `block` → 2. `render.mjs` exits 0 for a completed pass or FIX export; `--strict` restores FIX = 1. BLOCK and real failures are nonzero. Both QA reports are always written, even for PNG-only formats. A requested missing cover MP4 is an X1.complete BLOCK (including skipped encodes), prints an error on stderr, sets JSON video.failed/missing/errors and exits nonzero; `--video none` requests stills only.
 - Checks flagged `"engines":["model"]` (meaning word first, gap not answered on the cover, voice, dialect purity beyond deny markers, text inside AI images, sensitivities needing judgement) are **never emitted by code**; the `cs-arabic-editor` / `cs-art-director` agents (or the inline role pass) run them from the same descriptions, and `references/qa-gates.md` (B9) lists them.
 
 ### 7.2 Gate registry — thresholds are binding
@@ -1087,13 +1086,13 @@ Numbers in `[…]` are keys in `platform-instagram.json → plugin` (qa-rules us
 
 | Gate | Scope | Checks (rule id → condition → severity) |
 |---|---|---|
-| **C1** cover limits | text | `hero-words` `headline` words > [cover.heroMaxWords=6] → BLOCK·ovr · `total-words` kicker+headline+sub > [cover.totalMaxWords=12] → BLOCK·ovr · `lines` forced breaks +1 > [cover.maxLines=3] → FIX · `number-words` a spelled-out number (copy.json numberWords) in the cover text → FIX · model: meaning word first, gap unanswered |
+| **C1** cover limits | text | `hero-words` first beat of `headline` > [cover.heroMaxWords=6] → BLOCK·ovr · `total-words` kicker+headline+sub > [cover.totalMaxWords=12] → BLOCK·ovr · `lines` forced breaks +1 > [cover.maxLines=3] → FIX · `number-words` a spelled-out number (copy.json numberWords) in the cover text → FIX · model: meaning word first, gap unanswered |
 | **C2** text limits | text | `title-words` > [text.titleMaxWords=6] → FIX · `body-words` > [text.bodyMaxWords=25] → FIX · `body-hard` > [text.bodyHardMaxWords=35] → BLOCK·ovr · `bullets` > [text.bulletsMax=4] (dense types > [text.denseBulletsMax=8]) → FIX / BLOCK · `dense-words` checklist+summary text > [text.denseMaxWords=45] → FIX · `slide-words` all text > [text.slideMaxWords=50] → FIX · `bridge-words` > [text.bridgeMaxWords=8] → FIX · `cta-words` / `share-words` > 12 → FIX |
 | **C3** slide 2 | text | `words` slide-2 text > [slide2.maxWords=12] → BLOCK·ovr · `intro` matches copy.json introPhrases (قبل ما نبدأ، أنا فلان …) → BLOCK·ovr · `type` slide 2 is not `rehook`/`item`/`stat`/`proof`/`myth-fact` → NOTE |
 | **C4** CTA | text | `count` carousel without exactly one `cta` → BLOCK · `position` CTA not on the last slide or the one before → FIX · `intent` CTA kind not in [cta.allowedByIntent] → FIX · `bait` commentBait list → BLOCK · `keyword-asset` kind `keyword-dm` without `captionPack.asset.delivery = "instant"` → BLOCK · `early` a `cta` before the payoff (first half) → BLOCK |
-| **C5** structure | text | `slide-count` carousel < [slides.hardMin] → BLOCK; < [slides.warnBelow=6] → FIX; 6–7 or 13–20 → NOTE; > [slides.hardMax] → BLOCK · `skeleton` first slide not `cover`, last not `cta`/`offer`/`summary`+`cta` → FIX · `bridge` missing on `rehook item step stat compare myth-fact proof setup story-beat` that are not last → FIX · model: voice drift ≤ [voice.driftIqr] IQR (via `voice_check.py`) |
-| **C6** list count | text | cover numeral N with architecture `listicle`/`steps` but the number of `item`/`step` slides ≠ N → BLOCK |
-| **C7** repetition | text | `cta-repeat` same CTA kind as one of the last [history.ctaRepeatWindow=2] posts → FIX · `family-repeat` same hook family as the last [history.familyRepeatWindow=2] → FIX · `hook-similar` similarity ≥ [similarity.hookReuseMax=0.8] to a used hook → FIX · `max-use` family `maxUsePer` exceeded → FIX |
+| **C5** structure | text | `slide-count` carousel < [slides.hardMin] → BLOCK; < [slides.warnBelow=4] → FIX; 4–5 → NOTE (short posts are valid); > [slides.hardMax] → BLOCK · `skeleton` first slide not `cover`, last not `cta`/`offer`/`summary`+`cta` → FIX · `bridge` missing on `rehook item step stat compare myth-fact proof setup story-beat` that are not last → FIX · model: voice drift ≤ [voice.driftIqr] IQR (via `voice_check.py`) |
+| **C6** list count | text | cover numeral N with architecture `listicle`/`steps` but the number of distinct positive integer `ord` members (any slide type) ≠ N; with no ord use `item` for listicle or `step` for steps → BLOCK |
+| **C7** repetition | text | `cta-repeat` same CTA kind as one of the last [history.ctaRepeatWindow=2] posts → FIX (NOTE for ext.source=creator-script) · `family-repeat` same hook family as the last [history.familyRepeatWindow=2] → FIX (NOTE for ext.source=creator-script) · `hook-similar` similarity ≥ [similarity.hookReuseMax=0.8] to a used hook → FIX · `max-use` family `maxUsePer` exceeded → FIX |
 | **C8** voice | text | `ai-words` `stock-opener` `translationese` `stiff-msa` `hype` (copy.json lists) → FIX · `abstract` → NOTE |
 | **C9** caption pack | text | `length` characters outside [caption.defaultChars=[300,900]] (fast mode [caption.fastChars]) → FIX; > 2200 → BLOCK · `first-line` > [caption.firstLineMaxChars=125] → FIX · `first-line-similarity` ≥ [caption.firstLineMaxSimilarityToCover=0.6] → FIX · `keyword-line` sentence 2 empty → FIX · `hashtags` > [hashtags.max=5] → BLOCK; malformed or duplicate → FIX · `per-slide` missing for any slide → BLOCK; > [perSlideCaption.maxChars=100] → FIX · `alt-missing` → BLOCK · `alt-length` > [alt.targetMaxChars=300] → NOTE; > [alt.hardMaxChars=1000] → BLOCK |
 | **O1** orthography & dialect | text (+model) | every `ortho.json` rule by its own severity · `deny-marker` dialect deny list → BLOCK·ovr (allowlist `brand.voice.allow`) · `warn-marker` → FIX · model: proofreader veto |
@@ -1441,7 +1440,7 @@ Scripts import submodules explicitly (`from _cs import text, lint`); a synced sk
 | Arabic-Indic digits by country/register | **Western default everywhere**; Arabic-Indic opt-in, only offered | Q38 |
 | Cover headline ≤ 8 words | hero ≤ 6, total ≤ 12; hooks carry `heroMaxWords`/`totalMaxWords` | Q39 |
 | Caption ≤ 150 / 80–150 words | 300–900 characters (fast mode shorter) | Q40 |
-| `cs-hf`/`cs-mp4` as tree-shaken vendored subsets, jsDelivr only as fallback | `cs-hf.js` is our own; mp4 muxing **loads `mediabunny@1.61.0` from jsDelivr**; ZIP/PDF writers are ours; `fflate@0.8.2` allowed but optional | task rule: the runtime may load only those two, exact versions |
+| `cs-hf`/`cs-mp4` as tree-shaken vendored subsets, jsDelivr only as fallback | `cs-hf.js` is our own; mp4 muxing **loads `mediabunny@1.61.0` from jsDelivr**; ZIP/PDF writers are ours; no other browser dependency | task rule: only that library, at its pinned version |
 | Anime.js "if needed" | own ~3 KB tween helper only | one fewer dependency |
 | Embedded spec field `emphasis?` | inline `==span==` markup in text fields | editing in place keeps one source of truth |
 | Slide fields | added `sides[]` (compare, myth-fact), `ord`, `attribution`, `overrides`, `notes`; `number.value` is a Western-digit string | needed by the 18 archetypes |

@@ -81,7 +81,7 @@ Read only that role's brief and allowed board sections. Produce its output and c
 
 ## 4. Solo fast lane
 For «بسرعة», "fast" or a quick post, the main thread writes the angle, hooks and script from the writing references. No five rounds, panel, strategist, motion designer or creative-director reviewer. Keep the ready-script lane unchanged.
-1. Find the brand, read memory, choose one angle and score the hooks with hook_features.py; draft 8–12 slides and the caption pack. Use the shipped motion recipe picked by recommend.
+1. Find the brand, read memory, choose one angle and score the hooks with hook_features.py; draft at most 10 slides including the cover (4 to 6 is fine) and the caption pack. Use the shipped motion recipe picked by recommend.
 2. Dispatch only carousel-studio:cs-arabic-editor once on the copy (veto). Apply its listed corrections; an unresolved VETO stops the post. Run lint_copy.py, validate.py --lint --brand and voice_check.py where applicable.
 3. Dispatch only carousel-studio:cs-art-director once, marked «fast lane»: visual plan → free design → one render/review sheet check. Rebuild the Studio in Design view.
 4. Dispatch only carousel-studio:cs-qa-producer once on the spec and renders, with brand and skills root. All text, rendered and export gates run. Fix BLOCKs; unresolved ones stop delivery.
@@ -92,3 +92,5 @@ Guided: brief/pitch → **checkpoint 1** (two directions, recommendation, open f
 
 ## 5. What the creator sees
 Only decisions and reasons. Team log: ≤6 lines, one per key, ≤160 characters each; decisions and reasons only. It is in the creator's dialect, it is stored in `spec.ext.teamLog`, and the Studio shows it as «الفريق قرر إيه؟». Never show the board, the handoff cards, the duel table or a persona's raw reaction unless the creator asks «وريني».
+
+Memory values: `move` = `big-number`, `enemy`, `reveal`, `mirror`, `before-after`, `cheat-sheet`, `insider-leak`, `confession`, `free-vs-paid`, `countdown`; `verdict` = `ship`, `revised`, `killed`. Use these exact IDs with `brand_io.py remember`, not descriptions.

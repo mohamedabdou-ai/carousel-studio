@@ -50,7 +50,7 @@ The Studio, a page that opens in your browser on phone or computer, lets you edi
 **This plugin sends no data.** There is no server, no account, no telemetry and no analytics code.
 
 - Skills and commands run inside Claude. Its scripts (validation, linting, building the Studio page) run in Claude's sandbox, or on your computer in Claude Code.
-- The Studio runs in your browser. Exporting the MP4 cover loads two pinned libraries (`mediabunny` 1.61.0, `fflate` 0.8.2) from `cdn.jsdelivr.net`; nothing from your post is sent. PNG, JPEG, PDF and ZIP exports make no request.
+- The Studio runs in your browser. Exporting the MP4 cover loads one pinned library (`mediabunny` 1.61.0) from `cdn.jsdelivr.net`; nothing from your post is sent. PNG, JPEG, PDF and ZIP exports make no request.
 - A source link you give is read with Claude's own tools. Tools you connect yourself (an image generator, Canva, a scheduler) run only after you approve each use.
 - The plugin never asks for, uses or stores API keys.
 
@@ -74,3 +74,5 @@ Source, Arabic guide and issues: <https://github.com/mohamedabdou-ai/carousel-st
 Made by **Mohamed Abdou** (محمد عبده), founder of Pyramedia X in Dubai, for Arabic content. Free to use; a thank-you or a mention goes a long way.
 
 Instagram [@mohamed.abdou90](https://www.instagram.com/mohamed.abdou90) · TikTok [@mohamedabdou.ai](https://www.tiktok.com/@mohamedabdou.ai) · YouTube [@mohamedabdou-ai](https://www.youtube.com/@mohamedabdou-ai) · LinkedIn [mohamed-abdou90](https://www.linkedin.com/in/mohamed-abdou90) · Store [store.pyraai.cloud](https://store.pyraai.cloud)
+
+Carousels have at most 10 slides including the still or video cover, for Instagram’s publishing API and most schedulers. Short posts of 4 to 6 slides are welcome.

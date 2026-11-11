@@ -41,7 +41,7 @@ A phone screenshot is not the post's original size, so only the **ratio** of a s
 | Generic design (D7) | stock template look, no brand colour or handle, the same layout on every slide, a default font the brand did not choose | NOTE |
 | Crowding (C2, D6) | a body over 25 words, more than 4 bullets, more than 8 rows on the cover, two ideas on one slide, a slide over 50 words | FIX |
 | Static cover (V1) | only a video tells; ask whether the cover moves and loops without a jump. A still cover is a NOTE, not an error | NOTE |
-| Random structure (C5, C6) | slide count (8–12 is the target, under 6 is a FIX); slide 2 an intro or a bio; a cover that promises "N things" but delivers a different number; no bridge lines; the call to action not on the last slides or before the payoff | FIX / BLOCK |
+| Random structure (C5, C6) | slide count (at most 10 including the cover; 4 to 6 needs no count FIX); slide 2 an intro or a bio; a cover that promises "N things" but delivers a different number; no bridge lines; the call to action not on the last slides or before the payoff | FIX / BLOCK |
 | Repeated call to action (C7) | needs the user's previous posts; skip it when you have none | FIX |
 
 Also look at: the cover at thumbnail size (imagine it 130 px wide: can the hook be read? T1), contrast of text on photos (D4), text near the edges or the top-right and bottom-left corners (keep-outs), Arabic breakage (disconnected letters, a stranded «لـ», a number split from its noun, a lone last word; B1, D5, D6), mixed digit systems (N1), letter-spaced or slanted Arabic (D5), identical header and footer chrome on every slide, a swipe cue and counter that agree with each other, visible AI watermarks or letters inside images (A1), another account's logo or screenshot (originality).
@@ -58,7 +58,7 @@ When the `cs-art-director` agent is not loaded, do its job as a role pass: set a
 ## 6. The report (in the user's dialect; Arabic first)
 Keep it to what the user can act on:
 - **الحكم**: «جاهز» · «جاهز بعد تعديلات بسيطة» · «محتاج إصلاح قبل النشر» · «الأفضل نعيد بناءه».
-- **عدد السلايدات**: the count and whether it sits in 8–12.
+- **عدد السلايدات**: the count including the cover: 2 to 10, with 4 to 6 accepted.
 - **الأخطاء السبعة**: one line each with ✔ or ✘ and the slide number. Use a table in the report file; in chat use numbered lines that start with Arabic, with at most one Latin run per line and never a Latin word at a line edge.
 - **نصوص**: the top copy findings (hook, slide 2, call to action, caption), each with the smallest fix.
 - **أهم 3 تعديلات**: the three changes that would help most, the biggest first.

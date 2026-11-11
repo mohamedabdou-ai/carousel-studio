@@ -26,7 +26,7 @@ The procedure for screenshots (intake, safety, the report in the user's dialect)
 | 5 | Static cover | غلاف ثابت | gate `V1` (`V1.static`, `V1.loop`, `V1.blank`, `V1.flashes`) | NOTE when motion is off; BLOCK for a broken loop |
 | 6 | Random structure | بنية عشوائية | `C5.skeleton` `C5.bridge` `C5.voice-drift` `C6.list-count` `C6.slide2-promise` | FIX; BLOCK when the cover number lies |
 | 7 | Repeated CTA | دعوة مكررة | `C7.cta-repeat` `C4.multiple` | FIX; BLOCK for two different asks |
-| + | Slide count | عدد السلايدات | `C5.slide-count` `C5.slide-count-low` `C5.slide-count-range` | BLOCK outside 2-20; FIX under 6; NOTE outside 8-12 |
+| + | Slide count | عدد السلايدات | `C5.slide-count` `C5.slide-count-low` `C5.slide-count-range` | BLOCK outside 2-10 including the cover; FIX below 4; NOTE at 4-5; 4-6 is valid |
 
 Thresholds are in `data/platform-instagram.json`; the exact conditions are in `qa-gates.md`.
 
@@ -116,7 +116,7 @@ Thresholds are in `data/platform-instagram.json`; the exact conditions are in `q
 
 ## The slide count
 
-Shown on every audit: 8 to 12 slides is the sweet spot. Under 6 is a FIX, 6-7 and 13-20 are NOTEs, and a carousel under 2 or over 20 slides is a BLOCK (Instagram's limit is 20). A deliberate two-slide reveal exports with the FIX badge; it is a choice, not a mistake.
+At most 10 slides, including the still or video cover: Instagram’s publishing API and most schedulers accept at most 10 items. A focused carousel of 4, 5 or 6 slides is complete; 6 to 10 is an optional sweet spot, never a reason to pad the post. Under 2 or over 10 is BLOCK; 2 to 3 is FIX; 4 to 5 may carry a NOTE.
 
 ## Reading the report
 

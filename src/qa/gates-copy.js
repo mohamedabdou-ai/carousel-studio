@@ -1,10 +1,4 @@
-/* Carousel Studio · cs-qa · copy gates
- *
- * Text-scope gates about the words on the slides: C1 cover, C2 text limits,
- * C3 slide 2, C4 call to action, C5 structure, C6 list count, C7 repetition,
- * C8 voice and C10 originality. Thresholds come from qa-rules.json through
- * param(); severities are never hard-coded here.
- */
+/* Copy gates; thresholds and severities come from qa-rules.json. */
 
 const CTA_KIND_NAMES = {
   save: { ar: "حفظ", en: "save" },
@@ -22,7 +16,6 @@ const INTENT_NAMES = {
 const kindName = (k, lang) => (CTA_KIND_NAMES[k] ? CTA_KIND_NAMES[k][lang] : k);
 const intentName = (k, lang) => (INTENT_NAMES[k] ? INTENT_NAMES[k][lang] : k);
 
-/** Emit `id` when `count` is above the check's params.max. */
 function emitOver(ctx, out, id, slide, el, count, extra) {
   if (!active(ctx, id, slide)) return false;
   const p = param(ctx, id);
@@ -31,7 +24,6 @@ function emitOver(ctx, out, id, slide, el, count, extra) {
   return true;
 }
 
-/** Slide and caption copy that word lists (C8, SEN1 …) are matched against. */
 function proseFields(ctx) {
   const out = [];
   ctx.slides.forEach((s) => {
@@ -45,7 +37,6 @@ function proseFields(ctx) {
   return out;
 }
 
-/** Every authored text that spelling and dialect rules are run on. */
 function lintFields(ctx) {
   const out = [];
   ctx.slides.forEach((s) => {
@@ -64,12 +55,22 @@ const matchCtx = (ctx) => ({
 
 /* ------------------------------------------------------------------- C1 */
 
+function splitCover(cover) {
+  const s = String(cover || "").normalize("NFC").replace(/\r/g, "").trim();
+  const m = /…|\.{3}|[؟?!:](?=[ \t\n\f\v\u00A0\u202F]|$)|\n/.exec(s);
+  if (!m) return { hero: s, sub: "" };
+  const sub = s.slice(m.index + m[0].length).replace(/^[…. \t\n\f\v\u00A0\u202F]+/, "").trim();
+  if (!sub || (s.slice(0, m.index).match(/==/g) || []).length % 2) return { hero: s, sub: "" };
+  const hero = s.slice(0, m.index + (/[؟?!]/.test(m[0]) ? m[0].length : 0)).trim();
+  return hero ? { hero, sub } : { hero: s, sub: "" };
+}
+
 function gateC1(ctx, out) {
   ctx.slides.forEach((s) => {
     if (s.type !== "cover" && s.type !== "poster") return;
     const el = s.id + ".headline";
-    const hero = wc(s.headline);
-    const total = hero + wc(s.kicker) + wc(s.sub);
+    const hero = wc(splitCover(s.headline).hero);
+    const total = wc(s.headline) + wc(s.kicker) + wc(s.sub);
     emitOver(ctx, out, "C1.hero-words", s, el, hero, { text: strip(s.headline || "") });
     emitOver(ctx, out, "C1.total-words", s, el, total, {});
     if (nonEmpty(s.headline)) {
@@ -238,7 +239,6 @@ function gateC5(ctx, out) {
 
 /* ------------------------------------------------------------------- C6 */
 
-/** Integers 2..99 that stand in front of a counted noun in `text`. */
 function countedNumbers(text, min, max) {
   const toks = TX().tokenize(text);
   const found = [];
@@ -254,7 +254,6 @@ function countedNumbers(text, min, max) {
   return found;
 }
 
-/** Text as the containment checks compare it: markup, tashkeel and tatweel gone, one space, lower case. */
 const containsKey = (s) => foldKey(strip(s)).toLowerCase().replace(/\s+/g, " ").trim();
 
 function gateC6(ctx, out) {
@@ -266,14 +265,16 @@ function gateC6(ctx, out) {
     const p = param(ctx, "C6.list-count");
     if (p.architectures.indexOf(ctx.spec.architecture) >= 0) {
       const nums = countedNumbers(text, p.min, p.max);
-      const items = ctx.slides.filter((s) => p.slideTypes.indexOf(s.type) >= 0).length;
+      const numbered = new Set(ctx.slides.filter((s) => Number.isInteger(s.ord) && s.ord > 0).map((s) => s.ord));
+      const primary = ctx.spec.architecture === "steps" ? "step" : "item";
+      const items = numbered.size || ctx.slides.filter((s) => s.type === primary).length;
       if (nums.length && items > 0 && nums.indexOf(items) < 0) {
         emit(ctx, out, "C6.list-count", { slide: cover.id, el: cover.id + ".headline", vars: { count: nums[0], n: items } });
       }
     }
   }
 
-  /* A viewer Instagram re-serves from slide 2 never saw the cover: slide 2 must carry the count or name the first item. */
+  /* Slide 2 repeats the count or names the first member. */
   const s2 = ctx.slides[1];
   if (s2 && s2 !== cover && active(ctx, "C6.slide2-promise", s2)) {
     const q = param(ctx, "C6.slide2-promise");
@@ -294,10 +295,8 @@ function gateC6(ctx, out) {
 
 /* ------------------------------------------------------------------- D8 */
 
-/** Slides that look alike: the same type and the same chosen variant (none chosen counts as one variant). */
 const layoutKey = (s) => CS.visual?.free?.active(s) ? "free|" + s.id : s.type + "|" + (nonEmpty(s.variant) ? s.variant : "");
 
-/** No run of identical layouts longer than params.max: one finding per run, on the first slide past the limit. */
 function gateD8(ctx, out) {
   if (!active(ctx, "D8.rhythm")) return;
   const max = param(ctx, "D8.rhythm").max;
@@ -326,16 +325,17 @@ function gateC7(ctx, out) {
   if (!hist.length) return;
   const kind = postCtaKind(ctx);
   const family = isObj(ctx.spec.hook) ? ctx.spec.hook.family : null;
+  const varietySev = ctx.spec.ext && ctx.spec.ext.source === "creator-script" ? "NOTE" : undefined;
 
   if (kind && active(ctx, "C7.cta-repeat")) {
     const recent = hist.slice(-param(ctx, "C7.cta-repeat").window);
     if (recent.some((e) => e.cta === kind)) {
-      emit(ctx, out, "C7.cta-repeat", { vars: { kindAr: kindName(kind, "ar"), kindEn: kindName(kind, "en") } });
+      emit(ctx, out, "C7.cta-repeat", { sev: varietySev, vars: { kindAr: kindName(kind, "ar"), kindEn: kindName(kind, "en") } });
     }
   }
   if (family && active(ctx, "C7.family-repeat")) {
     const recent = hist.slice(-param(ctx, "C7.family-repeat").window);
-    if (recent.some((e) => e.family === family)) emit(ctx, out, "C7.family-repeat", { vars: { family } });
+    if (recent.some((e) => e.family === family)) emit(ctx, out, "C7.family-repeat", { sev: varietySev, vars: { family } });
   }
   if (active(ctx, "C7.hook-similar")) {
     const cover = coverText(ctx.spec);
@@ -359,7 +359,6 @@ function gateC7(ctx, out) {
 
 /* ------------------------------------------------------------------- C8 */
 
-/** True when `m` starts a text: only non-letters precede it. */
 function startsText(plain, m) {
   const lead = plain.search(/[\p{L}\p{N}]/u);
   return lead < 0 || m.start <= lead;

@@ -43,7 +43,7 @@ Why the caption pack is written **before** review point 2: the page moves from S
 Follow `hook-engine.md`, `hook-scoring.md` and `compression.md`: at least 12 drafts across at least 4 families, the hard gates HG1 to HG5 and the score through `scripts/hook_features.py`, spoken openers compressed to covers through `scripts/compress.py`, the top 3 from 3 different families chosen by the **hook duel** (heats inside each family, the panel's stop votes and cold reads on the champions, then a knockout judged clarity first; `rounds.md` round 3, `team/charter.md` section 4.2). The chosen hook goes into `spec.hook` (`id, family, text, cover, score, slide2, alternates[2]`); the three appear as chips in the Studio's Script view for the user to swap. The cover text obeys `slide-limits.md` from the first draft.
 
 ## 3. Script
-1. Choose the architecture's skeleton (`architectures.md`), set the slide count (8 to 12; payoffs + 3; a list's N equals its item slides) and write each slide to the limits in `slide-limits.md`: one idea per slide, a bridge at the end of every non-final slide, slide 2 pays off at once, one CTA after the payoff (`cta.md`).
+1. Choose the architecture's skeleton (`architectures.md`), set the slide count (at most 10 including the cover; 4 to 6 is fine; a list's N equals its distinct numbered members (`ord`)) and write each slide to the limits in `slide-limits.md`: one idea per slide, a bridge at the end of every non-final slide, slide 2 pays off at once, one CTA after the payoff (`cta.md`).
 2. Write in the post's dialect (`dialects/<code>.md`), with the digits and punctuation rules of SKILL.md. Emphasis uses `==word==` on the keyword or number, at most once per slide; `\n` is a forced line break (on covers the «…» two beats become a line break); a Latin name stays Latin.
 3. Sources: every claimed number gets an entry in `spec.sources` and the slide's `sourceIds` (`content-angles/references/source-pack.md`). If a number is missing, ask or write without it. A user who says «الرقم ده من عندي» gets a `user` source, `verified: true`.
 4. Slide ids are `s01…s20`, `n` is the position. Never reuse an id after a deletion.
@@ -96,8 +96,15 @@ Copy edits belong to **carousel-create**. Use carousel-design only to extract th
 
 ## 10. Edge cases
 - **No brand and the user will not onboard**: continue with defaults (Western digits, `neutral` swipe cue, dialect asked once). Offer onboarding once at the end, not before.
-- **Fewer than 6 or more than 12 slides**: 6 to 7 or 13 to 20 is a NOTE, fewer than 6 a FIX, more than 12 only if every slide pays off, 21 or more is impossible. A deliberate two-slide reveal is allowed and will carry the FIX.
+- **Slide count:** 2 to 10 including the cover. 4 to 6 is a valid short post with no count FIX; 4 to 5 may carry a NOTE. Below 4 is a FIX; below 2 or above 10 is a BLOCK. Keep the length the idea needs.
 - **A topic that needs facts you do not have**: ask for them in one message, or write the post around what the user can attest.
 - **The user changes the dialect mid-way**: rewrite the affected copy from the angle stub, do not patch words.
 - **A request for Reels, video editing or Canva edits**: say what this skill does (posts and carousels) and point to the right tool; do not start the flow.
 - **A pasted API key**: do not use it, do not store it, do not echo it; keep keys in the connector's own settings, never in chat.
+
+## Exact spec forms
+- Validate with `python scripts/validate.py spec <file> --lint --format json`: `spec` is a required positional document kind, not an option. Kinds: `brand`, `spec`, `preset`, `occasion`, `hook`, `plan`, `qa-report`.
+- `cta.kind`: `save`, `send`, `question`, `keyword-dm`, `follow`. Sharing uses `send`; `share` names a slide layout.
+- `sources[].kind`: `url`, `file`, `user`, `ownData`, `calc` (case-sensitive). Put references in top-level `sources` and link `sourceIds` on the slide, or `number.sourceId` for a figure.
+- `style.overrides` is a flat map of dotted token paths to scalar strings, numbers or booleans. Use `{"type.scale.heroTarget": 140}`; do not pass a `[min,max]` array such as `{"type.scale.hero": [120,150]}`.
+- `captionPack` permits only `firstLine`, `keywordLine`, `body`, `cta`, `hashtags`, `perSlide`, `alt`, `asset`. `captionPack.sourceIds` is not allowed; link sources on the slides instead.

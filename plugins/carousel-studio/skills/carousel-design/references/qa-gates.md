@@ -28,7 +28,7 @@ CS.qa.report.toMarkdown(rep, "ar");                                          // 
 | Status | Meaning | CLI exit code |
 |---|---|---|
 | `pass` | no open BLOCK or FIX (NOTE is advice) | 0 |
-| `fix` | a FIX is open: the kit exports with a badge | 1 |
+| `fix` | a FIX is open: the kit exports with a badge | 1 for lint/validate; render.mjs returns 0 (1 with `--strict`) |
 | `block` | a BLOCK is open: «حزمة النشر» stays disabled | 2 |
 
 ## 2. A finding
@@ -71,7 +71,7 @@ Applies to slideTypes [cover, poster].
 
 | Rule | Sev | Ovr | Auto-fix | Engine | Condition |
 |---|---|---|---|---|---|
-| `C1.hero-words` | BLOCK | yes |  | py+js | wordCount(stripMarkup(headline)) of a cover or poster slide is greater than params.max. Params: `max` = 6. |
+| `C1.hero-words` | BLOCK | yes |  | py+js | The first beat of a cover or poster headline has more than params.max words. Params: `max` = 6. |
 | `C1.total-words` | BLOCK | yes |  | py+js | wordCount of kicker + headline + sub (each markup-stripped) is greater than params.max. Params: `max` = 12. |
 | `C1.lines` | FIX | yes |  | py+js | The number of forced line breaks (newline characters) in the headline plus one is greater than params.max. Params: `max` = 3. |
 | `C1.number-words` | FIX | yes |  | py+js | An entry of copy.json lists[params.list] matches the cover text (kicker + headline + sub, markup-stripped). Params: `list` = numberWords. |
@@ -127,9 +127,9 @@ Applies to formats [carousel].
 
 | Rule | Sev | Ovr | Auto-fix | Engine | Condition |
 |---|---|---|---|---|---|
-| `C5.slide-count` | BLOCK |  |  | py+js | The carousel has at least one slide and fewer than params.min or more than params.max slides. Params: `min` = 2; `max` = 20. |
-| `C5.slide-count-low` | FIX |  |  | py+js | The slide count is at least params.hardMin and below params.min. Params: `hardMin` = 2; `min` = 6; `recMin` = 8; `recMax` = 12. |
-| `C5.slide-count-range` | NOTE |  |  | py+js | The slide count is from params.warnBelow up to params.hardMax but outside params.min to params.max. Params: `warnBelow` = 6; `hardMax` = 20; `min` = 8; `max` = 12. |
+| `C5.slide-count` | BLOCK |  |  | py+js | The carousel has at least one slide and fewer than params.min or more than params.max slides. Params: `min` = 2; `max` = 10. |
+| `C5.slide-count-low` | FIX |  |  | py+js | The slide count is at least params.hardMin and below params.min. Params: `hardMin` = 2; `min` = 4; `recMin` = 6; `recMax` = 10. |
+| `C5.slide-count-range` | NOTE |  |  | py+js | The slide count is from params.warnBelow up to params.hardMax but outside params.min to params.max. Params: `warnBelow` = 4; `hardMax` = 10; `min` = 6; `max` = 10. |
 | `C5.skeleton` | FIX |  |  | py+js | The first slide is not of type cover, or the last slide is not of type cta or offer. Params: `first` = [cover]; `last` = [cta, offer]. |
 | `C5.bridge` | FIX |  |  | py+js | A slide of one of params.types, that is not the last slide, has no bridge text. Params: `types` = [9 items]. |
 | `C5.voice-drift` | FIX |  |  | py | Python only (voice_check.py): a style metric of the copy lies more than params.iqr times the interquartile range outside the brand fingerprint. Params: `iqr` = 1.5. |
@@ -141,7 +141,7 @@ Applies to formats [carousel].
 
 | Rule | Sev | Ovr | Auto-fix | Engine | Condition |
 |---|---|---|---|---|---|
-| `C6.list-count` | BLOCK |  |  | py+js | Architecture is listicle or steps, the cover text names counted integers (2 to 99) in front of a noun, none of them equals the number of item and step slides, and that number is not zero. Params: `architectures` = [listicle, steps]; `slideTypes` = [item, step]; `min` = 2; `max` = 99. |
+| `C6.list-count` | BLOCK |  |  | py+js | Count distinct positive integer `ord` members across slide types, not unnumbered context. With no ord, use `item` for listicle or `step` for steps. A nonzero count that disagrees with the cover numeral is BLOCK. |
 | `C6.slide2-promise` | FIX |  |  | py+js | Architecture is listicle, steps or framework, the cover text names a counted integer (2 to 99) in front of a noun, slide 2 is not itself an item or step slide, and slide 2 contains neither one of those integers (digits of either system) nor the title of the first item or step slide that follows it. A viewer Instagram re-serves from slide 2 never saw the cover's promise. Params: `architectures` = [listicle, steps, framework]; `itemTypes` = [item, step]. |
 
 #### C7 · Repetition · التكرار
@@ -531,3 +531,16 @@ The tool's own screens carry the owner's name, socials and thank-you line; nothi
 
 ## 11. Registry additions
 The registry is authoritative; model judgement never replaces engine findings. Keep stage-0 prospects visible.
+
+## Count, creator copy and export completion
+At most 10 slides, including the still or video cover: Instagram’s publishing API and most schedulers accept at most 10 items. A focused carousel of 4, 5 or 6 slides is complete; 6 to 10 is an optional sweet spot, never a reason to pad the post.
+
+`C6.list-count` counts distinct positive integer `ord` values across slide types, including `proof`. Unnumbered context before or after the numbered list is excluded. With no `ord`, legacy `listicle` uses only `item`, and `steps` only `step`. A continuation with the same `ord` is the same member. A real disagreement is BLOCK.
+
+The ready-script marker is `ext.source: "creator-script"`. Only `C7.cta-repeat` and `C7.family-repeat` become NOTE there; team-written copy keeps FIX. Do not rewrite the creator’s question to clear a variety preference.
+
+C1 and HG1 use `_cs.qa.split_cover` / `CS.qa.splitCover`: the first beat is the hero, the remaining beat is the sub-line. Boundaries are question/exclamation marks followed by whitespace, ellipsis, colon followed by whitespace, or newline. All beats still count toward the whole-cover limit.
+
+The schema rejects new specs over 10 slides. The Studio accepts an older spec whose only schema error is `/slides` `maxItems`, so it can be shortened; C5 still blocks its export. `lint_copy.py --spec` reports the same C5 BLOCK without failing to load it.
+
+`render.mjs` always writes both QA reports, regardless of `--formats`. A complete export with FIX exits 0; `--strict` restores 1. BLOCK and real failures stay nonzero. A requested missing MP4 is `X1.complete` BLOCK even if skipped, is named on stderr and in JSON `video.missing` / `video.errors`, and exits nonzero. `--video none` explicitly requests a still-only kit.

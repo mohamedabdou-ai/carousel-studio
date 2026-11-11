@@ -273,6 +273,7 @@ function createCtx(root, data, opts) {
   };
 
   ctx.insertSlide = function (type, at, init, o) {
+    if (ctx.slides().length >= 10) { toast(t("slide.limit", { max: 10 }), "warn"); return null; }
     var newId = null;
     var changed = ctx.commit(function (spec) {
       var made = guard("spec.insertSlide", function () { return CS.core.spec.insertSlide(spec, type, at, Object.assign(blankSlideFor(type), init || {})); }, spec);
@@ -307,6 +308,7 @@ function createCtx(root, data, opts) {
   };
 
   ctx.splitSlide = function (id) {
+    if (ctx.slides().length >= 10) { toast(t("slide.limit", { max: 10 }), "warn"); return false; }
     var before = ctx.slides().length;
     var ok = ctx.commit(function (spec) {
       var next = guard("spec.splitSlide", function () { return CS.core.spec.splitSlide(spec, id); }, spec);

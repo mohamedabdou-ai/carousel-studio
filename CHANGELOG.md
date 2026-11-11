@@ -4,6 +4,17 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 
 ## [Unreleased]
 
+### Publishing limits and checks
+
+- Carousels stop at 10 slides including the still or video cover. Short posts of 4 to 6 slides no longer receive a slide-count FIX, and the Studio explains why an eleventh slide cannot be added, duplicated or split.
+- Numbered lists count their actual members across layouts, including proof slides, without counting surrounding context.
+- Repeated CTA kinds and hook families are advice for a creator's ready script; team-written copy keeps the variety checks.
+- Hook scoring and copy checks agree on the hero and sub-line of a two-beat cover.
+- Notebook Latin words follow their Arabic slot's font and weight.
+- Completed command-line exports exit successfully with FIX findings; `--strict` restores the old exit code. QA reports are always written, and a requested missing cover video blocks the export with a clear error and JSON details.
+- The MP4 writer retries a transient library load up to 3 times. MP4 uses only the pinned mediabunny library; ZIP needs no downloaded library.
+- Memory commands and writing guides show the exact allowed values and spec forms before they are needed.
+
 ### Your own script
 
 - Paste pipe headings, bold Arabic slide headings and mixed separators directly; no parsing copy is needed. Backticks and emphasis keep their text, and trailing source mentions stay out of slide copy.

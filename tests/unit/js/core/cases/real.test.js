@@ -11,6 +11,33 @@
 
   var PNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
 
+  test("real: notebook Latin words match the Arabic slot weight using the registered face", async function () {
+    await FX.setup({ real: true });
+    var spec = ex(function (s) {
+      s.style.presetId = "notebook@1.0";
+      s.slides[0].headline = "أفكار من ChatGPT";
+      s.slides[2].title = "جرّب Reddit الآن";
+      s.slides[2].body = "يمكنك تجربة Wiz ثم Argon بسهولة";
+    });
+    var deck = await CS.core.render.deck(spec, null, { mode: "export", useFrozen: false });
+    try {
+      var checked = 0;
+      deck.slides.forEach(function (entry) {
+        entry.el.querySelectorAll('.cs-ltr[data-run="latin"]').forEach(function (run) {
+          var slot = run.closest("[data-slot]");
+          if (!slot) return;
+          var arabic = Array.from(slot.querySelectorAll(".w")).find(function (w) { return !w.contains(run) && /[\u0621-\u064A]/.test(w.textContent); });
+          if (!arabic) return;
+          var a = getComputedStyle(run), b = getComputedStyle(arabic);
+          assert(Math.abs(parseInt(a.fontWeight, 10) - parseInt(b.fontWeight, 10)) <= 100, run.textContent + " matches slot weight");
+          assert(a.fontFamily.indexOf("Readex Pro") >= 0, run.textContent + " keeps the registered Latin face");
+          checked++;
+        });
+      });
+      assert(checked >= 4, "cover, title and body Latin words were measured");
+    } finally { deck.dispose(); }
+  });
+
   test("real: the six presets register in index order and their variants exist in the archetypes", async function () {
     await FX.setup({ real: true });
     CST.deepEq(CS.core.registry.listPresets().map(function (p) { return p.id; }), ids(), "registered in styles/index.json order");

@@ -21,7 +21,7 @@
             "max": {"$platform": "plugin.cover.heroMaxWords"}
           },
           "autofix": null,
-          "when": "wordCount(stripMarkup(headline)) of a cover or poster slide is greater than params.max.",
+          "when": "The first beat of a cover or poster headline has more than params.max words.",
           "msg": {"ar": "عدد كلمات عنوان الغلاف {count} والحد الأقصى {max}.", "en": "The cover headline has {count} words; the limit is {max}."},
           "fix": {"ar": "اختصر العنوان إلى {max} كلمات أو أقل وابدأ بالكلمة الأهم.", "en": "Cut the headline to {max} words or fewer and lead with the key word."},
           "vars": ["count", "max", "text"]
@@ -504,7 +504,7 @@
           },
           "autofix": null,
           "when": "The carousel has at least one slide and fewer than params.min or more than params.max slides.",
-          "msg": {"ar": "عدد السلايدات {count} والمسموح من {min} إلى {max}.", "en": "The carousel has {count} slides; the allowed range is {min} to {max}."},
+          "msg": {"ar": "عدد الشرائح {count} والمسموح من {min} إلى {max} بما فيها الغلاف.", "en": "The carousel has {count} slides; the allowed range is {min} to {max}, including the cover."},
           "fix": {"ar": "اجعل العدد بين {min} و{max}.", "en": "Bring the count to between {min} and {max}."},
           "vars": ["count", "min", "max"]
         },
@@ -520,7 +520,7 @@
           "autofix": null,
           "when": "The slide count is at least params.hardMin and below params.min.",
           "msg": {"ar": "عدد السلايدات {count} أقل من {min}.", "en": "{count} slides is fewer than {min}."},
-          "fix": {"ar": "أضف سلايدات تدفع فائدة جديدة؛ الأفضل من {recMin} إلى {recMax}.", "en": "Add slides that each pay off; {recMin} to {recMax} works best."},
+          "fix": {"ar": "اجعل كل شريحة مفيدة؛ الكاروسيل القصير مقبول.", "en": "Keep each slide useful; a short carousel is fine."},
           "vars": ["count", "min", "recMin", "recMax"]
         },
         {
@@ -534,8 +534,8 @@
           },
           "autofix": null,
           "when": "The slide count is from params.warnBelow up to params.hardMax but outside params.min to params.max.",
-          "msg": {"ar": "عدد السلايدات {count} خارج المدى الأفضل من {min} إلى {max}.", "en": "{count} slides is outside the sweet spot of {min} to {max}."},
-          "fix": {"ar": "اجعل كل سلايد يدفع فائدة؛ الأفضل من {min} إلى {max}.", "en": "Make every slide pay off; {min} to {max} works best."},
+          "msg": {"ar": "عدد الشرائح {count} مناسب لكاروسيل قصير؛ ومن {min} إلى {max} خيار للمحتوى الأطول.", "en": "{count} slides is a valid short carousel; {min} to {max} is an optional sweet spot."},
+          "fix": {"ar": "استخدم العدد الذي تحتاجه الفكرة، حتى {max} بما فيها الغلاف.", "en": "Keep the length the idea needs, up to {max} including the cover."},
           "vars": ["count", "min", "max"]
         },
         {
@@ -594,9 +594,9 @@
             "max": 99
           },
           "autofix": null,
-          "when": "Architecture is listicle or steps, the cover text names counted integers (2 to 99) in front of a noun, none of them equals the number of item and step slides, and that number is not zero.",
-          "msg": {"ar": "الغلاف يَعِد بـ{count} لكن عدد سلايدات العناصر {n}.", "en": "The cover promises {count} but there are {n} item slides."},
-          "fix": {"ar": "طابق الرقم على الغلاف مع عدد السلايدات، أو أضف عناصر أو احذفها.", "en": "Make the cover number match the item slides, or add or remove items."},
+          "when": "Count distinct positive ord values across slide types. With no ord, use only item for listicle or step for steps. Unnumbered context outside the list is not a member. A nonzero member count that disagrees with the cover numeral is a BLOCK.",
+          "msg": {"ar": "الغلاف يَعِد بـ{count} لكن عدد عناصر القائمة المرقمة {n}.", "en": "The cover promises {count} but there are {n} numbered list members."},
+          "fix": {"ar": "طابق رقم الغلاف مع عدد عناصر القائمة المرقمة، أو صحح قيم ord.", "en": "Match the cover number to the numbered members, or correct their ord values."},
           "vars": ["count", "n"]
         },
         {

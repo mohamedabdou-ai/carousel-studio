@@ -21,21 +21,22 @@
  * --out/contact-sheet.png with kind/recipe/tone rows, including unsaved automatic previews; it is not in the kit zip.
  * The default kit is the light one (about 3 MB for eight slides): add `source` to --formats for spec.json, cover.hf.html and
  * studio-source.html, which together weigh more than 10 MB (nearly all embedded fonts).
- * Exit code = the export QA's: 0 pass, 1 FIX findings, 2 BLOCK findings (64 usage, 65 bad data, 66 missing input,
+ * Exit code: 0 completed (pass or FIX), 1 FIX only with --strict, 2 BLOCK (64 usage, 65 bad data, 66 missing input,
  * 70 internal or missing tool, 73 cannot write). Errors go to stderr as `cs-error: <code>: <message>`.
  */
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import vm from "node:vm";
 import { pathToFileURL, fileURLToPath } from "node:url";
 import { EXIT, LaneError, buildStudioPage, haveTool, launchChromium, openStudio, renderCoverVideo, HYPERFRAMES_VERSION } from "./cover_video.mjs";
-import { planSpec, savePlanSpec, readPlanSource } from "./plan.mjs";
+import { planSpec, savePlanSpec, readPlanSource, loadPlanner } from "./plan.mjs";
 import { drawContact } from "./render_contact.mjs";
 
 const CHUNK = 4 * 1024 * 1024;
 const ALL_FORMATS = ["png", "jpeg", "pdf", "zip", "source", "qa"];
 const DEFAULT_FORMATS = ALL_FORMATS.filter((f) => f !== "source");     // the source files are an opt-in, as in the Studio
-const USAGE = "usage: node render.mjs --spec FILE [--brand FILE] --out DIR [--save-plan] [--contact-sheet] [--formats png,jpeg,pdf,zip,qa[,source]] [--variants 3x4,4x5] [--video hyperframes|internal|none] [--studio FILE] [--lang ar|en] [--timeout MS] [--chromium PATH] [--headed] [--format json|text]\n       node render.mjs --preflight --spec FILE [--brand FILE] [--presets creator,poster,notebook] [--studio FILE] [--timeout MS] [--chromium PATH] [--format json|text]";
+const USAGE = "usage: node render.mjs --spec FILE [--brand FILE] --out DIR [--save-plan] [--contact-sheet] [--strict] [--formats png,jpeg,pdf,zip,qa[,source]] [--variants 3x4,4x5] [--video hyperframes|internal|none] [--studio FILE] [--lang ar|en] [--timeout MS] [--chromium PATH] [--headed] [--format json|text]\n       node render.mjs --preflight --spec FILE [--brand FILE] [--presets creator,poster,notebook] [--studio FILE] [--timeout MS] [--chromium PATH] [--format json|text]";
 
 function parseArgs(argv) {
   const known = { spec: "specFile", brand: "brandFile", out: "outDir", formats: "formats", variants: "variants", video: "video", studio: "studioFile", lang: "lang", timeout: "timeout", chromium: "chromium", format: "format", presets: "presets" };
@@ -47,6 +48,7 @@ function parseArgs(argv) {
     if (a === "--preflight") { o.preflight = true; continue; }
     if (a === "--save-plan") { o.savePlan = true; continue; }
     if (a === "--contact-sheet") { o.contactSheet = true; continue; }
+    if (a === "--strict") { o.strict = true; continue; }
     if (!a.startsWith("--") || !(a.slice(2) in known)) throw new LaneError("E_USAGE", `unknown argument ${a}`, EXIT.USAGE);
     const v = argv[++i];
     if (v === undefined) throw new LaneError("E_USAGE", `missing value for ${a}`, EXIT.USAGE);
@@ -102,8 +104,35 @@ function wanted(p, o) {
   if (p === "carousel.pdf") return o.formatList.includes("pdf");
   if (/-kit\.zip$/.test(p)) return o.formatList.includes("zip");
   if (p === "spec.json" || p === "cover.hf.html" || p === "studio-source.html") return o.formatList.includes("source");
-  if (/^qa-report\./.test(p)) return o.formatList.includes("qa");
+  if (/^qa-report\./.test(p)) return true;
   return true;
+}
+
+/** QA's exitCode describes its findings; this exit describes whether the export completed. */
+function exportExitCode(report, ok, strict) {
+  if (report && report.status === "block") return EXIT.BLOCK;
+  if (!ok || !report) return EXIT.INTERNAL;
+  return strict && report.status === "fix" ? 1 : EXIT.OK;
+}
+
+function coverVideoOutcome(result, variants, requested) {
+  const files = (result.files || []).filter((f) => /\.mp4$/i.test(f.path) && f.bytes > 0);
+  const missing = requested ? variants.map((v) => `${v}/01-cover.mp4`).filter((p) => !files.some((f) => f.path === p)) : [];
+  return { requested, failed: missing.length > 0, files, missing,
+    errors: missing.map((p) => ({ path: p, reason: (result.skipped || []).find((s) => s.path === p)?.reason || "The requested cover video was not produced." })) };
+}
+
+/** Diagnose an older oversized post before the strict page builder sees it. */
+function slideCountReport(spec, brand) {
+  const skill = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+  const max = readJson(path.join(skill, "data/platform-instagram.json"), "platform").plugin.slides.hardMax;
+  if (spec.format !== "carousel" || !Array.isArray(spec.slides) || spec.slides.length <= max) return null;
+  const { CS } = loadPlanner();
+  const context = { CS, TextEncoder, TextDecoder, console };
+  context.window = context;
+  vm.runInNewContext(fs.readFileSync(path.join(skill, "runtime/cs-qa.js"), "utf8"), context);
+  const findings = CS.qa.runText({ spec, brand, gates: ["C5"] }).filter((r) => r.rule === "C5.slide-count");
+  return JSON.parse(JSON.stringify(CS.qa.report.toJSON(spec, findings, { lane: "claude-code", checkpoint: spec.checkpoint || "script" })));
 }
 
 async function pullFile(page, filePath, bytes) {
@@ -167,6 +196,24 @@ async function main(argv) {
   let spec = input.value;
   const brand = o.brandFile ? readJson(o.brandFile, "brand") : null;
   const log = (m) => process.stderr.write(m + "\n");
+  const countReport = slideCountReport(spec, brand);
+  if (countReport) {
+    const files = [], out = o.outDir ? path.resolve(o.outDir) : null;
+    if (!o.preflight) {
+      const { CS } = loadPlanner(), context = { CS, TextEncoder, TextDecoder, console }; context.window = context;
+      vm.runInNewContext(fs.readFileSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../runtime/cs-qa.js"), "utf8"), context);
+      try {
+        fs.mkdirSync(out, { recursive: true });
+        for (const [name, body] of [["qa-report.json", JSON.stringify(countReport, null, 2) + "\n"], ["qa-report.md", CS.qa.report.toMarkdown(countReport, o.lang)]]) {
+          fs.writeFileSync(path.join(out, name), body, "utf8"); files.push({ path: name, bytes: Buffer.byteLength(body) });
+        }
+      } catch (e) { throw new LaneError("E_USAGE", `Cannot write QA report: ${e.message}`, EXIT.NOWRITE); }
+    }
+    log("cs-error: C5.slide-count: " + countReport.results[0].msg.en);
+    const summary = { ok: false, exitCode: EXIT.BLOCK, out, specId: spec.id, files, exported: false, qa: countReport };
+    process.stdout.write(o.format === "text" ? countReport.results[0].msg[o.lang] + "\n" : JSON.stringify(summary) + "\n");
+    return EXIT.BLOCK;
+  }
   const planned = o.savePlan || o.contactSheet ? planSpec(spec, brand) : null;
   if (o.savePlan) {
     const added = planned.spec.slides.some((s, i) => s.visual && !spec.slides[i].visual);
@@ -196,26 +243,26 @@ async function main(argv) {
     }
 
     const motion = spec.cover && spec.cover.motion;
-    const wantsVideo = o.video !== "none" && spec.format !== "single" && motion && motion.recipe !== "none" && !(spec.compat && spec.compat.mp4 === "off");
+    const wantsVideo = o.video !== "none" && spec.format !== "single";
     const videos = [], videoSummary = { mode: o.video, files: [], skipped: [] };
     if (o.video === "hyperframes" && wantsVideo) {
-      if (motion.source === "external") videoSummary.skipped.push({ path: "3x4/01-cover.mp4", reason: "external motion plate: attach the plate clip and render it with HyperFrames by hand" });
-      else if (!haveTool("ffmpeg") || !haveTool("ffprobe")) throw new LaneError("E_NO_CAPABILITY", "ffmpeg and ffprobe are required for the HyperFrames cover. Fix: install FFmpeg and put it on PATH, or use --video none.", EXIT.INTERNAL);
-      else {
-        for (const variant of o.variantList) {
+      for (const variant of o.variantList.includes("4x5") ? ["3x4", "4x5"] : ["3x4"]) {
           const rel = `${variant}/01-cover.mp4`, dest = path.join(outDir, rel);
+          try {
+          if (motion?.source === "external") throw new Error("External motion plate: attach the plate clip and render it with HyperFrames by hand.");
+          if (!haveTool("ffmpeg") || !haveTool("ffprobe")) throw new Error("ffmpeg and ffprobe are required for the HyperFrames cover. Install FFmpeg or use --video none.");
           log(`الغلاف المتحرك (${variant})…`);
           const r = await renderCoverVideo({ page, specFile: o.specFile, variant, outFile: dest, quality: "high", version: HYPERFRAMES_VERSION, log });
           videos.push({ path: rel, base64: fs.readFileSync(dest).toString("base64"), info: videoInfoFrom(r.check) });
           videoSummary.files.push({ path: rel, bytes: r.bytes, check: r.check.status });
-        }
+          } catch (e) { videoSummary.skipped.push({ path: rel, reason: String(e.message || e) }); }
       }
     }
     log("جاري تصدير الحزمة…");
     const dialect = o.lang === "en" ? "en" : undefined;
     let exportTimer;     // cleared once the race is decided: a pending timer keeps Node alive for the whole --timeout after the kit is written
     const result = await Promise.race([
-      page.evaluate((opts) => window.CS.automation.exportAll(opts), { video: o.video === "internal" && wantsVideo, videos, variants4x5: o.variantList.includes("4x5"), pdf: o.formatList.includes("pdf"), source: o.formatList.includes("source"), zip: o.formatList.includes("zip"), dialect }),
+      page.evaluate((opts) => window.CS.automation.exportAll(opts), { video: wantsVideo, videos, videoErrors: videoSummary.skipped, variants4x5: o.variantList.includes("4x5"), pdf: o.formatList.includes("pdf"), source: o.formatList.includes("source"), zip: o.formatList.includes("zip"), dialect }),
       new Promise((_, reject) => { exportTimer = setTimeout(() => reject(new LaneError("E_INTERNAL", `The export did not finish within ${o.timeoutMs} ms.`, EXIT.INTERNAL)), o.timeoutMs); })
     ]).finally(() => clearTimeout(exportTimer));
     const written = [];
@@ -236,10 +283,12 @@ async function main(argv) {
       const sheet = await drawContact(renders, planned.plan, path.join(outDir, "contact-sheet.png"), { browser });
       written.push({ path: "contact-sheet.png", bytes: sheet.bytes });
     }
-    const exitCode = report ? (report.exitCode !== undefined ? report.exitCode : status === "block" ? 2 : status === "fix" ? 1 : 0) : 0;
-    const summary = { ok: result.ok, out: outDir, specId: spec.id, files: written, skipped: (result.skipped || []).concat(videoSummary.skipped), video: videoSummary, qa: report ? { status, counts: report.counts, exitCode } : null, pageErrors: studio.errors.slice(0, 5) };
+    const outcome = coverVideoOutcome(result, o.variantList, wantsVideo);
+    outcome.errors.forEach((e) => log(`cs-error: E_VIDEO_MISSING: ${e.path}: ${e.reason} Use --video none for a still-only export.`));
+    const exitCode = outcome.failed ? EXIT.BLOCK : exportExitCode(report, result.ok, o.strict);
+    const summary = { ok: result.ok && !outcome.failed, exitCode, out: outDir, specId: spec.id, files: written, skipped: result.skipped || [], video: Object.assign(videoSummary, outcome), qa: report ? { status, counts: report.counts, exitCode: report.exitCode } : null, pageErrors: studio.errors.slice(0, 5) };
     if (o.format === "text") {
-      process.stdout.write(`${result.ok ? "✔" : "✘"} ${written.length} ملف في ${outDir}\n` + (report ? `  QA: ${status} (BLOCK ${report.counts.block} · FIX ${report.counts.fix} · NOTE ${report.counts.note})\n` : "") + (summary.skipped.length ? summary.skipped.map((s) => `  skipped ${s.path}: ${s.reason}`).join("\n") + "\n" : ""));
+      process.stdout.write(`${summary.ok ? "Exported" : "Incomplete"}: ${written.length} files in ${outDir}\n` + (report ? `  QA: ${status} (BLOCK ${report.counts.block} · FIX ${report.counts.fix} · NOTE ${report.counts.note})\n` : "") + (summary.skipped.length ? summary.skipped.map((s) => `  skipped ${s.path}: ${s.reason}`).join("\n") + "\n" : ""));
     } else process.stdout.write(JSON.stringify(summary) + "\n");
     return exitCode;
   } finally {
@@ -248,6 +297,8 @@ async function main(argv) {
     fs.rmSync(work, { recursive: true, force: true });
   }
 }
+
+export { parseArgs, wanted, exportExitCode, coverVideoOutcome, slideCountReport };
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   main(process.argv.slice(2)).then((c) => { process.exitCode = c; }, (e) => {

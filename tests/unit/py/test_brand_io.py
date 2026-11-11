@@ -28,6 +28,12 @@ def run(*args, stdin=None):
 
 @NEEDS_CS
 class BrandIoTests(unittest.TestCase):
+    def test_remember_help_names_move_and_verdict_values(self):
+        code, out, err = run("remember", "--help")
+        self.assertEqual(code, 0, err)
+        for value in ("big-number", "enemy", "reveal", "mirror", "before-after", "cheat-sheet", "insider-leak", "confession", "free-vs-paid", "countdown", "ship", "revised", "killed"):
+            self.assertIn(value, out)
+
     def setUp(self):
         self._tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self._tmp.cleanup)

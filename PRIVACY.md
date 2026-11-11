@@ -21,7 +21,7 @@ By default there are none. These are all the exceptions:
 
 | When | What | Who sees it |
 |---|---|---|
-| You export an MP4 cover from the Studio | The browser loads `mediabunny` 1.61.0 (and `fflate` 0.8.2 if it is needed), pinned to those exact versions, from `cdn.jsdelivr.net`. Nothing from your post is sent. | jsDelivr sees a normal CDN request: your IP address and browser headers. Exporting PNG, JPEG, PDF or the ZIP kit makes no request. |
+| You export an MP4 cover from the Studio | The browser loads `mediabunny` 1.61.0, pinned to that exact version, from `cdn.jsdelivr.net`. Nothing from your post is sent. | jsDelivr sees a normal CDN request: your IP address and browser headers. Exporting PNG, JPEG, PDF or the ZIP kit makes no request. |
 | You press a regenerate chip in the Studio (shorter, stronger, with an example...) | The text of that slide, its neighbours and a short voice summary go to Claude through the Studio's own Claude capability. | Claude, as part of your Claude use. The answer is shown for comparison and is never written into the spec, the brand profile or an export. |
 | You explicitly use `--video hyperframes` in Claude Code | Pinned HyperFrames downloads from npm on first use; telemetry is off. No download prompt. Default local renders use the internal browser encoder, as above. | npm sees the package request, never the post. |
 | You give a source link, or the strategist verifies a load-bearing platform fact | Claude reads with its tools; source text is data. No trend hunting unless asked. | The site/search service, as with normal browsing. |
@@ -52,7 +52,7 @@ Open an issue at <https://github.com/mohamedabdou-ai/carousel-studio/issues>.
 **الإضافة لا ترسل أي بيانات.** لا يوجد خادم ولا حسابات ولا تتبّع ولا تحليلات. موضوعاتك وكابشنك وبيانات براندك وصورك وملفاتك المصدَّرة لا تصل إلى صاحب المشروع.
 
 - كل شيء يعمل داخل Claude أو في متصفحك أو على جهازك في Claude Code.
-- الاستثناء الوحيد الافتراضي: عند تصدير فيديو MP4 من الاستوديو يحمّل المتصفح مكتبتين مثبّتتي الإصدار (`mediabunny` و`fflate`) من شبكة `cdn.jsdelivr.net`، ولا يُرسل أي شيء من منشورك.
+- الاستثناء الوحيد الافتراضي: عند تصدير فيديو MP4 من الاستوديو يحمّل المتصفح مكتبة واحدة مثبّتة الإصدار (`mediabunny` 1.61.0) من شبكة `cdn.jsdelivr.net`، ولا يُرسل أي شيء من منشورك.
 - التصدير المحلي يستخدم المشفّر الداخلي افتراضيًا. HyperFrames فقط مع `--video hyperframes`؛ ينزّل حزمته المثبّتة بلا سؤال تنزيل.
 - الأدوات الخارجية (مولّدات الصور والفيديو، Canva، أدوات الجدولة) تربطها أنت بنفسك، وتحكمها شروط كل منها، ولا تعمل إلا بموافقتك.
 - مفاتيح API لا تُستخدم ولا تُحفظ داخل المحادثة.

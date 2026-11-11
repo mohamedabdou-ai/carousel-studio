@@ -93,6 +93,7 @@ function attachRegen(ctx) {
     var loc = ctx.spec.locale;
     return [
       "You are editing one slide of an Instagram carousel. Reply with ONLY a JSON array of exactly 3 alternative versions of the slide's text fields.",
+      "The whole carousel has at most 10 slides including its still or video cover. Keep this slide's scope; a short 4 to 6 slide post is valid.",
       "Each array item is an object that uses only these keys, with the same shape as in <slide>: " + Object.keys(textFieldsOf(slide)).join(", ") + ".",
       "Instruction: " + REGEN_INSTRUCTIONS[mode],
       "Language: " + (DIALECT_NAMES[loc.dialect] || "Arabic") + ". Digits: " + (loc.digits === "arabic-indic" ? "Arabic-Indic (٠-٩)" : "Western (0-9)") +

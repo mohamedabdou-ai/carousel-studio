@@ -260,6 +260,7 @@ function makeBus() {
  * Lookup order for dialect d: d -> msa-white -> en -> key. */
 
 var UI_DIALECTS = ["eg", "gulf", "levant", "msa-white", "en"];
+var slideLimitStrings = { "slide.limit": { "msa-white": "الحد الأقصى {max} شرائح بما فيها الغلاف. احذف شريحة قبل الإضافة أو النسخ أو التقسيم.", "en": "A carousel allows {max} slides including the cover. Remove a slide before adding, duplicating or splitting." } };
 var uiStrings = {};
 var uiDialect = "msa-white";
 
@@ -271,6 +272,7 @@ function loadUiStrings(doc) {
       var strings = JSON.parse(node.textContent).strings || {};
       if (id === "cs-ui-strings") uiStrings = {};
       mergeUiStrings(strings);
+      mergeUiStrings(slideLimitStrings);
     } catch (e) { reportError("ui-strings", e); }
   });
 }
@@ -1023,6 +1025,7 @@ function createCtx(root, data, opts) {
   };
 
   ctx.insertSlide = function (type, at, init, o) {
+    if (ctx.slides().length >= 10) { toast(t("slide.limit", { max: 10 }), "warn"); return null; }
     var newId = null;
     var changed = ctx.commit(function (spec) {
       var made = guard("spec.insertSlide", function () { return CS.core.spec.insertSlide(spec, type, at, Object.assign(blankSlideFor(type), init || {})); }, spec);
@@ -1057,6 +1060,7 @@ function createCtx(root, data, opts) {
   };
 
   ctx.splitSlide = function (id) {
+    if (ctx.slides().length >= 10) { toast(t("slide.limit", { max: 10 }), "warn"); return false; }
     var before = ctx.slides().length;
     var ok = ctx.commit(function (spec) {
       var next = guard("spec.splitSlide", function () { return CS.core.spec.splitSlide(spec, id); }, spec);
@@ -1801,6 +1805,7 @@ function attachRegen(ctx) {
     var loc = ctx.spec.locale;
     return [
       "You are editing one slide of an Instagram carousel. Reply with ONLY a JSON array of exactly 3 alternative versions of the slide's text fields.",
+      "The whole carousel has at most 10 slides including its still or video cover. Keep this slide's scope; a short 4 to 6 slide post is valid.",
       "Each array item is an object that uses only these keys, with the same shape as in <slide>: " + Object.keys(textFieldsOf(slide)).join(", ") + ".",
       "Instruction: " + REGEN_INSTRUCTIONS[mode],
       "Language: " + (DIALECT_NAMES[loc.dialect] || "Arabic") + ". Digits: " + (loc.digits === "arabic-indic" ? "Arabic-Indic (٠-٩)" : "Western (0-9)") +
@@ -2431,6 +2436,7 @@ function teamLogCard(spec) {
 
 /** Open the "add a slide" menu; `at` is the insertion index. */
 function openAddMenu(ctx, anchor, at) {
+  if (ctx.slides().length >= 10) { toast(t("slide.limit", { max: 10 }), "warn"); return; }
   openMenu(anchor, addableTypes().map(function (type) {
     return { label: typeLabel(type), icon: "plus", onSelect: function () { var id = ctx.insertSlide(type, at); if (id) { ctx.select(id); toast(t("slide.added"), "ok"); } } };
   }));
@@ -2452,7 +2458,7 @@ function slideMenu(ctx, anchor, slide) {
     { label: t("slide.move-down"), icon: "arrow-down", disabled: i >= n - 1, onSelect: function () { ctx.moveSlide(slide.id, 1); } },
     { divider: true },
     { label: t("slide.duplicate"), icon: "copy-plus", onSelect: function () { var id = ctx.duplicateSlide(slide.id); if (id) ctx.select(id); } },
-    { label: t("slide.split"), icon: "scissors", onSelect: function () { if (ctx.splitSlide(slide.id)) toast(t("slide.split.done"), "ok", { action: { label: t("common.undo"), fn: function () { ctx.undo(); } } }); else toast(t("slide.split.none"), "info"); } },
+    { label: t("slide.split"), icon: "scissors", onSelect: function () { if (ctx.slides().length >= 10) { ctx.splitSlide(slide.id); return; } if (ctx.splitSlide(slide.id)) toast(t("slide.split.done"), "ok", { action: { label: t("common.undo"), fn: function () { ctx.undo(); } } }); else toast(t("slide.split.none"), "info"); } },
     { label: t("slide.add-after"), icon: "plus", onSelect: function () { openAddMenu(ctx, anchor, i + 1); } },
     { divider: true },
     { label: t("common.delete"), icon: "trash-2", danger: true, disabled: n <= 1, onSelect: function () { confirmDelete(ctx, slide); } }
@@ -2495,7 +2501,7 @@ function ScriptScreen(ctx) {
     chip(t("meta.digits"), t("digits." + s.locale.digits));
     var count = ctx.slides().length;
     var warn = ctx.plugin ? (count < ctx.plugin.slides.warnBelow ? "warn" : count > ctx.plugin.slides.recommendedMax ? "mute" : "ok") : "mute";
-    chips.appendChild(pill(t("script.count", { n: count }), warn, count < (ctx.plugin ? ctx.plugin.slides.warnBelow : 6) ? "triangle-alert" : "layers"));
+    chips.appendChild(pill(t("script.count", { n: count }), warn, count < (ctx.plugin ? ctx.plugin.slides.warnBelow : 4) ? "triangle-alert" : "layers"));
 
     summary.appendChild(h("div", { class: "ui-card ui-card--hero" },
       h("div", { class: "ui-eyebrow" }, t("script.topic")),
@@ -3910,7 +3916,10 @@ function mountStudio(root, data, opts) {
     setSpec: async function (spec, o) {
       var source = (o && o.source) || "claude";
       var res = guard("schema.validate", function () { return CS.core.schema.validate("spec", spec); }, { ok: true, errors: [] });
-      if (!res.ok) throw new CS.CSError("E_SCHEMA", "spec does not match the schema", res.errors);
+      // An older oversized post must open for repair. C5 owns the export BLOCK;
+      // every other schema error still rejects the incoming spec.
+      var errors = (res.errors || []).filter(function (e) { return !(spec.format === "carousel" && e.path === "/slides" && e.keyword === "maxItems"); });
+      if (errors.length) throw new CS.CSError("E_SCHEMA", "spec does not match the schema", errors);
       ctx.replaceSpec(spec, { source: source, origin: "external", rebase: source !== "studio" && source !== "user" });
       await ctx.flushRender();
     },

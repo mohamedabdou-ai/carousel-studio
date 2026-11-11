@@ -21,14 +21,14 @@ An **architecture** is the order of ideas across the slides (`spec.architecture`
 `contentType` is `soft-sell` for `offer`, `results` and `lead-magnet`, otherwise `value`. The CTA kinds allowed for each intent come from `data/platform-instagram.json` (`plugin.cta.allowedByIntent`): save → save, follow, question; send → send, question; reach → send, follow, question; sell → keyword-dm, follow, question, save.
 
 ## Skeletons
-`N` is the number of payoff slides. A payoff is a slide that delivers something new (the `rehook` counts as one). **Slides = payoffs + 3**: the cover, a recap, and the CTA (a `share` slide, where the skeleton has one, adds a fourth). Aim for 8 to 12 slides; 6 to 7 is a NOTE, under 6 a FIX, 13 to 20 a NOTE (only if every slide pays off), 21 or more impossible.
+`N` is the number of payoff slides; a `rehook` can deliver one. Optional context, recap and share slides use the same budget. At most 10 slides, including the still or video cover: Instagram’s publishing API and most schedulers accept at most 10 items. A focused carousel of 4, 5 or 6 slides is complete; 6 to 10 is an optional sweet spot, never a reason to pad the post.
 
 | Architecture | Slides, in order | Notes |
 |---|---|---|
-| `listicle` | `cover, rehook, item×N, summary, cta` | N = 4 to 8. The cover numeral equals N item slides (C6, BLOCK). Tease the strongest item early (slide 2), reveal the best one second to last |
-| `steps` | `cover, proof, setup?, step×N, summary, cta` | N = 3 to 7, verb first, «الخطوة i من n». `proof` is the finished result. Add `setup` (tool, plan, device, price) for any tool topic. Put the common mistake in the last step's body or as one `item` |
+| `listicle` | `cover, rehook, item×N, summary, cta` | N = 1 to 6 with this full skeleton. Mark each member with `ord`; the cover numeral equals the distinct numbered members (C6, BLOCK), even when they use `proof` layouts. Tease the strongest item early (slide 2), reveal the best one second to last |
+| `steps` | `cover, proof, setup?, step×N, summary, cta` | N = 1 to 5 (6 without setup), verb first, «الخطوة i من n». `proof` is the finished result. Add `setup` (tool, plan, device, price) for any tool topic. Put the common mistake in the last step's body or as one `item` |
 | `myth-fact` | `cover, rehook, myth-fact×N, summary, share, cta` | The `rehook` is the cost of believing the myth. Each `myth-fact` states the myth once and makes the fact bigger and last. The recap carries facts only |
-| `story` | `cover, story-beat×N, quote?, cta` | N = 5 to 8: cold open, stakes, beats that each end on a turn («لكن…»), the turning point, the lesson, the action. End on a question or an action, not on a moral lecture |
+| `story` | `cover, story-beat×N, quote?, cta` | N = 2 to 7: cold open, stakes, beats that each end on a turn («لكن…»), the turning point, the lesson, the action. End on a question or an action, not on a moral lecture |
 | `case-study` | `cover, rehook, proof, proof, item×3, item, cta` | A sourced sharp-number result, the specific before, the after as proof, 3 levers (one per slide), what failed, how to apply. All numbers sourced |
 | `framework` | `cover, rehook, item×N, checklist, cta` | The `rehook` shows the whole framework on one slide. One component per slide with an example, at most 4 chunks per slide. The checklist is printable and saveable |
 | `comparison` | `cover, rehook, compare×N, summary, cta` | The `rehook` gives the verdict first. Honest limits on every side. Prices and plans sourced |
@@ -49,7 +49,7 @@ A soft-sell carousel has **one ask**. If both an `offer` slide and a `cta` slide
 6. **Arabic flow:** a word is never split across slides; an iḍāfa («محرك البحث») and a number with its noun («5 ساعات») stay together on one slide; a sentence crosses a slide edge only through a bridge.
 7. **A `share` slide** («ابعتها لحد…») comes before a send CTA, and is itself free of a `cta` object.
 8. **A tool topic gets a `setup` slide** (what you need: tool, plan, device, price). The audience asks about setup, free or paid, and Mac.
-9. **Count what you promise.** «5 أدوات» means 5 item slides. A cover with a numeral on a list or steps architecture is checked against the slides.
+9. **Count what you promise.** «5 أدوات» means 5 numbered members (`ord`), regardless of layout type. A cover with a numeral on a list or steps architecture is checked against the slides.
 10. **Change the rhythm.** No more than 3 slides in a row with the same type and variant (gate D8, FIX): vary the item variant, put an item in its `media` variant with a picture, or add a payoff slide of another type (a `stat`, a `compare`, a `quote`, a `proof`) between items. A post that teaches gets one or two **demonstration slides** (show the thing: the same cover at three sizes, the safe zones drawn on a slide, a prompt to paste, a before and after): `archetypes.md` section 6 says which archetype carries which and how to make the picture. The cover's count still equals the `item` and `step` slides, so an extra payoff slide raises the total by one; keep the post at 8 to 12.
 
 ## Swipe triggers you write
@@ -58,9 +58,9 @@ The engine adds the counter, the «باقي k» label and, for a mixed audience,
 2. **A cliffhanger last line** on the slide before the payoff: «بس دي مش أهم واحدة».
 3. **Predict, then reveal**: ask for a guess on one slide («خمّن رقم 1؟») and answer on the next.
 4. **A swipe prompt in the caption** («اسحب لآخر سلايد») is cheap and correlated with slightly higher engagement; keep it short.
-5. **Progress that does not drag**: up to 12 slides the counter helps; near the end the «باقي 2» label does. Slow-feeling progress raises drop-off, so every slide must pay.
+5. **Progress that does not drag**: up to 10 slides, including the cover the counter helps; near the end the «باقي 2» label does. Slow-feeling progress raises drop-off, so every slide must pay.
 6. **A video or motion slide in the middle** is optional and only if the user supplies it; mixed media tends to do well, but it is never a reason to pad the post.
-Avoid 3 to 4 slide teasers. Use 2 slides only for a reveal or a joke.
+A useful 4 to 6 slide post needs no extra slides. Two-slide reveals and jokes are allowed.
 
 ## Slide types: required and optional fields
 `ord` (the item or step number) is derived by the engine; set it only to override. `sides` for `compare` and `myth-fact` is exactly two entries in logical order (myth then fact; A then B), each `{label?, text}`; `stat.number` is `{value, unit?, sourceId?}` with `value` a string in Western digits (`"5"`, `"1.2"`).

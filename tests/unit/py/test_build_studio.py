@@ -750,6 +750,13 @@ class TestShippedStudioFiles(unittest.TestCase):
 
     def test_every_key_used_by_the_code_exists(self):
         used = set()
+        # The slide cap also ships with old embedded JSON bundles, so its strings
+        # live in the UI's source dictionary and follow the same language fallback.
+        source = (REPO / "src/ui/strings.js").read_text(encoding="utf-8")
+        fallback = json.loads(re.search(r"var slideLimitStrings = (\{[^\n]+\});", source).group(1))
+        for value in fallback.values():
+            self.assertTrue(value["msa-white"] and value["en"])
+        available = set(self.merged) | set(fallback)
         directories = list(SRC_DIRS)
         if (SKILL / BUILDER.VISUAL_STRINGS).is_file():          # once the visual strings ship, the visual panel's keys are held to them too
             directories.append(REPO / "src" / "visual-ui")
@@ -758,7 +765,7 @@ class TestShippedStudioFiles(unittest.TestCase):
                 text = path.read_text(encoding="utf-8")
                 used.update(re.findall(r'\bt\(\s*"([^"]+)"\s*[,)]', text))
         self.assertGreater(len(used), 300)
-        missing = sorted(k for k in used if k not in self.merged)
+        missing = sorted(k for k in used if k not in available)
         self.assertEqual(missing, [])
 
     def test_dynamic_key_families_are_complete(self):

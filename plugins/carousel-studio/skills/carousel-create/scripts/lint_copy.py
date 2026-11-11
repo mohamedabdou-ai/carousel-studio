@@ -78,10 +78,13 @@ class _Parser(argparse.ArgumentParser):
 
 
 def build_parser():
-    p = _Parser(prog="lint_copy.py", description="Run the Carousel Studio text gates on a spec or on one piece of copy.")
+    p = _Parser(prog="lint_copy.py", description="Run the Carousel Studio text gates on a spec or on one piece of copy.",
+                epilog="Spec forms: validate.py spec <file> --lint; cta.kind: save, send, question, keyword-dm, follow (sharing is send). "
+                       "sources[].kind: url, file, user, ownData, calc. style.overrides: dotted token paths to scalar string/number/boolean, not [min,max]. "
+                       "captionPack keys: firstLine, keywordLine, body, cta, hashtags, perSlide, alt, asset; sourceIds belong on slides.")
     src = p.add_mutually_exclusive_group(required=True)
     src.add_argument("--spec", help="spec.json to lint")
-    src.add_argument("--text", help="one fragment of copy to lint (needs --role)")
+    src.add_argument("--text", help="one fragment (needs --role); cover hero is the first beat before ?, ؟, !, …, ..., : or a newline")
     p.add_argument("--role", choices=ROLES, help="what the --text fragment is")
     p.add_argument("--dialect", choices=DIALECTS, help="override the spec's dialect (default: the spec's; eg for --text)")
     p.add_argument("--digits", choices=DIGIT_SYSTEMS, help="override the digit system (default: the spec's; western for --text)")

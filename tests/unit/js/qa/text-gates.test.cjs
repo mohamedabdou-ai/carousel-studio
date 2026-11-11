@@ -14,6 +14,52 @@ const find = (res, rule) => res.filter((r) => r.rule === rule);
 const words = (n, w) => Array.from({ length: n }, () => w || "كلمة").join(" ");
 const slide = (spec, id) => spec.slides.find((s) => s.id === id);
 
+test("C5: 10 slides pass, 11 block, and 4 through 6 never raise a count FIX", () => {
+  for (const n of [4, 5, 6, 10, 11]) {
+    const spec = cleanSpec();
+    spec.slides = Array.from({ length: n }, (_, i) => ({ id: "s" + String(i + 1).padStart(2, "0"), n: i + 1, type: i === 0 ? "cover" : i === n - 1 ? "cta" : "summary" }));
+    const res = run(spec, { gates: ["C5"] }).filter((r) => r.rule.startsWith("C5.slide-count"));
+    assert.equal(res.some((r) => r.sev === "BLOCK"), n > 10, String(n));
+    assert.equal(res.some((r) => r.sev === "FIX"), false, String(n));
+  }
+});
+
+test("C6: four numbered proof members exclude context before and after the list", () => {
+  const spec = cleanSpec();
+  spec.architecture = "steps";
+  spec.slides[0].headline = "4 خطوات لصفحة مشروعك";
+  spec.slides.forEach((s) => { delete s.ord; });
+  spec.slides.slice(2, 6).forEach((s, i) => { s.type = "proof"; s.ord = i + 1; });
+  for (const type of ["item", "step", "grid", "timeline"]) {
+    spec.slides[1].type = type; // unnumbered context before the list
+    spec.slides[6].type = type; // unnumbered context after it
+    assert.equal(find(run(spec), "C6.list-count").length, 0, type);
+  }
+  spec.slides[0].headline = "5 خطوات لصفحة مشروعك";
+  assert.equal(find(run(spec), "C6.list-count")[0].sev, "BLOCK");
+  spec.slides[6].ord = 4; // a continuation of member 4 is not a fifth member
+  assert.equal(find(run(spec), "C6.list-count")[0].sev, "BLOCK");
+});
+
+test("C7: creator-script variety findings are NOTE; team-written copy stays FIX", () => {
+  const spec = cleanSpec(), history = [{ cta: "save", family: "P1" }];
+  const variety = (s) => run(s, { history }).filter((r) => ["C7.cta-repeat", "C7.family-repeat"].includes(r.rule));
+  assert.deepEqual(variety(spec).map((r) => r.sev), ["FIX", "FIX"]);
+  spec.ext = { source: "creator-script" };
+  assert.deepEqual(variety(spec).map((r) => r.sev), ["NOTE", "NOTE"]);
+});
+
+test("C1: all cover gates use the first beat as hero and retain the whole total", () => {
+  for (const separator of ["؟ ", "? ", "… ", "... ", ": ", "\n"]) {
+    const spec = cleanSpec();
+    spec.slides[0].headline = "صورة منتجك ثابتة" + separator + "حركها داخل الأداة بخطوة بسيطة الآن";
+    delete spec.slides[0].kicker;
+    assert.equal(find(run(spec), "C1.hero-words").length, 0, separator);
+    spec.slides[0].sub = words(5);
+    assert.equal(find(run(spec), "C1.total-words")[0].sev, "BLOCK", separator);
+  }
+});
+
 test("a clean carousel produces no findings", () => {
   assert.deepEqual(run(cleanSpec()), []);
 });
@@ -167,7 +213,7 @@ test("C5: slide count tiers, skeleton and bridges", () => {
   const six = cleanSpec();
   six.slides = six.slides.slice(0, 5).concat(six.slides.slice(-1));
   res = run(six);
-  assert.equal(find(res, "C5.slide-count-range")[0].sev, "NOTE");
+  assert.equal(find(res, "C5.slide-count-range").length, 0);
   assert.equal(ids(res).includes("C5.slide-count-low"), false);
 
   const one = cleanSpec();
