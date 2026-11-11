@@ -6,6 +6,10 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 
 ### Your own script
 
+- Paste pipe headings, bold Arabic slide headings and mixed separators directly; no parsing copy is needed. Backticks and emphasis keep their text, and trailing source mentions stay out of slide copy.
+- Script links become shared sources on their own slides, with tracking removed. Your figures can be attested in one explicit step after your confirmation.
+- A safe spec editor changes hooks, text, styles, sources, captions, alt text and calls to action. Deliberate edits are recorded beside the post and survive both parsing and fill re-runs, with revision checks and fresh QA counts.
+- Automatic splits stay within the platform slide limit. Longer pasted decks are kept in full with the shortest neighbouring merge candidates; a missing closing line is offered for your approval.
 - Scripts written the way creators write them in chat are read as meant: «١ — الكافر» and «سلايد ٨ — القفلة» name the slide, a line that starts with a number stays copy, the bold title under a bare «**سلايد ٣**» is kept, emoji lines become the list, and «*…*» emphasis no longer leaves asterisks.
 - A slide too long to hold runs on into the next slide at your own sentence end, every word kept. «زي ما هو» keeps every slide as written, and every length limit on your words now accepts «تجاوز».
 - The last slide keeps your question as its title and your options under it; three asks in one line are offered as a shorter choice, never cut for you.

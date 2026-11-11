@@ -5,22 +5,177 @@ Run: python -m unittest discover -s tests/unit/py -p "test_script_to_spec.py"   
 from __future__ import annotations
 
 import json
-import importlib.util
+import argparse
+import copy
 import os
 import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
+
+try:
+    import b7_support as support
+except ImportError:
+    from . import b7_support as support
 
 REPO = Path(__file__).resolve().parents[3]
 SCRIPT = REPO / "plugins" / "carousel-studio" / "skills" / "carousel-create" / "scripts" / "script_to_spec.py"
 BRAND = REPO / "docs" / "examples" / "brand.example.json"
 ENV = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
 
-_loader = importlib.util.spec_from_file_location("script_to_spec_motion", SCRIPT)
-_picker = importlib.util.module_from_spec(_loader)
-_loader.loader.exec_module(_picker)
+def setUpModule():
+    global _picker
+    _picker = support.load_script("carousel-create", "script_to_spec.py", "script_to_spec_motion")
+
+
+def tearDownModule():
+    support.cleanup()
+
+
+class PastedFormatsTests(unittest.TestCase):
+    def parse(self, text, digits="western", **options):
+        args = argparse.Namespace(no_split2=False, no_split=False, style=None, architecture="news",
+                                  out="post-20261111-0001", id=None, intent="save", awareness="problem", dialect=None)
+        vars(args).update(options)
+        with mock.patch.object(_picker.cs_rules, "platform", side_effect=lambda key, default=None: 10 if key == "plugin.slides.hardMax" else default):
+            return _picker.make_spec(args, text, {"locale": {"digits": digits}})
+
+    def test_pipe_headings_paste_wrapper_and_preamble(self):
+        spec, _ = self.parse('''<pasted_content id="fresh">
+كاروسيل عن تنظيم المكتب
+١ | الغلاف
+**مساحة صغيرة…\nوفكرة واضحة**
+خطوة بسيطة
+٢ | أهم المميزات
+* ضع **الأوراق** في ملف.
+* احفظ المرجع باسم `@المكتب`.
+٣ | جرّب الفكرة
+«رتّب سطح المكتب، واترك مساحة للكتابة.»
+</pasted_content>''', no_split=True)
+        self.assertEqual(len(spec["slides"]), 3)
+        self.assertEqual(spec["slides"][0]["headline"], "مساحة صغيرة…\nوفكرة واضحة")
+        self.assertEqual(spec["slides"][0]["sub"], "خطوة بسيطة")
+        self.assertEqual(spec["slides"][1]["bullets"], ["ضع الأوراق في ملف.", "احفظ المرجع باسم @المكتب."])
+        self.assertEqual(spec["slides"][2]["body"], "«رتّب سطح المكتب، واترك مساحة للكتابة.»")
+
+    def test_mixed_headings_separators_and_inline_spans(self):
+        for first in ("١ — الكافر", "**١ — الكافر**", "**سلايد ١ — الغلاف**", "1 | الغلاف"):
+            with self.subTest(first=first):
+                spec, _ = self.parse(first + '''
+**موعد واحد واضح**
+---
+**٢ — نتيجة مفيدة في يوم!**
+ظهر *التغيير* بنسبة **٢٧٪**.
+**سلايد ٣**
+**قائمة المراجعة**
+• افتح الملف.
+- اقرأ السطر.
+سلايد ٤ — القفلة
+احفظ القائمة.
+''', no_split=True)
+                self.assertEqual([s["type"] for s in spec["slides"]], ["cover", "item", "checklist", "cta"])
+                self.assertEqual(spec["slides"][1]["title"], "نتيجة مفيدة في يوم!")
+                self.assertIn("27%", spec["slides"][1]["body"])
+                self.assertEqual(spec["slides"][2]["title"], "قائمة المراجعة")
+                self.assertNotIn("*", json.dumps(spec["slides"], ensure_ascii=False))
+
+    def test_links_are_deduplicated_sources_and_follow_split_slides(self):
+        spec, _ = self.parse('''١ — الغلاف
+تجربة الورشة
+٢ — النتيجة
+الزيادة 27%. [تقرير الورشة](https://reports.example/results?utm_source=chat&part=main)
+٣ — القياس
+المكسب 31%. https://reports.example/results?part=main&utm_medium=chat
+٤ — بلا مصدر
+الزيادة 43%.
+٥ — القفلة
+احفظ التقرير.
+''', no_split=True)
+        self.assertEqual(len(spec["sources"]), 1)
+        source = spec["sources"][0]
+        self.assertEqual((source["kind"], source["ref"], source["location"]), ("url", "https://reports.example/results?part=main", "تقرير الورشة"))
+        self.assertEqual(spec["slides"][1]["sourceIds"], [source["id"]])
+        self.assertEqual(spec["slides"][2]["sourceIds"], [source["id"]])
+        self.assertNotIn("http", json.dumps(spec["slides"]))
+        findings = _picker.csqa.run_text_gates(spec, gates=["SRC1"])
+        self.assertEqual({r.get("slide") for r in findings if r["rule"] == "SRC1.missing"}, {"s04"})
+
+    def test_source_mentions_are_not_copy_and_digits_follow_brand(self):
+        spec, notes = self.parse('''١ — الغلاف
+نتيجة واضحة
+٢ — التفاصيل
+القيمة **27%**. Atlas by Workshop
+٣ — المرجع
+خطوة أخيرة.
+reports.example
+٤ — القفلة
+احفظ المرجع.
+''', digits="arabic-indic", no_split=True)
+        self.assertIn("٢٧٪", spec["slides"][1]["body"])
+        self.assertNotIn("Atlas by Workshop", spec["slides"][1]["body"])
+        self.assertNotIn("reports.example", spec["slides"][2]["body"])
+        self.assertTrue(any("Atlas by Workshop" in n for n in notes))
+
+    def test_an_english_sentence_with_by_is_copy(self):
+        spec, _ = self.parse("1. Cover\nA clear schedule\n2. The result\nThis was made by Workshop.\n3. Save the schedule.", no_split=True)
+        self.assertEqual(spec["slides"][1]["body"], "This was made by Workshop.")
+
+    def test_prose_does_not_invent_grid_cards_or_timeline_nodes(self):
+        spec, _ = self.parse("1. Cover\nPlan the workshop\n2. The sequence\nRead the note, then choose a date.\n3. Save the plan.", no_split=True)
+        self.assertFalse({s["type"] for s in spec["slides"]} & {"grid", "timeline"})
+
+    def test_no_closing_copy_is_invented_even_for_a_question(self):
+        for ending in ("خطوة أخيرة", "أي موعد يناسبك؟"):
+            spec, notes = self.parse("١ — الغلاف\nرتّب موعدك\n٢ — الفكرة\nاستخدم تقويمك.\n٣ — النهاية\n" + ending, no_split=True)
+            dump = json.dumps(spec["slides"], ensure_ascii=False)
+            self.assertNotIn("اكتب إجابتك", dump)
+            self.assertIn(ending, dump)
+            if "؟" not in ending:
+                self.assertTrue(any("offer" in n and "save" in n and "question" in n for n in notes))
+
+    def test_no_word_or_bullet_is_lost_or_reordered(self):
+        spec, _ = self.parse("١ — الغلاف\nعنوان واحد\n\nسطر ثان\n\nسطر ثالث\n\nسطر رابع\n٢ — الترتيب\nقبل\n- وسط\nبعد\n- أخير\n٣ — القفلة\nاحفظ القائمة.", no_split=True)
+        self.assertIn("سطر ثالث", spec["slides"][0]["sub"])
+        self.assertIn("سطر رابع", spec["slides"][0]["sub"])
+        self.assertEqual(spec["slides"][1]["body"], "قبل وسط بعد أخير")
+        bullets = "\n".join("- عنصر %s" % chr(65 + i) for i in range(9))
+        spec, _ = self.parse("1. غلاف\nنص\n2. القائمة\n" + bullets + "\n3. احفظ القائمة.", no_split=True)
+        self.assertIn("عنصر I", json.dumps(spec["slides"], ensure_ascii=False))
+
+    def test_ten_slide_budget_covers_rehook_and_cta_splitting(self):
+        sections = ["1. غلاف\nعنوان"] + ["%d. بند\nجملة قصيرة.\n\nجملة تالية من كلمات كثيرة توضح الفكرة بشكل كاف لكل من يقرأها." % n for n in range(2, 10)] + ["10. ختام\nفكرة سابقة.\n\nاحفظ القائمة."]
+        spec, notes = self.parse("\n".join(sections))
+        self.assertEqual(len(spec["slides"]), 10)
+        self.assertIn("احفظ القائمة.", json.dumps(spec["slides"], ensure_ascii=False))
+        self.assertTrue(any("not split" in n for n in notes))
+
+    def test_excess_slides_are_kept_with_shortest_neighbour_merge_advice(self):
+        text = "\n".join("%d. بند\n%s" % (n, "قصير" if n in (5, 6) else "فكرة لها عدة كلمات مختلفة هنا") for n in range(1, 12))
+        spec, notes = self.parse(text, no_split=True)
+        self.assertEqual(len(spec["slides"]), 11)
+        merges = [n for n in notes if "merge" in n]
+        self.assertTrue(merges and "s05 + s06" in merges[0], merges)
+        idx = copy.deepcopy(_picker.cs_rules.index())
+        idx["checks"]["C5.slide-count"]["def"]["params"]["max"] = 10
+        with mock.patch.object(_picker.cs_rules, "index", return_value=idx):
+            findings = _picker.csqa.run_text_gates(spec, gates=["C5"])
+        self.assertTrue(any(r["rule"] == "C5.slide-count" and r["sev"] == "BLOCK" for r in findings))
+
+    def test_closing_actions_and_options_keep_their_rendered_order_without_duplicate_words(self):
+        closing = "موعدك القادم؟\n\nصباحًا أم مساءً؟\n\nاكتب الموعد.\n\nوتابع جدول الورشة."
+        spec, _ = self.parse("١ — الغلاف\nنرتب اليوم\n٢ — التفاصيل\nخطوة بسيطة.\n٣ — القفلة\n" + closing, no_split=True)
+        last = spec["slides"][-1]
+        rendered = " ".join(last.get(k, "") for k in ("title", "body")) + " " + last["cta"]["text"]
+        self.assertEqual(" ".join(rendered.split()), " ".join(closing.split()))
+
+    def test_a_linked_slide_keeps_its_source_on_every_continuation(self):
+        spec, _ = self.parse("1. غلاف\nتقرير الورشة\n2. النتيجة\nالزيادة 27%.\n\n" + " ".join(["جملة بها تفاصيل كثيرة عن النتيجة." for _ in range(7)]) +
+                             " [التقرير](https://notes.example/result?utm_campaign=chat)\n3. احفظ التقرير.")
+        sourced = spec["slides"][1:-1]
+        self.assertGreater(len(sourced), 1)
+        self.assertTrue(all(s.get("sourceIds") == [spec["sources"][0]["id"]] for s in sourced))
 
 
 class MotionPickerTests(unittest.TestCase):
@@ -194,7 +349,7 @@ class ScriptToSpecTests(unittest.TestCase):
 
     def test_the_owners_script_keeps_his_words_and_gets_the_structure(self) -> None:
         res, spec = self.step1(OWNER, "--style", "notebook", "--architecture", "news")
-        self.assertEqual(res.returncode, 1, res.stderr)  # bridges and the caption pack are still to fill
+        self.assertEqual(res.returncode, 2, res.stderr)  # fresh QA reports the missing caption pack even in step 1
         types = [s["type"] for s in spec["slides"]]
         self.assertEqual(types, ["cover", "rehook", "story-beat", "story-beat", "item", "item", "item", "item", "cta"])
         cover = spec["slides"][0]
@@ -226,7 +381,7 @@ class ScriptToSpecTests(unittest.TestCase):
 
     def test_numbered_lines_without_separators(self) -> None:
         res, spec = self.step1(NUMBERED)
-        self.assertEqual(res.returncode, 1, res.stderr)
+        self.assertEqual(res.returncode, 2, res.stderr)
         self.assertEqual([s["type"] for s in spec["slides"]], ["cover", "item", "item", "item", "cta"])
         self.assertEqual(spec["slides"][0]["headline"], "5 أدوات ببلاش… بتغنيك عن المصمم")
         self.assertEqual(spec["slides"][1]["title"], "Canva")
@@ -351,8 +506,8 @@ class ScriptToSpecTests(unittest.TestCase):
         last = spec["slides"][-1]
         self.assertEqual(last["type"], "cta")
         self.assertEqual(last["title"], "لو قدرت تدخل أي عالم بالذكاء الاصطناعي… هتختار عالم إيه؟")
-        self.assertEqual(last["cta"], {"kind": "question", "text": "اكتب رأيك في الكومنتات!"})
-        self.assertEqual(last["body"], "واتأكد إنك متابعني.")                        # his line after the ask stays, in order
+        self.assertEqual(last["cta"], {"kind": "question", "text": "اكتب رأيك في الكومنتات! واتأكد إنك متابعني."})
+        self.assertNotIn("body", last)  # body renders before CTA, so action lines stay together in order
         self.assertNotIn("CTA", json.dumps(spec["slides"], ensure_ascii=False))
         self.assertIn("offer a shorter last slide", res.stdout)
 
@@ -394,13 +549,12 @@ class ScriptToSpecTests(unittest.TestCase):
     def test_the_owners_draft_format_is_read_as_he_means_it(self) -> None:
         res, spec = self.step1(self.DRAFT, "--architecture", "news")
         slides = spec["slides"]
-        self.assertEqual([s["type"] for s in slides], ["cover", "item", "checklist", "cta"], res.stdout)
+        self.assertEqual([s["type"] for s in slides], ["cover", "item", "item", "cta"], res.stdout)
         self.assertTrue(slides[0]["headline"].endswith("ثانية… وتطلع لعبة!"))      # «٣٠ ثانية…» is copy, not slide 30
         self.assertEqual(slides[0]["sub"], "فكرتك بتتحول للعبة من غير كود")
         self.assertEqual(slides[1]["title"], "مين بيعمل كده؟")
         self.assertEqual(slides[2]["title"], "الفرق بين الخطتين")                     # the bold line under «**سلايد ٣**»
-        self.assertEqual(slides[2]["bullets"], ["الألعاب متاحة على كل الخطط.", "الإعلانات للشركات بس."])
-        self.assertEqual(slides[2]["body"], "مثال للتوضيح.")                          # no stray asterisks
+        self.assertEqual(slides[2]["body"], "الألعاب متاحة على كل الخطط. الإعلانات للشركات بس. مثال للتوضيح.")  # checklist has no prose slot
         last = slides[-1]
         self.assertEqual(last["title"], "هتعمل لعبة عن إيه؟")                        # the ask, then his options under it
         self.assertEqual(last["body"], "سباق عربيات … ولا مغامرة في الصحرا؟")
