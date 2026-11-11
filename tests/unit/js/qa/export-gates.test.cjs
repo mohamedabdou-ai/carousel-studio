@@ -309,6 +309,20 @@ test("render CLI: FIX is successful unless strict, BLOCK and real failures stay 
   assert.equal(coverVideoOutcome(result, ["3x4", "4x5"], false).failed, false);
 });
 
+test("render CLI: only a cover with motion expects a video, so a still post never fails for a missing MP4", async () => {
+  const { wantsCoverVideo } = await import("../../../../plugins/carousel-studio/skills/carousel-design/scripts/render.mjs");
+  const spec = (motion, extra) => Object.assign({ format: "carousel", cover: motion === undefined ? {} : { motion } }, extra || {});
+  const internal = { video: "internal" };
+  assert.equal(wantsCoverVideo(internal, spec({ recipe: "stamp" })), true);
+  assert.equal(wantsCoverVideo(internal, spec({ recipe: "none" })), false, "motion switched off in the spec");
+  assert.equal(wantsCoverVideo(internal, spec(undefined)), false, "no motion block at all");
+  assert.equal(wantsCoverVideo(internal, spec({ recipe: "stamp" }, { compat: { mp4: "off" } })), false, "MP4 switched off for this spec");
+  assert.equal(wantsCoverVideo(internal, spec({ recipe: "stamp" }, { format: "single" })), false, "a single post has no cover video");
+  assert.equal(wantsCoverVideo({ video: "none" }, spec({ recipe: "stamp" })), false, "--video none asks for stills");
+  assert.equal(wantsCoverVideo(internal, spec({ recipe: "stamp", source: "external" })), false, "an external plate is not the Studio encoder's job");
+  assert.equal(wantsCoverVideo({ video: "hyperframes" }, spec({ recipe: "stamp", source: "external" })), true);
+});
+
 test("render diagnoses an older eleven-slide spec with C5 before strict schema loading", async () => {
   const { slideCountReport } = await import("../../../../plugins/carousel-studio/skills/carousel-design/scripts/render.mjs");
   const spec = cleanSpec();

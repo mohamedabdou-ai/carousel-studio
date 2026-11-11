@@ -115,6 +115,18 @@ function exportExitCode(report, ok, strict) {
   return strict && report.status === "fix" ? 1 : EXIT.OK;
 }
 
+/** True when this run is expected to produce a cover video. The spec decides, the flag only narrows: a single post, a cover with no
+ *  motion (`recipe: "none"`), a spec that switched MP4 off, or `--video none` asks for stills only, so a missing MP4 is not a failure
+ *  there. An external motion plate is rendered by HyperFrames in Claude Code, never by the Studio's own encoder. */
+function wantsCoverVideo(o, spec) {
+  const motion = spec && spec.cover && spec.cover.motion;
+  if (o.video === "none" || !spec || spec.format === "single") return false;
+  if (!motion || motion.recipe === "none") return false;
+  if (spec.compat && spec.compat.mp4 === "off") return false;
+  if (motion.source === "external" && o.video !== "hyperframes") return false;
+  return true;
+}
+
 function coverVideoOutcome(result, variants, requested) {
   const files = (result.files || []).filter((f) => /\.mp4$/i.test(f.path) && f.bytes > 0);
   const missing = requested ? variants.map((v) => `${v}/01-cover.mp4`).filter((p) => !files.some((f) => f.path === p)) : [];
@@ -243,8 +255,10 @@ async function main(argv) {
     }
 
     const motion = spec.cover && spec.cover.motion;
-    const wantsVideo = o.video !== "none" && spec.format !== "single";
+    const wantsVideo = wantsCoverVideo(o, spec);
     const videos = [], videoSummary = { mode: o.video, files: [], skipped: [] };
+    if (!wantsVideo && o.video === "internal" && motion && motion.source === "external")
+      videoSummary.skipped.push({ path: "3x4/01-cover.mp4", reason: "The cover uses an external motion plate: render it with --video hyperframes." });
     if (o.video === "hyperframes" && wantsVideo) {
       for (const variant of o.variantList.includes("4x5") ? ["3x4", "4x5"] : ["3x4"]) {
           const rel = `${variant}/01-cover.mp4`, dest = path.join(outDir, rel);
@@ -298,7 +312,7 @@ async function main(argv) {
   }
 }
 
-export { parseArgs, wanted, exportExitCode, coverVideoOutcome, slideCountReport };
+export { parseArgs, wanted, exportExitCode, coverVideoOutcome, wantsCoverVideo, slideCountReport };
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   main(process.argv.slice(2)).then((c) => { process.exitCode = c; }, (e) => {

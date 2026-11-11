@@ -155,15 +155,58 @@ def header_text(line: str):
     return None
 
 
-def split_sections(raw: str) -> list[list[str]]:
+BARE_NUMBER = re.compile(r"^\s*(?P<n>[0-9٠-٩]{1,2})\s*(?P<sep>[:.)|\-–—])")
+INDIC_DIGITS = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
+
+
+def section_boundaries(lines: list[str]) -> list[bool]:
+    """For each line, whether it opens a new slide. A header that names itself (a slide word, a circled digit, a bold or # line) always
+    does. A bare «1.» or «٣ —» is a slide number only when the script numbers its slides that way: there are no --- separators (with
+    separators a numbered line is a list item in the copy), the numbers run in order from 1 (or from 2 over an unnumbered cover), in
+    one digit system and one separator style, and the text after the number is not another number («٥ - ١٠ دقايق» is a range)."""
+    has_sep = any(SEPARATOR.match(l) for l in lines)
+    style, expected, out = None, None, []
+    for l in lines:
+        if not (HEADER.match(l) and header_text(l) is not None):
+            out.append(False)
+            continue
+        m = BARE_NUMBER.match(l)
+        if not m:
+            out.append(True)
+            continue
+        rest = l[m.end():].lstrip()
+        system = "indic" if re.search("[٠-٩]", m.group("n")) else "western"
+        sep = "dash" if m.group("sep") in "-–—" else m.group("sep")
+        n = int(m.group("n").translate(INDIC_DIGITS))
+        if has_sep or (rest and re.match("[0-9٠-٩]", rest)):
+            out.append(False)
+        elif style is None:
+            ok = n in (1, 2)
+            if ok:
+                style, expected = (system, sep), n + 1
+            out.append(ok)
+        elif (system, sep) == style and n == expected:
+            expected += 1
+            out.append(True)
+        else:
+            out.append(False)
+    return out
+
+
+def split_sections(raw: str, notes: list | None = None) -> list[list[str]]:
     lines = raw.replace("\r\n", "\n").replace("\r", "\n").lstrip("﻿").split("\n")
     lines = [l for l in lines if not re.fullmatch(r"\s*</?pasted_content\b[^>]*>\s*", l)]
-    first = next((i for i, l in enumerate(lines) if HEADER.match(l) and header_text(l) is not None), None)
-    if first is not None:
-        lines = lines[first:]  # chat instructions and a post label before slide 1 are not slide copy
+    opens = section_boundaries(lines)
+    first = next((i for i, b in enumerate(opens) if b), None)
+    m = BARE_NUMBER.match(lines[first]) if first is not None else None
+    if first is not None and not (m and int(m.group("n").translate(INDIC_DIGITS)) != 1) and not any(SEPARATOR.match(l) for l in lines[:first]):
+        # chat instructions and a post label before slide 1 are not slide copy; lines over «2.» are an unnumbered cover and stay
+        dropped = [l.strip() for l in lines[:first] if l.strip()]
+        if dropped and notes is not None:
+            notes.append("%d line(s) before the first slide heading were read as instructions, not copy: «%s»" % (len(dropped), dropped[0][:60]))
+        lines, opens = lines[first:], opens[first:]
     out, cur = [], []
-    for l in lines:
-        boundary = HEADER.match(l) and header_text(l) is not None
+    for l, boundary in zip(lines, opens):
         if SEPARATOR.match(l) or (boundary and any(x.strip() for x in cur)):
             out.append(cur)
             cur = []
@@ -623,7 +666,7 @@ def make_spec(args, raw: str, brand: dict) -> tuple[dict, list]:
     loc = dict(brand.get("locale") or {})
     digits = loc.get("digits") or "western"
     removed, notes = [], []
-    raw_sections = split_sections(raw)
+    raw_sections = split_sections(raw, notes)
     sections = [parse_section(s, digits, removed, i == 0, 0 < i < len(raw_sections) - 1) for i, s in enumerate(raw_sections)]
     sections = [s for s in sections if s["head"] or s["paras"] or s["bullets"]]
     for section in sections:
