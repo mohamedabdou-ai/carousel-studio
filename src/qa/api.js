@@ -190,6 +190,7 @@ async function contrastMeasure(slideEl, tokens) {
 /* ------------------------------------------------------------------ CS.qa */
 
 CS.qa = {
+  splitCover: splitCover,
   version: QA.ENGINE,
   _: { gates: QA.gates, slideFields },
 

@@ -55,6 +55,17 @@ class LintCopyTests(unittest.TestCase):
         self.assertEqual(spec["locale"]["dialect"], "eg")
         self.assertEqual([s["n"] for s in spec["slides"]], [1, 2])
 
+    def test_two_beat_cover_agrees_with_hook_and_text_gates(self):
+        hf = support.load_script("carousel-create", "hook_features.py")
+        for separator in ("؟ ", "? ", "… ", "... ", ": ", "\n"):
+            cover = "صورة منتجك ثابتة" + separator + "حركها داخل الأداة بخطوة بسيطة الآن"
+            spec = self.lc.spec_for_text(cover, "cover", "eg", "western", False)
+            self.assertEqual(hf.split_beats(cover), self.qa.split_cover(cover))
+            found = self.qa.run_text_gates(spec, gates=["C1"])
+            self.assertFalse(any(r["rule"] == "C1.hero-words" for r in found), separator)
+            spec["slides"][0]["sub"] = "إضافة كلمات تتجاوز حد الغلاف"
+            self.assertTrue(any(r["rule"] == "C1.total-words" for r in self.qa.run_text_gates(spec, gates=["C1"])))
+
     def test_rehook_title_body_bullet_land_on_slide_two(self):
         cases = {"rehook": ("rehook", "headline"), "title": ("item", "title"), "body": ("item", "body")}
         for role, (kind, field) in cases.items():

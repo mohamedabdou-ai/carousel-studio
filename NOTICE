@@ -35,14 +35,7 @@ THIRD-PARTY COMPONENTS
              moment a user exports an MP4. It is not copied into, or modified
              by, this repository.
 
-2. fflate
-   Licence:  MIT
-   Author:   Arjun Barrett
-   Source:   https://github.com/101arrowz/fflate
-   Use:      Optional compression helper, release 0.8.2, loaded unmodified
-             from the jsDelivr CDN only when the Studio needs it.
-
-3. HyperFrames
+2. HyperFrames
    Licence:  Apache License 2.0
    Author:   HeyGen
    Source:   https://github.com/heygen-com/hyperframes
@@ -53,7 +46,7 @@ THIRD-PARTY COMPONENTS
              HyperFrames code that a runtime file contains keeps its Apache-2.0
              notice in that file.
 
-4. Lucide
+3. Lucide
    Licence:  ISC; icons derived from Feather are also under the MIT licence
    Author:   Lucide Icons and Contributors; Cole Bemis (Feather)
    Source:   https://lucide.dev
@@ -101,7 +94,7 @@ THIRD-PARTY COMPONENTS
    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
    DEALINGS IN THE SOFTWARE.
 
-5. Tabler Icons
+4. Tabler Icons
    Licence:  MIT
    Author:   Paweł Kuna
    Source:   the @tabler/icons package, release 3.49.0 (outline set)
@@ -130,14 +123,14 @@ THIRD-PARTY COMPONENTS
    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
    DEALINGS IN THE SOFTWARE.
 
-6. The icons and objects drawn for Carousel Studio
+5. The icons and objects drawn for Carousel Studio
    Licence:  Apache License 2.0, the licence of this project
    Use:      The icons whose names start with cs- and the object drawings
              (data/icons/objects.json) were made for Carousel Studio. They need
              no third-party notice and are listed here only so that the whole
              icon pack is accounted for.
 
-7. Fonts
+6. Fonts
    Licence:  SIL Open Font License, Version 1.1 (OFL-1.1)
    Use:      Every font in skills/carousel-design/fonts/ is an unmodified
              upstream release (never subset, renamed or re-encoded), stored
@@ -160,7 +153,7 @@ THIRD-PARTY COMPONENTS
              Cairo                   cairo
              Inter                   inter
 
-8. The author's own Arabic skill packs
+7. The author's own Arabic skill packs
    Licence:  MIT, relicensed here under Apache-2.0 by the same copyright holder
    Author:   Mohamed Abdou (محمد عبده)
    Use:      Parts of the Arabic proofreading rules (arabic-proofread) and the
@@ -168,7 +161,7 @@ THIRD-PARTY COMPONENTS
              earlier packs arabic-typography-audit and arabic-ad-copywriting.
              Copyright (c) 2026 Mohamed Abdou (محمد عبده).
 
-9. Tools on the user's machine
+8. Tools on the user's machine
    The Claude Code render lane calls Node.js, ffmpeg and a Chromium browser
    that the user installs. They are not part of this distribution and keep
    their own licences.

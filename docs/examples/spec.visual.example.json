@@ -198,57 +198,8 @@
       }
     },
     {
-      "id": "s05",
-      "n": 5,
-      "type": "story-beat",
-      "variant": "scene",
-      "title": "التلات عناصر",
-      "body": "هوك يشد، وفايدة تقنع، ودعوة تحفظ.",
-      "bridge": "جربها",
-      "visual": {
-        "idea": "تلات أيقونات: هوك وفايدة ودعوة",
-        "anchor": {
-          "kind": "scene",
-          "template": "trio",
-          "icons": [
-            "megaphone",
-            "gift",
-            "bookmark"
-          ],
-          "roles": [
-            "dominant",
-            "support",
-            "support"
-          ],
-          "treatment": "duo",
-          "size": "xl",
-          "captions": [
-            "هوك",
-            "فايدة",
-            "دعوة"
-          ]
-        },
-        "recipe": "under",
-        "field": true,
-        "bleed": "none",
-        "tone": "base",
-        "marks": [
-          "arrow"
-        ],
-        "span": {
-          "with": "s06",
-          "kind": "ribbon",
-          "dir": "left"
-        },
-        "why": "في تلات كلمات واضحة فاخترنا تلات أيقونات",
-        "alt": "تلات أيقونات: ميجافون وهدية وعلامة حفظ",
-        "lock": false,
-        "relax": 0
-      }
-    },
-    {
       "id": "s06",
-      "n": 6,
+      "n": 5,
       "type": "step",
       "variant": "track",
       "ord": 3,
@@ -296,7 +247,7 @@
     },
     {
       "id": "s07",
-      "n": 7,
+      "n": 6,
       "type": "checklist",
       "variant": "icons",
       "title": "قبل ما تنزل",
@@ -328,7 +279,7 @@
     },
     {
       "id": "s08",
-      "n": 8,
+      "n": 7,
       "type": "grid",
       "variant": "bento",
       "title": "أدوات الكاروسيل",
@@ -378,7 +329,7 @@
     },
     {
       "id": "s09",
-      "n": 9,
+      "n": 8,
       "type": "item",
       "ord": 2,
       "title": "الأرقام بتقنع",
@@ -430,7 +381,7 @@
     },
     {
       "id": "s10",
-      "n": 10,
+      "n": 9,
       "type": "proof",
       "variant": "screenshot",
       "title": "النتيجة بعد أسبوع",
@@ -450,77 +401,8 @@
       }
     },
     {
-      "id": "s11",
-      "n": 11,
-      "type": "share",
-      "headline": "ابعتها لصاحبك اللي بيكتب كابشنات",
-      "visual": {
-        "idea": "أرضية منقطة تملا الشريحة والكلام فوقها",
-        "anchor": {
-          "kind": "pattern",
-          "pattern": "bold-dots"
-        },
-        "recipe": "full",
-        "field": true,
-        "bleed": "both",
-        "tone": "field",
-        "why": "الشريحة كلها كلام فخلينا الصورة أرضية",
-        "alt": "أرضية منقطة بنقط كبيرة",
-        "lock": false,
-        "relax": 0
-      }
-    },
-    {
-      "id": "s12",
-      "n": 12,
-      "type": "setup",
-      "title": "هتحتاج إيه؟",
-      "bullets": [
-        "ورقة وقلم",
-        "فكرة واحدة",
-        "دقيقة تركيز"
-      ],
-      "bridge": "جاهز؟",
-      "visual": {
-        "idea": "ورقة اختبار عليها ختم صح",
-        "anchor": {
-          "kind": "mock",
-          "mock": {
-            "kind": "artefact",
-            "artefact": "exam",
-            "stamp": "صح",
-            "title": "ورقة الكابشن",
-            "caption": "اجتزت الاختبار",
-            "lines": [
-              {
-                "who": "sys",
-                "text": "درجتك",
-                "hi": true
-              }
-            ],
-            "items": [
-              "هوك واضح",
-              "فايدة في سطر",
-              "دعوة واحدة"
-            ]
-          }
-        },
-        "recipe": "under",
-        "field": false,
-        "bleed": "none",
-        "tone": "base",
-        "marks": [
-          "tape"
-        ],
-        "why": "العالم ده ورقة شغل فاخترنا ورقة اختبار",
-        "alt": "ورقة اختبار عليها ختم صح",
-        "lock": false,
-        "relax": 0
-      }
-    },
-    {
       "id": "s13",
-      "n": 13,
+      "n": 10,
       "type": "cta",
       "variant": "action",
       "title": "احفظ البوست",
@@ -615,5 +497,127 @@
       "skill": "carousel-create",
       "version": "1.1.0"
     }
+  },
+  "ext": {
+    "visualExamples": [
+      {
+        "id": "s05",
+        "n": 5,
+        "type": "story-beat",
+        "variant": "scene",
+        "title": "التلات عناصر",
+        "body": "هوك يشد، وفايدة تقنع، ودعوة تحفظ.",
+        "bridge": "جربها",
+        "visual": {
+          "idea": "تلات أيقونات: هوك وفايدة ودعوة",
+          "anchor": {
+            "kind": "scene",
+            "template": "trio",
+            "icons": [
+              "megaphone",
+              "gift",
+              "bookmark"
+            ],
+            "roles": [
+              "dominant",
+              "support",
+              "support"
+            ],
+            "treatment": "duo",
+            "size": "xl",
+            "captions": [
+              "هوك",
+              "فايدة",
+              "دعوة"
+            ]
+          },
+          "recipe": "under",
+          "field": true,
+          "bleed": "none",
+          "tone": "base",
+          "marks": [
+            "arrow"
+          ],
+          "span": {
+            "with": "s06",
+            "kind": "ribbon",
+            "dir": "left"
+          },
+          "why": "في تلات كلمات واضحة فاخترنا تلات أيقونات",
+          "alt": "تلات أيقونات: ميجافون وهدية وعلامة حفظ",
+          "lock": false,
+          "relax": 0
+        }
+      },
+      {
+        "id": "s11",
+        "n": 11,
+        "type": "share",
+        "headline": "ابعتها لصاحبك اللي بيكتب كابشنات",
+        "visual": {
+          "idea": "أرضية منقطة تملا الشريحة والكلام فوقها",
+          "anchor": {
+            "kind": "pattern",
+            "pattern": "bold-dots"
+          },
+          "recipe": "full",
+          "field": true,
+          "bleed": "both",
+          "tone": "field",
+          "why": "الشريحة كلها كلام فخلينا الصورة أرضية",
+          "alt": "أرضية منقطة بنقط كبيرة",
+          "lock": false,
+          "relax": 0
+        }
+      },
+      {
+        "id": "s12",
+        "n": 12,
+        "type": "setup",
+        "title": "هتحتاج إيه؟",
+        "bullets": [
+          "ورقة وقلم",
+          "فكرة واحدة",
+          "دقيقة تركيز"
+        ],
+        "bridge": "جاهز؟",
+        "visual": {
+          "idea": "ورقة اختبار عليها ختم صح",
+          "anchor": {
+            "kind": "mock",
+            "mock": {
+              "kind": "artefact",
+              "artefact": "exam",
+              "stamp": "صح",
+              "title": "ورقة الكابشن",
+              "caption": "اجتزت الاختبار",
+              "lines": [
+                {
+                  "who": "sys",
+                  "text": "درجتك",
+                  "hi": true
+                }
+              ],
+              "items": [
+                "هوك واضح",
+                "فايدة في سطر",
+                "دعوة واحدة"
+              ]
+            }
+          },
+          "recipe": "under",
+          "field": false,
+          "bleed": "none",
+          "tone": "base",
+          "marks": [
+            "tape"
+          ],
+          "why": "العالم ده ورقة شغل فاخترنا ورقة اختبار",
+          "alt": "ورقة اختبار عليها ختم صح",
+          "lock": false,
+          "relax": 0
+        }
+      }
+    ]
   }
 }

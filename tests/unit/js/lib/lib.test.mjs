@@ -105,6 +105,14 @@ test("diff then apply reproduces the target; envelope puts a test on /rev first"
 
 /* ---- colour -------------------------------------------------------------------------------------------------- */
 
+test("spec schema accepts 10 slides and rejects the eleventh", () => {
+  const spec = readJson("docs/examples/spec.example.json");
+  spec.slides = Array.from({ length: 10 }, () => spec.slides[0]);
+  assert.equal(schema.validate("spec", spec).ok, true);
+  spec.slides.push({ ...spec.slides[0], id: "s11", n: 11 });
+  assert.ok(schema.validate("spec", spec).errors.some((e) => e.path === "/slides" && e.keyword === "maxItems"));
+});
+
 test("contrast and luminance follow WCAG", () => {
   assert.equal(color.contrast("#000000", "#FFFFFF").toFixed(2), "21.00");
   assert.equal(color.contrast("#777777", "#FFFFFF").toFixed(2), "4.48");

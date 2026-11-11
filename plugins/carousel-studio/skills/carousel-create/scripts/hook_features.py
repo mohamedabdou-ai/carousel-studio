@@ -37,7 +37,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 try:
-    from _cs import lint as cs_lint, paths, rules as cs_rules, text as cs_text
+    from _cs import lint as cs_lint, paths, qa as cs_qa, rules as cs_rules, text as cs_text
 except ImportError as exc:      # the shared package is synced next to the scripts; say so plainly
     sys.stderr.write("cs-error: E_DEP_LOAD: the shared _cs package is missing next to this script: %s\n" % exc)
     sys.exit(70)
@@ -199,25 +199,9 @@ def norm_number(raw):
 # --------------------------------------------------------------------------
 
 
-BEAT_BREAK = re.compile("…|\\.{3}|[؟?!:](?=\\s|$)")
-QUESTION_MARKS = ("؟", "?", "!")
-
-
 def split_beats(cover):
-    """(hero, sub): the first beat and the rest. A beat ends at the ellipsis, or a question mark, exclamation mark or colon
-    followed by a space; the whole text is the hero when there is no break. A line break only wraps the headline: the Studio
-    sets every line at the hero size and C1.hero-words counts them all, so HG1 does too. A question or exclamation mark stays
-    with the hero, a colon and an ellipsis do not."""
-    s = cover.replace("\r", "").strip()
-    m = BEAT_BREAK.search(s)
-    if not m:
-        return s, ""
-    mark = s[m.start():m.end()]
-    if m.end() >= len(s) and mark != "…":
-        return s, ""
-    hero = s[:m.end()] if mark in QUESTION_MARKS else s[:m.start()]
-    sub = re.sub("^[….\\s]+", "", s[m.end():]).strip()
-    return hero.strip(), sub
+    """The same hero/sub-line decision used by lint_copy and C1."""
+    return cs_qa.split_cover(cover)
 
 
 def wrap_lines(text, width):

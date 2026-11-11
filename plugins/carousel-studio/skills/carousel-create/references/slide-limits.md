@@ -2,10 +2,13 @@
 
 Short slides get read; long ones get swiped past. Readers take in roughly two words of a cover before they decide, and about a fifth of the words on a page. Arabic packs a lot into one word (وسيكتبونها is a sentence), so characters are capped too. The numbers below come from `data/platform-instagram.json` (`plugin.*`), which is the source of truth, and are enforced by `data/qa-rules.json`; if they ever disagree with this page, the data files win.
 
+## Carousel length
+At most 10 slides, including the still or video cover: Instagram’s publishing API and most schedulers accept at most 10 items. A focused carousel of 4, 5 or 6 slides is complete; 6 to 10 is an optional sweet spot, never a reason to pad the post.
+
 ## Counting
 - Words are counted after removing the `==` emphasis markers. A token counts if it holds a letter or a digit. `وبالمنتج` is one word, `لـChatGPT` (no space) is one word, `5 ساعات` is two. Punctuation, «…» and emoji do not count.
 - `\n` is a forced line break. On a cover each break adds a line; more than 3 lines is a FIX.
-- The **hero** of a cover is its `headline`. `kicker` and `sub` count only toward the cover total.
+- The **hero** is the first beat: before a question/exclamation mark followed by space, an ellipsis (`…` or `...`), a colon followed by space, or a newline. Question and exclamation marks stay on the hero; colon and ellipsis separators do not. The remainder is the sub-line. `_cs.qa.split_cover` (and `CS.qa.splitCover`) is shared by HG1 and C1, including `lint_copy.py --text`. Keep the pieces in `headline` and `sub` when designing. Every beat, `kicker` and `sub` still counts toward the 12-word total.
 
 ## Per slide type
 | Slide | Words | Lines | Characters per line |
@@ -25,7 +28,7 @@ Body lines should be at least 15 characters: long lines read better in Arabic th
 ## The rules, by id
 | Rule | Condition | Severity | Fix |
 |---|---|---|---|
-| `C1.hero-words` | headline over 6 words | BLOCK (overridable) | keep the meaning words, move the rest to `sub` or cut |
+| `C1.hero-words` | first beat over 6 words | BLOCK (overridable) | keep the meaning words, move the rest to `sub` or cut |
 | `C1.total-words` | kicker + headline + sub over 12 | BLOCK (overridable) | drop the kicker or the sub |
 | `C1.lines` | more than 3 lines | FIX | fewer forced breaks, shorter lines |
 | `C1.number-words` | a number written in words on the cover | FIX | use digits: «ثلاثة أدوات» becomes «3 أدوات» |
@@ -43,7 +46,7 @@ Body lines should be at least 15 characters: long lines read better in Arabic th
 | `C3.intro` | slide 2 opens with an intro, agenda or bio | BLOCK (overridable) | deliver the first payoff instead |
 | `C3.type` | slide 2 is not rehook, item, stat, proof or myth-fact | NOTE | prefer a payoff type |
 | `C5.bridge` | a non-final slide of the bridge types has no bridge | FIX | add one |
-| `C6.list-count` | cover numeral differs from the number of item or step slides | BLOCK | change the numeral or the slides |
+| `C6.list-count` | cover numeral differs from the distinct numbered list members (`ord`), whatever their slide type | BLOCK | change the numeral or the slides |
 
 ## A cover that works
 Everything in this list is a rule from the playbook; the checker enforces the counts, the reviewer enforces the judgement.

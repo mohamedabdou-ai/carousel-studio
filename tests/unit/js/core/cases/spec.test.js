@@ -36,8 +36,9 @@
     var m = S.moveSlide(spec, "s03", 5); eq(ids(m), "s01,s02,s04,s05,s06,s03,s07,s08"); CST.deepEq(m.slides.map(function (s) { return s.n; }), [1, 2, 3, 4, 5, 6, 7, 8]);
     eq(S.moveSlide(spec, "s03", 2), spec, "moving to the same place returns the same spec");
     eq(ids(S.moveSlide(spec, "s08", -4)), "s08,s01,s02,s03,s04,s05,s06,s07", "clamped");
-    var full = spec; for (var i = 0; i < 12; i++) full = S.insertSlide(full, "item", full.slides.length);
-    eq(full.slides.length, 20); await CST.throwsCode("E_USAGE", function () { S.insertSlide(full, "item", 0); }, "hard max 20");
+    var full = spec; for (var i = 0; i < 2; i++) full = S.insertSlide(full, "item", full.slides.length);
+    eq(full.slides.length, 10); await CST.throwsCode("E_USAGE", function () { S.insertSlide(full, "item", 0); }, "hard max 10, cover included");
+    await CST.throwsCode("E_USAGE", function () { S.splitSlide(full, "s07"); }, "splitting cannot add an eleventh slide");
     await CST.throwsCode("E_USAGE", function () { S.insertSlide(spec, "bogus", 0); });
   });
 

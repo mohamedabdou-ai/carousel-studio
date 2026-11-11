@@ -2,6 +2,7 @@
  * Lookup order for dialect d: d -> msa-white -> en -> key. */
 
 var UI_DIALECTS = ["eg", "gulf", "levant", "msa-white", "en"];
+var slideLimitStrings = { "slide.limit": { "msa-white": "الحد الأقصى {max} شرائح بما فيها الغلاف. احذف شريحة قبل الإضافة أو النسخ أو التقسيم.", "en": "A carousel allows {max} slides including the cover. Remove a slide before adding, duplicating or splitting." } };
 var uiStrings = {};
 var uiDialect = "msa-white";
 
@@ -13,6 +14,7 @@ function loadUiStrings(doc) {
       var strings = JSON.parse(node.textContent).strings || {};
       if (id === "cs-ui-strings") uiStrings = {};
       mergeUiStrings(strings);
+      mergeUiStrings(slideLimitStrings);
     } catch (e) { reportError("ui-strings", e); }
   });
 }

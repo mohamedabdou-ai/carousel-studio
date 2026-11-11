@@ -13,6 +13,8 @@ The pack holds the caption, ≤5 hashtags, per-slide captions and alt text. It i
 ```
 The caption as posted is `firstLine`, a line break, `keywordLine`, a blank line, `body`, a blank line, `cta`, a blank line, then the hashtags separated by spaces. Length is counted in Unicode characters after NFC, an emoji counting as one, over that whole text.
 
+Allowed keys are exactly `firstLine`, `keywordLine`, `body`, `cta`, `hashtags`, `perSlide`, `alt`, `asset`. Do not add `sourceIds` here: citations live in top-level `sources`, linked from `slides[].sourceIds` or `number.sourceId`. Source kinds are `url`, `file`, `user`, `ownData`, `calc`.
+
 ## The caption (Q40)
 | Part | Rule |
 |---|---|

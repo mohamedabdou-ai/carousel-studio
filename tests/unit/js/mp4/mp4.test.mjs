@@ -53,8 +53,8 @@ export default {
         if (!r.ok.supported) t.skip("this browser has no H.264 encoder: " + r.ok.reason);
         t.ok(["avc1.640028", "avc1.4d0028", "avc1.42E028"].includes(r.ok.codec), "codec: " + r.ok.codec);
         t.eq(r.huge.supported, false); t.ok(r.huge.reason && r.huge.codec === null, "reason given");
-        t.eq(r.deps.mediabunny.version, "1.61.0"); t.eq(r.deps.fflate.version, "0.8.2");
-        t.eq(r.deps.mediabunny.url, "https://cdn.jsdelivr.net/npm/mediabunny@1.61.0/+esm"); t.eq(r.deps.fflate.url, "https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.js");
+        t.eq(r.deps.mediabunny.version, "1.61.0"); t.eq(Object.keys(r.deps), ["mediabunny"]);
+        t.eq(r.deps.mediabunny.url, "https://cdn.jsdelivr.net/npm/mediabunny@1.61.0/+esm");
       }
     },
     {

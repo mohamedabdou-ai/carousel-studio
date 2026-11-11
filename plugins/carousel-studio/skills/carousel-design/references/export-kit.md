@@ -2,6 +2,10 @@
 
 Everything is exported from the user's own browser (Studio) or locally (Claude Code lane). The exporter derives every file from `spec.json`, rendering the deck itself with the frozen layout, so exports never depend on what is on screen.
 
+At most 10 slides, including the still or video cover: Instagram’s publishing API and most schedulers accept at most 10 items. A focused carousel of 4, 5 or 6 slides is complete; 6 to 10 is an optional sweet spot, never a reason to pad the post.
+
+`qa-report.md` and `qa-report.json` are always written, even with `--formats png`. JSON `qa.exitCode` describes the findings; top-level `exitCode` describes the export.
+
 ## 1. File specifications
 | File | Spec |
 |---|---|
@@ -30,11 +34,11 @@ carousel-kit/
 ```
 **Source files («ملفات المصدر»), opt-in.** `spec.json`, `cover.hf.html` (carousels with motion) and `studio-source.html` add more than 10 MB, nearly all of it embedded fonts, so they are never in the default kit. Ask for them with the **source files** switch on the Export screen (they then sit in the kit between `carousel.pdf` and the QA report), with the single export «ملفات المصدر (ZIP)» (a `<spec.id>-source.zip` rooted at `carousel-source/`), or in Claude Code with `--formats …,source`. They are what lets you reopen the post in the Studio or re-render the cover with HyperFrames later; the PNG, JPEG, MP4 and PDF are all you need to post.
 
-The kit is the default save because `downloads` prompts once per file. Files the browser could not produce (no H.264 encoder) are listed in `skipped`, never silently dropped; the guide then carries the note «صدّر الفيديو من الكمبيوتر».
+The kit is the default save because `downloads` prompts once per file. A requested cover video that could not be produced is listed in `skipped` and `video.missing` / `video.errors`, prints `E_VIDEO_MISSING` on stderr, adds an `X1.complete` BLOCK to both QA reports and exits nonzero. Use `--video none` for an intentional still-only export.
 
 ## 3. What «export» means for the gates
 - **D1** exact sizes, one ratio, sRGB, no alpha, JPEG ≤ 8 MB. **V1** the video spec and the loop. **X1** the clean-export gate.
-- **X1** covers every file inside the ZIP and every standalone file the Studio saves. It fails the export if any file contains the tool's credit text, the author's name in either spelling, or a social handle; if a PNG, JPEG, PDF or MP4 carries personal metadata; or if a file the kit should hold is missing and not listed in `skipped`. Metadata is stripped by construction (canvas encoders add none; the PDF producer is the project name).
+- **X1** covers every file inside the ZIP and every standalone file the Studio saves. It fails the export if any file contains the tool's credit text, the author's name in either spelling, or a social handle; if a PNG, JPEG, PDF or MP4 carries personal metadata; or if a file the kit should hold is missing (a requested MP4 remains BLOCK even when listed in `skipped`). Metadata is stripped by construction (canvas encoders add none; the PDF producer is the project name).
 - `studio-source.html` and `cover.hf.html` are built **credit-free**: no About panel, no credit strings, no socials. Their licence headers name the project, Apache-2.0 and the third-party notices only (`cover.hf.html`: the HyperFrames format and the embedded OFL fonts, listed by family).
 - **Fonts**: OFL fonts are embedded. A font the user uploaded (for example Thmanyah) is embedded only in the live page and in rasterised outputs (PNG, JPEG, MP4, PDF); `studio-source.html`, `cover.hf.html` and the ZIP reference it by family name and show a one-time note asking the user to re-attach their own copy. No non-OFL font file ever travels in the kit.
 - **A1**: every AI asset is listed with `aiGenerated: true`; export stays blocked until the no-text check is done (`visual-prompts/references/ingress.md`).
@@ -46,7 +50,7 @@ Save order (automatic): **Web Share with files** on a touch device after a tap �
 On a phone the fastest path is «احفظ في الصور» (share sheet → Save to Photos), then the posting steps in `posting-guide.md`. On a computer download the ZIP.
 
 ## 5. Claude Code lane
-`render.mjs --spec spec.json --out DIR --formats png,jpeg,pdf,zip,qa --variants 3x4,4x5` writes the same tree and runs the export-scope QA (add `source` to `--formats` for the three source files); its exit code is the QA exit code (0 pass, 1 FIX pending, 2 BLOCK). `--video internal` uses the Studio exporter instead of HyperFrames; `--video none` skips the cover video. Details and preflight: `lanes.md`.
+`render.mjs --spec spec.json --out DIR --formats png,jpeg,pdf,zip,qa --variants 3x4,4x5` writes the same tree and runs the export-scope QA (add `source` to `--formats` for the three source files); its exit code is 0 when completed with pass or FIX, 2 for BLOCK, and nonzero for a real failure; add `--strict` to restore FIX = 1. `--video internal` uses the Studio exporter instead of HyperFrames; `--video none` skips the cover video. Details and preflight: `lanes.md`.
 
 ## 6. What to say after exporting
 Three lines in the user's dialect: where the files are, whether anything was skipped or is still a FIX, and the first posting step. Do not repeat the file list; point to `posting-guide.md`. If the post uses AI imagery, add the AI-label step. Add no credit or promotional line.

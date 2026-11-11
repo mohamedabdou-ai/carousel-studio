@@ -68,7 +68,8 @@ function loadChunks(extra = {}) {
   sandbox.window = sandbox;
   vm.createContext(sandbox);
   let ui = chunkText("cs-ui.js");
-  if (extra.internals) ui = ui.replace(/\}\)\(\);\s*$/, "CS.ui.__test = { slideEditors, VisualTab, CheckScreen, ensureExport, lateScreen };\n})();");
+  if (extra.internals) ui = ui.replace(/\}\)\(\);\s*$/, "CS.ui.__test = { slideEditors, VisualTab, CheckScreen, ensureExport, lateScreen, createCtx };\n})();");
+  if (extra.toasts) { sandbox.__toasts = extra.toasts; ui = ui.replace(/\}\)\(\);\s*$/, "toast = function (message) { window.__toasts.push(message); };\n})();"); }
   vm.runInContext(ui, sandbox, { filename: "cs-ui.js" });
   if (!extra.coreOnly) vm.runInContext(chunkText("cs-brandbook.js"), sandbox, { filename: "cs-brandbook.js" });
   return sandbox;
@@ -78,6 +79,24 @@ const win = loadChunks();
 const U = win.CS.ui._;
 const P = win.CS.ui._pure;
 const plain = (v) => JSON.parse(JSON.stringify(v)); // vm objects have another prototype; compare as plain data
+
+test("Studio add, duplicate and split refuse the eleventh slide with a localized message", () => {
+  for (const dialect of ["msa-white", "en"]) {
+    const messages = [], w = loadChunks({ internals: true, toasts: messages, coreOnly: true });
+    vm.runInContext(fs.readFileSync(path.join(root, "src/core/spec.js"), "utf8"), w);
+    w.CS.ui._pure.loadUiStrings();
+    w.CS.ui.setUiDialect(dialect);
+    const spec = { locale: { dialect }, slides: Array.from({ length: 10 }, (_, i) => ({ id: "s" + String(i + 1).padStart(2, "0"), n: i + 1, type: "item", body: "one two three four" })) };
+    const ctx = w.CS.ui.__test.createCtx(new Element("div"), { spec }, {});
+    assert.equal(ctx.insertSlide("item", 10), null);
+    assert.equal(ctx.duplicateSlide("s01"), null);
+    assert.equal(ctx.splitSlide("s01"), false);
+    assert.equal(ctx.slides().length, 10);
+    assert.equal(ctx.past.length, 0);
+    assert.equal(messages.length, 3);
+    for (const m of messages) { assert.match(m, /10/); assert.match(m, dialect === "en" ? /cover/i : /الغلاف/); }
+  }
+});
 
 test("both chunks load and publish the contract surface", () => {
   const ui = win.CS.ui;

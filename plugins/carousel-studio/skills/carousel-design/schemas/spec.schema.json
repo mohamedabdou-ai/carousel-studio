@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:carousel-studio:schema:spec:1",
   "title": "Carousel Studio post spec",
-  "description": "spec.json: the Studio's only input. Progressively filled by the skills; completeness per checkpoint is checked by validate.py --checkpoint.",
+  "description": "spec.json: the Studio's input. Skills fill it; validate.py --checkpoint checks completeness.",
   "type": "object",
   "properties": {
     "specVersion": {
@@ -276,8 +276,8 @@
       "items": {
         "$ref": "#/$defs/slide"
       },
-      "maxItems": 20,
-      "description": "Empty only at checkpoint 'angle'."
+      "maxItems": 10,
+      "description": "Empty only at angle."
     },
     "cover": {
       "type": "object",

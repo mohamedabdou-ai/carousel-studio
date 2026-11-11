@@ -284,11 +284,14 @@ async function buildKit(spec, ctx, opts) {
   var bump = function (label, file) { done += 1; reportProgress(opts, { job: "kit", done: Math.min(done, steps), total: steps, label: label, file: file }); };
   applyPainterPreference(spec);
 
+  if (o.video && opts.videoErrors && opts.videoErrors.length) {
+    skipped = skipped.concat(opts.videoErrors);
+  }
   if (o.video && opts.videoFiles && opts.videoFiles.length) {
     // the cover was already rendered elsewhere (Claude Code lane: HyperFrames); its bytes and measurements are used as they are
     opts.videoFiles.forEach(function (v) { files.push(makeFile(v.path, v.bytes, v.w ? { w: v.w, h: v.h } : undefined)); if (v.info) videoInfos.push(Object.assign({ file: v.path }, v.info)); });
     bump("video");
-  } else if (o.video) {
+  } else if (o.video && !(opts.videoErrors && opts.videoErrors.length)) {
     try {
       var cover = await renderCover(spec, ctx, { variants: o.variants4x5 ? ["3x4", "4x5"] : ["3x4"], composition: o.source, onProgress: opts.onProgress, signal: signal });
       files = files.concat(cover.files); videoInfos = cover.info; composition = cover.composition;

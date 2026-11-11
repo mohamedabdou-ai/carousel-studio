@@ -238,5 +238,5 @@ test("sevenErrors groups findings and reports the slide count", () => {
   assert.equal(by["small-text"], "n/a");
   assert.equal(by["repeated-cta"], "pass");
   assert.equal(rep.slideCount.n, 6);
-  assert.equal(rep.slideCount.status, "note");
+  assert.equal(rep.slideCount.status, "pass");
 });

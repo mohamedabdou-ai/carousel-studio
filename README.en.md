@@ -221,3 +221,5 @@ Apache License 2.0 ([LICENSE](LICENSE)). Third-party components and their licens
 <h2 align="center">Made by Mohamed Abdou, for Arabic content</h2>
 
 <p align="center">Free to use. A thank-you or a mention goes a long way.<br><a href="https://store.pyraai.cloud">Mohamed Abdou's store</a></p>
+
+Carousels have at most 10 slides including the still or video cover, for Instagram’s publishing API and most schedulers. Short posts of 4 to 6 slides are welcome. MP4 export loads only `mediabunny` 1.61.0 from `cdn.jsdelivr.net`; the ZIP writer is built in.

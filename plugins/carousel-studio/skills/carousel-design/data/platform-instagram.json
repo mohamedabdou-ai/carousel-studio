@@ -58,7 +58,7 @@
 
   "platform": {
     "carousel": {
-      "minItems": 2, "maxItems": 20,
+      "minItems": 2, "maxItems": 10,
       "mixedMedia": true,
       "firstItemRatioCropsAll": true,
       "reelsAllowedInCarousel": false,
@@ -83,7 +83,7 @@
       "imageMaxBytes": 8000000,
       "aspectRatio": {"min": 0.8, "max": 1.91, "note": "4:5 to 1.91:1 in Meta's spec; some schedulers publish 3:4 (0.75) at its own ratio (checked Oct 2026), so read the connected tool's photo requirements"},
       "widthPx": {"min": 320, "max": 1440},
-      "carouselMaxItems": 20,
+      "carouselMaxItems": 10,
       "isAiGeneratedFlag": true,
       "reelsInCarousel": false
     },
@@ -199,7 +199,7 @@
 
   "plugin": {
     "_note": "Carousel Studio policy. Source: 00-decisions.md (Q23, Q39, Q40, round-5 changes) and 10-structure-draft.md sections 8-10. Change a number here and every package follows.",
-    "slides": {"hardMin": 2, "warnBelow": 6, "recommendedMin": 8, "recommendedMax": 12, "hardMax": 20},
+    "slides": {"hardMin": 2, "warnBelow": 4, "recommendedMin": 6, "recommendedMax": 10, "hardMax": 10},
     "cover": {
       "heroMaxWords": 6, "totalMaxWords": 12, "maxLines": 3, "maxRows": 8,
       "heroPx": {"floor": 96, "target": 150, "autoFitMin": 120, "autoFitMax": 180},

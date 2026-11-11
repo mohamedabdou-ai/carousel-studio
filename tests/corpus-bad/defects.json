@@ -765,149 +765,6 @@
 "body": "فكرة واحدة في السلايد.",
 "bridge": "وبعدها"
 }
-},
-{
-"op": "add",
-"path": "/slides/-",
-"value": {
-"id": "x03",
-"n": 12,
-"type": "item",
-"ord": 9,
-"title": "نقطة 3",
-"body": "فكرة واحدة في السلايد.",
-"bridge": "وبعدها"
-}
-},
-{
-"op": "add",
-"path": "/slides/-",
-"value": {
-"id": "x04",
-"n": 13,
-"type": "item",
-"ord": 10,
-"title": "نقطة 4",
-"body": "فكرة واحدة في السلايد.",
-"bridge": "وبعدها"
-}
-},
-{
-"op": "add",
-"path": "/slides/-",
-"value": {
-"id": "x05",
-"n": 14,
-"type": "item",
-"ord": 11,
-"title": "نقطة 5",
-"body": "فكرة واحدة في السلايد.",
-"bridge": "وبعدها"
-}
-},
-{
-"op": "add",
-"path": "/slides/-",
-"value": {
-"id": "x06",
-"n": 15,
-"type": "item",
-"ord": 12,
-"title": "نقطة 6",
-"body": "فكرة واحدة في السلايد.",
-"bridge": "وبعدها"
-}
-},
-{
-"op": "add",
-"path": "/slides/-",
-"value": {
-"id": "x07",
-"n": 16,
-"type": "item",
-"ord": 13,
-"title": "نقطة 7",
-"body": "فكرة واحدة في السلايد.",
-"bridge": "وبعدها"
-}
-},
-{
-"op": "add",
-"path": "/slides/-",
-"value": {
-"id": "x08",
-"n": 17,
-"type": "item",
-"ord": 14,
-"title": "نقطة 8",
-"body": "فكرة واحدة في السلايد.",
-"bridge": "وبعدها"
-}
-},
-{
-"op": "add",
-"path": "/slides/-",
-"value": {
-"id": "x09",
-"n": 18,
-"type": "item",
-"ord": 15,
-"title": "نقطة 9",
-"body": "فكرة واحدة في السلايد.",
-"bridge": "وبعدها"
-}
-},
-{
-"op": "add",
-"path": "/slides/-",
-"value": {
-"id": "x10",
-"n": 19,
-"type": "item",
-"ord": 16,
-"title": "نقطة 10",
-"body": "فكرة واحدة في السلايد.",
-"bridge": "وبعدها"
-}
-},
-{
-"op": "add",
-"path": "/slides/-",
-"value": {
-"id": "x11",
-"n": 20,
-"type": "item",
-"ord": 17,
-"title": "نقطة 11",
-"body": "فكرة واحدة في السلايد.",
-"bridge": "وبعدها"
-}
-},
-{
-"op": "add",
-"path": "/slides/-",
-"value": {
-"id": "x12",
-"n": 21,
-"type": "item",
-"ord": 18,
-"title": "نقطة 12",
-"body": "فكرة واحدة في السلايد.",
-"bridge": "وبعدها"
-}
-},
-{
-"op": "add",
-"path": "/slides/-",
-"value": {
-"id": "x13",
-"n": 22,
-"type": "item",
-"ord": 19,
-"title": "نقطة 13",
-"body": "فكرة واحدة في السلايد.",
-"bridge": "وبعدها"
-}
 }
 ],
 "expect": [
@@ -930,6 +787,14 @@
 {
 "op": "remove",
 "path": "/slides/4"
+},
+{
+"op": "remove",
+"path": "/slides/3"
+},
+{
+"op": "remove",
+"path": "/slides/2"
 }
 ],
 "expect": [
@@ -943,6 +808,10 @@
 "patch": [
 {
 "op": "remove",
+"path": "/slides/6"
+},
+{
+"op": "remove",
 "path": "/slides/5"
 },
 {
@@ -952,6 +821,10 @@
 {
 "op": "remove",
 "path": "/slides/3"
+},
+{
+"op": "remove",
+"path": "/slides/2"
 }
 ],
 "expect": [
@@ -964,69 +837,16 @@
 "brand": "brand.eg.creator.json",
 "patch": [
 {
-"op": "add",
-"path": "/slides/-",
-"value": {
-"id": "x00",
-"n": 9,
-"type": "item",
-"ord": 6,
-"title": "نقطة 0",
-"body": "فكرة واحدة في السلايد.",
-"bridge": "وبعدها"
-}
+"op": "remove",
+"path": "/slides/6"
 },
 {
-"op": "add",
-"path": "/slides/-",
-"value": {
-"id": "x01",
-"n": 10,
-"type": "item",
-"ord": 7,
-"title": "نقطة 1",
-"body": "فكرة واحدة في السلايد.",
-"bridge": "وبعدها"
-}
+"op": "remove",
+"path": "/slides/5"
 },
 {
-"op": "add",
-"path": "/slides/-",
-"value": {
-"id": "x02",
-"n": 11,
-"type": "item",
-"ord": 8,
-"title": "نقطة 2",
-"body": "فكرة واحدة في السلايد.",
-"bridge": "وبعدها"
-}
-},
-{
-"op": "add",
-"path": "/slides/-",
-"value": {
-"id": "x03",
-"n": 12,
-"type": "item",
-"ord": 9,
-"title": "نقطة 3",
-"body": "فكرة واحدة في السلايد.",
-"bridge": "وبعدها"
-}
-},
-{
-"op": "add",
-"path": "/slides/-",
-"value": {
-"id": "x04",
-"n": 13,
-"type": "item",
-"ord": 10,
-"title": "نقطة 4",
-"body": "فكرة واحدة في السلايد.",
-"bridge": "وبعدها"
-}
+"op": "remove",
+"path": "/slides/4"
 }
 ],
 "expect": [

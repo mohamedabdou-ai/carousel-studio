@@ -85,6 +85,84 @@
     ]},
     {"id": "source-overlap", "base": "spec.eg.8slides.json", "patch": [
       {"op": "add", "path": "/sources", "value": [{"id": "src1", "kind": "url", "ref": "https://example.com/post", "excerpt": "لو الكلام مش بيتقرا من على الموبايل يبقى مفيش حد هيكمل كبّر الخط واقطع الجملة السلايد التانية فرصة تانية للغلاف"}]}
+    ]},
+    {"id": "cap-4-including-cover", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "remove", "path": "/slides/6"},
+      {"op": "remove", "path": "/slides/5"},
+      {"op": "remove", "path": "/slides/4"},
+      {"op": "remove", "path": "/slides/3"}
+    ]},
+    {"id": "cap-5-including-cover", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "remove", "path": "/slides/6"},
+      {"op": "remove", "path": "/slides/5"},
+      {"op": "remove", "path": "/slides/4"}
+    ]},
+    {"id": "cap-6-including-cover", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "remove", "path": "/slides/6"},
+      {"op": "remove", "path": "/slides/5"}
+    ]},
+    {"id": "cap-10-including-cover", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/-", "value": {"id": "s09", "n": 9, "type": "summary", "title": "خلاصة", "bullets": ["فكرة مفيدة"]}},
+      {"op": "add", "path": "/slides/-", "value": {"id": "s10", "n": 10, "type": "summary", "title": "خلاصة", "bullets": ["فكرة مفيدة"]}}
+    ]},
+    {"id": "cap-11-including-cover", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/-", "value": {"id": "s09", "n": 9, "type": "summary", "title": "خلاصة", "bullets": ["فكرة مفيدة"]}},
+      {"op": "add", "path": "/slides/-", "value": {"id": "s10", "n": 10, "type": "summary", "title": "خلاصة", "bullets": ["فكرة مفيدة"]}},
+      {"op": "add", "path": "/slides/-", "value": {"id": "s11", "n": 11, "type": "summary", "title": "خلاصة", "bullets": ["فكرة مفيدة"]}}
+    ]},
+    {"id": "four-proof-members-with-context", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/architecture", "value": "steps"},
+      {"op": "add", "path": "/slides/0/headline", "value": "4 خطوات لصفحة مشروعك"},
+      {"op": "add", "path": "/slides/2/type", "value": "proof"},
+      {"op": "add", "path": "/slides/2/ord", "value": 1},
+      {"op": "add", "path": "/slides/3/type", "value": "proof"},
+      {"op": "add", "path": "/slides/3/ord", "value": 2},
+      {"op": "add", "path": "/slides/4/type", "value": "proof"},
+      {"op": "add", "path": "/slides/4/ord", "value": 3},
+      {"op": "add", "path": "/slides/5/type", "value": "proof"},
+      {"op": "add", "path": "/slides/5/ord", "value": 4},
+      {"op": "add", "path": "/slides/1/type", "value": "step"},
+      {"op": "add", "path": "/slides/6/type", "value": "step"}
+    ]},
+    {"id": "four-proof-members-wrong-promise", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/architecture", "value": "steps"},
+      {"op": "add", "path": "/slides/0/headline", "value": "4 خطوات لصفحة مشروعك"},
+      {"op": "add", "path": "/slides/2/type", "value": "proof"},
+      {"op": "add", "path": "/slides/2/ord", "value": 1},
+      {"op": "add", "path": "/slides/3/type", "value": "proof"},
+      {"op": "add", "path": "/slides/3/ord", "value": 2},
+      {"op": "add", "path": "/slides/4/type", "value": "proof"},
+      {"op": "add", "path": "/slides/4/ord", "value": 3},
+      {"op": "add", "path": "/slides/5/type", "value": "proof"},
+      {"op": "add", "path": "/slides/5/ord", "value": 4},
+      {"op": "add", "path": "/slides/1/type", "value": "step"},
+      {"op": "add", "path": "/slides/6/type", "value": "step"},
+      {"op": "add", "path": "/slides/0/headline", "value": "5 خطوات لصفحة مشروعك"}
+    ]},
+    {"id": "cover-two-beats-36", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/0/headline", "value": "صورة منتجك ثابتة؟ حركها داخل الأداة بخطوة بسيطة الآن"}
+    ]},
+    {"id": "cover-two-beats-37", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/0/headline", "value": "صورة منتجك ثابتة? حركها داخل الأداة بخطوة بسيطة الآن"}
+    ]},
+    {"id": "cover-two-beats-38", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/0/headline", "value": "صورة منتجك ثابتة… حركها داخل الأداة بخطوة بسيطة الآن"}
+    ]},
+    {"id": "cover-two-beats-39", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/0/headline", "value": "صورة منتجك ثابتة... حركها داخل الأداة بخطوة بسيطة الآن"}
+    ]},
+    {"id": "cover-two-beats-40", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/0/headline", "value": "صورة منتجك ثابتة: حركها داخل الأداة بخطوة بسيطة الآن"}
+    ]},
+    {"id": "cover-two-beats-41", "base": "spec.eg.8slides.json", "patch": [
+      {"op": "add", "path": "/slides/0/headline", "value": "صورة منتجك ثابتة\nحركها داخل الأداة بخطوة بسيطة الآن"}
+    ]},
+    {"id": "variety-creator", "base": "spec.eg.8slides.json", "history": [{"cta": "question", "family": "P3"}], "patch": [
+      {"op": "add", "path": "/slides/7/cta", "value": {"kind": "question", "text": "ما الخطوة التي ستجربها؟"}},
+      {"op": "add", "path": "/ext", "value": {"source": "creator-script"}}
+    ]},
+    {"id": "variety-team", "base": "spec.eg.8slides.json", "history": [{"cta": "question", "family": "P3"}], "patch": [
+      {"op": "add", "path": "/slides/7/cta", "value": {"kind": "question", "text": "ما الخطوة التي ستجربها؟"}}
     ]}
   ]
 }

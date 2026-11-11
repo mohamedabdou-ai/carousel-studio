@@ -71,7 +71,7 @@ function createAutomation() {
       var videoFiles = (opts.videos || []).map(function (v) {            // MP4s rendered outside the page: { path, base64, info? }
         return { path: v.path, bytes: base64ToBytes(v.base64), info: v.info };
       });
-      var kit = await X.kit(c.spec, ctx, { video: videoFiles.length ? true : opts.video, videoFiles: videoFiles, variants4x5: opts.variants4x5, pdf: opts.pdf, source: opts.source, zip: opts.zip !== false, dialect: opts.dialect });
+      var kit = await X.kit(c.spec, ctx, { video: videoFiles.length ? true : opts.video, videoFiles: videoFiles, videoErrors: opts.videoErrors, variants4x5: opts.variants4x5, pdf: opts.pdf, source: opts.source, zip: opts.zip !== false, dialect: opts.dialect });
       window.__csFiles = new Map();
       var all = kit.zip ? kit.files.concat([kit.zip]) : kit.files;
       all.forEach(function (f) { window.__csFiles.set(f.path, f.bytes); });

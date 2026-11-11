@@ -34,6 +34,24 @@ def strip(s) -> str:
     return cstext.strip_markup(s or "")
 
 
+def split_cover(cover: str) -> tuple[str, str]:
+    """Hero and sub-line at the first beat: question/exclamation, ellipsis, colon or newline.
+
+    Question and exclamation marks stay on the hero. A separator without a second beat
+    does not split anything. Keep markup intact; word_count owns its interpretation.
+    """
+    s = unicodedata.normalize("NFC", str(cover or "")).replace("\r", "").strip()
+    match = re.search(r"…|\.{3}|[؟?!:](?=[ \t\n\f\v\u00A0\u202F]|$)|\n", s)
+    if not match:
+        return s, ""
+    sub = re.sub(r"^[…. \t\n\f\v\u00A0\u202F]+", "", s[match.end():]).strip()
+    if not sub or s[:match.start()].count("==") % 2:
+        return s, ""
+    end = match.end() if match.group() in ("؟", "?", "!") else match.start()
+    hero = s[:end].strip()
+    return (hero, sub) if hero else (s, "")
+
+
 def lint_plain(f: dict) -> str:
     """Text as the spelling and bidi checks see it: a caption keeps its line breaks (a blank line is not a double space)."""
     return str(f["text"]) if str(f["key"]).startswith("caption.") else strip(f["text"])
@@ -327,8 +345,8 @@ def gate_c1(ctx: Ctx, out: list) -> None:
         if s.get("type") not in ("cover", "poster"):
             continue
         el = f"{s.get('id')}.headline"
-        hero = wc(s.get("headline"))
-        total = hero + wc(s.get("kicker")) + wc(s.get("sub"))
+        hero = wc(split_cover(s.get("headline"))[0])
+        total = wc(s.get("headline")) + wc(s.get("kicker")) + wc(s.get("sub"))
         emit_over(ctx, out, "C1.hero-words", s, el, hero, {"text": strip(s.get("headline") or "")})
         emit_over(ctx, out, "C1.total-words", s, el, total)
         if non_empty(s.get("headline")):
@@ -505,7 +523,12 @@ def gate_c6(ctx: Ctx, out: list) -> None:
         p = ctx.param("C6.list-count")
         if ctx.spec.get("architecture") in p["architectures"]:
             nums = counted_numbers(text, p["min"], p["max"])
-            items = sum(1 for s in ctx.slides if s.get("type") in p["slideTypes"])
+            numbered = {s["ord"] for s in ctx.slides if isinstance(s.get("ord"), (int, float))
+                        and not isinstance(s.get("ord"), bool) and s["ord"] > 0 and s["ord"] % 1 == 0}
+            # Explicit membership wins over layout type. Legacy lists without ord use
+            # only their architecture's item type; context is never inferred from proof.
+            primary = "step" if ctx.spec.get("architecture") == "steps" else "item"
+            items = len(numbered) if numbered else sum(1 for s in ctx.slides if s.get("type") == primary)
             if nums and items > 0 and items not in nums:
                 emit(ctx, out, "C6.list-count", slide=cover.get("id"), el=f"{cover.get('id')}.headline", vars={"count": nums[0], "n": items})
 
@@ -557,14 +580,15 @@ def gate_c7(ctx: Ctx, out: list) -> None:
     kind = with_cta[-1]["cta"].get("kind") if with_cta else None
     hook = ctx.spec.get("hook")
     family = hook.get("family") if is_obj(hook) else None
+    variety_sev = "NOTE" if (ctx.spec.get("ext") or {}).get("source") == "creator-script" else None
     if kind and ctx.active("C7.cta-repeat"):
         recent = hist[-ctx.param("C7.cta-repeat")["window"]:]
         if any(e.get("cta") == kind for e in recent):
-            emit(ctx, out, "C7.cta-repeat", vars={"kindAr": _kind_name(kind, "ar"), "kindEn": _kind_name(kind, "en")})
+            emit(ctx, out, "C7.cta-repeat", sev=variety_sev, vars={"kindAr": _kind_name(kind, "ar"), "kindEn": _kind_name(kind, "en")})
     if family and ctx.active("C7.family-repeat"):
         recent = hist[-ctx.param("C7.family-repeat")["window"]:]
         if any(e.get("family") == family for e in recent):
-            emit(ctx, out, "C7.family-repeat", vars={"family": family})
+            emit(ctx, out, "C7.family-repeat", sev=variety_sev, vars={"family": family})
     if ctx.active("C7.hook-similar"):
         cover = cover_text(ctx.spec)
         best = 0.0

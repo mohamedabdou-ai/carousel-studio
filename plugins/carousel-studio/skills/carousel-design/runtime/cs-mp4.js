@@ -22,8 +22,7 @@
 
 var MEDIABUNNY_VERSION = "1.61.0";
 var DEPS = {                                   // exact versions, written out in full: nothing else is ever requested
-  mediabunny: { version: MEDIABUNNY_VERSION, url: "https://cdn.jsdelivr.net/npm/mediabunny@1.61.0/+esm" },
-  fflate: { version: "0.8.2", url: "https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.js" }
+  mediabunny: { version: MEDIABUNNY_VERSION, url: "https://cdn.jsdelivr.net/npm/mediabunny@1.61.0/+esm" }
 };
 var H264_CODECS = ["avc1.640028", "avc1.4d0028", "avc1.42E028"];   // High 4.0, Main 4.0, Constrained Baseline 4.0
 var DEFAULT_BITRATE = 8000000;
@@ -44,12 +43,20 @@ function mp4Error(code, message, detail) {
 
 var mediabunnyPromise = null;
 
-/** Loads mediabunny once. A failed load is not cached, so a retry after reconnecting works. */
+/** Share a successful load; retry transient failures three times before releasing the cache. */
 function loadMediabunny() {
   if (!mediabunnyPromise) {
-    mediabunnyPromise = import(DEPS.mediabunny.url).catch(function (e) {
+    mediabunnyPromise = (async function () {
+      for (var attempt = 0; attempt < 3; attempt++) {
+        try { return await import(DEPS.mediabunny.url); }
+        catch (e) {
+          if (attempt === 2) throw e;
+          await new Promise(function (resolve) { setTimeout(resolve, 250 * (attempt + 1)); });
+        }
+      }
+    })().catch(function (e) {
       mediabunnyPromise = null;
-      throw mp4Error("E_DEP_LOAD", "The MP4 writer (mediabunny " + MEDIABUNNY_VERSION + ") could not be loaded. Check the internet connection and try again.", { cause: String(e && e.message || e) });
+      throw mp4Error("E_DEP_LOAD", "The MP4 writer (mediabunny " + MEDIABUNNY_VERSION + ") could not be loaded after 3 attempts. Check the internet connection and try again.", { attempts: 3, cause: String(e && e.message || e) });
     });
   }
   return mediabunnyPromise;

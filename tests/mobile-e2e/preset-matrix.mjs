@@ -2,6 +2,7 @@
 //
 //   node tests/mobile-e2e/preset-matrix.mjs [--spec FILE] [--presets swiss,creator,...] [--digits western|arabic-indic] [--dialect eg|gulf|levant|msa-white|en] [--variants] [--verbose]
 //
+// The catalogue measures layouts separately; a publishable post has at most 10 slides including the cover.
 // Builds the Studio page, renders the slides of --spec (default: the twenty of tools/examples/showcase.spec.json: cover, rehook, item, step, stat,
 // compare, myth-fact, quote, story-beat, proof, checklist, summary, setup, grid, timeline, testimonial, offer, share, poster, cta) in each preset, and
 // runs the rendered gates
@@ -34,6 +35,7 @@ const work = fs.mkdtempSync(path.join(os.tmpdir(), "cs-matrix-"));
 const specFile = path.join(work, "spec.json");
 fs.writeFileSync(specFile, JSON.stringify(showcase));
 const studioFile = buildStudioPage({ specFile, brandFile: path.join(ROOT, "tests/fixtures/brand.eg.creator.json"), outFile: path.join(work, "studio.html") });
+if (showcase.ext?.archetypeSamples) showcase.slides = Object.values(showcase.ext.archetypeSamples); // layout catalogue, separate from the publishable 10-slide example
 const browser = await launchChromium({});
 const studio = await openStudio({ browser, studioFile });
 let bad = 0;

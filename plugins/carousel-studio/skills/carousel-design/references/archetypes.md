@@ -54,7 +54,7 @@ The engine requires only: `cover` first, `cta` or `offer` last, no `cta` before 
 | framework | `cover, rehook, (item or checklist) × N, summary, cta` |
 | offer / results / lead-magnet | `cover, proof, offer, testimonial, cta` |
 
-Length: 8–12 slides by default (slides = payoffs + 3), a NOTE under 8, a FIX under 6, up to 20 only if every slide pays off, 21 or more is a BLOCK (Instagram's limit); the explicit 2-slide reveal or joke is exempt. A cover that promises "N things" must be followed by exactly N `item` or `step` slides (C6, BLOCK). Tease the strongest item early and reveal it second-to-last.
+Length: At most 10 slides, including the still or video cover: Instagram’s publishing API and most schedulers accept at most 10 items. A focused carousel of 4, 5 or 6 slides is complete; 6 to 10 is an optional sweet spot, never a reason to pad the post.
 
 ## 4. Choosing and fixing types
 - Tool topics get a `setup` slide (tool, plan, device, price): that audience asks about setup, free or paid, and Mac.

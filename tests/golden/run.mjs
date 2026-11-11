@@ -27,6 +27,7 @@ const work = fs.mkdtempSync(path.join(os.tmpdir(), "cs-golden-"));
 const specFile = path.join(work, "spec.json");
 fs.writeFileSync(specFile, JSON.stringify(showcase));
 const studioFile = buildStudioPage({ specFile, brandFile: path.join(ROOT, "tests/fixtures/brand.eg.creator.json"), outFile: path.join(work, "studio.html") });
+if (showcase.ext?.archetypeSamples) showcase.slides = Object.values(showcase.ext.archetypeSamples); // layout catalogue, separate from the publishable 10-slide example
 const browser = await launchChromium({});
 const studio = await openStudio({ browser, studioFile });
 

@@ -806,7 +806,10 @@ def build_parser():
     add("snapshot-hash", cmd_snapshot_hash, slug)
     add("import", cmd_import, (("--file",), {"required": True}), (("--overwrite",), {"action": "store_true"}))
     add("approve", cmd_approve, slug)
-    add("remember", cmd_remember, slug, (("--json",), {"help": "the entry as a JSON object"}), (("--file",), {"help": "a file that holds the entry"}))
+    memory_fields = schema.load_schema("brand")["properties"]["creativeMemory"]["items"]["properties"]
+    memory_help = "; ".join(field + ": " + ", ".join(memory_fields[field]["enum"]) for field in ("move", "verdict"))
+    remember = add("remember", cmd_remember, slug, (("--json",), {"help": "entry as a JSON object; " + memory_help}), (("--file",), {"help": "file holding the same entry object"}))
+    remember.description = "Remember a post. Allowed values: " + memory_help + "."
     add("memory", cmd_memory, slug)
     return top
 

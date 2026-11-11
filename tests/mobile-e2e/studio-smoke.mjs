@@ -37,7 +37,7 @@ await new Promise((r) => server.listen(0, "127.0.0.1", r));
 const base = `http://127.0.0.1:${server.address().port}`;
 
 const { findInstalledChromium } = await import(pathToFileURL(path.resolve(here, "../../plugins/carousel-studio/skills/carousel-design/scripts/cover_video.mjs")).href);
-const installed = findInstalledChromium();
+const installed = process.env.CS_CHROME || findInstalledChromium();
 const browser = await chromium.launch({ headless: !headed, ...(installed ? { executablePath: installed } : {}) });
 let failed = 0;
 const errors = [];

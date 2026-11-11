@@ -222,7 +222,8 @@ class TypeSweepTests(unittest.TestCase):
 
     def test_the_showcase_deck_has_both_slides_inside_the_limits(self) -> None:
         deck = json.loads(read(REPO / "tools" / "examples" / "showcase.spec.json"))
-        slides = deck["slides"]
+        self.assertLessEqual(len(deck["slides"]), 10)
+        slides = list(deck["ext"]["archetypeSamples"].values())
         self.assertEqual([s["id"] for s in slides], ["s%02d" % (i + 1) for i in range(len(slides))])
         self.assertEqual([s["n"] for s in slides], list(range(1, len(slides) + 1)))
         self.assertEqual(slides[-1]["type"], "cta")

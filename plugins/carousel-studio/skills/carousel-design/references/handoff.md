@@ -42,3 +42,10 @@ Neither handoff changes the Studio's own exports.
 
 ## 6. Mistakes to avoid
 Publishing before validation · a new URL for every edit · building from an old `spec.json` after the user saved in the page (always extract first) · pasting Arabic copy into chat for review instead of sending the user to the Script view · adding credits to the page you publish (the build already does the right thing) · keeping API keys or personal data in the spec.
+
+## Exact spec forms
+- Validate with `python scripts/validate.py spec <file> --lint --format json`: `spec` is a required positional document kind, not an option. Kinds: `brand`, `spec`, `preset`, `occasion`, `hook`, `plan`, `qa-report`.
+- `cta.kind`: `save`, `send`, `question`, `keyword-dm`, `follow`. Sharing uses `send`; `share` names a slide layout.
+- `sources[].kind`: `url`, `file`, `user`, `ownData`, `calc` (case-sensitive). Put references in top-level `sources` and link `sourceIds` on the slide, or `number.sourceId` for a figure.
+- `style.overrides` is a flat map of dotted token paths to scalar strings, numbers or booleans. Use `{"type.scale.heroTarget": 140}`; do not pass a `[min,max]` array such as `{"type.scale.hero": [120,150]}`.
+- `captionPack` permits only `firstLine`, `keywordLine`, `body`, `cta`, `hashtags`, `perSlide`, `alt`, `asset`. `captionPack.sourceIds` is not allowed; link sources on the slides instead.

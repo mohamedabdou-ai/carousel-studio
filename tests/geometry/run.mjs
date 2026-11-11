@@ -82,6 +82,7 @@ if (innerData) {
 
 /* 2. render and measure */
 const showcase = JSON.parse(fs.readFileSync(path.join(ROOT, "tools/examples/showcase.spec.json"), "utf8"));
+if (showcase.ext?.archetypeSamples) showcase.slides = Object.values(showcase.ext.archetypeSamples); // layout catalogue, not a publishable post
 // Measure archetype copy and chrome; recipe tests supply their own stand-in art.
 showcase.slides.forEach(s => { s.visual = { anchor: { kind: "none" }, tone: "base" }; });
 const work = fs.mkdtempSync(path.join(os.tmpdir(), "cs-geometry-"));
