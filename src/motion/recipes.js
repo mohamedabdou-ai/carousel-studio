@@ -10,8 +10,8 @@
  *   3.70 - 5.60   the finished poster holds; the swipe cue nudges, then everything is at rest
  *   5.60 - 6.00   rest: the last frame is the first frame, so the loop is seamless
  *
- * The header and footer (handle, meta, counter, save pill, swipe cue) never leave the screen, so no frame is ever empty
- * (gate V1: no blank frame between 0.4 s and 5.6 s); only the swipe cue moves, in the final hold.
+ * Header and footer stay visible. A readable opening hero line also survives reset and rebuild: chrome alone cannot
+ * make an otherwise blank cover acceptable. The video gate owner measures near-blank content separately from decoration.
  *
  * A recipe returns data only. Arabic is animated by whole words or lines, opacity sits on whole words / slots, nothing is ever
  * split into letters, nothing wobbles: one overshoot of at most 6 % per move, no oscillation.
@@ -139,7 +139,15 @@ function stampTarget(ctx) {
   var em = ctx.q("mark.cs-em .w"), els = em.length ? em : ctx.number ? [ctx.number.word] : headlineWords(ctx).slice(0, 1);
   if (!els.length) return null;
   var x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
-  els.forEach(function (e) { var r = inkBox(ctx, e); x0 = Math.min(x0, r.x); y0 = Math.min(y0, r.y); x1 = Math.max(x1, r.x + r.w); y1 = Math.max(y1, r.y + r.h); });
+  els.forEach(function (e) {
+    var r = inkBox(ctx, e), run = e.querySelector('.cs-ltr[data-run="number"]');
+    // A block numeral owns a whole layout row. Its text range owns only the painted digit.
+    if (run && getComputedStyle(run).display === "block") {
+      var range = document.createRange(); range.selectNodeContents(run);
+      var glyph = ctx.rect(range); r.x = glyph.x; r.w = glyph.w;
+    }
+    x0 = Math.min(x0, r.x); y0 = Math.min(y0, r.y); x1 = Math.max(x1, r.x + r.w); y1 = Math.max(y1, r.y + r.h);
+  });
   var gap = 12, padL = 24, padR = 24, padV = 24;
   ctx.q(".cs-content .w").forEach(function (w) {
     if (els.indexOf(w) >= 0) return;
@@ -309,7 +317,7 @@ function buildStamp(ctx, P) {
   if (target) {
     // the ring stays through the whole story and the first part of the final hold, and is gone (0.4 s fade) before the poster rests, so the last frame is still frame 0
     var id = "stamp-ring", win = { at: slamAt + 0.2, hold: Math.max(slamAt + 2.4, 4.7) };
-    P.overlays.push({ id: id, layer: "above", rect: target.rect, html: ringMarkup(target.rect.w, target.rect.h, ctx.colors, ctx.rtl) });
+    P.overlays.push({ id: id, layer: "above", z: contentZ(ctx, true), rect: target.rect, html: ringMarkup(target.rect.w, target.rect.h, ctx.colors, ctx.rtl) });
     overlayFade(P, id, win.at, win.hold);
     P.add(id + ".draw", '[data-m-ov="' + id + '"] [data-m="stroke"]', { at: win.at + 0.08, dur: 0.5, from: { dash: 0 }, to: { dash: 1 }, rest: { dash: 1 }, ease: "out-cubic", delay: 0 });
   }
@@ -368,7 +376,7 @@ function buildStory(ctx, P, forced) {
     win = { at: 0.75, hold: 2.55 };
     t = { kicker: 1.15, number: 0.95, words: 1.15, sub: 2.5, nudge: 4.0 };
   }
-  P.overlays.push({ id: id, layer: "above", rect: rect, html: made.html });
+  P.overlays.push({ id: id, layer: "above", z: contentZ(ctx, true), rect: rect, html: made.html });
   if (mode === "center") shortSymbol(P, made, id, win); else made.choreo(P, id, win);
   pKicker(ctx, P, t.kicker);
   var wordsAt = t.words;

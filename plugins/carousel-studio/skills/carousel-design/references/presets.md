@@ -31,7 +31,24 @@ Choose only shipped presets, by topic and pre-flight:
 | teaching a platform or format | `notebook` | annotated keepsake; highlight-sweep |
 | culture, national day, Ramadan, Eid | `poster` | restrained frame; story |
 
-Rank creator/poster/notebook on the post's hook using `render.mjs --preflight`. Cover band ≥15% or hero <14px at 130px: try a supported variant; all fail → shorter hook. Log a forced preset swap. Held brand choices use the opening stand-ins.
+Run `render.mjs --covers covers.json --spec spec.json --brand brand.json --out cover-lab --presets all` before a hook choice. It renders the survivors of the hook gates across creator/poster/notebook in one browser launch. Read every finding and show fitting images from `covers.png` at feed size and 130 px. A hero below 14 px needs another arrangement or a shorter hook. Empty bands use the current D9 thresholds and rollout severity in the platform data; a NOTE is still useful design advice. Log a forced preset swap. Held brand choices use the opening stand-ins.
+
+For a style choice on an existing post, run `render.mjs --style-sheet --spec spec.json --brand brand.json --out style-lab --format text`. `style-sheet.png` shows the real cover and slide 2 in every shipped style, labelled with hero size and the preflight findings. No post files or videos are exported. `--preflight` remains the data-only version. Both picture modes accept `--format json|text`, write only their one PNG, and never save the spec; they reject `--save-plan` and `--contact-sheet`.
+
+The covers file is a JSON array, separate from the hook-scoring batch:
+
+```json
+[
+  {"headline": "صورتك ثابتة؟\nحرّكها في ChatGPT", "sub": "خطوة واحدة لتجربتها"},
+  {"headline": "3 أخطاء تخفي منتجك", "kicker": "قبل النشر"}
+]
+```
+
+Omitted sub/kicker fields are absent, rather than inherited from the original cover. The default tries the post's style; `--presets creator,poster` selects styles and `--presets all` selects every shipped style. JSON reports each candidate/style pair, hero word count, physical lines, hero size at 130 px, headline width ratio, the empty band, full rendered findings (including NOTE and prospective findings), and a fit ranking. The ranking sorts errors last, then BLOCK/FIX counts, larger hero, smaller empty band and input order. It does not rank truth or tension. Text output includes every finding and its fix. Read JSON when labels on a busy sheet cannot hold every finding.
+
+Fit searches word-boundary line arrangements up to the cover's line limit, keeps explicit breaks, bound number/noun pairs, Latin names and emphasis, and chooses the largest passing hero. The lab can also try an existing punctuated second beat in a new sub-line when none was authored; it never changes a word or replaces an authored sub-line. Copy the chosen `arrangement.fields` into the canonical cover with `spec_edit.py cover` before approval or freezing, especially when `movedSecondBeat` is true. These values retain emphasis markup. Ordinary renders retain field ownership so their source-integrity and freeze checks remain valid; only the lab opts into a temporary beat move. The preview cannot persist that decision. A long Latin name, an unbreakable word, a fixed small type maximum, or a short title leaving an empty band may still need an editorial or layout change; the lab keeps those findings visible.
+
+Ordinary spaces inside a Latin name are legal break points. Each resulting line keeps its own bidi isolation. Use a nonbreaking space (`\u00a0` in JSON) when a pair must stay together.
 
 ## 3. The presets
 
@@ -139,4 +156,19 @@ The user, the Studio or an occasion overlay may change: roles, fonts, the type s
 5. Set `motion.allowed` to the shipped recipes that suit the look (default `highlight-sweep`, never `calm`) and say why in this file.
 6. Run `preset_lint.py --all --write-index`, render the golden slides, add the preset to the Style tab's table above.
 
-`style.overrides` accepts scalar token values only (string, number, boolean), keyed by dotted token paths. Set `{"type.scale.heroTarget": 140}`; never a range array such as `{"type.scale.hero": [120,150]}`. Run `python scripts/validate.py spec spec.json --format json` before building.
+The cover's controls are:
+
+| Control | Effect |
+|---|---|
+| `slide.variant: "top"` or `"center"` | Shared vertical anchors, including on Creator; other variants must be supported by the style. |
+| `layout.align` | `start` or `center`, for text alignment. |
+| `layout.coverAnchor` | Default cover anchor when no explicit cover variant is set. An explicit top/center variant wins. |
+| `type.scale.hero` | Hero maximum as a number, or a range string such as `"120,180"`; fitting can shrink toward the quality floor. `heroTarget` does not set the fitted size; use `hero` for its maximum. |
+| `type.scale.body` | Sub-line maximum as a number, or a nominal range string. Fitting may shrink it toward 42 px when space runs out. `h2` sizes heading slots; `small` sizes the kicker. They do not size the sub-line. |
+| `type.display.family`, `.wght`, `.lh` | Hero font, weight and line height. Keep Arabic dots clear of the next Latin line; a larger line height costs vertical room. |
+| `layout.headlineWidth` | A scalar range string such as `"0.65,0.85"`, relative to the content box. |
+| `headline`, `sub`, `kicker`, literal `\n` | The creator's words and required breaks. An authored break is kept. |
+
+Use these dotted paths in `style.overrides` or a cover's `overrides`. Overrides accept scalars only (string, number, boolean). Use `{"type.scale.body": 64}` or `{"type.scale.hero": "120,150"}`; an array such as `[120,150]` is rejected with the working string form. Run `python scripts/validate.py spec spec.json --format json` before building.
+
+For a story cover, choose a symbol without changing the recipe: `spec.ext.coverSymbol` accepts `heartbeat`, `clock`, `dots`, `bars`, `coins`, `check` or `spark` (the live list is `Object.keys(CS.motion.metaphors)`). The normal exporter forwards the choice through `CS.motion.recommend(spec).metaphor`; direct callers pass `CS.motion.build(el, {recipe: "story", metaphor: "clock"})`. An unknown symbol is rejected with the allowed values. Stamp draws its ring around emphasis, a numeral or the first word, including an unmarked headline. Stamp, sweep, story and counter retain readable hero copy through reset and rebuild; header/footer decoration alone does not count as visible cover content. A centered story reserves a clear band for its symbol and reveals later text after the symbol leaves. When no band of at least 80 px is available, it reports `E_FIT_OVERFLOW`: use another recipe or reduce the title height.

@@ -208,6 +208,8 @@ function firstSlide(spec) {
 
 /** The topic -> motion decision (CS.motion.recommend). Order follows CONTRACT 5.7 and the "Motion default" decision. */
 function recommendMotion(spec) {
+  var symbol = spec && spec.ext && spec.ext.coverSymbol;
+  if (symbol && !CS.motion.metaphors[symbol]) throw motionError("E_USAGE", "ext.coverSymbol must be one of: " + Object.keys(CS.motion.metaphors).join(", "));
   var cover = firstSlide(spec) || {}, hook = (spec && spec.hook) || {}, parts = [hook.cover, hook.text, spec && spec.brief && spec.brief.topic,
     spec && spec.angle && spec.angle.title, cover.kicker, cover.headline, cover.sub, spec && spec.captionPack && spec.captionPack.firstLine];
   var text = parts.filter(Boolean).join(" ");
@@ -216,7 +218,7 @@ function recommendMotion(spec) {
   var western = coverText.replace(/[٠-٩]/g, function (c) { return "٠١٢٣٤٥٦٧٨٩".indexOf(c); });
   var numeral = /[0-9]/.test(western.replace(/\b(19|20)[0-9]{2}\b/g, "")) || (spec && spec.slides || []).some(function (s) { return s.type === "stat" || (s.number && s.number.value); });
   var has = function (t) { return tags.indexOf(t) >= 0; };
-  var pick = function (recipe, feel, why, metaphor) { return { recipe: recipe, feel: feel, why: why, metaphor: metaphor || null, tags: tags }; };
+  var pick = function (recipe, feel, why, metaphor) { return { recipe: recipe, feel: feel, why: why, metaphor: symbol || metaphor || null, tags: tags }; };
   if (has("urgency") && found.scores.urgency >= 2) return pick("drop-clock", "story", WHY.clock, "clock");
   if (has("spread") && found.scores.spread >= 2) return pick("map-dots", "story", WHY.dots, "dots");
   if (arch === "myth-fact" || family === "P4" || (has("decision") && found.scores.decision >= 2)) return pick("stamp", "story", WHY.stamp);
@@ -456,8 +458,8 @@ function metaphorRegistry() {
  *   3.70 - 5.60   the finished poster holds; the swipe cue nudges, then everything is at rest
  *   5.60 - 6.00   rest: the last frame is the first frame, so the loop is seamless
  *
- * The header and footer (handle, meta, counter, save pill, swipe cue) never leave the screen, so no frame is ever empty
- * (gate V1: no blank frame between 0.4 s and 5.6 s); only the swipe cue moves, in the final hold.
+ * Header and footer stay visible. A readable opening hero line also survives reset and rebuild: chrome alone cannot
+ * make an otherwise blank cover acceptable. The video gate owner measures near-blank content separately from decoration.
  *
  * A recipe returns data only. Arabic is animated by whole words or lines, opacity sits on whole words / slots, nothing is ever
  * split into letters, nothing wobbles: one overshoot of at most 6 % per move, no oscillation.
@@ -585,7 +587,15 @@ function stampTarget(ctx) {
   var em = ctx.q("mark.cs-em .w"), els = em.length ? em : ctx.number ? [ctx.number.word] : headlineWords(ctx).slice(0, 1);
   if (!els.length) return null;
   var x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
-  els.forEach(function (e) { var r = inkBox(ctx, e); x0 = Math.min(x0, r.x); y0 = Math.min(y0, r.y); x1 = Math.max(x1, r.x + r.w); y1 = Math.max(y1, r.y + r.h); });
+  els.forEach(function (e) {
+    var r = inkBox(ctx, e), run = e.querySelector('.cs-ltr[data-run="number"]');
+    // A block numeral owns a whole layout row. Its text range owns only the painted digit.
+    if (run && getComputedStyle(run).display === "block") {
+      var range = document.createRange(); range.selectNodeContents(run);
+      var glyph = ctx.rect(range); r.x = glyph.x; r.w = glyph.w;
+    }
+    x0 = Math.min(x0, r.x); y0 = Math.min(y0, r.y); x1 = Math.max(x1, r.x + r.w); y1 = Math.max(y1, r.y + r.h);
+  });
   var gap = 12, padL = 24, padR = 24, padV = 24;
   ctx.q(".cs-content .w").forEach(function (w) {
     if (els.indexOf(w) >= 0) return;
@@ -755,7 +765,7 @@ function buildStamp(ctx, P) {
   if (target) {
     // the ring stays through the whole story and the first part of the final hold, and is gone (0.4 s fade) before the poster rests, so the last frame is still frame 0
     var id = "stamp-ring", win = { at: slamAt + 0.2, hold: Math.max(slamAt + 2.4, 4.7) };
-    P.overlays.push({ id: id, layer: "above", rect: target.rect, html: ringMarkup(target.rect.w, target.rect.h, ctx.colors, ctx.rtl) });
+    P.overlays.push({ id: id, layer: "above", z: contentZ(ctx, true), rect: target.rect, html: ringMarkup(target.rect.w, target.rect.h, ctx.colors, ctx.rtl) });
     overlayFade(P, id, win.at, win.hold);
     P.add(id + ".draw", '[data-m-ov="' + id + '"] [data-m="stroke"]', { at: win.at + 0.08, dur: 0.5, from: { dash: 0 }, to: { dash: 1 }, rest: { dash: 1 }, ease: "out-cubic", delay: 0 });
   }
@@ -814,7 +824,7 @@ function buildStory(ctx, P, forced) {
     win = { at: 0.75, hold: 2.55 };
     t = { kicker: 1.15, number: 0.95, words: 1.15, sub: 2.5, nudge: 4.0 };
   }
-  P.overlays.push({ id: id, layer: "above", rect: rect, html: made.html });
+  P.overlays.push({ id: id, layer: "above", z: contentZ(ctx, true), rect: rect, html: made.html });
   if (mode === "center") shortSymbol(P, made, id, win); else made.choreo(P, id, win);
   pKicker(ctx, P, t.kicker);
   var wordsAt = t.words;
@@ -1164,6 +1174,38 @@ function resolveRecipe(id) {
   return { recipe: RECIPE_REGISTRY.calm, fallbackFrom: wanted };
 }
 
+/** Keep a complete opening line readable during the reset and rebuild. Chrome/footer decoration cannot stand in for cover copy. */
+function keepHeroVisible(ctx, plan) {
+  var rows = heroRows(ctx), total = rows.reduce(function (n, row) { return n + row.rect.w * row.rect.h; }, 0), area = 0, keep = [];
+  rows.some(function (row) { keep = keep.concat(row.words); area += row.rect.w * row.rect.h; return area >= total * 0.4; });
+  plan.tracks = plan.tracks.filter(function (track) {
+    var hosts = ctx.q(track.sel), c = track.from && track.from.clipInset;
+    var hides = track.from && track.from.opacity === 0 || c && (c[1] + c[3] >= 99 || c[0] + c[2] >= 99);
+    return !hides || !hosts.some(function (host) { return keep.some(function (word) { return host === word || host.contains(word); }); });
+  });
+  if (plan.mode !== "center" || !keep.length) return;
+  // The short story symbol may use the space of later text, never that of the retained title.
+  var symbol = plan.overlays.find(function (o) { return /^story-/.test(o.id); });
+  if (!symbol) return;
+  var body = bodyBounds(ctx), boxes = keep.map(function (word) { return ctx.rect(word); });
+  var top = Math.min.apply(null, boxes.map(function (r) { return r.y; })), bottom = Math.max.apply(null, boxes.map(function (r) { return r.y + r.h; }));
+  var gaps = [{ y: body.y, h: top - body.y - 16 }, { y: bottom + 16, h: body.y + body.h - bottom - 16 }];
+  gaps.sort(function (a, b) { return b.h - a.h; });
+  if (gaps[0].h < 80) throw motionError("E_FIT_OVERFLOW", "The story symbol needs clear space. Use another recipe or reduce the title height.");
+  var gap = gaps[0], height = Math.min(300, gap.h);
+  symbol.rect = { x: body.x, y: gap.y + (gap.h - height) / 2, w: body.w, h: height };
+  var reveal = plan.tracks.filter(function (track) {
+    var clip = track.from && track.from.clipInset, hides = track.from && track.from.opacity === 0 || clip && (clip[1] + clip[3] >= 99);
+    return hides && ctx.q(track.sel).some(function (node) {
+      if (!node.closest(".cs-content")) return false;
+      var r = ctx.rect(node), s = symbol.rect;
+      return r.x < s.x + s.w && r.x + r.w > s.x && r.y < s.y + s.h && r.y + r.h > s.y;
+    });
+  });
+  var shift = Math.max(0, plan.t(1.8) - Math.min.apply(null, reveal.map(function (track) { return track.t0; })));
+  reveal.forEach(function (track) { track.t0 = round3(track.t0 + shift); track.t1 = round3(track.t1 + shift); });
+}
+
 /**
  * CS.motion.build(slideEl, { recipe, seconds, fps, feel, seed, plate, reducedMotion, metaphor, topics }) -> Timeline.
  * The slide is read, never changed, except for the data-m-id / data-m-count / data-m-layer hooks the tracks select by.
@@ -1179,7 +1221,9 @@ function buildTimeline(slideEl, opts) {
     var found = detectTopics((slideEl.textContent || "").replace(/\s+/g, " "));
     ctx.metaphor = metaphorForTags(found.tags) || "spark";
   }
+  if (ctx.metaphor && !CS.motion.metaphors[ctx.metaphor]) throw motionError("E_USAGE", "Unknown cover symbol. Use one of: " + Object.keys(CS.motion.metaphors).join(", "));
   if (recipe.id !== "none") recipe.build(ctx, P);
+  if (["stamp", "highlight-sweep", "story", "counter", "map-dots", "drop-clock", "calm", "reorder"].indexOf(recipe.id) >= 0) keepHeroVisible(ctx, P);
   tl = {
     v: 1, recipe: recipe.id, feel: opts.feel === "calm" || opts.feel === "story" ? opts.feel : recipe.feel, seed: ctx.seed,
     duration: seconds, fps: FPS, frames: Math.round(seconds * FPS), times: times, tracks: P.tracks, counters: P.counters

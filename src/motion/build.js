@@ -124,6 +124,38 @@ function resolveRecipe(id) {
   return { recipe: RECIPE_REGISTRY.calm, fallbackFrom: wanted };
 }
 
+/** Keep a complete opening line readable during the reset and rebuild. Chrome/footer decoration cannot stand in for cover copy. */
+function keepHeroVisible(ctx, plan) {
+  var rows = heroRows(ctx), total = rows.reduce(function (n, row) { return n + row.rect.w * row.rect.h; }, 0), area = 0, keep = [];
+  rows.some(function (row) { keep = keep.concat(row.words); area += row.rect.w * row.rect.h; return area >= total * 0.4; });
+  plan.tracks = plan.tracks.filter(function (track) {
+    var hosts = ctx.q(track.sel), c = track.from && track.from.clipInset;
+    var hides = track.from && track.from.opacity === 0 || c && (c[1] + c[3] >= 99 || c[0] + c[2] >= 99);
+    return !hides || !hosts.some(function (host) { return keep.some(function (word) { return host === word || host.contains(word); }); });
+  });
+  if (plan.mode !== "center" || !keep.length) return;
+  // The short story symbol may use the space of later text, never that of the retained title.
+  var symbol = plan.overlays.find(function (o) { return /^story-/.test(o.id); });
+  if (!symbol) return;
+  var body = bodyBounds(ctx), boxes = keep.map(function (word) { return ctx.rect(word); });
+  var top = Math.min.apply(null, boxes.map(function (r) { return r.y; })), bottom = Math.max.apply(null, boxes.map(function (r) { return r.y + r.h; }));
+  var gaps = [{ y: body.y, h: top - body.y - 16 }, { y: bottom + 16, h: body.y + body.h - bottom - 16 }];
+  gaps.sort(function (a, b) { return b.h - a.h; });
+  if (gaps[0].h < 80) throw motionError("E_FIT_OVERFLOW", "The story symbol needs clear space. Use another recipe or reduce the title height.");
+  var gap = gaps[0], height = Math.min(300, gap.h);
+  symbol.rect = { x: body.x, y: gap.y + (gap.h - height) / 2, w: body.w, h: height };
+  var reveal = plan.tracks.filter(function (track) {
+    var clip = track.from && track.from.clipInset, hides = track.from && track.from.opacity === 0 || clip && (clip[1] + clip[3] >= 99);
+    return hides && ctx.q(track.sel).some(function (node) {
+      if (!node.closest(".cs-content")) return false;
+      var r = ctx.rect(node), s = symbol.rect;
+      return r.x < s.x + s.w && r.x + r.w > s.x && r.y < s.y + s.h && r.y + r.h > s.y;
+    });
+  });
+  var shift = Math.max(0, plan.t(1.8) - Math.min.apply(null, reveal.map(function (track) { return track.t0; })));
+  reveal.forEach(function (track) { track.t0 = round3(track.t0 + shift); track.t1 = round3(track.t1 + shift); });
+}
+
 /**
  * CS.motion.build(slideEl, { recipe, seconds, fps, feel, seed, plate, reducedMotion, metaphor, topics }) -> Timeline.
  * The slide is read, never changed, except for the data-m-id / data-m-count / data-m-layer hooks the tracks select by.
@@ -139,7 +171,9 @@ function buildTimeline(slideEl, opts) {
     var found = detectTopics((slideEl.textContent || "").replace(/\s+/g, " "));
     ctx.metaphor = metaphorForTags(found.tags) || "spark";
   }
+  if (ctx.metaphor && !CS.motion.metaphors[ctx.metaphor]) throw motionError("E_USAGE", "Unknown cover symbol. Use one of: " + Object.keys(CS.motion.metaphors).join(", "));
   if (recipe.id !== "none") recipe.build(ctx, P);
+  if (["stamp", "highlight-sweep", "story", "counter", "map-dots", "drop-clock", "calm", "reorder"].indexOf(recipe.id) >= 0) keepHeroVisible(ctx, P);
   tl = {
     v: 1, recipe: recipe.id, feel: opts.feel === "calm" || opts.feel === "story" ? opts.feel : recipe.feel, seed: ctx.seed,
     duration: seconds, fps: FPS, frames: Math.round(seconds * FPS), times: times, tracks: P.tracks, counters: P.counters

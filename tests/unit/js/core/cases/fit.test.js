@@ -14,6 +14,61 @@
   function sentence(n) { var out = []; for (var i = 0; i < n; i++) out.push(WORDS[i % WORDS.length]); return out.join(" ") + "."; }
   function quoteSpec(words) { return FX.makeSpec([FX.slideFor("cover"), { type: "quote", body: sentence(words) }, FX.slideFor("cta")]); }
 
+  test("fit: automatic cover breaks reach the largest legal hero among word partitions", async function () {
+    await FX.setup();
+    var words = ["Nova", "تختصر", "وقتك", "وتترك", "القرار", "لك"], biggest = 0;
+    async function size(breaks) {
+      var title = words.map(function (w, i) { return (i ? breaks.indexOf(i) >= 0 ? "\n" : " " : "") + w; }).join("");
+      var s = FX.makeSpec([FX.slideFor("cover", { headline: title, sub: "خطوة عملية" }), FX.slideFor("cta")]);
+      var r = await FX.render(s, 0, { mode: "export" });
+      var px = r.fit.slots["s01.headline"].fontPx;
+      assert(r.el.querySelectorAll('[data-slot="headline"] .w').length === words.length, "all original words stay in their field");
+      drop(r); return px;
+    }
+    var automatic = await size([]);
+    for (var i = 1; i < words.length; i++) {
+      biggest = Math.max(biggest, await size([i]));
+      for (var j = i + 1; j < words.length; j++) biggest = Math.max(biggest, await size([i, j]));
+    }
+    assert(automatic >= biggest, "automatic " + automatic + " px vs best forced arrangement " + biggest + " px");
+  });
+
+  test("fit: ordinary spaces inside a Latin title can become legal line breaks", async function () {
+    await FX.setup();
+    async function render(headline) {
+      return FX.render(FX.makeSpec([FX.slideFor("cover", { headline: headline }), FX.slideFor("cta")]), 0, { mode: "export" });
+    }
+    var automatic = await render("ChatGPT Pro\nعملك أبسط"), forced = await render("ChatGPT\nPro\nعملك أبسط");
+    try {
+      assert(automatic.fit.slots["s01.headline"].fontPx >= forced.fit.slots["s01.headline"].fontPx, "a regular space must not cap the automatic hero below a legal forced arrangement");
+      CST.deepEq(qa(automatic.el, '[data-slot="headline"] .w').map(function (w) { return w.textContent; }), ["ChatGPT", "Pro", "عملك", "أبسط"]);
+      assert(qa(automatic.el, '.cs-headline .cs-ltr').every(function (run) { return run.getClientRects().length === 1; }), "each resulting Latin run stays isolated on its own line");
+    } finally { drop(automatic); drop(forced); }
+  });
+
+  test("fit: a number variant without a numeral keeps the three-line cover limit", async function () {
+    await FX.setup();
+    var preset = JSON.parse(JSON.stringify(CS.core.registry.getPreset("swiss"))); preset.id = "fit-number"; preset.variants.cover = ["top", "number"]; CS.core.registry.registerPreset(preset);
+    var spec = FX.makeSpec([{ type: "cover", variant: "number", headline: "فكرة واضحة ترشد خطواتك من البداية" }, FX.slideFor("cta")], { preset: "fit-number" });
+    var r = await FX.render(spec, 0, { mode: "export" });
+    try {
+      eq(r.el.dataset.variant, "number");
+      assert(r.fit.ok, "the non-numeric cover has a legal arrangement");
+      assert(CS.core.fit.measureLines(q(r.el, ".cs-headline")).lines.length <= 3, "the extra graphic row requires an actual leading numeral: " + JSON.stringify(r.fit.slots["s01.headline"]));
+    } finally { drop(r); }
+  });
+
+  test("fit: replacing a composed cover node never restores its previous words", async function () {
+    await FX.setup();
+    var spec = FX.makeSpec([FX.slideFor("cover", { headline: "فكرة واضحة للعمل" }), FX.slideFor("cta")]);
+    var r = await FX.render(spec, 0, { mode: "export" });
+    try {
+      spec.slides[0].headline = "قرار جديد اليوم";
+      await CS.core.render.update(r, spec, FX.brand(), { mode: "export", useFrozen: false });
+      CST.deepEq(qa(r.el, '.cs-headline .w').map(function (w) { return w.textContent; }), ["قرار", "جديد", "اليوم"]);
+    } finally { drop(r); }
+  });
+
   test("fit: the example deck fits, sizes are whole pixels inside [floor, max]", async function () {
     await FX.setup();
     var spec = ex(), brand = FX.brand(), deck = await CS.core.render.deck(spec, brand, { mode: "export" });

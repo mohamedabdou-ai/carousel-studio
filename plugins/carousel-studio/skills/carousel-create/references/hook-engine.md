@@ -1,6 +1,6 @@
 # Hook engine: from an angle to three covers
 
-A hook is the line that decides whether a stranger swipes. The engine writes at least 12 of them, throws away the ones that break a hard rule, scores the rest and keeps three from three different families. It runs without chat and without a review point of its own; the user sees the result as three chips in the Studio's Script view.
+A hook is the line that decides whether a stranger swipes. Write at least 12, run the hook gates, score the survivors, then run the cover lab before asking the creator to choose. The creator sees three covers that already fit, as rendered images at feed size and 130 px, never as bare text.
 
 Everything below uses files that ship with this skill: `data/hooks/families.json` (26 families), `library.ar.json` and `library.en.json` (slot skeletons with synthetic examples), `triggers.json`, `lexicon.json`, `scoring.json`, and the two scripts `hook_features.py` and `compress.py`. Nothing here needs the network.
 
@@ -42,8 +42,18 @@ python scripts/hook_features.py --batch hooks.json --dialect eg --brand brand.js
 
 The batch file is `[{"id","text","cover","family"}]` (or `{"candidates": [...]}`). Read `hook-scoring.md` for what comes back. Discard every hook with a failed gate; for a failure you can fix (an over-long cover, a stray Gulf word) fix it and run once more; after two rounds drop the draft. Then score the survivors as the judge (J, 0 to 40, anchors in `hook-scoring.md`) and run again with `--judge judge.json` to get the final order and `top3`.
 
-## 5. Choose and hand over
-Take the top three from three different families. Tie-breaks: a family with the brand's own evidence, then the shorter cover, then the id. In the team's duel (`rounds.md` round 3) the knockout is judged clarity first, then **evidence** (the family's tier for the post's intent, the brand's own `hooks.familyPriors` first, else the seed tier in `content-angles/data/priors.json`), then the panel's stop votes: one persona's vote never overturns a tier. If the score leader and the panel's favourite are different hooks, write one **hybrid** cover that carries the favourite's word-first tension and the leader's visible number instead of picking a side. Write the winner to `spec.hook` and the other two to `alternates`:
+## 5. Render, choose and hand over
+Make a separate lab JSON array from the survivors: each entry has `headline` and optional `sub` and `kicker`. These are cover fields, not the hook-scoring batch format. Use literal `\n` in a JSON string for a forced break. From the carousel-design skill's folder run:
+
+```
+node scripts/render.mjs --covers covers.json --spec spec.json --brand brand.json --out cover-lab --presets all --format json
+```
+
+The default tries the post's style; `--presets all` tries every shipped style in one browser launch. Read the physical lines, hero size at 130 px, headline width, empty band and every rendered finding. The lab's ranking measures fit, not the hook's tension or truth. Keep only covers with a hero at least 14 px and no unresolved cover FIX or BLOCK; read the prospective empty-band advice too. If fewer than three fit, rewrite or change the arrangement, gate again and rerun the lab. Never relax a gate or make scratch spec copies.
+
+Show the top three fitting covers as images from `covers.png`, with three different families and different tension. A stronger-hook request always gets one shock cover built on a sourced loss, a contradiction or a hard number; write fresh survivors if needed. Shock still passes truth, register and policy gates. Add a short score/reason and slide-2 payoff beside each image; a line of text cannot replace the image.
+
+Tie-breaks: a family with the brand's own evidence, then the shorter cover, then the id. In the team's duel (`rounds.md` round 3) the knockout is judged clarity first, then **evidence** (the family's tier for the post's intent, the brand's own `hooks.familyPriors` first, else the seed tier in `content-angles/data/priors.json`), then the panel's stop votes. A hybrid is a new draft: gate it and render it before showing it. Apply the chosen `arrangement.fields` to the canonical cover with `spec_edit.py cover` before approval or freezing, especially when `movedSecondBeat` is true; these values keep emphasis markup, and the lab never saves them. Write the winner to `spec.hook` and the other two to `alternates`:
 
 ```
 "hook": {"id": "P3-MISTAKE-count-cost", "family": "P3", "text": "...", "cover": "...", "score": 71.5, "slide2": "...", "alternates": [ {...}, {...} ]}

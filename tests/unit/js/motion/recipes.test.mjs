@@ -208,19 +208,30 @@ export default {
       }
     },
     {
-      name: "all existing recipes: without a kicker, even a fully marked title starts rebuilding at resetEnd",
+      name: "all existing recipes: even a fully marked title keeps readable content through reset",
       async run(t) {
         const r = await t.page.evaluate(async () => {
           const out = [];
           for (const recipe of ["calm", "counter", "highlight-sweep", "stamp", "reorder", "story", "map-dots", "drop-clock"]) {
             const spec = JSON.parse(JSON.stringify(CS_FIXTURES.opinion)); spec.slides[0] = { id: "s01", n: 1, type: "cover", headline: "==فكرة واضحة تستاهل وقتك==" };
             const deck = await CS.core.render.deck(spec, null, { slideIds: ["s01"] }), el = deck.slides[0].el, tl = CS.motion.build(el, { recipe });
-            const enter = tl.tracks.filter((x) => { const c = x.from && x.from.clipInset; return x.from && (x.from.opacity === 0 || c && c[1] + c[3] >= 99.9); });
-            out.push({ recipe, first: Math.min(...enter.map((x) => x.t0)), problems: CS.motion.validate(el, tl) }); deck.dispose();
+            const hero = [...el.querySelectorAll('.w[data-m-slot="headline"]')], area = w => { const r = w.getBoundingClientRect(); return r.width * r.height; };
+            const baseline = hero.reduce((n, w) => n + area(w), 0), engine = CS.motion.hf.engine.attach(el, tl, { driver: "style" });
+            let minimum = 1;
+            for (let frame = 0; frame < tl.frames; frame++) {
+              engine.seek(frame / tl.fps); let visible = 0;
+              for (const w of hero) {
+                let opacity = 1, clipped = false;
+                for (let p = w; p && p !== el; p = p.parentElement) { const cs = getComputedStyle(p); opacity *= +cs.opacity; if (/inset\([^)]*100%/.test(cs.clipPath)) clipped = true; }
+                if (opacity >= .35 && !clipped) visible += area(w);
+              }
+              minimum = Math.min(minimum, visible / baseline);
+            }
+            out.push({ recipe, minimum, problems: CS.motion.validate(el, tl) }); engine.destroy(); deck.dispose();
           }
           return out;
         });
-        for (const x of r) { t.near(x.first, 0.75, 0.002, x.recipe + " no empty entrance beat"); t.eq(x.problems, []); }
+        for (const x of r) { t.gte(x.minimum, .25, x.recipe + " no nearly blank frame"); t.eq(x.problems, []); }
       }
     },
     {
@@ -348,16 +359,21 @@ export default {
       }
     },
     {
-      name: "story center: a short symbol hands over to the headline by 1.5 seconds even without kicker or numeral",
+      name: "story center: keeps title content readable and clears its short symbol by 1.8 seconds",
       async run(t) {
         const r = await t.page.evaluate(async () => {
           const spec = JSON.parse(JSON.stringify(CS_FIXTURES.opinion));
           spec.slides[0] = { id: "s01", n: 1, type: "cover", headline: "أفكار ==واضحة==\nلناس بتصمم\nكل يوم", sub: "الفكرة قبل الشكل.\nوالمعنى هو الأساس." };
           const deck = await CS.core.render.deck(spec, null, { slideIds: ["s01"] }), el = deck.slides[0].el;
           const tl = CS.motion.build(el, { recipe: "story" }), hero = Array.from(el.querySelectorAll('.w[data-m-slot="headline"]'));
-          const first = Math.min(...tl.tracks.filter((x) => hero.some((w) => w.matches(x.sel))).map((x) => x.t0));
+          const engine = CS.motion.hf.engine.attach(el, tl, { driver: "style" });
+          let first = Infinity;
+          for (let frame = Math.ceil(tl.times.resetEnd * tl.fps); frame < tl.frames; frame++) {
+            engine.seek(frame / tl.fps);
+            if (hero.some(w => { let alpha = 1, clipped = false; for (let p = w; p && p !== el; p = p.parentElement) { const cs = getComputedStyle(p); alpha *= +cs.opacity; if (/inset\([^)]*100%/.test(cs.clipPath)) clipped = true; } return alpha >= .35 && !clipped; })) { first = frame / tl.fps; break; }
+          }
           const end = Math.max(...tl.tracks.filter((x) => /^story-/.test(x.id)).map((x) => x.t1 + (x.then || []).reduce((s, y) => s + y.dt, 0)));
-          const out = { mode: tl.mode, first, end, problems: CS.motion.validate(el, tl) }; deck.dispose(); return out;
+          const out = { mode: tl.mode, first, end, problems: CS.motion.validate(el, tl) }; engine.destroy(); deck.dispose(); return out;
         });
         t.eq(r.mode, "center"); t.lte(r.first, 1.5); t.lte(r.first - 0.75, 0.6); t.lte(r.end, 1.8); t.eq(r.problems, []);
       }

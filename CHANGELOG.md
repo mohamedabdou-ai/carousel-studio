@@ -37,6 +37,9 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 
 ### Design
 
+- Try surviving hooks across styles in one cover-lab run, with measured fit, ranked findings and a sheet at feed size and 130 px. A style sheet shows your own cover and slide 2 in every shipped style before you choose.
+- Cover fitting searches line arrangements without changing your words, keeps forced breaks and offers a punctuated second beat in the sub-line. Creator's top and center anchors work, and cover controls explain which type setting sizes each line.
+- Hook choices are rendered before they are offered; a stronger set includes a truthful shock cover with a different kind of tension.
 - The art director owns every slide, the cover included, fixes empty bands, weak hierarchy, text on media and crowding without being asked, and never leaves a giant word that says nothing.
 - «غيّر الستايل» with no name shows the other styles on your own cover and slide 2 to pick from.
 - After design approval, the plugin asks once where and how you want to post, and remembers manual files or your connected tool. It does not publish itself or bundle tool-specific recipes.
@@ -53,6 +56,8 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 - Clip covers hold the finished poster first and return with a dissolve for similar endpoints or a wipe for one-way footage. Their PNG, JPEG and PDF cover come from the MP4 first frame, avoiding a second colour round trip in the loop check.
 - The Studio marks the attached video and previews its decoded poster. Reattach the local file when reopening the Studio; clip bytes never enter the spec or saved page.
 
+- Number covers keep the same text boxes in the still and motion frames. Stamp rings and story symbols draw above the card, and a story symbol can be chosen explicitly.
+- Stamp, sweep, story and counter keep readable headline content throughout their reset and rebuild. Story symbols stay clear of the readable title and leave before later text enters their space.
 - Four new cover stories, each with its own movement: Curtain (accent bars pull away line by line), Word zoom (the cover opens on its key word, then the camera pulls back), Notification (the headline arrives as a message being typed) and Before/after (the two halves of the headline collide).
 - The cover story is chosen from the cover's own words, and two posts in a row never get the same one.
 - The counter shows the rest of the title before the number counts, and large numbers count up from about a third instead of zero.

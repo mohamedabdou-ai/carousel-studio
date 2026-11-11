@@ -183,6 +183,9 @@
 .cs-slide[data-variant="split"] .cs-a-poster > .cs-media-slot:not([data-media-kind="icon"]){ min-block-size:calc(var(--cs-unit) * 48); }
 .cs-slide .cs-a-poster > .cs-bullets{ gap:calc(var(--cs-unit) * 2); }
 /* a leading numeral becomes the visual anchor of the headline (variants "number" and "big-number") */
+/* Match the motion driver's atomic boxes before painting the still: a block numeral inside an inline word otherwise changes the baseline at mount. */
+.cs-slide[data-type="cover"][data-variant="number"] .cs-headline .w{ display:inline-block; }
+.cs-slide[data-type="cover"][data-variant="number"] .cs-headline .w:has(> .cs-ltr[data-run="number"]){ display:block; }
 .cs-slide[data-variant="number"] .cs-a-cover .cs-headline .w[data-w="0"] > .cs-ltr[data-run="number"],
 .cs-slide[data-variant="number"] .cs-a-cover .cs-headline .cs-ltr[data-run="number"]:has(> .w[data-w="0"]),
 .cs-slide[data-variant="big-number"] .cs-a-rehook .cs-headline .w[data-w="0"] > .cs-ltr[data-run="number"],
