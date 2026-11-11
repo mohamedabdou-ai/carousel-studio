@@ -60,6 +60,11 @@ class PastedFormatsTests(unittest.TestCase):
         self.assertEqual(spec["slides"][1]["bullets"], ["ضع الأوراق في ملف.", "احفظ المرجع باسم @المكتب."])
         self.assertEqual(spec["slides"][2]["body"], "«رتّب سطح المكتب، واترك مساحة للكتابة.»")
 
+    def test_generated_metadata_uses_the_current_package_version(self):
+        spec, _ = self.parse("1. الغلاف\nفكرة واضحة\n2. احفظ الفكرة", no_split=True)
+        package = json.loads((REPO / "package.json").read_text(encoding="utf-8"))
+        self.assertEqual(spec["meta"]["generator"]["version"], package["version"])
+
     def test_mixed_headings_separators_and_inline_spans(self):
         for first in ("١ — الكافر", "**١ — الكافر**", "**سلايد ١ — الغلاف**", "1 | الغلاف"):
             with self.subTest(first=first):
@@ -124,13 +129,17 @@ reports.example
         self.assertEqual(spec["slides"][1]["body"], "This was made by Workshop.")
 
     def test_source_shaped_names_inside_sentences_keep_their_words(self):
-        for line in ("أنا أكتب بـ Node.js", "أنشر على Vercel.com", "ادخل على claude.ai", "This was Designed by Apple"):
+        for line in ("أنا أكتب بـ Node.js", "أنشر على Vercel.com", "ادخل على claude.ai", "This was Designed by Apple",
+                     "جرّب أداة Node.js", "اقرا الدليل على react.dev", "النتيجة 45٪ — Nielsen Norman Group by Jakob Nielsen"):
             with self.subTest(line=line):
                 refs, mentions = [], []
                 self.assertEqual(_picker.extract_sources(line, refs, mentions), line)
-                self.assertTrue(mentions)
+                self.assertEqual(mentions, [])
+                self.assertEqual(refs, [])
         for line in ("reports.example", "المصدر: reports.example", "source: Designed by Apple", "via: reports.example", "عن: reports.example"):
-            self.assertEqual(_picker.extract_sources(line, [], []), "")
+            mentions = []
+            self.assertEqual(_picker.extract_sources(line, [], mentions), "")
+            self.assertEqual(len(mentions), 1)
 
     def test_inline_link_labels_and_bare_url_punctuation_are_preserved(self):
         refs = []

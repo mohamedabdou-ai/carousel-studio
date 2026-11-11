@@ -1,6 +1,6 @@
 schema_version: "1.0"
 name: bhv-02-fast-mode-valid-spec
-description: "Fast mode skips the chat checkpoints, picks the top angle, and still writes a spec that validates."
+description: "Fast mode delegates hook/style at checkpoint A, picks the top angle and writes a valid spec before checkpoint B."
 tags: [behaviour, needs-bash, carousel-create, valid-spec, fast-mode, flow]
 plugins: ["../../../plugins/carousel-studio"]
 execution:
@@ -13,7 +13,7 @@ execution:
     palette: bg #F4F4F2 ink #111111 accent #E3262B | fonts: ibm-plex-sans-arabic / readex-pro / inter | preset: swiss
     home: -
 
-    بسرعة (فاست مود): كاروسيل 8 سلايدات عن 5 أخطاء بتموّت الكاروسيل. اختار إنت أحسن زاوية وكمّل.
+    بسرعة (فاست مود): كاروسيل 8 سلايدات عن 5 أخطاء بتموّت الكاروسيل. اختار إنت أحسن زاوية وكمّل. الهوك والستايل زي ما تشوف.
   append_system_prompt: |
     This is an automated evaluation of the Carousel Studio plugin, not a live session. There is no Artifact tool, no network access and no connected image, video or design tool. Save every file you create in the current working directory and never in a home folder: name the post spec spec.json, a brand profile brand.json and a plan plan-YYYY-MM.json, and when a script offers a workspace or root option (for example brand_io.py --dir) point it at the current directory. Otherwise answer the user exactly as you normally would.
   max_turns: 40
@@ -55,6 +55,6 @@ graders:
   - type: llm
     name: names-the-angle-it-picked
     criteria: |
-      The reply says which angle it picked and does not ask the user to choose one.
+      The reply says which angle, hook and style it picked under the explicit delegation at checkpoint A, and stops at checkpoint B for design approval.
     weight: 2
 expected_outcome: "A spec.json that validates; the reply names the angle it chose."

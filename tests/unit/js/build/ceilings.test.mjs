@@ -9,6 +9,7 @@ import { makeFixture, overheadOf, REAL_ROOT } from "./fixture.mjs";
 import { spawnSync } from "node:child_process";
 
 const KIB = 1024;
+const ENGINE = "cs-" + JSON.parse(readFileSync(join(REAL_ROOT, "package.json"), "utf8")).version;
 /* IS-1, written out again on purpose: the test is the second copy that catches a typo in the tool. cs-ui.js is the one chunk over its
  * ceiling today, so the tool holds it at its current size (INTERIM_CEILINGS) until the entry is deleted; this file follows that entry. */
 const INTERIM = JSON.parse(readFileSync(join(REAL_ROOT, "tools", "build.mjs"), "utf8").match(/const INTERIM_CEILINGS = (\{[^}]*\});/)[1]);
@@ -44,7 +45,7 @@ test("--report --format json carries the IS-1 ceiling table, the interim cs-ui e
   const fx = makeFixture(Object.keys(CEILINGS).map((c) => ({ module: moduleOf(c), chunk: c })));
   try {
     const doc = report(fx);
-    assert.equal(doc.engine, "cs-1.1.1");
+    assert.equal(doc.engine, ENGINE);
     assert.equal(doc.chunks.length, 13);
     for (const row of doc.chunks) {
       assert.equal(row.ceiling, CEILINGS[row.chunk], row.chunk);
@@ -144,13 +145,13 @@ test("--check also normalises line endings, like a Windows checkout", () => {
   } finally { fx.cleanup(); }
 });
 
-test("the chunk header names the engine cs-1.1.1, and two builds are byte-identical", () => {
+test("the chunk header names the package engine, and two builds are byte-identical", () => {
   const fx = makeFixture([{ module: "visual" }]);
   try {
     fx.run("--out", join(fx.root, "o1"));
     fx.run("--out", join(fx.root, "o2"));
     const a = readFileSync(join(fx.root, "o1", "cs-visual.js"), "utf8");
-    assert.ok(a.startsWith("/*! Carousel Studio runtime chunk cs-visual.js · cs-1.1.1 · Apache-2.0 */\n"));
+    assert.ok(a.startsWith(`/*! Carousel Studio runtime chunk cs-visual.js · ${ENGINE} · Apache-2.0 */\n`));
     assert.equal(a, readFileSync(join(fx.root, "o2", "cs-visual.js"), "utf8"));
   } finally { fx.cleanup(); }
 });

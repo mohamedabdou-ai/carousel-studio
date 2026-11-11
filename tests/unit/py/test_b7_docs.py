@@ -185,5 +185,122 @@ class Priors(unittest.TestCase):
         self.assertNotRegex(raw, r"@[A-Za-z0-9._]{3,}")
 
 
+class WaveTwoLaneContracts(unittest.TestCase):
+    """Agent-facing instructions must supply the inputs, owners and stops their commands need."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.repo = support.SKILLS.parents[2]
+        cls.rounds = read("carousel-create/references/rounds.md")
+        cls.skill = read("carousel-create/SKILL.md")
+        cls.flow = read("carousel-create/references/flow.md")
+        cls.charter = (cls.repo / "team/charter.md").read_text(encoding="utf-8")
+
+    def test_fast_lab_has_a_two_slide_spec_before_it_reads_it(self):
+        fast = self.rounds.split("## 4. Team fast lane", 1)[1].split("## 5.", 1)[0]
+        self.assertLess(fast.index("provisional two-slide"), fast.index("render.mjs --covers"))
+        self.assertLess(fast.index("script_to_spec.py --script"), fast.index("render.mjs --covers"))
+        self.assertIn("completes the same spec", fast)
+
+    def test_writer_and_lane_docs_distinguish_team_from_ready_slide_counts(self):
+        writer = (self.repo / "team/roles/cs-copywriter.md").read_text(encoding="utf-8")
+        self.assertIn("4 to 10 slides including the cover; 4 to 6 is complete", writer)
+        for text in (writer, self.skill, self.rounds, self.flow, self.charter, read("carousel-create/references/ready-script.md")):
+            with self.subTest(text=text[:50]):
+                self.assertRegex(text, r"[Rr]eady[^\n.]{0,100}2 to 10")
+
+    def test_guided_and_fast_name_the_consumed_fill_pipeline(self):
+        self.assertNotIn("caption-pack.json", self.rounds)
+        for text in (self.rounds.split("### Round 3:", 1)[1].split("### Round 4:", 1)[0],
+                     self.rounds.split("## 4. Team fast lane", 1)[1].split("## 5.", 1)[0]):
+            self.assertIn("script_to_spec.py --script <post>/script.md --brand brand.json --out <post>", text)
+            self.assertIn("--spec <post>/spec.json --fill <post>/fill.json --brand brand.json", text)
+        self.assertIn("caption fields", self.rounds)
+        guided = self.rounds.split("### Round 3:", 1)[1].split("### Round 4:", 1)[0]
+        fast = self.rounds.split("## 4. Team fast lane", 1)[1].split("## 5.", 1)[0]
+        self.assertIn("--team-mode guided", guided)
+        self.assertEqual(fast.count("--team-mode fast"), 2)
+
+    def test_guided_storyboard_is_a_director_decision_without_an_extra_creator_stop(self):
+        for text in (self.skill, self.charter):
+            row = next(l for l in text.splitlines() if l.startswith("| 4 Design huddle"))
+            self.assertEqual(row.split("|")[-2].strip(), "-")
+        self.assertIn("Director approves before encoding", self.rounds)
+        self.assertNotIn("creator approves it before", self.charter)
+
+    def test_existing_post_routes_through_edit_export_review_and_same_url(self):
+        row = next((l for l in self.skill.splitlines() if l.startswith("| An existing post")), "")
+        for token in ("copy, style, export", "extracted spec", "spec_edit.py", "QA", "fresh Creative Director", "same URL"):
+            self.assertIn(token, row)
+        edit = self.flow.split("## 9.", 1)[1].split("## 10.", 1)[0]
+        for token in ("spec_edit.py", "QA", "fresh Creative Director", "same URL"):
+            self.assertIn(token, edit)
+        design = read("carousel-design/SKILL.md")
+        chat_edit = next(l for l in design.splitlines() if l.startswith("5. **Edits.**"))
+        for token in ("QA", "fresh Creative Director", "same URL"):
+            self.assertIn(token, chat_edit)
+
+    def test_full_team_request_precedes_material_and_guided_builds_a_source_pack(self):
+        rows = [l for l in self.skill.splitlines() if l.startswith("| ")]
+        full = next(i for i, l in enumerate(rows) if "full team" in l)
+        material = next(i for i, l in enumerate(rows) if "Source material" in l)
+        self.assertLess(full, material)
+        round1 = self.rounds.split("### Round 1:", 1)[1].split("### Round 2:", 1)[0]
+        self.assertIn("source_pack.py", round1)
+        self.assertIn("supplied material", round1)
+
+    def test_qa_routes_copy_blocks_to_writer_and_layout_blocks_to_art(self):
+        qa = (self.repo / "team/roles/cs-qa-producer.md").read_text(encoding="utf-8")
+        for text in (qa, self.rounds.split("## 1.", 1)[1].split("## 2.", 1)[0]):
+            for token in ("copy, source or readback BLOCK", "copywriter fix pass", "editor re-check for Arabic",
+                          "spec_edit.py", "layout BLOCK goes to art", "QA re-exports"):
+                self.assertIn(token, text)
+
+    def test_compact_art_can_derive_its_optional_visual_inputs(self):
+        art = (self.repo / "team/roles/cs-art-director.md").read_text(encoding="utf-8")
+        self.assertIn("In fast and ready the visual direction and bold move are optional", art)
+        self.assertIn("derive them from the script and the locked cover rather than stopping", art)
+
+    def test_guided_eval_uses_two_pitches_and_fast_prompts_delegate_the_lock(self):
+        cases = json.loads(read("carousel-create/evals/evals.json"))["evals"]
+        first = next(c for c in cases if c["id"] == 1)
+        expected = first["expected_output"] + " " + " ".join(first["expectations"])
+        self.assertIn("two pitch directions", expected)
+        self.assertIn("safe", expected)
+        self.assertIn("bold", expected)
+        self.assertIn("panel", expected)
+        self.assertNotIn("5 numbered angles", expected)
+        self.assertIn("زي ما تشوف", next(c for c in cases if c["id"] == 2)["prompt"])
+        behaviour = self.repo / "evals/behaviour"
+        one = (behaviour / "bhv-01-guided-stops-at-checkpoint-1/case.yaml").read_text(encoding="utf-8")
+        self.assertIn("two pitch directions", one)
+        self.assertNotIn("at least 5 numbered angles", one)
+        for name in ("bhv-02-fast-mode-valid-spec", "bhv-22-slide-count-warning"):
+            self.assertIn("زي ما تشوف", (behaviour / name / "case.yaml").read_text(encoding="utf-8"))
+
+    def test_contract_chunk_ceiling_and_c6_fallback_agree_with_the_gates(self):
+        contract = (self.repo / "docs/CONTRACT.md").read_text(encoding="utf-8")
+        self.assertNotIn("runtime chunks ≤ 200 KiB", contract)
+        c6 = next(l for l in contract.splitlines() if l.startswith("| **C6** "))
+        self.assertIn("if that type has none, count item and step slides", c6)
+
+    def test_contributor_budget_matches_ci_and_documents_the_raise(self):
+        contributing = (self.repo / "CONTRIBUTING.md").read_text(encoding="utf-8")
+        ci = (self.repo / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        package = json.loads((self.repo / "package.json").read_text(encoding="utf-8"))
+        budget = re.search(r"--repo-max-files (\d+)", package["scripts"]["check:repo"]).group(1)
+        self.assertIn("--repo-max-files " + budget, ci)
+        self.assertIn("--repo-max-files " + budget, contributing)
+        self.assertIn("Raised to " + budget, contributing)
+        self.assertIn("it has 347", contributing)
+
+    def test_privacy_discloses_both_local_browser_downloads_and_consent(self):
+        privacy = (self.repo / "PRIVACY.md").read_text(encoding="utf-8")
+        row = next((l for l in privacy.splitlines() if l.startswith("| You ask for a local render in Claude Code")), "")
+        for token in ("After you agree", "npm install playwright-core", "npx playwright install chromium",
+                      "Nothing from your post is sent", "Chromium download host"):
+            self.assertIn(token, row)
+
+
 if __name__ == "__main__":
     unittest.main()

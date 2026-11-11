@@ -83,6 +83,38 @@ class EditorTests(unittest.TestCase):
     def read(self):
         return json.loads(self.spec.read_text(encoding="utf-8"))
 
+    def test_apply_blocks_clip_end_points_before_export(self):
+        patch = self.root / "clip.json"
+        for start, end in ((1, 1), (2, 1)):
+            with self.subTest(start=start, end=end):
+                clip = {"file": "clip.mp4", "in": start, "out": end, "fit": "cover",
+                        "focus": {"x": 0.5, "y": 0.5}, "ending": "auto"}
+                patch.write_text(json.dumps({"post": {"cover": {"motion": {"clip": clip}}}}), encoding="utf-8")
+                res = self.edit("apply", "--file", str(patch), status=2)
+                self.assertIn("The clip out point must be after its non-negative in point.", res.stdout + res.stderr)
+                shown = json.loads(self.edit("show", "--format", "json", status=2).stdout)
+                self.assertIn("The clip out point must be after its non-negative in point.",
+                              [e["message"] for e in shown.get("structure", [])])
+
+    def test_single_post_cannot_keep_a_clip_cover(self):
+        spec = self.read()
+        spec["format"] = "single"
+        spec["slides"] = [{"id": "s01", "n": 1, "type": "poster", "headline": "موعد واضح"}]
+        spec["captionPack"]["alt"] = spec["captionPack"]["alt"][:1]
+        spec["captionPack"]["perSlide"] = spec["captionPack"]["perSlide"][:1]
+        spec["cover"]["motion"]["clip"] = {"file": "clip.mp4", "in": 0, "out": 6, "fit": "cover",
+                                                "focus": {"x": 0.5, "y": 0.5}, "ending": "auto"}
+        rep = lane.check_spec(spec)
+        self.assertTrue(any(e["path"] == "/cover/motion/clip" and "single" in e["message"].lower()
+                            for e in rep["structure"]), rep["structure"])
+
+    def test_carousel_clip_accepts_zero_and_fractional_nonnegative_in_points(self):
+        for start, end in ((0, 6), (0.25, 0.5)):
+            spec = self.read()
+            spec["cover"]["motion"]["clip"] = {"file": "clip.mp4", "in": start, "out": end, "fit": "cover",
+                                                    "focus": {"x": 0.5, "y": 0.5}, "ending": "auto"}
+            self.assertFalse(any(e["path"].startswith("/cover/motion/clip") for e in lane.check_spec(spec)["structure"]))
+
     def test_shared_options_work_before_and_after_the_command(self):
         """`spec_edit.py show --spec F` is what people type first; an option given before the command must not be reset by it."""
         def run(*args):
@@ -94,6 +126,74 @@ class EditorTests(unittest.TestCase):
         missing = run("show")
         self.assertEqual(missing.returncode, 64, missing.stdout + missing.stderr)
         self.assertIn("--spec", missing.stderr)
+
+    def test_team_guided_pipeline_keeps_the_approved_angle_and_waits_for_script_approval(self):
+        spec = self.read()
+        spec.update(mode="guided", checkpoint="angle", slides=[])
+        spec["angle"]["id"] = "a7"
+        spec["hook"]["id"] = "h07"
+        spec["approvals"] = {"angle": {"at": "2026-11-12T10:00:00Z"}}
+        spec["ext"] = {"source": "team-script"}
+        self.spec.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+        self.record.unlink()
+        self.parse("--script", str(self.script), "--out", str(self.post), "--no-split", "--team-mode", "guided")
+        for action in (lambda: None,
+                       lambda: self.parse("--spec", str(self.spec), "--fill", str(self.fill)),
+                       lambda: self.edit("text", "s02", "--field", "body", "تفصيل واضح"),
+                       lambda: self.parse("--script", str(self.script), "--out", str(self.post), "--no-split")):
+            action()
+            current = self.read()
+            self.assertEqual((current["mode"], current["checkpoint"]), ("guided", "script"))
+            self.assertEqual(current["angle"]["id"], "a7")
+            self.assertEqual(current["hook"]["id"], "h07")
+            self.assertEqual(current["ext"]["source"], "team-script")
+            self.assertEqual(current["approvals"]["angle"], spec["approvals"]["angle"])
+            self.assertNotIn("script", current["approvals"])
+            rep = lane.check_spec(copy.deepcopy(current))
+            self.assertFalse(any(e["path"] == "/approvals/script" for e in rep["structure"]))
+
+    def test_team_fast_draft_is_not_marked_as_creator_copy(self):
+        post = self.root / "post-20261112-0001"
+        self.parse("--script", str(self.script), "--out", str(post), "--no-split", "--team-mode", "fast")
+        spec = json.loads((post / "spec.json").read_text(encoding="utf-8"))
+        self.assertEqual(spec["mode"], "fast")
+        self.assertEqual(spec["ext"]["source"], "team-script")
+        self.assertNotEqual(spec["hook"]["id"], "creator-script")
+
+    def team_provisional(self):
+        self.post = self.root / "post-20261112-0002"
+        self.spec = self.post / "spec.json"
+        self.record = self.post / "spec.edits.json"
+        self.script.write_text("1. غلاف أولي\n2. نقطة مفيدة\nخطوة صغيرة", encoding="utf-8")
+        self.parse("--script", str(self.script), "--out", str(self.post), "--no-split", "--team-mode", "fast")
+        self.assertEqual(len(self.read()["slides"]), 2)
+
+    def test_fast_completion_preserves_cover_and_style_locks_when_two_slides_grow_to_four(self):
+        self.team_provisional()
+        self.edit("style", "notebook")
+        self.edit("cover", "--headline", "غلاف معتمد")
+        self.script.write_text(PASTE, encoding="utf-8")
+        self.parse("--script", str(self.script), "--out", str(self.post), "--no-split", "--team-mode", "fast")
+        spec = self.read()
+        self.assertEqual(len(spec["slides"]), 4)
+        self.assertEqual(spec["style"]["presetId"], "notebook@1.0")
+        self.assertEqual(spec["slides"][0]["headline"], "غلاف معتمد")
+        self.assertEqual(spec["hook"]["cover"], "غلاف معتمد")
+        self.assertEqual(spec["slides"][1]["title"], "نتيجة الورشة")
+        self.assertNotEqual(spec["slides"][1]["type"], "cta")
+        self.parse("--spec", str(self.spec), "--fill", str(self.fill))
+        self.assertEqual(len(self.read()["captionPack"]["alt"]), 4)
+
+    def test_fast_completion_does_not_replay_a_provisional_ending_edit_on_slide_two(self):
+        self.team_provisional()
+        self.edit("text", "s02", "--field", "title", "خاتمة مؤقتة")
+        before, record_before = self.spec.read_bytes(), self.record.read_bytes()
+        self.script.write_text(PASTE, encoding="utf-8")
+        res = subprocess.run([sys.executable, str(SCRIPT), "--script", str(self.script), "--out", str(self.post),
+                              "--no-split", "--team-mode", "fast"], capture_output=True, text=True, encoding="utf-8", env=ENV)
+        self.assertEqual(res.returncode, 75, res.stdout + res.stderr)
+        self.assertEqual(self.spec.read_bytes(), before)
+        self.assertEqual(self.record.read_bytes(), record_before)
 
     def test_legacy_oversize_spec_can_be_shown_and_edited_with_c5_still_blocking(self):
         spec = self.read()

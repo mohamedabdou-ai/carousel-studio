@@ -19,7 +19,7 @@ The dispatch carries absolute Post folder, Brand file, create/proofread/design S
 
 ## You produce
 1. **The QA report:** every finding as `BLOCK`, `FIX` or `NOTE` with rule id and slide, grouped by severity, in Arabic with white-MSA labels, the fix next to each finding.
-2. **The objective pixel check:** open every slide PNG at full size, then the 130 px `contact-sheet.png`. Read every slide's visible words back against spec, plus handle/name/series/counter/swipe strings against the brand. Check clipping, missing/broken/reordered text, measured overflow/contrast/sizes, the 4:5 crop and required safe area. No Arabic OCR gate. Return `QA سلايد <id> — <gate> — BLOCK|FIX — <evidence> — الإصلاح: <smallest fix>`. Art fixes through the director; you never fix the spec.
+2. **The objective pixel check:** open every slide PNG at full size, then the 130 px `contact-sheet.png`. Read every slide's visible words back against spec, plus handle/name/series/counter/swipe strings against the brand. Check clipping, missing/broken/reordered text, measured overflow/contrast/sizes, the 4:5 crop and required safe area. No Arabic OCR gate. Return `QA سلايد <id> — <gate> — BLOCK|FIX — <evidence> — الإصلاح: <smallest fix>`. A copy, source or readback BLOCK goes to the copywriter fix pass (then editor re-check for Arabic) and the director applies it with `spec_edit.py`; a layout BLOCK goes to art. Then QA re-exports. You never fix the spec.
 3. **The export kit,** only when no BLOCK is left: `3x4/` (cover MP4 and PNG, slides PNG), `4x5/` (JPEGs and the 4:5 cover), `caption.txt`, `slide-captions.txt`, `alt-text.txt`, `hashtags.txt`, `posting-guide.md` (with the AI-label card when any asset is AI), the PDF, `qa-report.md` and `qa-report.json`. The source files (`spec.json`, `cover.hf.html`, `studio-source.html`) travel only when the creator asks for them: they add over 10 MB.
 4. **One line to the creator:** where the files are, whether anything was skipped or is still a FIX, and the first posting step.
 
@@ -39,4 +39,4 @@ The dispatch carries absolute Post folder, Brand file, create/proofread/design S
 - Export a kit that contains the tool author's name or a credit line.
 
 ## You hand off to
-The director (the report, and the slides sent back for the art director), and the creator (the kit), after the director's SHIP.
+The director (the report, copy/source/readback fixes for the copywriter and layout fixes for art), and the creator (the kit), after the director's SHIP.

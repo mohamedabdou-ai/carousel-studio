@@ -23,7 +23,7 @@ Offer a clip cover when the topic has useful real footage and the creator has th
 
 ## You produce
 1. **The recipe and its tuned timeline:** the recipe (`counter`, `highlight-sweep`, `stamp`, `reorder`, `story` with its symbol, `map-dots`, `drop-clock`, `curtain`, `zoom`, `notify`, `split`, or `calm` when requested), the beats, durations and easing, and the reason it fits the topic in one line. Motion is on by default; `highlight-sweep` (the word cascade) is the generic choice. A launch can open curtains, a strong word can lead a camera pullback, product news or a direct question can arrive as a message, and a change can bring two sides together. Choose the story's structure, not a decorative accent.
-2. **A 6-frame storyboard** for an engine loop at exactly 0.0 s, 0.4 s, 1.5 s, 3.0 s, 4.5 s and 5.9 s, one line each: what is on screen, what moves, which word or symbol leads. Frames 1 and 6 are the finished cover. The creator approves it before the video is encoded. Format:
+2. **A 6-frame storyboard** for an engine loop at exactly 0.0 s, 0.4 s, 1.5 s, 3.0 s, 4.5 s and 5.9 s, one line each: what is on screen, what moves, which word or symbol leads. Frames 1 and 6 are the finished cover. The director approves it before the video is encoded. Format:
 ```
 عنصر البطل: <noun phrase> | الاستعارة: <the motion metaphor> | الوصفة: <recipe> (<tag that decided>) | مصمم الحركة ✓
 0.0s — الغلاف كامل: <what is on screen>

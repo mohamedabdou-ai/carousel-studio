@@ -93,10 +93,61 @@ def version_sources(root: Path, version: str) -> list[tuple[str, str | None, str
     add(".claude-plugin/marketplace.json (metadata)", lambda: read_json(market)["metadata"]["version"])
     add(".claude-plugin/marketplace.json (plugin entry)", lambda: read_json(market)["plugins"][0]["version"])
     add("package.json", lambda: read_json(root / "package.json")["version"])
-    init = root / PLUGIN_DIR / "skills" / "carousel-design" / "scripts" / "_cs" / "__init__.py"
-    add("_cs/__init__.py __version__", lambda: re.search(r'__version__\s*=\s*"([^"]+)"', read_text(init)).group(1))
-    runtime = root / "src" / "lib" / "root.js"
-    add("src/lib/root.js CS.version", lambda: re.search(r'CS\.version\s*=\s*"([^"]+)"', read_text(runtime)).group(1), "cs-" + version)
+    lockfile = root / "package-lock.json"
+    add("package-lock.json (root)", lambda: read_json(lockfile)["version"])
+    add("package-lock.json (package)", lambda: read_json(lockfile)["packages"][""]["version"])
+    add("v1-manifest.json", lambda: read_json(root / "v1-manifest.json")["version"])
+
+    checked: set[str] = set()
+
+    def declaration(relative: str, pattern: str, expected: str) -> None:
+        """Required declarations fail closed, including a missing file or a removed declaration."""
+        checked.add(relative)
+        field = " __version__" if "__version__" in pattern else " CS.version" if "CS\\.version" in pattern else ""
+        add(relative + field, lambda: re.search(pattern, read_text(root / relative)).group(1), expected)
+
+    scripts = PLUGIN_DIR.as_posix() + "/skills/carousel-design/scripts/"
+    declaration(scripts + "_cs/__init__.py", r'__version__\s*=\s*[\'"]([^\'"]+)', version)
+    for path in sorted((root / PLUGIN_DIR / "skills").glob("*/scripts/_cs/__init__.py")):
+        relative = path.relative_to(root).as_posix()
+        if relative not in checked:
+            declaration(relative, r'__version__\s*=\s*[\'"]([^\'"]+)', version)
+
+    engine = "cs-" + version
+    declaration("docs/CONTRACT.md", r'Plugin version\s*`([^`]+)`', version)
+    for relative, pattern in (
+        ("tools/build.mjs", r'\bENGINE\s*=\s*[\'"]([^\'"]+)'),
+        ("src/lib/root.js", r'CS\.version\s*=\s*[\'"]([^\'"]+)'),
+        ("src/qa/core.js", r'\bENGINE\s*:\s*[\'"]([^\'"]+)'),
+        (scripts + "_cs/report.py", r'\bENGINE\s*=\s*[\'"]([^\'"]+)'),
+        (scripts + "build_studio.py", r'\bENGINE\s*=\s*[\'"]([^\'"]+)'),
+    ):
+        declaration(relative, pattern, engine)
+
+    # Include every live engine literal: UI fallbacks, template comments, generated chunk headers,
+    # shared Python mirrors and the public contract/example. Historical test fixtures and baselines
+    # describe their recorded engine, not this release, so they are deliberately outside this scan.
+    engine_literal = re.compile(r'\bcs-[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?')
+    python_version = re.compile(r'__version__\s*=\s*[\'"]([^\'"]+)')
+    candidates = {root / "docs/CONTRACT.md", root / "docs/examples/qa-report.example.json"}
+    for folder in (root / "src", root / "tools", root / PLUGIN_DIR):
+        candidates.update(path for path in folder.rglob("*") if path.is_file()
+                          and path.suffix in {".js", ".mjs", ".py", ".html", ".css", ".json"}
+                          and not set(path.relative_to(folder).parts) & EXCLUDED_DIRS)
+    for path in sorted(candidates):
+        try:
+            contents = read_text(path)
+        except OSError:
+            add(path.relative_to(root).as_posix(), lambda: None, engine)
+            continue
+        for i, found in enumerate(engine_literal.findall(contents), 1):
+            add("%s (engine %d)" % (path.relative_to(root).as_posix(), i), lambda value=found: value, engine)
+        for i, found in enumerate(python_version.findall(contents), 1):
+            add("%s (__version__ %d)" % (path.relative_to(root).as_posix(), i), lambda value=found: value, version)
+
+    # Engine stubs are live test dependencies too; they must follow the package, unlike saved fixtures.
+    for relative in ("tests/video/harness/stub-core.js", "tests/unit/js/core/lib-stub.js", "tests/unit/js/ui/stub-engine.js"):
+        declaration(relative, r'CS\.version\s*=\s*[\'"]([^\'"]+)', engine)
 
     def changelog_entry() -> str | None:
         text = read_text(root / "CHANGELOG.md")

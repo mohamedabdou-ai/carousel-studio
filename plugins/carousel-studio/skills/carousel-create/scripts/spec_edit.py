@@ -277,7 +277,8 @@ def outline(spec, rep):
         slides.append({"id": slide["id"], "type": slide["type"], "text": lane.one_line(cstext.strip_markup(title))[:80],
                        "words": sum(lane.words(s) for s in strings), "sourceIds": slide.get("sourceIds", [])})
     return {"id": spec["id"], "rev": spec["rev"], "style": spec["style"]["presetId"], "slides": slides,
-            "sources": spec.get("sources", []), "qa": {k: v for k, v in rep["qa"].items() if k != "results"}}
+            "sources": spec.get("sources", []), "structure": rep["structure"],
+            "qa": {k: v for k, v in rep["qa"].items() if k != "results"}}
 
 
 def main(argv=None):

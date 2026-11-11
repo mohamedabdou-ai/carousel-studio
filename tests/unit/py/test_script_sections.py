@@ -19,6 +19,49 @@ def sections(raw: str, notes: list | None = None) -> list[list[str]]:
 
 
 class SectionBoundaryTests(unittest.TestCase):
+    def test_intro_and_caption_rules_do_not_disable_numbered_slide_headings(self):
+        numbered = "1. وقف هنا\nنقطة البداية\n2. السبب\nتفصيل\n3. احفظ الفكرة"
+        for prefix, suffix in (("مقدمة\n---\n", ""), ("", "\n---\nالكابشن"),
+                               ("مقدمة\n---\n", "\n---\nالكابشن")):
+            with self.subTest(prefix=prefix, suffix=suffix):
+                got = sections(prefix + numbered + suffix)
+                self.assertEqual(got, ([["مقدمة"]] if prefix else []) + [
+                    ["1. وقف هنا", "نقطة البداية"], ["2. السبب", "تفصيل"], ["3. احفظ الفكرة"]
+                ] + ([["الكابشن"]] if suffix else []))
+
+    def test_rules_between_slides_keep_their_numbered_lists_as_copy(self):
+        raw = "الغلاف\n---\nالخطوات\n1. افتح\n2. اضغط\n---\nالمراجعة\n1. راجع\n2. احفظ\n---\nالقفلة"
+        self.assertEqual(sections(raw), [["الغلاف"], ["الخطوات", "1. افتح", "2. اضغط"],
+                                         ["المراجعة", "1. راجع", "2. احفظ"], ["القفلة"]])
+
+    def test_numbered_headings_can_start_with_digits_in_both_digit_systems(self):
+        for raw, heads in (
+            ("1. وقف\n2. السبب\n3. 5 أخطاء شائعة\n4. الحل", ["1. وقف", "2. السبب", "3. 5 أخطاء شائعة", "4. الحل"]),
+            ("١ — ٥ أفكار\n٢ — السبب\n٣ — ٢ حلول\n٤ — احفظ", ["١ — ٥ أفكار", "٢ — السبب", "٣ — ٢ حلول", "٤ — احفظ"]),
+        ):
+            with self.subTest(raw=raw):
+                self.assertEqual(sections(raw), [[h] for h in heads])
+
+    def test_real_dash_ranges_stay_in_their_slide(self):
+        for value in ("٥ - ١٠ دقايق", "5 – 10 minutes", "5 — 10 minutes", "5 - 10 to 15 minutes"):
+            with self.subTest(value=value):
+                self.assertEqual(sections("1. الغلاف\n2. التمرين\n" + value + "\n3. احفظ"),
+                                 [["1. الغلاف"], ["2. التمرين", value], ["3. احفظ"]])
+
+    def test_a_caption_numbered_list_does_not_disable_slide_numbering(self):
+        for label in ("Caption", "الكابشن", "**كابشن:**"):
+            with self.subTest(label=label):
+                raw = "1. الغلاف\n2. التمرين\n3. احفظ\n---\n" + label + "\n1. فكرة\n2. خطوة"
+                self.assertEqual(sections(raw), [["1. الغلاف"], ["2. التمرين"], ["3. احفظ"],
+                                                 [label, "1. فكرة", "2. خطوة"]])
+
+    def test_a_range_does_not_consume_the_following_actual_ordinal(self):
+        for raw in ("1 - Cover\n2 - Exercise\n3 - 5 minutes\n3 - Save this",
+                    "١ — الغلاف\n٢ — التمرين\n٣ — ٥ دقايق\n٣ — احفظ"):
+            with self.subTest(raw=raw):
+                lines = raw.splitlines()
+                self.assertEqual(sections(raw), [[lines[0]], lines[1:3], [lines[3]]])
+
     def test_a_numbered_list_inside_a_separated_slide_is_copy(self):
         raw = "٣ خطوات تغير يومك\nوبسهولة\n---\nالخطوات\n1. افتح الإعدادات\n2. اضغط حفظ\n3. ارجع للبداية\n---\nشاركه مع صاحبك\n"
         got = sections(raw)
