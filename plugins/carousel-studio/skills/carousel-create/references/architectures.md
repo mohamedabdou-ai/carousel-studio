@@ -21,7 +21,7 @@ An **architecture** is the order of ideas across the slides (`spec.architecture`
 `contentType` is `soft-sell` for `offer`, `results` and `lead-magnet`, otherwise `value`. The CTA kinds allowed for each intent come from `data/platform-instagram.json` (`plugin.cta.allowedByIntent`): save → save, follow, question; send → send, question; reach → send, follow, question; sell → keyword-dm, follow, question, save.
 
 ## Skeletons
-`N` is payoff slides; a `rehook` can deliver one. Plan 4 to 10 slides including cover; 4 to 6 are fine for a short idea; never more than 10. Optional context, recap and share use the same budget. For a skeleton `slides = payoffs + 3`, payoffs ≤7; count the actual skeleton, whose extra slides may lower N further. Never pad.
+`N` is payoff slides; a `rehook` can deliver one. Plan team-written guided/fast carousels at 4 to 10 slides including cover; 4 to 6 is complete. Ready scripts from the creator may have 2 to 10 slides, the QA hard minimum. Optional context, recap and share use the same budget. For a skeleton `slides = payoffs + 3`, payoffs ≤7; count the actual skeleton, whose extra slides may lower N further. Never pad.
 
 | Architecture | Slides, in order | Notes |
 |---|---|---|
@@ -60,7 +60,7 @@ The engine adds the counter, the «باقي k» label and, for a mixed audience,
 4. **A swipe prompt in the caption** («اسحب لآخر سلايد») is cheap and correlated with slightly higher engagement; keep it short.
 5. **Progress that does not drag**: up to 10 slides, including the cover the counter helps; near the end the «باقي 2» label does. Slow-feeling progress raises drop-off, so every slide must pay.
 6. **A video or motion slide in the middle** is optional and only if the user supplies it; mixed media tends to do well, but it is never a reason to pad the post.
-A useful 4 to 6 slide post needs no extra slides. Plan every carousel within 4 to 10, cover included.
+A useful 4 to 6 slide post needs no extra slides. Plan team-written guided/fast carousels within 4 to 10, cover included; ready scripts from the creator may have 2 to 10.
 
 ## Slide types: required and optional fields
 `ord` (the item or step number) is derived by the engine; set it only to override. `sides` for `compare` and `myth-fact` is exactly two entries in logical order (myth then fact; A then B), each `{label?, text}`; `stat.number` is `{value, unit?, sourceId?}` with `value` a string in Western digits (`"5"`, `"1.2"`).

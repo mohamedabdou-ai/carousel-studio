@@ -213,7 +213,7 @@
       "id": 1,
       "name": "guided-run-stops-at-checkpoint-1",
       "prompt": "اعملي كاروسيل عن 5 أخطاء بتموّت الكاروسيل. جمهوري صنّاع محتوى مبتدئين.",
-      "expected_output": "Five or more scored angles in chat, one recommended, and a question asking for a number. Nothing past checkpoint 1.",
+      "expected_output": "Exactly two pitch directions (safe, bold), one recommendation and the panel stops; wait for a number at checkpoint 1. Nothing past it.",
       "files": [],
       "fixtures": [
         "spec.eg.angle-stub.json"
@@ -222,7 +222,7 @@
         "bhv-01-guided-stops-at-checkpoint-1"
       ],
       "expectations": [
-        "The reply lists at least 5 numbered angles with a one-line reason each and marks one as the recommendation",
+        "The reply shows exactly two pitch directions (safe, bold), their panel stops, one recommendation and its reason",
         "The reply ends by asking the user to answer with a number, in Egyptian Arabic",
         "No slide script, caption, hashtags or hook list appears in the reply",
         "Any spec written stays at checkpoint angle with an empty slides array"
@@ -231,7 +231,7 @@
     {
       "id": 2,
       "name": "fast-run-writes-a-valid-spec",
-      "prompt": "بسرعة: كاروسيل 8 سلايدات عن 5 أخطاء بتموّت الكاروسيل. اختار إنت أحسن زاوية وكمّل.",
+      "prompt": "بسرعة: كاروسيل 8 سلايدات عن 5 أخطاء بتموّت الكاروسيل. اختار إنت أحسن زاوية وكمّل. الهوك والستايل زي ما تشوف.",
       "expected_output": "A spec.json that validates, with a cover of at most 6 hero words, one CTA, a caption of 300-900 characters or a flagged short caption, per-slide captions and alt text.",
       "files": [],
       "fixtures": [

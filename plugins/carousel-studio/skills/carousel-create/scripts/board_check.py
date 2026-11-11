@@ -177,7 +177,7 @@ def hero_of(cover):
 
 
 # ----------------------------------------------------------------------------- checks
-def check_meta(header, bodies, stage, rep):
+def check_meta(header, bodies, stage, rep, single=False):
     if MARKER not in header:
         rep.error("T01", "board", "the marker line %s is missing (is this a board.md?)" % MARKER)
     pairs = {}
@@ -196,8 +196,8 @@ def check_meta(header, bodies, stage, rep):
         rep.error("T02", "board", "digits must be western or arabic-indic (found %r)" % pairs.get("digits"))
     slides = pairs.get("slides")
     if STAGES.index(stage) >= STAGES.index("room"):
-        if not slides or not slides.isdigit() or not 2 <= int(slides) <= 10:
-            rep.error("T03", "board", "`slides: N` (2 to 10) is required from the writers' room on")
+        if not slides or not slides.isdigit() or not (int(slides) == 1 if single else 4 <= int(slides) <= 10):
+            rep.error("T03", "board", "`slides: N` (4 to 10 including the cover; 4 to 6 is complete; a single post has 1) is required from the writers' room on")
     loops = re.search(r"^loops\s*:\s*(.+)$", header, re.M)
     if not loops:
         rep.error("T04", "board", "the `loops:` line is missing")
@@ -829,33 +829,35 @@ def check_spec(path, stage, rep):
         sys.exit(65)
     ext = spec.get("ext") if isinstance(spec, dict) else None
     log = ext.get("teamLog") if isinstance(ext, dict) else None
-    if stage in ("fast", "ready"):
-        slides = spec.get("slides") if isinstance(spec, dict) else None
+    slides = spec.get("slides") if isinstance(spec, dict) else None
+    if stage in ("fast", "ready") or (stage in ("room", "huddle", "final") and isinstance(slides, list)):
         single = isinstance(spec, dict) and spec.get("format") == "single"
-        if not isinstance(slides, list) or not (len(slides) == 1 if single else 4 <= len(slides) <= 10):
-            rep.error("T03", "spec", "a carousel has 4 to 10 slides, cover included (a single post has 1)")
+        minimum = 2 if stage == "ready" else 4
+        if not isinstance(slides, list) or not (len(slides) == 1 if single else minimum <= len(slides) <= 10):
+            rep.error("T03", "spec", "a %s carousel has %d to 10 slides including the cover; 4 to 6 is complete (a single post has 1)" %
+                      ("ready-script" if stage == "ready" else "team-written", minimum))
     if log is None:
         if stage in LOG_KEYS_AT:
             rep.error("T98", "spec", "spec.ext.teamLog is missing: the Studio shows the team log from it")
-        return
+        return spec
     if not isinstance(log, list) or not all(isinstance(e, dict) and isinstance(e.get("k"), str) and isinstance(e.get("t"), str) for e in log):
         rep.error("T98", "spec", "spec.ext.teamLog is a list of {\"k\": key, \"t\": text}")
-        return
+        return spec
     check_log_entries([(e["k"], e["t"]) for e in log], stage, rep, "spec.ext.teamLog")
+    return spec
 
 
 # ----------------------------------------------------------------------------- driver
 def check_board(text, stage, spec_path=None, today=None):
     rep = Report()
+    spec = check_spec(spec_path, stage, rep) if spec_path else None
     if stage in ("fast", "ready"):
-        if spec_path:
-            check_spec(spec_path, stage, rep)
-        else:
+        if not spec_path:
             rep.error("T98", "spec", "--spec is required for the fast and ready stages")
         return rep
     text = norm(text)
     header, bodies, order = split_sections(text)
-    meta = check_meta(header, bodies, stage, rep)
+    meta = check_meta(header, bodies, stage, rep, single=isinstance(spec, dict) and spec.get("format") == "single")
     seen = set()
     for sid in order:
         if sid not in SECTIONS:
@@ -891,8 +893,6 @@ def check_board(text, stage, spec_path=None, today=None):
         check_cards(bodies["cards"], rep)
     if "log" in bodies:
         check_log(bodies["log"], stage, rep)
-    if spec_path:
-        check_spec(spec_path, stage, rep)
     return rep
 
 

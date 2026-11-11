@@ -13,6 +13,9 @@ Step 2, the parts only Claude writes (bridges, caption pack, per-slide captions,
     "keep": ["C1.hero-words"] (a rule id, a gate such as "C1", or "C2.body-words@s06" for one slide). Step 2 records it as the
     creator's override («تجاوز»), the same mark the Studio writes, so the check and the export stop raising it.
 
+Team-written scripts add --team-mode guided|fast to step 1; subsequent runs inherit an existing team mode.
+Guided preserves the approved angle/hook and stays at checkpoint script until the creator approves, including after fill or edits.
+
 What step 1 does, and says it did: section 1 is the cover (a label such as «الغلاف» or «Cover» is not copy: the first paragraph is
 the headline, the next one the sub); each middle section is an item (title + body), or a checklist when it holds two or more bullet
 lines; slide 2 over 12 words is split into a rehook (its title and the first lines that fit) and a story-beat, in the creator's order (unless --no-split2);
@@ -35,6 +38,7 @@ import datetime as _dt
 import hashlib
 import importlib.util
 import json
+import math
 import os
 import re
 import subprocess
@@ -45,7 +49,7 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 try:
-    from _cs import CSError, paths, qa as csqa, report as csreport, rules as cs_rules, schema, text as cstext
+    from _cs import CSError, __version__, paths, qa as csqa, report as csreport, rules as cs_rules, schema, text as cstext
 except ImportError as exc:  # the shared package is synced next to the scripts
     sys.stderr.write("cs-error: E_DEP_LOAD: the shared _cs package is missing next to this script: %s\n" % exc)
     sys.exit(70)
@@ -64,6 +68,7 @@ HEADING = re.compile(r"^\s*#{1,6}\s+(?P<rest>.+?)\s*$")
 BULLET = re.compile(r"^\s*(?:[-•·▪◦–]|\*(?!\*))\s+(?P<rest>.+)$")
 COVER_LABEL = re.compile(r"^(?:الغلاف|غلاف|الكوفر|كوفر|الكافر|كافر|الكفر|الكڤر|الهوك|هوك|البداية|cover|hook|intro)\s*[:.\-–—]?$", re.IGNORECASE)
 END_LABEL = re.compile(r"^(?:(?:الـ|ال)?\s*CTA|call\s+to\s+action|الخاتمة|الختام|القفلة|السلايد الأخير|السلايد الاخير|الأخير|outro)\s*[:.\-–—]?$", re.IGNORECASE)
+CAPTION_LABEL = re.compile(r"^\s*(?:#{1,6}\s*)?(?:\*\*|__)?\s*(?:caption|الكابشن|كابشن)\s*[:：]?\s*(?:\*\*|__)?\s*$", re.IGNORECASE)
 EMOJI = re.compile("[\U0001F000-\U0001FAFF☀-➿⬀-⯿⌚⌛⏩-⏺️‍⃣]")
 EMOJI_LEAD = re.compile(r"^\s*(?:\*\*|__)?\s*(?:" + EMOJI.pattern + ")")  # «🎮 الألعاب: …» marks a list item
 ITALIC = re.compile(r"(?<![*\w])\*(?=\S)([^*\n]+?)(?<=\S)\*(?![*\w])")
@@ -161,24 +166,38 @@ INDIC_DIGITS = str.maketrans("٠١٢٣٤٥٦٧٨٩", "0123456789")
 
 def section_boundaries(lines: list[str]) -> list[bool]:
     """For each line, whether it opens a new slide. A header that names itself (a slide word, a circled digit, a bold or # line) always
-    does. A bare «1.» or «٣ —» is a slide number only when the script numbers its slides that way: there are no --- separators (with
-    separators a numbered line is a list item in the copy), the numbers run in order from 1 (or from 2 over an unnumbered cover), in
-    one digit system and one separator style, and the text after the number is not another number («٥ - ١٠ دقايق» is a range)."""
-    has_sep = any(SEPARATOR.match(l) for l in lines)
+    does. A bare «1.» or «٣ —» is a slide number only when the script numbers its slides that way: there are no --- separators between
+    numbered headings, and the numbers run in order from 1 (or from 2 over an unnumbered cover), in one digit system and separator
+    style. Intro/caption rules outside that span do not disable numbering. A title may itself start with a digit."""
+    caption_at = next((i for i, line in enumerate(lines) if SEPARATOR.match(line) and
+                       CAPTION_LABEL.fullmatch(next((s for s in lines[i + 1:] if s.strip()), ""))), len(lines))
+    numbered = [i for i, line in enumerate(lines[:caption_at]) if BARE_NUMBER.match(line) and HEADER.match(line) and header_text(line) is not None]
+    has_sep = bool(numbered) and any(SEPARATOR.match(line) for line in lines[numbered[0]:numbered[-1]])
+    if numbered and not has_sep:
+        before = [i for i in range(numbered[0]) if SEPARATOR.match(lines[i])]
+        # A titled section after a rule can contain a numbered list. Its title is copy too;
+        # an intro rule followed immediately by slide 1 has no such intervening title.
+        if before and any(line.strip() for line in lines[before[-1] + 1:numbered[0]]):
+            has_sep = True
     style, expected, out = None, None, []
-    for l in lines:
-        if not (HEADER.match(l) and header_text(l) is not None):
+    for i, l in enumerate(lines):
+        if i >= caption_at or not (HEADER.match(l) and header_text(l) is not None):
             out.append(False)
             continue
         m = BARE_NUMBER.match(l)
         if not m:
             out.append(True)
             continue
-        rest = l[m.end():].lstrip()
         system = "indic" if re.search("[٠-٩]", m.group("n")) else "western"
         sep = "dash" if m.group("sep") in "-–—" else m.group("sep")
         n = int(m.group("n").translate(INDIC_DIGITS))
-        if has_sep or (rest and re.match("[0-9٠-٩]", rest)):
+        # A digit-leading title is valid. If the same ordinal is named again with a
+        # nonnumeric title, however, the earlier dash form is a range inside the copy.
+        range_copy = sep == "dash" and re.match(r"\s*[0-9٠-٩]", l[m.end():]) and any(
+            int(other.group("n").translate(INDIC_DIGITS)) == n and other.group("sep") in "-–—" and
+            not re.match(r"\s*[0-9٠-٩]", lines[j][other.end():])
+            for j in numbered if j > i for other in [BARE_NUMBER.match(lines[j])])
+        if has_sep or range_copy:
             out.append(False)
         elif style is None:
             ok = n in (1, 2)
@@ -255,9 +274,9 @@ def extract_sources(line: str, refs: list, mentions: list) -> str:
     line = re.sub(r"[ \t]{2,}", " ", line).strip()
     m = SOURCE_TAIL.search(line) if not HEADER.match(line) else None
     if m:
-        mentions.append(m.group("source"))
         prefix = line[:m.start()].strip()
         if not prefix or re.fullmatch(r"(?:المصدر|مصدر|source|via|عن)\s*:", prefix, re.IGNORECASE):
+            mentions.append(m.group("source"))
             line = ""
     return line
 
@@ -700,9 +719,16 @@ def make_spec(args, raw: str, brand: dict) -> tuple[dict, list]:
         "style": {"presetId": preset_id},
         "slides": slides,
         "approvals": {"angle": {"at": stamp}, "script": {"at": stamp, "rev": 1}},
-        "meta": {"createdAt": stamp, "updatedAt": stamp, "updatedBy": "claude", "generator": {"skill": "carousel-create", "version": "1.1.0"}},
+        "meta": {"createdAt": stamp, "updatedAt": stamp, "updatedBy": "claude", "generator": {"skill": "carousel-create", "version": __version__}},
         "ext": {"source": "creator-script"},
     }
+    team_mode = getattr(args, "team_mode", None)
+    if team_mode:
+        spec.update(mode=team_mode, checkpoint="script" if team_mode == "guided" else "design", approvals={})
+        spec["ext"]["source"] = "team-script"
+        spec["brief"]["note"] = "team-written script"
+        spec["angle"]["why"] = "مسودة الفريق"
+        spec["hook"]["id"] = "team-script"
     if args.dialect:
         spec["locale"]["dialect"] = args.dialect
     spec["locale"].setdefault("dialect", "eg")
@@ -805,9 +831,17 @@ def read_record(spec_path: Path, spec: dict) -> dict:
         raise CSError("E_INPUT", "invalid edit record: %s" % p)
     if any(not isinstance(e, dict) or e.get("kind") not in ("fields", "cover", "caption", "source", "attest", "keep-cta", "keep") for e in record["edits"]):
         raise CSError("E_INPUT", "invalid saved edit in %s" % p)
-    if record.get("specId") == spec["id"] and not record["edits"]:
-        ids = [s["id"] for s in spec["slides"]]
-        old_ids = record.get("slideIds") or []
+    ids = [s["id"] for s in spec["slides"]]
+    old_ids = record.get("slideIds") or []
+    # Fast's two-slide lab draft grows after hook/style lock. Only cover/post design
+    # locks are safe to carry: the provisional final s02 is about to become an inner slide.
+    team_growth = (spec.get("mode") == "fast" and (spec.get("ext") or {}).get("source") == "team-script" and
+                   len(old_ids) == 2 and len(ids) >= 4 and ids[:2] == old_ids and all(
+                       e["kind"] == "cover" or (e["kind"] == "fields" and
+                       isinstance(e.get("post", {}), dict) and isinstance(e.get("slides", {}), dict) and
+                       set(e.get("post", {})) <= {"style", "cover", "hook"} and
+                       set(e.get("slides", {})) <= {old_ids[0]}) for e in record["edits"]))
+    if record.get("specId") == spec["id"] and (not record["edits"] or team_growth):
         if old_ids != ids:
             fill = record["fill"]
             if isinstance(fill.get("bridges"), list):
@@ -1153,7 +1187,11 @@ def bump(spec: dict, previous: dict | None = None) -> None:
     spec.setdefault("approvals", {}).pop("design", None)
     if spec["approvals"].get("script"):
         spec["approvals"]["script"]["rev"] = spec["rev"]
-    spec["checkpoint"] = "design"
+    if spec.get("mode") == "guided" and (previous or spec).get("checkpoint") in ("angle", "script"):
+        spec["checkpoint"] = "script"
+        spec["approvals"].pop("script", None)
+    else:
+        spec["checkpoint"] = "design"
 
 
 def reconcile_sources(spec: dict) -> None:
@@ -1209,10 +1247,19 @@ def check_spec(spec: dict, brand: dict | None = None, keep=(), legacy: bool = Fa
     validator = importlib.util.module_from_spec(module)
     module.loader.exec_module(validator)
     results = csqa.run_text_gates(spec, brand)
-    rep = {"errors": [], "structure": validator.structure_checks(spec, "design", brand),
+    checkpoint = "script" if spec.get("mode") == "guided" and spec.get("checkpoint") in ("angle", "script") else "design"
+    rep = {"errors": [], "structure": validator.structure_checks(spec, checkpoint, brand),
            "qa": {**csreport.summarize(results), "engine": csreport.ENGINE, "results": results}}
     free_errors, _ = validator.free_checks(spec)
     rep["structure"].extend(free_errors)
+    clip = (spec.get("cover", {}).get("motion") or {}).get("clip")
+    if clip is not None:
+        if spec.get("format") == "single":
+            rep["structure"].append({"path": "/cover/motion/clip",
+                                     "message": "A single post cannot carry a clip cover. Choose a carousel for a video cover."})
+        if not (math.isfinite(clip["in"]) and math.isfinite(clip["out"]) and 0 <= clip["in"] < clip["out"]):
+            rep["structure"].append({"path": "/cover/motion/clip",
+                                     "message": "The clip out point must be after its non-negative in point."})
     if keep:
         rep["notes"] = apply_keep(spec, rep, list(keep))
         results = csqa.run_text_gates(spec, brand)
@@ -1307,7 +1354,9 @@ def apply_fill(spec: dict, fill: dict) -> list:
     if isinstance(fill.get("teamLog"), list):
         spec.setdefault("ext", {})["teamLog"] = fill["teamLog"][:6]
     spec["rev"] = int(spec.get("rev") or 1) + 1
-    spec.setdefault("approvals", {}).setdefault("script", {"at": now()})["rev"] = spec["rev"]
+    approvals = spec.setdefault("approvals", {})
+    if spec.get("mode") != "guided" or "script" in approvals:
+        approvals.setdefault("script", {"at": now()})["rev"] = spec["rev"]
     spec.setdefault("meta", {})["updatedAt"] = now()
     spec["meta"]["updatedBy"] = "claude"
     return notes
@@ -1473,6 +1522,7 @@ def summary(spec: dict) -> str:
 def main(argv=None) -> int:
     p = _Parser(description="Turn the creator's finished script into a Carousel Studio spec (step 1), then merge the parts Claude writes (step 2).")
     p.add_argument("--script", help="step 1: the creator's script, as a UTF-8 text or markdown file")
+    p.add_argument("--team-mode", choices=("guided", "fast"), help="step 1: team-written copy; keep guided script approval pending (default: ready-script, or inherit the existing team mode)")
     p.add_argument("--out", help="step 1: the post folder; spec.json is written there")
     p.add_argument("--spec", help="step 2: the spec.json written by step 1")
     p.add_argument("--fill", help="step 2: a JSON file with bridges, caption, perSlide, alt and optional emphasis / edits / motion")
@@ -1514,6 +1564,8 @@ def main(argv=None) -> int:
                     raise CSError("E_MISSING", "input file missing: %s" % a.script) from exc
                 except UnicodeError as exc:
                     raise CSError("E_INPUT", "the script must be UTF-8") from exc
+                if not a.team_mode and previous and (previous.get("mode") == "guided" or (previous.get("ext") or {}).get("source") == "team-script"):
+                    a.team_mode = previous["mode"]
                 spec, notes = make_spec(a, raw, brand)
             else:
                 if previous is None:
@@ -1538,6 +1590,12 @@ def main(argv=None) -> int:
             if record["fill"]:
                 notes.extend(apply_fill(spec, record["fill"]))
             notes.extend(replay_edits(spec, record))
+            if a.script and a.team_mode:
+                if previous:
+                    for field in ("brief", "angle", "hook", "intent", "awareness", "contentType", "architecture", "approvals"):
+                        if field in previous:
+                            spec[field] = copy.deepcopy(previous[field])
+                spec["ext"]["source"] = "team-script"
             if a.attest_numbers:
                 edit = attestation_edit(spec)
                 if edit["slides"]:

@@ -101,9 +101,49 @@ class ReleaseTests(unittest.TestCase):
         res = run("--version", "9.9.9", "--out", str(self.tmp / "x"), "--checks", "none", "--format", "json")
         data = json.loads(res.stdout)
         text = "\n".join(data["versionProblems"])
-        for place in ("plugin.json", "marketplace.json (metadata)", "marketplace.json (plugin entry)", "package.json", "__version__", "CS.version", "CHANGELOG.md"):
+        for place in ("plugin.json", "marketplace.json (metadata)", "marketplace.json (plugin entry)", "package.json", "__version__", "CS.version", "CHANGELOG.md",
+                      "package-lock.json (root)", "package-lock.json (package)", "tools/build.mjs", "src/qa/core.js",
+                      "scripts/_cs/report.py", "scripts/build_studio.py", "src/brandbook/screens/about.js",
+                      "src/ui/qa.js", "templates/archetypes.html", "templates/primitives.css",
+                      "runtime/cs-core.js", "docs/examples/qa-report.example.json"):
             self.assertIn(place, text)
         self.assertFalse(data["ok"])
+
+    def test_a_stale_or_missing_required_engine_file_blocks_release(self) -> None:
+        rel = load_release_module()
+        root = self.tmp / "minimal"
+        relative = "plugins/carousel-studio/skills/carousel-design/scripts/build_studio.py"
+        path = root / relative
+        path.parent.mkdir(parents=True)
+        path.write_text('ENGINE = "cs-0.0.0"\n', encoding="utf-8")
+        for missing in (False, True):
+            with self.subTest(missing=missing):
+                if missing:
+                    path.unlink()
+                problems = rel.check_versions(root, self.version)
+                self.assertTrue(any(relative in p for p in problems), problems)
+
+    def test_mirrored_version_declarations_are_checked_independently(self) -> None:
+        rel = load_release_module()
+        root = self.tmp / "mirrors"
+        for skill, name, declaration in (("carousel-create", "report.py", 'ENGINE = "cs-0.0.0"'),
+                                         ("content-angles", "__init__.py", '__version__ = "0.0.0"')):
+            path = root / "plugins/carousel-studio/skills" / skill / "scripts/_cs" / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(declaration + "\n", encoding="utf-8")
+            problems = rel.check_versions(root, self.version)
+            self.assertTrue(any(path.relative_to(root).as_posix() in p for p in problems), problems)
+
+    def test_the_contract_python_version_cannot_drift_behind_its_engine(self) -> None:
+        rel = load_release_module()
+        root = self.tmp / "contract"
+        path = root / "docs/CONTRACT.md"
+        path.parent.mkdir(parents=True)
+        path.write_text('Plugin version `%s`. Engine version `cs-%s`.\n__version__ = "0.0.0"\n' %
+                        (self.version, self.version), encoding="utf-8")
+        sources = rel.version_sources(root, self.version)
+        self.assertTrue(any(where.startswith("docs/CONTRACT.md") and found == "0.0.0" and expected == self.version
+                            for where, found, expected in sources), sources)
 
     def clean_copy(self) -> Path:
         """The repository as a fresh checkout has it: no `__pycache__` (running any plugin script writes one, and the directory check

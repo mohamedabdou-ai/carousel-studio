@@ -454,10 +454,10 @@ class TestHuddleCardsAndLog(unittest.TestCase):
             measured = "\n" + heading + "\n0.000s — الغلاف\n0.433s — التفكيك\n5.967s — النهاية"
             self.assertEqual(run(board("huddle", huddle=HUDDLE + measured), "huddle").items, [])
 
-    def test_carousel_slide_budget_is_two_to_ten(self):
-        for n in (1, 11, 20):
+    def test_guided_team_slide_budget_is_four_to_ten(self):
+        for n in (1, 2, 3, 11, 20):
             self.assertIn("T03", codes(run(board("room").replace("slides: 10", "slides: %d" % n), "room")))
-        for n in (2, 3, 4, 10):
+        for n in (4, 6, 10):
             self.assertNotIn("T03", codes(run(board("room").replace("slides: 10", "slides: %d" % n), "room")))
 
     def test_a_handoff_card_is_complete(self):
@@ -495,14 +495,14 @@ class TestHuddleCardsAndLog(unittest.TestCase):
 
 
 class TestCompactLanes(unittest.TestCase):
-    def check(self, stage="fast", entries=None, slides=6, board_text=""):
+    def check(self, stage="fast", entries=None, slides=6, board_text="", format="carousel"):
         if entries is None:
             entries = [("director", "الفكرة: وقت واضح. العدو: التشتت."),
                        ("editor", "PASS — تمت مراجعة اللغة."),
                        ("design", "creator؛ QA: ok؛ المدير الإبداعي: SHIP — الوعد ظاهر.")]
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "spec.json"
-            path.write_text(json.dumps({"slides": [{"id": "s%02d" % n} for n in range(1, slides + 1)],
+            path.write_text(json.dumps({"format": format, "slides": [{"id": "s%02d" % n} for n in range(1, slides + 1)],
                                         "ext": {"teamLog": [{"k": k, "t": t} for k, t in entries]}},
                                        ensure_ascii=False), encoding="utf-8", newline="\n")
             return run(board_text, stage, str(path))
@@ -540,6 +540,25 @@ class TestCompactLanes(unittest.TestCase):
     def test_compact_lanes_keep_the_ten_slide_limit(self):
         for stage in ("fast", "ready"):
             self.assertIn("T03", codes(self.check(stage, slides=11)))
+
+    def test_team_fast_needs_four_but_ready_accepts_two_creator_slides(self):
+        for n in (2, 3):
+            with self.subTest(slides=n):
+                self.assertIn("T03", codes(self.check("fast", slides=n)))
+                self.assertNotIn("T03", codes(self.check("ready", slides=n)))
+        for stage in ("fast", "ready"):
+            self.assertIn("T03", codes(self.check(stage, slides=1)))
+            for n in (4, 10):
+                self.assertNotIn("T03", codes(self.check(stage, slides=n)))
+            self.assertNotIn("T03", codes(self.check(stage, slides=1, format="single")))
+            self.assertIn("T03", codes(self.check(stage, slides=2, format="single")))
+
+    def test_guided_single_post_reads_its_one_slide_format_from_the_spec(self):
+        for stage in ("room", "huddle", "final"):
+            with self.subTest(stage=stage):
+                text = board(stage).replace("slides: 10", "slides: 1")
+                rep = self.check(stage, entries=list(LOG.items()), slides=1, format="single", board_text=text)
+                self.assertNotIn("T03", codes(rep))
 
     def test_compact_cli_accepts_spec_without_a_board(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -682,7 +701,8 @@ class TestSourcesAgree(unittest.TestCase):
         free = (design / "references/free-design.md").read_text(encoding="utf-8")
         self.assertNotIn("11-12", free)
         self.assertIn("FIX below 4", free)
-        self.assertIn("2 to 10 slides including the cover; 4 to 6 is complete", self.roles["cs-copywriter"])
+        self.assertIn("4 to 10 slides including the cover; 4 to 6 is complete", self.roles["cs-copywriter"])
+        self.assertIn("Ready scripts from the creator may have 2 to 10 slides", self.roles["cs-copywriter"])
         for path in (REPO / "docs/CONTRACT.md", support.SKILLS / "carousel-create/references/flow.md"):
             self.assertNotRegex(path.read_text(encoding="utf-8"), r"s01[^\n]{0,6}s20")
         fast = (REPO / "evals/behaviour/bhv-02-fast-mode-valid-spec/case.yaml").read_text(encoding="utf-8")
@@ -737,12 +757,14 @@ class TestSourcesAgree(unittest.TestCase):
     def test_the_command_and_skill_have_the_same_ordered_router(self):
         skill = (REPO / "plugins/carousel-studio/skills/carousel-create/SKILL.md").read_text(encoding="utf-8")
         command = (REPO / "plugins/carousel-studio/commands/carousel.md").read_text(encoding="utf-8")
-        rows = lambda text: [line for line in text.splitlines() if line.startswith("| ")][:5]
+        rows = lambda text: re.search(r"(?m)^\| What the creator brought[^\n]*(?:\n\|[^\n]*)+", text).group(0).splitlines()[2:]
         self.assertEqual(rows(skill), rows(command))
+        self.assertIn("existing post", rows(skill)[0])
         self.assertIn("finished script", rows(skill)[1])
         self.assertIn("own Reel", rows(skill)[2])
-        self.assertIn("Source material", rows(skill)[3])
-        self.assertIn("bare topic", rows(skill)[4])
+        self.assertIn("full team", rows(skill)[3])
+        self.assertIn("Source material", rows(skill)[4])
+        self.assertIn("bare topic", rows(skill)[5])
 
     def test_the_reviewer_inherits_and_the_artist_can_record_checks(self):
         self.assertIn("\nmodel: inherit\n", self.roles["cs-creative-director"])

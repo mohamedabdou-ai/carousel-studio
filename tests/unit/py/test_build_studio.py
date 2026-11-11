@@ -23,6 +23,7 @@ if HERE not in sys.path:   # so that `python -m unittest tests.unit.py.test_buil
 import b7_support as support  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[3]
+PACKAGE_VERSION = json.loads((REPO / "package.json").read_text(encoding="utf-8"))["version"]
 SKILL = REPO / "plugins" / "carousel-studio" / "skills" / "carousel-design"
 SRC_DIRS = [REPO / "src" / "ui", REPO / "src" / "brandbook"]
 OWNER_STRINGS = ["محمد عبده", "Mohamed Abdou", "mohamed.abdou90", "mohamedabdou", "pyraai"]
@@ -205,7 +206,7 @@ class TestBuild(BuilderCase):
     def test_config_block(self):
         run = self.build("--view", "script")
         config = self.block(run.page, "cs-config")
-        self.assertEqual(config["engine"], "cs-1.1.1")
+        self.assertEqual(config["engine"], "cs-" + PACKAGE_VERSION)
         self.assertEqual(config["view"], "script")
         self.assertEqual(config["mode"], "full")
         self.assertEqual(config["uiDialect"], "gulf")
@@ -371,8 +372,8 @@ class TestVisualChunks(BuilderCase):
         root = make_root(self.tmp / "comment", {"visual": "var s = '<" + "!-- x';"})
         self.assertEqual(self.build("--view", "design", root=root).code, 70)
 
-    def test_the_engine_constant_is_1_1_0(self):
-        self.assertEqual(BUILDER.ENGINE, "cs-1.1.1")
+    def test_the_engine_constant_matches_the_package(self):
+        self.assertEqual(BUILDER.ENGINE, "cs-" + PACKAGE_VERSION)
 
 
 class TestDataBlocks(BuilderCase):
