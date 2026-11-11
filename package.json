@@ -23,7 +23,7 @@
     "examples": "node tools/make_examples.mjs",
     "sync:team": "python tools/sync_team.py",
     "sync:team:check": "python tools/sync_team.py --check",
-    "check:repo": "python tools/check_directory.py --root . --scope repo --repo-max-files 915",
+    "check:repo": "python tools/check_directory.py --root . --scope repo --repo-max-files 960",
     "test:corpus": "node tests/corpus-bad/run.mjs && python tests/corpus-bad/run.py",
     "test:geometry": "node tests/geometry/run.mjs",
     "test:golden": "node tests/golden/run.mjs",

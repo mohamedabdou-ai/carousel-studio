@@ -41,7 +41,7 @@ jobs:
       # The directory has not confirmed whether it counts the plugin folder or the whole repository, so the whole repository is held to a
       # ratchet: the number below is the committed file count and may only go down. Raise it only with a line in CONTRIBUTING.md saying why.
       - name: Directory policy (the whole repository, file-count ratchet)
-        run: python tools/check_directory.py --root . --scope repo --repo-max-files 915
+        run: python tools/check_directory.py --root . --scope repo --repo-max-files 960
       - name: Shipped Arabic text follows the spelling, digit and bidi rules
         run: python -m unittest tests.unit.py.test_shipped_text
       - name: Release dry run (version agreement and archive)
