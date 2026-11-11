@@ -138,6 +138,24 @@ function clipTextRegions(slide, rect) {
   return out;
 }
 
+/**
+ * An inline box is taller than its glyphs, so a headline that sits just below the window still has a box that reaches into it.
+ * Keep, per text box, only the part whose ink covers footage: there the text-free probe shows the media and the painted one does not.
+ */
+function clipInkRegions(regions, rect, painted, textless) {
+  var pad = 2;
+  return regions.map(function (r) {
+    var x0 = r.x + r.w, y0 = r.y + r.h, x1 = -1, y1 = -1, x, y, k;
+    for (y = r.y; y < r.y + r.h; y++) for (x = r.x; x < r.x + r.w; x++) {
+      k = y * rect.w + x;
+      if (textless[k] - painted[k] > 0.2) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    }
+    if (x1 < 0) return null;
+    x0 = Math.max(r.x, x0 - pad); y0 = Math.max(r.y, y0 - pad); x1 = Math.min(r.x + r.w - 1, x1 + pad); y1 = Math.min(r.y + r.h - 1, y1 + pad);
+    return Object.assign({}, r, { x: x0, y: y0, w: x1 - x0 + 1, h: y1 - y0 + 1 });
+  }).filter(Boolean);
+}
+
 function clipContrast(pixels, regions, frame, fps) {
   var data = pixels.data, w = pixels.width;
   for (var r of regions) {
@@ -175,6 +193,7 @@ async function prepareClipCover(spec, slide, tokens, signal) {
       media.replaceChildren.apply(media, children);
       if (style === null) media.removeAttribute("style"); else media.setAttribute("style", style);
     }
+    if (regions.length) regions = clipInkRegions(regions, rect, fullLayer.alpha, background.alpha);
     var windowCanvas = clipCanvas(rect.w, rect.h), wc = windowCanvas.getContext("2d", { alpha: false, willReadFrequently: true });
     var full = clipCanvas(1080, 1440), fc = full.getContext("2d", { alpha: false, willReadFrequently: true });
     var composed = wc.createImageData(rect.w, rect.h), textless = regions.length ? wc.createImageData(rect.w, rect.h) : null;

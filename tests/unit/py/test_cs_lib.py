@@ -407,6 +407,25 @@ class RulesTests(unittest.TestCase):
 
 
 class TextGateTests(unittest.TestCase):
+    def test_list_count_falls_back_to_the_other_list_layout(self) -> None:
+        for architecture, layout in (("steps", "item"), ("listicle", "step")):
+            spec = load("spec.eg.8slides.json")
+            spec["architecture"] = architecture
+            spec["slides"] = [dict(id="s01", n=1, type="cover", headline="4 خطوات لصفحة مشروعك")] + [
+                dict(id=f"s{i + 2:02}", n=i + 2, type=layout, title="خطوة واضحة") for i in range(5)]
+            found = cs.qa.run_text_gates(spec, gates=["C6"])
+            self.assertIn(("C6.list-count", "BLOCK"), {(r["rule"], r["sev"]) for r in found}, architecture)
+            spec["slides"][0]["headline"] = "5 خطوات لصفحة مشروعك"
+            self.assertNotIn("C6.list-count", {r["rule"] for r in cs.qa.run_text_gates(spec, gates=["C6"])})
+
+    def test_variety_ignores_non_object_extension(self) -> None:
+        for ext in ("invalid", ["invalid"], 1, True):
+            spec = load("spec.eg.8slides.json")
+            spec["ext"] = ext
+            spec["slides"][-1]["cta"] = {"kind": "save", "text": "احفظ الخطوات"}
+            found = cs.qa.run_text_gates(spec, history=[{"cta": "save"}], gates=["C7"])
+            self.assertIn(("C7.cta-repeat", "FIX"), {(r["rule"], r["sev"]) for r in found})
+
     def test_clean_decks_pass(self) -> None:
         brand = load("brand.eg.creator.json")
         for name in ("spec.eg.8slides.json", "spec.gulf.9slides.json", "spec.levant.10slides.json"):

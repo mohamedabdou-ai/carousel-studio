@@ -224,6 +224,23 @@ export async function openStudio({ browser, studioFile, timeout = 180000 }) {
   return { page, errors, close: async () => { await context.close(); await server.close(); } };
 }
 
+const progressPages = new WeakSet();
+
+/** Forward frame progress to stderr in CLI callers without flooding their JSON stdout. */
+export async function attachExportProgress(page, log) {
+  if (progressPages.has(page)) return;
+  let last = -1;
+  await page.exposeFunction("__csLaneProgress", p => {
+    if (p.job !== "mp4" || !(p.total > 0) || !Number.isFinite(p.done)) return;
+    const pct = Math.min(100, Math.floor(p.done / p.total * 10) * 10);
+    if (pct === last) return;
+    last = pct;
+    log(`Composing cover: ${pct}% (${p.done}/${p.total} frames)`);
+  });
+  await page.evaluate(() => CS.on("cs:export-progress", p => { window.__csLaneProgress(p); }));
+  progressPages.add(page);
+}
+
 /** A screenshot of the composition at t = 0 in the same browser engine HyperFrames draws its frames with (null when the page cannot be driven).
  *  `projectDir` holds index.html; `context` is any open Playwright context. */
 export async function nativePoster({ context, projectDir, variant, outFile }) {
@@ -311,6 +328,7 @@ export async function renderCoverVideo(o) {
       const output = fs.existsSync(o.outFile) ? fs.realpathSync(o.outFile) : path.resolve(o.outFile);
       if (output === source.file) throw new LaneError("E_USAGE", "The output cannot replace the original cover clip. Choose another --out path.", EXIT.USAGE);
       await attachCoverClip(page, o.specFile, inputSpec);
+      await attachExportProgress(page, log);
       log("Composing the local cover clip in the browser…");
       const result = await page.evaluate(v => CS.automation.cover({ variant: v }), variant);
       const video = result.files.find(f => f.path.endsWith(".mp4")), still = result.files.find(f => /\.(png|jpg)$/.test(f.path));

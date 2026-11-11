@@ -31,7 +31,7 @@ import os from "node:os";
 import path from "node:path";
 import vm from "node:vm";
 import { pathToFileURL, fileURLToPath } from "node:url";
-import { EXIT, LaneError, buildStudioPage, haveTool, launchChromium, openStudio, renderCoverVideo, attachCoverClip, HYPERFRAMES_VERSION } from "./cover_video.mjs";
+import { EXIT, LaneError, buildStudioPage, haveTool, launchChromium, openStudio, renderCoverVideo, attachCoverClip, attachExportProgress, HYPERFRAMES_VERSION } from "./cover_video.mjs";
 import { planSpec, savePlanSpec, readPlanSource, loadPlanner } from "./plan.mjs";
 import { drawContact } from "./render_contact.mjs";
 
@@ -86,7 +86,7 @@ function coverCandidates(value) {
   return value.map((c, i) => {
     if (!c || Array.isArray(c) || typeof c !== "object" || typeof c.headline !== "string" || !c.headline.trim()) throw new LaneError("E_SCHEMA", `Cover ${i + 1} needs a nonempty headline.`, EXIT.BLOCK);
     for (const k of Object.keys(c)) {
-      if (!["headline", "sub", "kicker"].includes(k) || typeof c[k] !== "string" || c[k].length > 600) throw new LaneError("E_SCHEMA", `Cover ${i + 1}: use headline and optional sub/kicker strings (at most 600 characters each). Forced breaks are \\n in the string.`, EXIT.BLOCK);
+      if (!["headline", "sub", "kicker", "id", "label"].includes(k) || typeof c[k] !== "string" || c[k].length > 600) throw new LaneError("E_SCHEMA", `Cover ${i + 1}: use headline and optional sub/kicker/id/label strings (at most 600 characters each). Forced breaks are \\n in the string.`, EXIT.BLOCK);
     }
     return { ...c };
   });
@@ -219,6 +219,7 @@ async function coverLab(page, spec, brand, options = {}) {
     }
     for (let ci = 0; ci < previews.length; ci++) for (const id of ids) {
       const meta = all.find(p => p.id === id), row = { candidate: ci + 1, preset: id };
+      for (const key of ["id", "label"]) if (previews[ci]?.[key] !== undefined) row[key] = previews[ci][key];
       rows.push(row);
       if (!meta || meta.ships !== "1.0") { row.error = "Unknown or unshipped preset: " + id; continue; }
       const s = JSON.parse(JSON.stringify(spec));
@@ -226,7 +227,7 @@ async function coverLab(page, spec, brand, options = {}) {
       if (previews[ci]) {
         // An omitted secondary field is absent, never inherited from a different hook.
         for (const field of ["headline", "sub", "kicker"]) delete s.slides[0][field];
-        Object.assign(s.slides[0], previews[ci]);
+        for (const field of ["headline", "sub", "kicker"]) if (previews[ci][field] !== undefined) s.slides[0][field] = previews[ci][field];
       }
       let deck;
       try {
@@ -266,7 +267,7 @@ async function coverLab(page, spec, brand, options = {}) {
     }
     const ranked = rows.slice().sort((a, b) => Number(!!a.error) - Number(!!b.error) || (a.counts?.block || 0) - (b.counts?.block || 0) || (a.counts?.fix || 0) - (b.counts?.fix || 0) || (b.hero130Px || 0) - (a.hero130Px || 0) || (a.deadZonePct || 0) - (b.deadZonePct || 0) || a.candidate - b.candidate || ids.indexOf(a.preset) - ids.indexOf(b.preset));
     ranked.forEach((r, i) => r.rank = i + 1);
-    const result = { rows, ranking: ranked.map(r => ({ rank: r.rank, candidate: r.candidate, preset: r.preset })) };
+    const result = { rows, ranking: ranked.map(r => ({ rank: r.rank, candidate: r.candidate, preset: r.preset, ...(r.id === undefined ? {} : { id: r.id }), ...(r.label === undefined ? {} : { label: r.label }) })) };
     if (mode === "preflight") return result;
     const columns = Math.min(3, Math.max(1, ids.length)), cw = mode === "covers" ? 510 : 700, ch = 690, gap = 16;
     const sheet = document.createElement("canvas"); sheet.width = columns * cw + gap; sheet.height = Math.ceil(rows.length / columns) * ch + gap;
@@ -282,7 +283,8 @@ async function coverLab(page, spec, brand, options = {}) {
     rows.forEach((row, i) => {
       const x = gap + i % columns * cw, y = gap + Math.floor(i / columns) * ch;
       c.fillStyle = "#fff"; c.fillRect(x, y, cw - gap, ch - gap); c.fillStyle = "#171717"; c.font = "bold 20px sans-serif";
-      c.fillText((mode === "covers" ? "#" + row.candidate + " / " : "") + row.preset + " / rank " + row.rank, x + 12, y + 29);
+      const tag = mode === "covers" ? (row.id || "#" + row.candidate) + (row.label ? " / " + row.label : "") + " / " : "";
+      c.fillText(tag + row.preset + " / rank " + row.rank, x + 12, y + 29, cw - 40);
       const p = pictures.find(p => p.row === row);
       if (p) {
         c.drawImage(p.images[0], x + 12, y + 46, 324, 432);
@@ -401,6 +403,7 @@ async function main(argv) {
       }
     }
     log("جاري تصدير الحزمة…");
+    await attachExportProgress(page, log);
     const dialect = o.lang === "en" ? "en" : undefined;
     let exportTimer;     // cleared once the race is decided: a pending timer keeps Node alive for the whole --timeout after the kit is written
     const result = await Promise.race([

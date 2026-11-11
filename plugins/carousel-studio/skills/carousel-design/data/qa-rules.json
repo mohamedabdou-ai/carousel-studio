@@ -596,7 +596,7 @@
             "max": 99
           },
           "autofix": null,
-          "when": "Count distinct positive ord values across slide types. With no ord, use only item for listicle or step for steps. Unnumbered context outside the list is not a member. A nonzero member count that disagrees with the cover numeral is a BLOCK.",
+          "when": "Count distinct positive ord values across slide types. With no ord, use item for listicle or step for steps; when that primary type is absent, count the other list type. Unnumbered context outside the list is not a member. A nonzero member count that disagrees with the cover numeral is a BLOCK.",
           "msg": {"ar": "الغلاف يَعِد بـ{count} لكن عدد عناصر القائمة المرقمة {n}.", "en": "The cover promises {count} but there are {n} numbered list members."},
           "fix": {"ar": "طابق رقم الغلاف مع عدد عناصر القائمة المرقمة، أو صحح قيم ord.", "en": "Match the cover number to the numbered members, or correct their ord values."},
           "vars": ["count", "n"]
@@ -2654,7 +2654,7 @@
             "psnr": {"$platform": "plugin.motion.loopPsnrMinDb"}
           },
           "autofix": null,
-          "when": "Export: the SSIM of the last frame against frame 0 (or, in the Studio, of the painted frame 0 against the poster) is below params.ssim, or the PSNR below params.psnr dB. Frame 0 of an encoded MP4 against the lossless poster PNG is held to the lower plugin.motion.posterSsimMin / posterPsnrMinDb instead (0.99 / 32 dB): 4:2:0 H.264 cannot reproduce a PNG at the loop bar. Clip covers derive the kit still from the decoded MP4 first frame; compare it directly, without another RGB/YUV round trip. The last-versus-first thresholds stay unchanged.",
+          "when": "Export: the SSIM of the last frame against frame 0 (or, in the Studio, of the painted frame 0 against the poster) is below params.ssim, or the PSNR below params.psnr dB. Frame 0 of an encoded MP4 against the lossless poster PNG is held to the lower plugin.motion.posterSsimMin / posterPsnrMinDb instead (0.99 / 32 dB): 4:2:0 H.264 cannot reproduce a PNG at the loop bar. Clip covers derive the kit still from the decoded MP4 first frame; compare it directly, without another RGB/YUV round trip, reconstructing video chroma to match the browser poster. The last-versus-first thresholds stay unchanged.",
           "msg": {"ar": "الفيديو لا يعود إلى الغلاف بدقة (SSIM {ssim} وPSNR {psnr}).", "en": "The loop does not land on the poster (SSIM {ssim}, PSNR {psnr})."},
           "fix": {"ar": "أعد التصدير؛ أول إطار وآخر إطار يجب أن يطابقا الغلاف.", "en": "Export again; the first and last frames must match the poster."},
           "vars": ["ssim", "psnr"]
@@ -2688,7 +2688,7 @@
             "delta": {"$platform": "plugin.motion.stillDeltaLuma"}
           },
           "autofix": null,
-          "when": "Export: more than params.maxShare of the frames repeat the frame before them (a mean change under params.delta luma levels on a 108x144 grey copy), so the loop is mostly a held picture.",
+          "when": "Export, engine loops only: more than params.maxShare of the frames repeat the frame before them (a mean change under params.delta luma levels on a 108x144 grey copy), so the loop is mostly a held picture. Clip footage is excluded because whole-frame downsampling cannot measure movement inside its media window.",
           "msg": {"ar": "الغلاف ثابت في {pct}% من مدة الحلقة ({sec} ثانية)، فالحركة قصيرة.", "en": "The cover holds still for {pct}% of the loop ({sec} s); the motion is short."},
           "fix": {"ar": "أطل نافذة الحركة أو أضف نبضة بعد إعادة التجميع، وأبقِ التثبيت الأخير قرابة ثانيتين.", "en": "Lengthen the motion window or add a beat after the rebuild, and keep the final hold to about two seconds."},
           "vars": ["pct", "sec"]

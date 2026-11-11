@@ -63,13 +63,13 @@
 
   /* ---- structure --------------------------------------------------------------------------------------------- */
 
-  /** n = position; ord = running count per type for item and step slides. Ids are untouched. */
+  /** n = position; ord = one running list count across item and step layouts. Ids are untouched. */
   function renumber(spec) {
-    var counts = {}, changed = false;
+    var listN = 0, changed = false;
     var slides = (spec.slides || []).map(function (s, i) {
       var next = s, n = i + 1;
-      counts[s.type] = (counts[s.type] || 0) + 1;
-      var wantOrd = s.type === "item" || s.type === "step" ? counts[s.type] : s.ord;
+      var wantOrd = s.ord;
+      if (s.type === "item" || s.type === "step") { listN++; wantOrd = listN; }
       if (s.n !== n || s.ord !== wantOrd) {
         next = Object.assign({}, s, { n: n });
         if (wantOrd === undefined) delete next.ord; else next.ord = wantOrd;

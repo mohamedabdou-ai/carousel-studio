@@ -76,7 +76,7 @@ function textEditor(ctx, o) {
   var meterHost = h("span", { class: "ui-meter-host" });
   function paintMeter() {
     clear(meterHost);
-    var plain = ta.value.replace(/==/g, "");
+    var plain = (o.coverHero ? CS.qa.splitCover(ta.value).hero : ta.value).replace(/==/g, "");
     var n = ctx.words(plain);
     if (o.limit || n) meterHost.appendChild(meter(n, o.limit && o.limit.soft, o.limit && o.limit.hard));
   }
@@ -122,6 +122,7 @@ function slideEditors(ctx, slide, o) {
     else {
       out.push(textEditor(ctx, {
         label: t("field." + f), field: f, limit: fieldLimit(ctx, slide, f), emphasis: f === "headline" || f === "title" || f === "body" || f === "sub",
+        coverHero: f === "headline" && (slide.type === "cover" || slide.type === "poster"),
         multiline: f === "headline", rows: f === "body" ? 2 : 1, max: f === "body" ? 400 : f === "headline" || f === "sub" ? 240 : 160,
         getValue: function () { return (ctx.slide(id) || {})[f]; },
         commit: function (v) { ctx.setField(id, f, v, undefined, { origin: o.origin || "form" }); ctx.runTextQa(); }

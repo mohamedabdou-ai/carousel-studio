@@ -353,7 +353,7 @@ function runV1(ec, files, provided, out) {
     const maxFlash = param(ec, "V1.flashes").max;
     if (info.flashesPerSecondMax > maxFlash && active(ec, "V1.flashes")) fx("V1.flashes", { count: info.flashesPerSecondMax, max: maxFlash });
     // frame metrics (NOTE): how much of the loop is a held picture, and how long only the chrome is on screen
-    if (typeof info.stillShare === "number" && active(ec, "V1.still-hold") && info.stillShare > param(ec, "V1.still-hold").maxShare) {
+    if (!(motion && motion.clip) && info.kind !== "clip" && typeof info.stillShare === "number" && active(ec, "V1.still-hold") && info.stillShare > param(ec, "V1.still-hold").maxShare) {
       const secs = (motion && motion.seconds) || param(ec, "V1.frames").defaultSeconds;
       fx("V1.still-hold", { pct: Math.round(info.stillShare * 100), sec: Math.round(info.stillShare * secs * 10) / 10 });
     }

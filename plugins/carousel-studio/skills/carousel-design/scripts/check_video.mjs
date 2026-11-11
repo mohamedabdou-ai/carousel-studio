@@ -185,7 +185,12 @@ function frameStats(file, blankDelta) {
 
 /** SSIM and PSNR between two single frames, both decoded the same way (BT.709, RGB). Poster = a PNG of the same size. */
 function compareFrames(file, a, b, decodedPoster = false) {
-  const rgb = "scale=in_range=tv:out_range=pc:in_color_matrix=bt709:out_color_matrix=bt709,format=rgb24";
+  // Native canvas posters interpolate 4:2:0 chroma. swscale's fast RGB path
+  // repeats chroma samples instead, making coloured edges disagree with the
+  // very frame the browser decoded. Reconstruct chroma for clip posters only;
+  // luma stays at full resolution and same-encode loop comparisons are unchanged.
+  const chroma = decodedPoster ? ":flags=gauss+accurate_rnd+full_chroma_int" : "";
+  const rgb = `scale=in_range=tv:out_range=pc:in_color_matrix=bt709:out_color_matrix=bt709${chroma},format=rgb24`;
   const pick = (n) => `select='eq(n,${n})',setpts=PTS-STARTPTS,${rgb}`;
   // a poster goes through the same RGB -> YUV 4:2:0 -> RGB trip as the video, so only the codec's own loss is measured
   const roundTrip = decodedPoster ? "format=rgb24" : "scale=in_range=pc:out_range=tv:out_color_matrix=bt709,format=yuv420p,scale=in_range=tv:out_range=pc:in_color_matrix=bt709:out_color_matrix=bt709,format=rgb24";
@@ -197,7 +202,7 @@ function compareFrames(file, a, b, decodedPoster = false) {
   const inputs = ["-i", file, ...(poster ? ["-i", poster.path] : [])];
   const go = (filter) => run("ffmpeg", ["-hide_banner", "-v", "info", ...inputs, "-filter_complex", `${source};[a][b]${filter}`, "-f", "null", "-"]);
   const ps = go("psnr"), ss = go("ssim");
-  const psnr = /PSNR.*average:([\d.]+|inf)/.exec(ps.stderr), ssim = /SSIM.*All:([\d.]+)/.exec(ss.stderr);
+  const psnr = /PSNR.*average:([\d.]+|inf)/.exec(ps.stderr), ssim = /SSIM.*All:(-?[\d.]+)/.exec(ss.stderr);
   if (!psnr || !ssim) return null;
   return { ssim: Math.round(parseFloat(ssim[1]) * 100000) / 100000, psnr: psnr[1] === "inf" ? 100 : Math.round(parseFloat(psnr[1]) * 100) / 100 };
 }
@@ -275,12 +280,16 @@ export function checkVideo(file, options = {}) {
       if (blankFrames > 0) emit("V1.blank", { count: blankFrames });
       if (flashesPerSecondMax > L.maxFlashesPerSecond) emit("V1.flashes", { count: flashesPerSecondMax, max: L.maxFlashesPerSecond });
       // frame metrics (NOTE): how much of the loop is a held picture, and how long only the chrome is on screen
-      const still = stats.slice(1).filter((s) => s.change < L.stillDelta).length;
-      stillShare = Math.round(still / Math.max(1, stats.length - 1) * 1000) / 1000;
+      // Whole-frame downsampling dilutes dark footage behind static type and chrome.
+      // Clips have no media-window measurement here, so do not label them as held loops.
+      if (kind !== "clip") {
+        const still = stats.slice(1).filter((s) => s.change < L.stillDelta).length;
+        stillShare = Math.round(still / Math.max(1, stats.length - 1) * 1000) / 1000;
+      }
       let run = 0, longest = 0;
       for (let i = from; i <= to; i++) { if (stats[i].deviating < L.thinShare * stats[0].deviating) { run++; longest = Math.max(longest, run); } else run = 0; }
       thinRunSeconds = Math.round(longest / info.fps * 100) / 100;
-      if (stillShare > L.stillMaxShare) emit("V1.still-hold", { pct: Math.round(stillShare * 100), sec: Math.round(stillShare * info.seconds * 10) / 10 });
+      if (stillShare !== null && stillShare > L.stillMaxShare) emit("V1.still-hold", { pct: Math.round(stillShare * 100), sec: Math.round(stillShare * info.seconds * 10) / 10 });
       if (thinRunSeconds > L.thinMaxSeconds) emit("V1.thin-frames", { sec: Math.round(thinRunSeconds * 10) / 10 });
     }
     const last = Math.max(0, info.frames - 1);

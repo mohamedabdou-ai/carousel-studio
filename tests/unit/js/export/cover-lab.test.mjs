@@ -7,7 +7,7 @@ const skill = "plugins/carousel-studio/skills/carousel-design";
 const spec = () => JSON.parse(fs.readFileSync("tests/fixtures/spec.eg.8slides.json", "utf8"));
 async function realPage() {
   const h = await openGeometryPage();
-  for (const name of ["paint", "motion", "hf"]) await h.page.addScriptTag({ content: fs.readFileSync(path.join(skill, "runtime/cs-" + name + ".js"), "utf8") });
+  for (const name of ["paint", "motion", "hf", "mp4"]) await h.page.addScriptTag({ content: fs.readFileSync(path.join(skill, "runtime/cs-" + name + ".js"), "utf8") });
   return h;
 }
 
@@ -27,6 +27,7 @@ export default {
           t.eq(error?.exit, 64, extra.join(" ") + " cannot mutate or export from the lab");
         }
         t.eq(render.coverCandidates([{ headline: "فكرة جديدة", sub: "خطوة عملية" }])[0].headline, "فكرة جديدة");
+        t.eq(render.coverCandidates([{ id: "h01", label: "First hook", headline: "فكرة جديدة" }])[0].id, "h01");
         for (const input of [[], [{ headline: " " }], [{ headline: 4 }], [{ headline: "جديد", sub: null }], [{ headline: "جديد", surprise: "x" }]]) {
           let error; try { render.coverCandidates(input); } catch (e) { error = e; }
           t.eq(error?.exit, 2, "bad candidates are data errors");
@@ -34,6 +35,68 @@ export default {
         const s = spec(); s.style.overrides = { "type.scale.hero": [120, 150] };
         let error; try { render.checkCoverControls(s); } catch (e) { error = e; }
         t.eq(error?.exit, 2); t.ok(error.message.includes('"120,150"'), "range error names the working string form");
+      }
+    },
+    {
+      name: "hook ids survive ranking and sheet labels without changing slide identity",
+      async run(t) {
+        const h = await realPage();
+        try {
+          await h.page.evaluate(() => {
+            window.__sheetLabels = [];
+            const draw = CanvasRenderingContext2D.prototype.fillText;
+            CanvasRenderingContext2D.prototype.fillText = function (text, ...args) { __sheetLabels.push(String(text)); return draw.call(this, text, ...args); };
+          });
+          const r = await render.coverLab(h.page, spec(), null, { presets: ["creator"], candidates: [{ id: "h02", label: "Fresh hook", headline: "فكرة جديدة لمشروعك" }] });
+          t.eq(r.rows[0].id, "h02"); t.eq(r.rows[0].label, "Fresh hook");
+          t.eq(r.ranking[0].id, "h02");
+          t.eq(r.rows[0].previewSlides, ["s01"]);
+          t.ok(!r.rows[0].error, JSON.stringify(r.rows[0]));
+          t.ok(await h.page.evaluate(() => __sheetLabels.some(s => s.includes("h02") && s.includes("Fresh hook"))), "hook id and label are printed on the contact sheet");
+        } finally { await h.close(); }
+      }
+    },
+    {
+      name: "brand binding in cover and style previews matches the visible brand",
+      async run(t) {
+        const h = await realPage();
+        const brand = JSON.parse(fs.readFileSync("tests/fixtures/brand.eg.creator.json", "utf8"));
+        try {
+          for (const mode of ["covers", "style-sheet"]) {
+            const r = await render.coverLab(h.page, spec(), brand, { mode, presets: ["creator", "notebook", "poster"], candidates: [{ headline: "فكرة جديدة لمشروعك" }] });
+            for (const row of r.rows) { t.ok(!row.error, JSON.stringify(row)); t.ok(!row.findings.some(f => f.rule === "D7.no-brand"), JSON.stringify(row)); }
+          }
+        } finally { await h.close(); }
+      }
+    },
+    {
+      name: "clip windows lead the cover at content width and 16:9 in every shipped style and crop",
+      async run(t) {
+        const h = await realPage();
+        try {
+          const rows = await h.page.evaluate(async base => {
+            const out = [];
+            for (const preset of CS.core.registry.listPresets()) for (const height of [1440, 1350]) {
+              const s = JSON.parse(JSON.stringify(base)); s.canvas.h = height; s.style = { presetId: preset.id + "@" + preset.version };
+              s.cover = { motion: { seconds: 12, recipe: "calm", clip: { file: "assets/fresh-demo.mp4", in: 0, out: 6, fit: "cover", ending: "auto" } } };
+              s.slides[0] = { id: "s01", n: 1, type: "cover", headline: "شاهد منتجك\nفي العمل", sub: "خطوة واضحة" };
+              const r = await CS.core.render.slide(s, null, 0, { mode: "export", useFrozen: false });
+              const el = r.el, media = el.querySelector('[data-slot="media"]'), hero = el.querySelector('[data-slot="headline"]'), sub = el.querySelector('[data-slot="sub"]');
+              const box = n => { const b = n?.getBoundingClientRect(); return b ? { x: b.x, y: b.y, w: b.width, h: b.height } : null; };
+              out.push({ preset: preset.id, height, media: box(media), hero: box(hero), sub: box(sub), content: box(el.querySelector('.cs-content')), footer: box(el.querySelector('.cs-footer')), fit: r.fit.ok });
+              el.remove();
+            }
+            return out;
+          }, spec());
+          for (const r of rows) {
+            t.ok(r.media, JSON.stringify(r));
+            t.near(r.media.w, r.content.w, 1, JSON.stringify(r));
+            t.near(r.media.w / r.media.h, 16 / 9, .03, JSON.stringify(r));
+            t.ok(r.media.y + r.media.h <= r.hero.y + 1, "footage above headline: " + JSON.stringify(r));
+            t.gte(r.media.h, r.hero.h, "footage is the largest element: " + JSON.stringify(r));
+            t.ok(r.sub.y + r.sub.h < r.footer.y && r.fit, "text fits above footer: " + JSON.stringify(r));
+          }
+        } finally { await h.close(); }
       }
     },
     {

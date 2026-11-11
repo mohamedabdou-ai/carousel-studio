@@ -2216,7 +2216,7 @@ function textEditor(ctx, o) {
   var meterHost = h("span", { class: "ui-meter-host" });
   function paintMeter() {
     clear(meterHost);
-    var plain = ta.value.replace(/==/g, "");
+    var plain = (o.coverHero ? CS.qa.splitCover(ta.value).hero : ta.value).replace(/==/g, "");
     var n = ctx.words(plain);
     if (o.limit || n) meterHost.appendChild(meter(n, o.limit && o.limit.soft, o.limit && o.limit.hard));
   }
@@ -2262,6 +2262,7 @@ function slideEditors(ctx, slide, o) {
     else {
       out.push(textEditor(ctx, {
         label: t("field." + f), field: f, limit: fieldLimit(ctx, slide, f), emphasis: f === "headline" || f === "title" || f === "body" || f === "sub",
+        coverHero: f === "headline" && (slide.type === "cover" || slide.type === "poster"),
         multiline: f === "headline", rows: f === "body" ? 2 : 1, max: f === "body" ? 400 : f === "headline" || f === "sub" ? 240 : 160,
         getValue: function () { return (ctx.slide(id) || {})[f]; },
         commit: function (v) { ctx.setField(id, f, v, undefined, { origin: o.origin || "form" }); ctx.runTextQa(); }
@@ -2418,17 +2419,12 @@ function sevPill(sev, n) {
 
 function typeLabel(type) { return t("type." + type); }
 
-/** Where a hook's cover goes on slide 1 (compression.md): all of it in the headline when it fits the hero limit; else the
- * first beat (up to «…») in the headline and the second beat in the sub line, the way the hook engine scored it. */
+/** Place the same first beat that C1 and the hook engine measure in the headline, with the rest in the sub line. */
 function placeCover(cover, heroMax, wc) {
   var s = String(cover || "").trim();
-  if (!s || !heroMax || wc(s) <= heroMax) return { headline: s };
-  var m = /…|\.{3}/.exec(s);
-  if (!m) return { headline: s };
-  var head = s.slice(0, m.index + m[0].length).trim();
-  var rest = s.slice(m.index + m[0].length).replace(/^[\s.…]+/, "").trim();
-  if (!rest || wc(head) > heroMax) return { headline: s };
-  return { headline: head, sub: rest };
+  var beats = CS.qa.splitCover(s);
+  if (!heroMax || !beats.sub || wc(beats.hero) > heroMax) return { headline: s };
+  return { headline: beats.hero, sub: beats.sub };
 }
 
 /** The creative team's log (spec.ext.teamLog: at most six lines, one per key, each a decision and its reason); read-only, null when the post has none. */
@@ -2974,7 +2970,7 @@ function SlideTab(ctx) {
       btn(t("slide.move-earlier"), "arrow-up", function () { ctx.moveSlide(s.id, -1); }, i <= 0),
       btn(t("slide.move-later"), "arrow-down", function () { ctx.moveSlide(s.id, 1); }, i >= n - 1),
       btn(t("slide.duplicate"), "copy-plus", function () { var id = ctx.duplicateSlide(s.id); if (id) ctx.select(id); }),
-      btn(t("slide.split"), "scissors", function () { if (ctx.splitSlide(s.id)) toast(t("slide.split.done"), "ok", { action: { label: t("common.undo"), fn: function () { ctx.undo(); } } }); else toast(t("slide.split.none"), "info"); }),
+      btn(t("slide.split"), "scissors", function () { if (ctx.slides().length >= 10) { ctx.splitSlide(s.id); return; } if (ctx.splitSlide(s.id)) toast(t("slide.split.done"), "ok", { action: { label: t("common.undo"), fn: function () { ctx.undo(); } } }); else toast(t("slide.split.none"), "info"); }),
       addAnchor,
       btn(t("common.delete"), "trash-2", function () { confirmDelete(ctx, s); }, n <= 1, true)));
   }

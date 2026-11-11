@@ -267,7 +267,8 @@ function gateC6(ctx, out) {
       const nums = countedNumbers(text, p.min, p.max);
       const numbered = new Set(ctx.slides.filter((s) => Number.isInteger(s.ord) && s.ord > 0).map((s) => s.ord));
       const primary = ctx.spec.architecture === "steps" ? "step" : "item";
-      const items = numbered.size || ctx.slides.filter((s) => s.type === primary).length;
+      let items = numbered.size || ctx.slides.filter((s) => s.type === primary).length;
+      if (!items) items = ctx.slides.filter((s) => s.type === "item" || s.type === "step").length;
       if (nums.length && items > 0 && nums.indexOf(items) < 0) {
         emit(ctx, out, "C6.list-count", { slide: cover.id, el: cover.id + ".headline", vars: { count: nums[0], n: items } });
       }

@@ -215,6 +215,15 @@ test("V1: no video, or motion switched off, is only a NOTE", async () => {
   assert.deepEqual(ids(res), ["V1.static"]);
 });
 
+test("V1: whole-frame still-hold advice is for engine loops, not clip footage", async () => {
+  const spec = cleanSpec(), files = [file("3x4/01-cover.mp4", mp4())];
+  spec.cover = { motion: { recipe: "calm", seconds: 6 } };
+  const video = { stillShare: .8 };
+  assert.ok(ids(await exportRun(spec, files, { video })).includes("V1.still-hold"));
+  spec.cover.motion.clip = { file: "assets/fresh-demo.mp4", in: 0, out: 4 };
+  assert.equal(ids(await exportRun(spec, files, { video })).includes("V1.still-hold"), false);
+});
+
 test("inspectMp4 reads size, frames, rate, keyframes and codec", () => {
   const info = plain(CS.qa.inspectMp4(mp4()));
   assert.equal(info.width, 1080);
