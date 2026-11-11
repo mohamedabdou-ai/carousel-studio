@@ -2597,10 +2597,12 @@
           "id": "V1.frames",
           "sev": "BLOCK",
           "params": {
-            "defaultSeconds": {"$platform": "plugin.motion.defaultSeconds"}
+            "defaultSeconds": {"$platform": "plugin.motion.defaultSeconds"},
+            "clipMinSeconds": 6,
+            "clipMaxSeconds": 15
           },
           "autofix": null,
-          "when": "Export: the frame count differs from round(seconds × fps) by more than one frame.",
+          "when": "Export: the frame count differs from round(cover.motion.seconds × fps) by more than one frame. Engine loops keep 5–6 seconds; cover.motion.clip uses 6–15 seconds, including both poster holds.",
           "msg": {"ar": "عدد الإطارات {count} والمتوقع {n}.", "en": "The video has {count} frames; expected {n}."},
           "fix": {"ar": "أعد التصدير كاملًا.", "en": "Export the whole cover again."},
           "vars": ["count", "n"]
@@ -2652,7 +2654,7 @@
             "psnr": {"$platform": "plugin.motion.loopPsnrMinDb"}
           },
           "autofix": null,
-          "when": "Export: the SSIM of the last frame against frame 0 (or, in the Studio, of the painted frame 0 against the poster) is below params.ssim, or the PSNR below params.psnr dB. Frame 0 of an encoded MP4 against the lossless poster PNG is held to the lower plugin.motion.posterSsimMin / posterPsnrMinDb instead (0.99 / 32 dB): 4:2:0 H.264 cannot reproduce a PNG at the loop bar.",
+          "when": "Export: the SSIM of the last frame against frame 0 (or, in the Studio, of the painted frame 0 against the poster) is below params.ssim, or the PSNR below params.psnr dB. Frame 0 of an encoded MP4 against the lossless poster PNG is held to the lower plugin.motion.posterSsimMin / posterPsnrMinDb instead (0.99 / 32 dB): 4:2:0 H.264 cannot reproduce a PNG at the loop bar. Clip covers derive the kit still from the decoded MP4 first frame; compare it directly, without another RGB/YUV round trip. The last-versus-first thresholds stay unchanged.",
           "msg": {"ar": "الفيديو لا يعود إلى الغلاف بدقة (SSIM {ssim} وPSNR {psnr}).", "en": "The loop does not land on the poster (SSIM {ssim}, PSNR {psnr})."},
           "fix": {"ar": "أعد التصدير؛ أول إطار وآخر إطار يجب أن يطابقا الغلاف.", "en": "Export again; the first and last frames must match the poster."},
           "vars": ["ssim", "psnr"]
@@ -2661,7 +2663,7 @@
           "id": "V1.blank",
           "sev": "BLOCK",
           "autofix": null,
-          "when": "Export: the video reports blank frames between the hold-in and settle times.",
+          "when": "Export: the video reports blank frames between the hold-in and settle times. For clip covers check every frame, including the holds; a frame with less than 25% of the first frame content is near-blank and also blocks.",
           "msg": {"ar": "عدد الإطارات الفارغة في الفيديو {count}.", "en": "The video has {count} blank frames."},
           "fix": {"ar": "أعد التصدير؛ لا يجوز أن تفرغ الشاشة أثناء الحركة.", "en": "Export again; the screen must never go empty during the motion."},
           "vars": ["count"]

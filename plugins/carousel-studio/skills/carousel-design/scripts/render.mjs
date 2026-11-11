@@ -29,7 +29,7 @@ import os from "node:os";
 import path from "node:path";
 import vm from "node:vm";
 import { pathToFileURL, fileURLToPath } from "node:url";
-import { EXIT, LaneError, buildStudioPage, haveTool, launchChromium, openStudio, renderCoverVideo, HYPERFRAMES_VERSION } from "./cover_video.mjs";
+import { EXIT, LaneError, buildStudioPage, haveTool, launchChromium, openStudio, renderCoverVideo, attachCoverClip, HYPERFRAMES_VERSION } from "./cover_video.mjs";
 import { planSpec, savePlanSpec, readPlanSource, loadPlanner } from "./plan.mjs";
 import { drawContact } from "./render_contact.mjs";
 
@@ -121,8 +121,10 @@ function exportExitCode(report, ok, strict) {
 function wantsCoverVideo(o, spec) {
   const motion = spec && spec.cover && spec.cover.motion;
   if (o.video === "none" || !spec || spec.format === "single") return false;
-  if (!motion || motion.recipe === "none") return false;
+  if (!motion) return false;
   if (spec.compat && spec.compat.mp4 === "off") return false;
+  if (motion.clip) return true;  // a clip cover is composed in the browser whatever the recipe says
+  if (motion.recipe === "none") return false;
   if (motion.source === "external" && o.video !== "hyperframes") return false;
   return true;
 }
@@ -244,6 +246,7 @@ async function main(argv) {
     studio = await openStudio({ browser, studioFile, timeout: o.timeoutMs });
     const { page } = studio;
     await page.evaluate(([s, b]) => window.CS.automation.setSpec(s, b), [spec, brand]);
+    if (!o.preflight) await attachCoverClip(page, path.resolve(o.specFile), spec);
 
     if (o.preflight) {
       const rows = await preflight(page, spec, brand, o.presetList);
@@ -259,7 +262,7 @@ async function main(argv) {
     const videos = [], videoSummary = { mode: o.video, files: [], skipped: [] };
     if (!wantsVideo && o.video === "internal" && motion && motion.source === "external")
       videoSummary.skipped.push({ path: "3x4/01-cover.mp4", reason: "The cover uses an external motion plate: render it with --video hyperframes." });
-    if (o.video === "hyperframes" && wantsVideo) {
+    if (o.video === "hyperframes" && wantsVideo && !motion?.clip) {
       for (const variant of o.variantList.includes("4x5") ? ["3x4", "4x5"] : ["3x4"]) {
           const rel = `${variant}/01-cover.mp4`, dest = path.join(outDir, rel);
           try {

@@ -184,11 +184,11 @@ function frameStats(file, blankDelta) {
 }
 
 /** SSIM and PSNR between two single frames, both decoded the same way (BT.709, RGB). Poster = a PNG of the same size. */
-function compareFrames(file, a, b) {
+function compareFrames(file, a, b, decodedPoster = false) {
   const rgb = "scale=in_range=tv:out_range=pc:in_color_matrix=bt709:out_color_matrix=bt709,format=rgb24";
   const pick = (n) => `select='eq(n,${n})',setpts=PTS-STARTPTS,${rgb}`;
   // a poster goes through the same RGB -> YUV 4:2:0 -> RGB trip as the video, so only the codec's own loss is measured
-  const roundTrip = "scale=in_range=pc:out_range=tv:out_color_matrix=bt709,format=yuv420p,scale=in_range=tv:out_range=pc:in_color_matrix=bt709:out_color_matrix=bt709,format=rgb24";
+  const roundTrip = decodedPoster ? "format=rgb24" : "scale=in_range=pc:out_range=tv:out_color_matrix=bt709,format=yuv420p,scale=in_range=tv:out_range=pc:in_color_matrix=bt709:out_color_matrix=bt709,format=rgb24";
   const poster = a.kind === "poster" ? a : b.kind === "poster" ? b : null;
   let source;
   if (!poster) source = `[0:v]split[s0][s1];[s0]${pick(a.n)}[a];[s1]${pick(b.n)}[b]`;
@@ -219,7 +219,13 @@ export function checkVideo(file, options = {}) {
   const frames = parseInt(v.nb_frames, 10) || packets.length;
   const seconds = parseFloat(v.duration || (meta.format && meta.format.duration)) || (fps ? frames / fps : 0);
   const [ew, eh] = options.expect ? options.expect.split("x").map(Number) : [L.width, null];
-  const expectedFps = options.fps || L.fps, expectedSeconds = options.seconds || L.defaultSeconds;
+  const spec = options.spec ? JSON.parse(fs.readFileSync(options.spec, "utf8")) : null;
+  const motion = spec?.cover?.motion;
+  const kind = options.kind || (motion?.clip ? "clip" : "engine");
+  const expectedFps = options.fps || L.fps, expectedSeconds = options.seconds ?? motion?.seconds ?? L.defaultSeconds;
+  if (!["engine", "clip"].includes(kind) || !Number.isFinite(expectedSeconds) || expectedSeconds <= 0) throw Object.assign(new Error("Choose kind engine or clip and a positive duration."), { code: "E_USAGE" });
+  if (kind === "clip" && (expectedSeconds < 6 || expectedSeconds > 15)) throw Object.assign(new Error("Clip covers must last 6 to 15 seconds."), { code: "E_USAGE" });
+  if (kind === "clip" && !options.poster) throw Object.assign(new Error("A clip cover check needs --poster from the same kit."), { code: "E_USAGE" });
   const codecString = boxes.avcC ? "avc1." + boxes.avcC.map((b) => b.toString(16).padStart(2, "0")).join("").toUpperCase() : (v.codec_tag_string === "avc1" ? "avc1" : String(v.codec_name || ""));
   const level = boxes.avcC ? boxes.avcC[2] : Number.isFinite(v.level) && v.level > 0 ? v.level : null;      // level_idc: 40 is level 4.0
   const fullRange = v.color_range === "pc" || /^yuvj/.test(v.pix_fmt || "");
@@ -256,11 +262,11 @@ export function checkVideo(file, options = {}) {
   if (have("ffmpeg")) {
     const stats = frameStats(file, L.blankDelta);
     if (stats && stats.length) {
-      const from = Math.round(L.holdIn * info.fps), to = Math.min(stats.length - 1, Math.round(L.settleBy * info.fps));
+      const from = kind === "clip" ? 0 : Math.round(L.holdIn * info.fps), to = kind === "clip" ? stats.length - 1 : Math.min(stats.length - 1, Math.round(L.settleBy * info.fps));
       blankFrames = 0;
       for (let i = from; i <= to; i++) {
         const s = stats[i];
-        if (s && s.deviating < L.blankPixels) blankFrames++;
+        if (s && s.deviating < (kind === "clip" ? Math.max(L.blankPixels, L.thinShare * stats[0].deviating) : L.blankPixels)) blankFrames++;
       }
       const jumps = [];
       for (let i = 1; i < stats.length; i++) if (Math.abs(stats[i].mean - stats[i - 1].mean) > L.flashDelta) jumps.push(i);
@@ -279,7 +285,7 @@ export function checkVideo(file, options = {}) {
     }
     const last = Math.max(0, info.frames - 1);
     loop = { lastVsFrame0: compareFrames(file, { kind: "frame", n: last }, { kind: "frame", n: 0 }) };
-    if (options.poster) loop.frame0VsPoster = compareFrames(file, { kind: "frame", n: 0 }, { kind: "poster", path: options.poster });
+    if (options.poster) loop.frame0VsPoster = compareFrames(file, { kind: "frame", n: 0 }, { kind: "poster", path: options.poster }, kind === "clip");
     // last vs first frame: both are decoded from the same encode, so the full contract thresholds apply.
     // first frame vs poster: a lossless PNG against a lossy 4:2:0 video, so the codec's own loss is allowed for. The lower floor (SSIM 0.99 / 32 dB) lives in
     // platform-instagram.json -> plugin.motion.posterSsimMin / posterPsnrMinDb, with the reason; the binding bar is last frame vs frame 0.
@@ -292,12 +298,12 @@ export function checkVideo(file, options = {}) {
   const counts = { block: 0, fix: 0, note: 0 };
   for (const r of results) counts[r.sev.toLowerCase()]++;
   const status = counts.block ? "block" : counts.fix ? "fix" : "pass";
-  return { ok: status !== "block", file, info, loop, blankFrames, flashesPerSecondMax, stillShare, thinRunSeconds, results, counts, status, exitCode: counts.block ? EXIT.BLOCK : counts.fix ? EXIT.FIX : EXIT.OK };
+  return { ok: status !== "block", file, kind, info, loop, blankFrames, flashesPerSecondMax, stillShare, thinRunSeconds, results, counts, status, exitCode: counts.block ? EXIT.BLOCK : counts.fix ? EXIT.FIX : EXIT.OK };
 }
 
 /* ------------------------------------------------------------------ CLI */
 
-const USAGE = "usage: node check_video.mjs FILE.mp4 [--poster PNG] [--expect 1080x1440] [--seconds 6] [--fps 30] [--audio none|silent-aac] [--format text|json]";
+const USAGE = "usage: node check_video.mjs FILE.mp4 [--poster PNG] [--expect 1080x1440] [--seconds 6] [--fps 30] [--audio none|silent-aac] [--kind engine|clip] [--spec FILE] [--format text|json]";
 
 function parseArgs(argv) {
   const opts = { format: "text" }, rest = [];
@@ -306,7 +312,7 @@ function parseArgs(argv) {
     if (a === "--help" || a === "-h") opts.help = true;
     else if (a.startsWith("--")) {
       const key = a.slice(2);
-      if (!["poster", "expect", "seconds", "fps", "audio", "format"].includes(key)) throw Object.assign(new Error("unknown option " + a), { code: "E_USAGE" });
+      if (!["poster", "expect", "seconds", "fps", "audio", "format", "kind", "spec"].includes(key)) throw Object.assign(new Error("unknown option " + a), { code: "E_USAGE" });
       opts[key] = argv[++i];
       if (opts[key] === undefined) throw Object.assign(new Error("missing value for " + a), { code: "E_USAGE" });
     } else rest.push(a);
@@ -314,6 +320,7 @@ function parseArgs(argv) {
   if (rest.length) opts.file = rest[0];
   if (opts.seconds) opts.seconds = parseFloat(opts.seconds);
   if (opts.fps) opts.fps = parseFloat(opts.fps);
+  if (opts.kind && !["engine", "clip"].includes(opts.kind)) throw Object.assign(new Error("--kind is engine or clip"), { code: "E_USAGE" });
   return opts;
 }
 

@@ -41,6 +41,10 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 
 ### Cover motion
 
+- Attach your own local clip inside the cover's media window for a silent 6 to 15 second video, with trim points, fit and focus. Both ratios are recomposed after a style change or export, with the original layout and readable text.
+- Clip covers hold the finished poster first and return with a dissolve for similar endpoints or a wipe for one-way footage. Their PNG, JPEG and PDF cover come from the MP4 first frame, avoiding a second colour round trip in the loop check.
+- The Studio marks the attached video and previews its decoded poster. Reattach the local file when reopening the Studio; clip bytes never enter the spec or saved page.
+
 - Four new cover stories, each with its own movement: Curtain (accent bars pull away line by line), Word zoom (the cover opens on its key word, then the camera pulls back), Notification (the headline arrives as a message being typed) and Before/after (the two halves of the headline collide).
 - The cover story is chosen from the cover's own words, and two posts in a row never get the same one.
 - The counter shows the rest of the title before the number counts, and large numbers count up from about a third instead of zero.

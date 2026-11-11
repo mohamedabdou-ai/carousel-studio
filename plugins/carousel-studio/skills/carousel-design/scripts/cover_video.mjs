@@ -6,6 +6,10 @@
  *                        [--quality draft|standard|high] [--keep-dir DIR] [--hyperframes-version X]
  *                        [--studio FILE] [--chromium PATH] [--format text|json]
  *
+ * A cover.motion.clip uses the shared browser compositor instead: both codecs and the encoder stay in the browser,
+ * and a decoded poster is written beside the MP4. It needs neither HyperFrames nor ffmpeg.
+ *
+ * Engine loops keep the existing HyperFrames path:
  * 1. The Studio page (built from the spec unless --studio is given) is opened in headless Chromium over loopback (127.0.0.1),
  *    and its own engine writes the cover as one HyperFrames composition (CS.motion.hf.composition) plus the poster PNG.
  * 2. `npx hyperframes@<pin> render` turns the composition into an MP4 (30 fps, nothing sent anywhere).
@@ -165,6 +169,44 @@ export function buildStudioPage({ specFile, brandFile, outFile }) {
   return outFile;
 }
 
+/** Attach only a post-local file. realpath also rejects symlinks/junctions escaping the post folder. No clip download or spec embedding. */
+export function resolveCoverClip(specFile, spec = readJson(specFile, "spec")) {
+  const name = spec.cover?.motion?.clip?.file;
+  if (!spec.cover?.motion?.clip) return null;
+  if (typeof name !== "string" || /(^\/)|[\\:%?#\x00-\x1f]/.test(name) || name.split("/").some(s => !s || s.charAt(0) === "."))
+    throw new LaneError("E_SCHEMA", "cover.motion.clip.file must name a file inside the post folder.", EXIT.BLOCK);
+  const root = fs.realpathSync(path.dirname(path.resolve(specFile))), file = path.resolve(root, name);
+  if (!fs.existsSync(file)) throw new LaneError("E_USAGE", `Cover clip not found: ${name}. Put it in the post folder or choose it again.`, EXIT.NOINPUT);
+  const real = fs.realpathSync(file), rel = path.relative(root, real);
+  if (rel === ".." || rel.startsWith(".." + path.sep) || path.isAbsolute(rel) || !fs.statSync(real).isFile())
+    throw new LaneError("E_SCHEMA", "The cover clip must stay inside the post folder, including after resolving links.", EXIT.BLOCK);
+  return { name, file: real };
+}
+
+export async function attachCoverClip(page, specFile, spec) {
+  const clip = resolveCoverClip(specFile, spec);
+  if (!clip) return false;
+  // Transfer in chunks, so a long local source does not become one oversized DevTools message.
+  await page.evaluate(() => { window.__csClipParts = []; });
+  try {
+    const bytes = fs.readFileSync(clip.file);
+    for (let i = 0; i < bytes.length; i += 1024 * 1024) {
+      await page.evaluate(b64 => {
+        const raw = atob(b64), data = Uint8Array.from(raw, c => c.charCodeAt(0));
+        window.__csClipParts.push(data);
+      }, bytes.subarray(i, i + 1024 * 1024).toString("base64"));
+    }
+    await page.evaluate(name => CS.export.mp4.clip.attachFile(name, new Blob(window.__csClipParts)), clip.name);
+  } finally { await page.evaluate(() => { delete window.__csClipParts; }); }
+  return true;
+}
+
+async function pullCoverFile(page, file) {
+  const parts = [];
+  for (let i = 0; i < file.bytes; i += 1024 * 1024) parts.push(Buffer.from(await page.evaluate(([p, at]) => CS.automation.readChunk(p, at, 1024 * 1024), [file.path, i]), "base64"));
+  return Buffer.concat(parts);
+}
+
 /** Opens the Studio page with automation on and waits until it is ready. Returns { page, close }. */
 export async function openStudio({ browser, studioFile, timeout = 180000 }) {
   const dir = path.dirname(path.resolve(studioFile)), name = path.basename(studioFile);
@@ -253,6 +295,7 @@ export async function renderCoverVideo(o) {
   fs.mkdirSync(project, { recursive: true });
   let ownBrowser = null, ownStudio = null, page = o.page;
   try {
+    const inputSpec = readJson(o.specFile, "spec");
     if (!page) {
       let studioFile = o.studioFile;
       if (!studioFile) { log("جاري بناء صفحة الأستوديو…"); studioFile = buildStudioPage({ specFile: o.specFile, brandFile: o.brandFile, outFile: path.join(work, "studio.html") }); }
@@ -261,6 +304,25 @@ export async function renderCoverVideo(o) {
       page = ownStudio.page;
       const spec = readJson(o.specFile, "spec"), brand = o.brandFile ? readJson(o.brandFile, "brand") : undefined;
       await page.evaluate(([s, b]) => window.CS.automation.setSpec(s, b), [spec, brand]);
+    }
+    if (inputSpec.cover?.motion?.clip) {
+      if (!/\.mp4$/i.test(o.outFile)) throw new LaneError("E_USAGE", "--out must end in .mp4.", EXIT.USAGE);
+      const source = resolveCoverClip(o.specFile, inputSpec);
+      const output = fs.existsSync(o.outFile) ? fs.realpathSync(o.outFile) : path.resolve(o.outFile);
+      if (output === source.file) throw new LaneError("E_USAGE", "The output cannot replace the original cover clip. Choose another --out path.", EXIT.USAGE);
+      await attachCoverClip(page, o.specFile, inputSpec);
+      log("Composing the local cover clip in the browser…");
+      const result = await page.evaluate(v => CS.automation.cover({ variant: v }), variant);
+      const video = result.files.find(f => f.path.endsWith(".mp4")), still = result.files.find(f => /\.(png|jpg)$/.test(f.path));
+      const out = path.resolve(o.outFile), poster = out.replace(/\.mp4$/i, variant === "4x5" ? ".jpg" : ".png");
+      fs.mkdirSync(path.dirname(out), { recursive: true });
+      fs.writeFileSync(out, await pullCoverFile(page, video));
+      fs.writeFileSync(poster, await pullCoverFile(page, still));
+      const counts = { block: 0, fix: 0, note: 0 };
+      result.results.forEach(r => { counts[r.sev.toLowerCase()]++; });
+      const status = counts.block ? "block" : counts.fix ? "fix" : "pass";
+      const check = { ...result.info, info: result.info, results: result.results, counts, status, exitCode: counts.block ? 2 : counts.fix ? 1 : 0 };
+      return { out, variant, bytes: video.bytes, seconds: result.timeline.duration, frames: result.timeline.frames, recipe: "clip", check, poster, posterKind: "decoded" };
     }
     log("جاري تجهيز تركيب الغلاف…");
     const comp = await page.evaluate((v) => window.CS.automation.composition({ variant: v }), variant);
@@ -317,8 +379,9 @@ async function main(argv) {
     if (!["text", "json"].includes(o.format)) throw new LaneError("E_USAGE", "--format is text or json", EXIT.USAGE);
     if (o.fps !== undefined && o.fps !== 30) throw new LaneError("E_USAGE", "the cover is 30 fps (the contract fixes it)", EXIT.USAGE);
     checkNode();
-    if (!haveTool("ffmpeg") || !haveTool("ffprobe")) throw new LaneError("E_NO_CAPABILITY", "ffmpeg and ffprobe are required. Fix: install FFmpeg (ffmpeg.org/download.html) and make sure both are on PATH.", EXIT.INTERNAL);
-    readJson(o.specFile, "spec"); if (o.brandFile) readJson(o.brandFile, "brand");
+    const spec = readJson(o.specFile, "spec");
+    if (!spec.cover?.motion?.clip && (!haveTool("ffmpeg") || !haveTool("ffprobe"))) throw new LaneError("E_NO_CAPABILITY", "ffmpeg and ffprobe are required for engine loops. Use a local clip cover for the browser encoder.", EXIT.INTERNAL);
+    if (o.brandFile) readJson(o.brandFile, "brand");
     const log = (m) => { if (o.format === "text") process.stderr.write(m + "\n"); };
     const r = await renderCoverVideo({ ...o, log });
     const summary = { out: r.out, variant: r.variant, bytes: r.bytes, seconds: r.seconds, frames: r.frames, recipe: r.recipe, check: { status: r.check.status, counts: r.check.counts, results: r.check.results, info: r.check.info, loop: r.check.loop } };
