@@ -112,7 +112,7 @@ test("bad arguments use the house usage exit code", () => {
 test("schema-invalid check reports cap errors without launching a browser", async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "cs-plates-unit-"));
   try {
-    const s = JSON.parse(fs.readFileSync(path.join(root, "tests/fixtures/plates.json"), "utf8"));
+    const s = JSON.parse(fs.readFileSync(path.join(root, "tests/plates/post.spec.json"), "utf8"));
     s.assets.push({ id: "too-large", kind: "image", ref: "data:image/jpeg;base64," + "A".repeat(90000), aiGenerated: true });
     s.slides[1].media = { slot: "screenshot", assetId: "too-large", ai: true };
     const file = path.join(dir, "spec.json"), bytes = JSON.stringify(s); fs.writeFileSync(file, bytes);
@@ -126,7 +126,7 @@ test("schema-invalid check reports cap errors without launching a browser", asyn
 test("invalid manifest roots fail as input errors before any write or browser launch", async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "cs-plates-unit-"));
   try {
-    const bytes = fs.readFileSync(path.join(root, "tests/fixtures/plates.json"));
+    const bytes = fs.readFileSync(path.join(root, "tests/plates/post.spec.json"));
     fs.writeFileSync(path.join(dir, "spec.json"), bytes); fs.mkdirSync(path.join(dir, "plates"));
     for (const value of [null, [], { version: 1, plates: "wrong" }]) {
       fs.writeFileSync(path.join(dir, "plates/plates.json"), JSON.stringify(value));

@@ -38,7 +38,7 @@ test("slots and apply use real text, preserve originals, replay after rebuild an
     return JSON.parse(r.stdout);
   }
   try {
-    const originalSpec = read(path.join(root, "tests/fixtures/plates.json"));
+    const originalSpec = read(path.join(root, "tests/plates/post.spec.json"));
     write(specFile, originalSpec); fs.mkdirSync(path.join(dir, "plates"));
     const image = png(), source = path.join(dir, "plates", "original.png"); fs.writeFileSync(source, image);
     const slots = cli("slots");
