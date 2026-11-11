@@ -8,11 +8,11 @@ import { openGeometryPage } from "../geometry/page.mjs";
 import * as lane from "../../plugins/carousel-studio/skills/carousel-design/scripts/cover_video.mjs";
 const source = fs.readFileSync("src/mp4/mp4.js", "utf8") + "\n" + fs.readFileSync("src/mp4/clip.js", "utf8");
 
-async function fixture(page, options = {}) {
+export async function fixture(page, options = {}) {
   return page.evaluate(({ source, options }) => {
     window.__clipClosed = 0;
     class Input {
-      async getPrimaryVideoTrack() { return { getCodecParameterString: () => "vp09.00.10.08", canDecode: async () => !options.unsupported }; }
+      async getPrimaryVideoTrack() { return { getCodecParameterString: () => "vp09.00.10.08", canDecode: async () => !options.unsupported, getFirstTimestamp: async () => 0 }; }
       async computeDuration() { return 20; }
       dispose() { window.__clipClosed++; }
     }
@@ -46,7 +46,7 @@ export default { module: "clip", tests: [
     if (!bundle || !fs.existsSync(bundle)) return t.skip("Set CS_TEST_MEDIABUNNY to an existing mediabunny@1.61.0 ESM bundle for the offline encode");
     if (spawnSync("ffmpeg", ["-version"], { windowsHide: true }).status !== 0) return t.skip("ffmpeg is not installed");
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), "cs-clip-kit-"));
-    let h;
+    let h, server;
     try {
       fs.mkdirSync(path.join(dir, "assets"));
       const input = path.join(dir, "assets", "fresh-demo.mp4");
@@ -60,6 +60,14 @@ export default { module: "clip", tests: [
       spec.cover = { motion: { seconds: 12, recipe: "calm", source: "internal", clip: { file: "assets/fresh-demo.mp4", in: 0, out: 4, fit: "cover", focus: { x: .5, y: .5 }, ending: "auto" } } };
       const specFile = path.join(dir, "spec.json"); fs.writeFileSync(specFile, JSON.stringify(spec) + "\n");
       h = await openGeometryPage();
+      // WebCodecs needs a secure origin; the geometry helper starts on about:blank.
+      fs.writeFileSync(path.join(dir, "engine.html"), await h.page.content());
+      server = await lane.serveDirectory(dir);
+      await h.page.unroute("**/*");
+      await h.page.route("**/*", route => new URL(route.request().url()).hostname === "127.0.0.1" ? route.continue() : route.abort());
+      await h.page.goto(server.url + "/engine.html");
+      await h.page.evaluate(() => { CS.core.registry.loadPage(document); CS.qav.flush(); });
+      await h.page.evaluate(() => { window.__CS_AUTOMATION = true; });
       await h.page.route("https://cdn.jsdelivr.net/npm/mediabunny@1.61.0/+esm", route => route.fulfill({ contentType: "text/javascript", body: fs.readFileSync(bundle), headers: { "access-control-allow-origin": "*" } }));
       for (const name of ["paint", "motion", "hf", "mp4", "export"]) await h.page.addScriptTag({ content: fs.readFileSync("plugins/carousel-studio/skills/carousel-design/runtime/cs-" + name + ".js", "utf8") });
       await h.page.evaluate(([s, b]) => CS.automation.setSpec(s, b), [spec, brand]);
@@ -69,7 +77,7 @@ export default { module: "clip", tests: [
       const result = await h.page.evaluate(() => CS.automation.exportAll({ video: true, variants4x5: true, pdf: false, zip: false }));
       const seconds = (performance.now() - started) / 1000;
       console.log(`# 12 s / 360 frames / 3x4 + 4x5 clip kit: ${seconds.toFixed(2)} s`);
-      t.ok(lines.some(s => s.includes("100%")), "the real export reports composing progress");
+      t.ok(lines.some(s => s.includes("100%")), "the real export reports composing progress: " + JSON.stringify(result.skipped));
       for (const variant of ["3x4", "4x5"]) {
         const video = `${variant}/01-cover.mp4`, still = `${variant}/01-cover.${variant === "3x4" ? "png" : "jpg"}`;
         for (const rel of [video, still]) {
@@ -84,7 +92,7 @@ export default { module: "clip", tests: [
         t.ok(!checked.results.some(r => r.sev === "BLOCK"), JSON.stringify({ variant, results: checked.results, loop: checked.loop }));
         t.eq(checked.info.frames, 360); t.eq(checked.stillShare, null);
       }
-    } finally { if (h) await h.close(); fs.rmSync(dir, { recursive: true, force: true }); }
+    } finally { if (h) await h.close(); if (server) await server.close(); fs.rmSync(dir, { recursive: true, force: true }); }
   } },
   { name: "checker accepts a browser-decoded first-frame poster without lowering loop floors", async run(t) {
     if (spawnSync("ffmpeg", ["-version"], { windowsHide: true }).status !== 0) return t.skip("ffmpeg is not installed");

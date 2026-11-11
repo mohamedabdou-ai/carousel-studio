@@ -408,7 +408,7 @@ function readCanvas(entry) {
 }
 
 /**
- * encodeMany({ canvases, frames, fps, drawFrame(i), bitrate?, onProgress?, signal? }) -> one MP4 per entry of `canvases`.
+ * encodeMany({ canvases, frames, fps, drawFrame(i), bitrate?, loopHoldFrame?, onProgress?, signal? }) -> one MP4 per entry of `canvases`.
  * An entry is a canvas, or { canvas, y, height } for a full-width window of one (so a 4:5 crop of the 3:4 paint costs no second read).
  * `drawFrame(i)` must leave frame i on every canvas (it is awaited before the frames are read), so one paint feeds several crops of the
  * same cover. Canvases must be opaque (the exporter's are).
@@ -451,7 +451,8 @@ async function mp4EncodeMany(opts) {
       reads.forEach(function (rd) { if (rd.prev) rd.prev.set(rd.cur); else rd.prev = new Uint32Array(rd.cur); rd.cur = null; });
       await Promise.all(sources.map(function (src, k) {
         var sample = new mb.VideoSample(yuv[k].view.frame(Math.round(i * 1e6 / fps), Math.round(1e6 / fps)), { timestamp: i / fps, duration: 1 / fps });
-        return src.add(sample).then(function () { sample.close(); }, function (e) { sample.close(); throw e; });
+        var encodeOptions = i === opts.loopHoldFrame ? { keyFrame: true } : undefined;
+        return src.add(sample, encodeOptions).then(function () { sample.close(); }, function (e) { sample.close(); throw e; });
       }));
       if (opts.onProgress && (i % step === 0 || i === frames - 1)) opts.onProgress({ job: "mp4", done: i + 1, total: frames, label: "frames" });
     }
@@ -460,7 +461,35 @@ async function mp4EncodeMany(opts) {
     await Promise.all(outputs.map(function (out) { return Promise.resolve().then(function () { return out.cancel(); }).catch(function () { /* already closed */ }); }));
     throw e;
   }
-  return outputs.map(function (out) { return new Uint8Array(out.target.buffer); });
+  var bytes = outputs.map(function (out) { return new Uint8Array(out.target.buffer); });
+  if (opts.loopHoldFrame !== undefined) {
+    // Rate control can give identical noisy canvases different quantisation even at a forced keyframe.
+    // Remux the closing hold from frame 0's independent packet so every decoded hold frame really matches it.
+    bytes = await Promise.all(bytes.map(function (b) { return mp4PosterHold(mb, b, opts.loopHoldFrame, fps, signal); }));
+  }
+  return bytes;
+}
+
+async function mp4PosterHold(mb, bytes, holdFrame, fps, signal) {
+  var input = new mb.Input({ source: new mb.BlobSource(new Blob([bytes])), formats: mb.ALL_FORMATS });
+  var output = new mb.Output({ format: new mb.Mp4OutputFormat({ fastStart: "in-memory" }), target: new mb.BufferTarget() });
+  try {
+    var track = await input.getPrimaryVideoTrack(), config = await track.getDecoderConfig();
+    var source = new mb.EncodedVideoPacketSource("avc"), sink = new mb.EncodedPacketSink(track), poster;
+    output.addVideoTrack(source, { frameRate: fps });
+    await output.start();
+    for await (var packet of sink.packets()) {
+      if (signal && signal.aborted) throw mp4Error("E_ABORTED", "The export was cancelled.");
+      if (!poster) poster = packet;
+      var held = Math.round(packet.timestamp * fps) >= holdFrame;
+      await source.add(held ? poster.clone({ timestamp: packet.timestamp, duration: packet.duration, sequenceNumber: packet.sequenceNumber }) : packet, { decoderConfig: config });
+    }
+    await output.finalize();
+    return new Uint8Array(output.target.buffer);
+  } catch (e) {
+    await Promise.resolve().then(function () { return output.cancel(); }).catch(function () { /* already closed */ });
+    throw e;
+  } finally { input.dispose(); }
 }
 
 /** encode({ canvas, frames, fps, drawFrame(i), bitrate?, onProgress?, signal? }) -> MP4 bytes. */

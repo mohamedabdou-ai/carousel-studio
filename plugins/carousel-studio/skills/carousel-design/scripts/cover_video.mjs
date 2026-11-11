@@ -330,7 +330,24 @@ export async function renderCoverVideo(o) {
       await attachCoverClip(page, o.specFile, inputSpec);
       await attachExportProgress(page, log);
       log("Composing the local cover clip in the browser…");
-      const result = await page.evaluate(v => CS.automation.cover({ variant: v }), variant);
+      // Error.code is not preserved when Playwright serialises a thrown browser Error.
+      // Return it explicitly, before the browser stack can obscure the actionable reason.
+      let response;
+      try {
+        response = await page.evaluate(async v => {
+          try { return { value: await CS.automation.cover({ variant: v }) }; }
+          catch (e) { return { error: { code: e.code || "E_INTERNAL", message: String(e.message || e).split(/\r?\n/)[0] } }; }
+        }, variant);
+      } catch (e) {
+        const message = /CSError: ([^\r\n]*)/.exec(String(e.message || e));
+        if (!message) throw e;
+        throw new LaneError(e.code || "E_SCHEMA", message[1], EXIT.DATA);
+      }
+      if (response.error) {
+        const e = response.error;
+        throw new LaneError(e.code, e.message, ["E_SCHEMA", "E_NO_CAPABILITY"].includes(e.code) ? EXIT.DATA : EXIT.INTERNAL);
+      }
+      const result = response.value;
       const video = result.files.find(f => f.path.endsWith(".mp4")), still = result.files.find(f => /\.(png|jpg)$/.test(f.path));
       const out = path.resolve(o.outFile), poster = out.replace(/\.mp4$/i, variant === "4x5" ? ".jpg" : ".png");
       fs.mkdirSync(path.dirname(out), { recursive: true });

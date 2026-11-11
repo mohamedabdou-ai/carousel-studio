@@ -245,13 +245,15 @@
     "voice": {"driftIqr": 1.5},
     "history": {"ctaRepeatWindow": 2, "familyRepeatWindow": 2, "wildcardWindow": 10},
     "motion": {
+      "_note": "minSeconds/maxSeconds apply to engine loops; clipMinSeconds/clipMaxSeconds apply to local clip covers.",
       "defaultSeconds": 6, "minSeconds": 5, "maxSeconds": 6, "fps": 30,
+      "clipMinSeconds": 6, "clipMaxSeconds": 15,
       "holdInSeconds": 0.4, "resetEndSeconds": 0.75, "settleBySeconds": 5.6,
       "loopSsimMin": 0.995, "loopPsnrMinDb": 45, "maxFlashesPerSecond": 3,
-      "posterSsimMin": 0.99, "posterPsnrMinDb": 32,
+      "posterSsimMin": 0.99, "posterJpegSsimMin": 0.98, "posterPsnrMinDb": 32,
       "stillMaxShare": 0.6, "stillDeltaLuma": 0.03, "thinShare": 0.25, "thinMaxSeconds": 0.6,
       "stillNote": "Frame metrics on a 108x144 grey copy of every frame. A frame is still when its mean change from the frame before is under stillDeltaLuma levels (the frames of a truly held picture; the six shipped example covers hold 49 to 59% of the loop, the dogfood stamp cover 64%); a frame is thin between the hold-in and settle times when it holds under thinShare of the content (pixels off the median) of frame 0. Both are NOTEs: a held poster is part of the loop on purpose, but more than half of the loop held, or a long stretch with nothing but the chrome on screen, means the story is thin.",
-      "posterNote": "Two bars for the loop. The loop bar (loopSsimMin / loopPsnrMinDb, 0.995 / 45 dB) binds the lossless comparisons: the last frame against frame 0 of the same encode (check_video.mjs), and the Studio's painted frames before encoding (frame 0 against the poster, the last frame against frame 0). Frame 0 of the encoded MP4 against the lossless poster PNG (check_video.mjs only) has its own lower floor, posterSsimMin / posterPsnrMinDb (0.99 / 32 dB), because 4:2:0 H.264 loses colour detail on red-on-white text edges (about 33 dB on the shipped example) and so can never reach the loop bar."
+      "posterNote": "Two bars for the loop. The loop bar (loopSsimMin / loopPsnrMinDb, 0.995 / 45 dB) binds the lossless comparisons: the last frame against frame 0 of the same encode (check_video.mjs), and the Studio's painted frames before encoding (frame 0 against the poster, the last frame against frame 0). Frame 0 of the encoded MP4 against the lossless poster PNG (check_video.mjs only) has its own lower floor, posterSsimMin / posterPsnrMinDb (0.99 / 32 dB), because 4:2:0 H.264 loses colour detail on red-on-white text edges (about 33 dB on the shipped example) and so can never reach the loop bar. A JPEG poster adds lossy chroma subsampling; after chroma reconstruction its poster-only SSIM floor is posterJpegSsimMin (0.98), with the same 32 dB PSNR floor. PNG and same-encode loop thresholds are unchanged."
     },
     "export": {
       "png": {"w": 1080, "h": 1440, "paintScale": 2},

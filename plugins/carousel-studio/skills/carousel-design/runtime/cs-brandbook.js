@@ -1074,6 +1074,16 @@ function MotionScreen(ctx) {
     frame = f;
     stageHost.appendChild(f.frame);
     var m = currentMotion();
+    if (m.clip) {
+      try {
+        var poster = await ctx.renderFresh(0, "thumb");
+        if (my !== gen) return;
+        f.inner.appendChild(poster.el);
+        f.frame.classList.remove("is-loading");
+        controls.appendChild(h("p", { class: "ui-note" }, t("motion.poster-first")));
+      } catch (e) { reportError("clip poster", e); f.frame.classList.add("is-failed"); }
+      return;
+    }
     if (m.recipe === "none") {
       f.frame.classList.remove("is-loading");
       var still = ctx.thumbClone(first.id);
@@ -1151,6 +1161,12 @@ function MotionScreen(ctx) {
   function paintRecipes() {
     clear(chipsHost); clear(infoHost);
     var m = currentMotion();
+    if (m.clip) {
+      infoHost.appendChild(h("div", { class: "ui-label" }, t("motion.seconds")));
+      infoHost.appendChild(h("p", { class: "ui-note" }, t("motion.seconds.n", { n: m.seconds })));
+      infoHost.appendChild(h("p", { class: "ui-hint" }, t("motion.poster-first")));
+      return;
+    }
     var preset = ctx.preset();
     var allowed = preset && preset.motion && preset.motion.allowed;
     var rec = guard("motion.recommend", function () { return CS.motion.recommend(ctx.spec); }, null);

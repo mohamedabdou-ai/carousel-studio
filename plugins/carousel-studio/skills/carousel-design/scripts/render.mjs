@@ -81,8 +81,10 @@ function validate(o) {
 }
 
 /** Fresh candidate copy only; line breaks are literal JSON \n characters in headline/sub/kicker. */
-function coverCandidates(value) {
+function coverCandidates(value, presetCount = 1) {
   if (!Array.isArray(value) || !value.length || value.length > 100) throw new LaneError("E_SCHEMA", "Covers must be a JSON array of 1 to 100 candidates.", EXIT.BLOCK);
+  if (Math.ceil(value.length * presetCount / Math.min(3, presetCount)) * 690 + 16 > 60000)
+    throw new LaneError("E_USAGE", "The preview sheet would exceed 60000 px. Split the covers file into smaller batches.", EXIT.USAGE);
   return value.map((c, i) => {
     if (!c || Array.isArray(c) || typeof c !== "object" || typeof c.headline !== "string" || !c.headline.trim()) throw new LaneError("E_SCHEMA", `Cover ${i + 1} needs a nonempty headline.`, EXIT.BLOCK);
     for (const k of Object.keys(c)) {
@@ -102,7 +104,7 @@ function checkCoverControls(spec) {
 
 function readJson(file, what) {
   if (!fs.existsSync(file)) throw new LaneError("E_USAGE", `${what} not found: ${file}`, EXIT.NOINPUT);
-  try { return JSON.parse(fs.readFileSync(file, "utf8")); } catch (e) { throw new LaneError("E_SCHEMA", `${what} is not valid JSON (${e.message})`, EXIT.DATA); }
+  try { return JSON.parse(fs.readFileSync(file, "utf8").replace(/^\uFEFF/, "")); } catch (e) { throw new LaneError("E_SCHEMA", `${what} is not valid JSON (${e.message})`, EXIT.DATA); }
 }
 
 // Older Python page builders do not embed the free contract yet. Complete the private,
@@ -195,11 +197,14 @@ function videoInfoFrom(check) {
 
 /** One page, one gate pass per preview. No QA thresholds or caller objects are changed. */
 async function coverLab(page, spec, brand, options = {}) {
-  return page.evaluate(async ({ spec, brand, options }) => {
+  const result = await page.evaluate(async ({ spec, brand, options }) => {
     const { mode = "covers", presets = [], candidates = [] } = options;
     const reg = CS.core.registry, all = reg.listPresets(), shipped = all.filter(p => p.ships === "1.0");
     const ids = !presets.length && mode === "covers" ? [spec.style.presetId.split("@")[0]] : !presets.length || presets.includes("all") ? shipped.map(p => p.id) : [...new Set(presets)];
     const previews = mode === "covers" ? candidates : [null], rows = [], pictures = [];
+    const columns = Math.min(3, Math.max(1, ids.length)), cw = mode === "covers" ? 510 : 700, ch = 690, gap = 16;
+    if (mode !== "preflight" && Math.ceil(previews.length * ids.length / columns) * ch + gap > 60000)
+      return { usageError: "The preview sheet would exceed 60000 px. Split the covers file into smaller batches." };
     const round = n => Math.round(n * 100) / 100;
     const rec = CS.motion.recommend(spec), wanted = spec.cover?.motion?.recipe || rec.recipe;
     function arrangedFields(slide, el, fit) {
@@ -269,7 +274,6 @@ async function coverLab(page, spec, brand, options = {}) {
     ranked.forEach((r, i) => r.rank = i + 1);
     const result = { rows, ranking: ranked.map(r => ({ rank: r.rank, candidate: r.candidate, preset: r.preset, ...(r.id === undefined ? {} : { id: r.id }), ...(r.label === undefined ? {} : { label: r.label }) })) };
     if (mode === "preflight") return result;
-    const columns = Math.min(3, Math.max(1, ids.length)), cw = mode === "covers" ? 510 : 700, ch = 690, gap = 16;
     const sheet = document.createElement("canvas"); sheet.width = columns * cw + gap; sheet.height = Math.ceil(rows.length / columns) * ch + gap;
     const c = sheet.getContext("2d"); c.fillStyle = "#eeeae3"; c.fillRect(0, 0, sheet.width, sheet.height);
     function text(value, x, y, width, maxLines) {
@@ -302,6 +306,8 @@ async function coverLab(page, spec, brand, options = {}) {
     result.image = btoa(binary); result.imageSize = { width: sheet.width, height: sheet.height };
     return result;
   }, { spec, brand, options });
+  if (result.usageError) throw new LaneError("E_USAGE", result.usageError, EXIT.USAGE);
+  return result;
 }
 
 async function preflight(page, spec, brand, presets) {
@@ -318,7 +324,10 @@ async function main(argv) {
   const input = readPlanSource(o.specFile, "spec");
   let spec = input.value;
   checkCoverControls(spec);
-  const candidates = o.coversFile ? coverCandidates(readJson(o.coversFile, "covers")) : null;
+  const presetCount = o.presetList.includes("all")
+    ? readJson(path.join(path.dirname(fileURLToPath(import.meta.url)), "../styles/index.json"), "presets").presets.filter(p => p.ships === "1.0").length
+    : Math.max(1, new Set(o.presetList).size);
+  const candidates = o.coversFile ? coverCandidates(readJson(o.coversFile, "covers"), presetCount) : null;
   const brand = o.brandFile ? readJson(o.brandFile, "brand") : null;
   const log = (m) => process.stderr.write(m + "\n");
   const countReport = slideCountReport(spec, brand);
@@ -357,7 +366,7 @@ async function main(argv) {
     studio = await openStudio({ browser, studioFile, timeout: o.timeoutMs });
     const { page } = studio;
     await page.evaluate(([s, b]) => window.CS.automation.setSpec(s, b), [spec, brand]);
-    if (!o.preflight) await attachCoverClip(page, path.resolve(o.specFile), spec);
+    if (!o.preflight && !o.coversFile && !o.styleSheet) await attachCoverClip(page, path.resolve(o.specFile), spec);
 
     if (o.coversFile || o.styleSheet) {
       const mode = o.coversFile ? "covers" : "style-sheet";
@@ -429,7 +438,9 @@ async function main(argv) {
       written.push({ path: "contact-sheet.png", bytes: sheet.bytes });
     }
     const outcome = coverVideoOutcome(result, o.variantList, wantsVideo);
-    outcome.errors.forEach((e) => log(`cs-error: E_VIDEO_MISSING: ${e.path}: ${e.reason} Use --video none for a still-only export.`));
+    outcome.errors.forEach((e) => log(`cs-error: E_VIDEO_MISSING: ${e.path}: ${e.reason} ` + (motion?.clip
+      ? "Fix the clip in/out points, the file or its codec, then export again."
+      : "Use --video none for a still-only export.")));
     const exitCode = outcome.failed ? EXIT.BLOCK : exportExitCode(report, result.ok, o.strict);
     const summary = { ok: result.ok && !outcome.failed, exitCode, out: outDir, specId: spec.id, files: written, skipped: result.skipped || [], video: Object.assign(videoSummary, outcome), qa: report ? { status, counts: report.counts, exitCode: report.exitCode } : null, pageErrors: studio.errors.slice(0, 5) };
     if (o.format === "text") {
