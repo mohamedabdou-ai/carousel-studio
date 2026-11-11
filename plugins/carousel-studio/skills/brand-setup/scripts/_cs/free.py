@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import re
 from html.parser import HTMLParser
+from html import unescape
 
 from . import CSError, paths
 from .text import portable_regex
@@ -142,6 +143,14 @@ class _Html(HTMLParser):
         self.tones, self.froms = tuple(art["tone"]["values"]), tuple(art["chat"]["values"])
         self.fields = tuple(doc["fields"]["allowed"])
         self.stack: list[tuple[str, bool]] = []  # (tag, carries class f-chat)
+        self.panels = []
+
+    def close_panels(self, all_open=False):
+        for p in self.panels:
+            if not p["closed"] and (all_open or p["depth"] >= len(self.stack)):
+                p["closed"] = True
+                if not p["readable"]:
+                    self.add("data-tone paints a readable panel; remove it from an empty track or decorative element")
 
     def where(self) -> str:
         line, col = self.getpos()
@@ -164,8 +173,22 @@ class _Html(HTMLParser):
                 break
             if top not in _OPTIONAL_CLOSE:
                 self.note("<%s> is not closed before </%s> (%s)" % (top, tag, self.where()))
+        self.close_panels()
+
+    def handle_entityref(self, name):
+        self.mark_readable(unescape("&" + name + ";"))
+
+    def handle_charref(self, name):
+        self.mark_readable(unescape("&#" + name + ";"))
+
+    def mark_readable(self, data):
+        if any(ch.isalnum() for ch in data):
+            for p in self.panels:
+                if not p["closed"]:
+                    p["readable"] = True
 
     def handle_data(self, data) -> None:
+        self.mark_readable(data)
         if "<" in data:
             self.add("a '<' in the text must be written &lt; (%s); an unfinished tag looks like this" % self.where())
 
@@ -182,6 +205,7 @@ class _Html(HTMLParser):
         self.add("<?...> instructions are not allowed (%s)" % self.where())
 
     def finish(self) -> None:
+        self.close_panels(True)
         for tag, _c in self.stack:
             if tag not in _OPTIONAL_CLOSE:
                 self.note("<%s> is never closed" % tag)
@@ -213,6 +237,12 @@ class _Html(HTMLParser):
         for name in ("data-size", "data-treatment", "data-from"):
             if name in values:
                 self.relations(tag, name, values)
+        if "data-tone" in values:
+            self.panels.append({"depth": len(self.stack), "readable": False, "closed": False})
+        if any(k in values for k in ("data-field", "data-icon", "data-object")):
+            for p in self.panels:
+                if not p["closed"]:
+                    p["readable"] = True
         return "f-chat" in values.get("class", "").split()
 
     def bad(self, tag, name, value, what) -> None:
@@ -498,7 +528,11 @@ class _Css:
     def declaration(self, prop: str, clean_value: str, shape_value: str, pseudo: bool) -> None:
         prop = prop.strip().lower()
         if prop not in self.props:
-            self.add(_ARABIC_PROPERTY.get(prop) or "property %s is not allowed" % prop)
+            sides = {"left": "inline-start", "right": "inline-end", "top": "block-start", "bottom": "block-end"}
+            m = re.fullmatch(r"(?:(border|padding|margin)-)?(left|right|top|bottom)", prop)
+            names = [(m[1] or "inset") + "-" + sides[m[2]]] if m else [prop + "-start", prop + "-end"] if prop in ("inset-block", "inset-inline") else []
+            hint = " Use " + " and ".join(n for n in names if n in self.props) + "." if names else " Use the logical properties listed in free-design.md."
+            self.add((_ARABIC_PROPERTY.get(prop) or "property %s is not allowed" % prop) + hint)
             return
         value, shape = clean_value.strip(), shape_value.strip()
         flat = _WS.sub(" ", shape.lower())

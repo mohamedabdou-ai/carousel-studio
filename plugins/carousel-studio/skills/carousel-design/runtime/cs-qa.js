@@ -498,6 +498,7 @@ function carryOverrides(R, spec, results) {
  * superscript alef and tatweel removed; offsets map back to the original.
  */
 
+
 const LINT_CLITICS = ["و", "ف", "ب", "ل", "ك", "ال", "وال", "بال", "كال", "فال", "لل", "ولل"];
 const LINT_BIND_LABELS = ["الخطوة", "رقم", "نصيحة", "الجزء"];
 const LTR_SKIP_KINDS = { url: 1, email: 1, handle: 1, tag: 1, phone: 1 };
@@ -663,10 +664,38 @@ function mapDigitChar(ch, to) {
 
 const mapDigits = (s, to) => s.replace(/[0-9\u0660-\u0669\u06F0-\u06F9]/g, (ch) => mapDigitChar(ch, to));
 
-/* ------------------------------------------------------- built-in checks */
-
 const BUILTIN = {};
 
+BUILTIN["invalid-codepoint"] = (text) => scanRegex(text, /[\p{Cc}]/gu, (m) => {
+  if (/^[\t\n\r]$/.test(m[0])) return null;
+  return { fix: "" };
+});
+
+BUILTIN["unassigned-codepoint"] = (text) => scanRegex(text, /[\p{Cn}\p{Cs}]/gu, () => ({}));
+
+function specStrings(spec) {
+  const out = [];
+  function walk(v, path, slide) {
+    if (typeof v === "string") { out.push({ text: v, key: path, slide }); return; }
+    if (!v || typeof v !== "object") return;
+    Object.keys(v).forEach((k) => {
+
+      if (!path && (k === "qa" || k === "frozen")) return;
+      const sid = path === "/slides" && v[k] ? v[k].id : slide;
+      walk(v[k], path + "/" + k.replace(/~/g, "~0").replace(/\//g, "~1"), sid);
+    });
+  }
+  walk(spec, "", undefined);
+  return out;
+}
+
+function cliticPrefix(s) { return /^[وف]?(?:بال|كال|ال|لل|[بلك])$/.test(foldKey(s)); }
+function connectorTatweels(text) {
+  return text.replace(/(^|[^\p{L}\p{M}\u0640])([وفبلكال\u064B-\u065F\u0670]+)\u0640(?=["'«“]*[A-Za-zÀ-ɏ0-9\u0660-\u0669@#%\u066A$€£])/gu,
+    (m, edge, prefix) => cliticPrefix(prefix) ? edge + prefix : m);
+}
+
+/* ------------------------------------------------------- built-in checks */
 function scanRegex(text, re, make) {
   const out = [];
   let m;
@@ -699,6 +728,7 @@ BUILTIN["mixed-digits"] = (text, ctx) => {
 };
 
 BUILTIN["percent-sign"] = (text, ctx) => {
+
   /* Two ways a percent sign can be wrong (CONTRACT 7.2 N1.percent): it does not belong to the digits beside it (% next to
    * Arabic-Indic digits, ٪ next to Western ones), or it is not the sign of the post's digit system. The second wins when both apply. */
   const expected = ctx.digits || "western";
@@ -706,7 +736,7 @@ BUILTIN["percent-sign"] = (text, ctx) => {
   const masked = maskLtr(text);
   const found = new Map();
   const collect = (digits, bad, good) => {
-    const re = new RegExp(digits + "[ \u00A0]?" + bad + "|" + bad + "[ \u00A0]?" + digits, "g");
+    const re = new RegExp(digits + "[ \u00A0\u2009\u202F]?" + bad + "|" + bad + "[ \u00A0\u2009\u202F]?" + digits, "g");
     scanRegex(masked, re, (m) => {
       const i = m[0].indexOf(bad);
       found.set(m.index + i, { start: m.index + i, end: m.index + i + 1, original: bad, fix: good });
@@ -782,9 +812,13 @@ BUILTIN["programmatic-tatweel"] = (text, ctx) => {
   const kw = ctx.kashidaWord ? foldMarks(ctx.kashidaWord).text : "";
   const isL = new RegExp("[" + AR_L + "]");
   return scanRegex(text, /\u0640+/g, (m) => {
+    if (m[0].length === 1) {
+      const head = text.slice(0, m.index + 1).replace(/[\u064B-\u065F\u0670]/g, ""), tail = text.slice(m.index + 1);
+      if (/(?:^|[^\p{L}\p{M}\u0640])[وف]?(?:بال|كال|ال|لل|[بلك])\u0640$/u.test(head) &&
+          /^["'«“]*[A-Za-zÀ-ɏ0-9\u0660-\u0669@#%\u066A$\u20AC\u00A3]/.test(tail)) return null;
+    }
     const prev = text.charAt(m.index - 1);
     const next = text.charAt(m.index + m[0].length);
-    if (isL.test(prev) && /[A-Za-z0-9$\u20AC\u00A3]/.test(next)) return null;
     let a = m.index;
     let b = m.index + m[0].length;
     const inWord = (c) => isL.test(c) || c === "\u0640" || isMarkCode(c.charCodeAt(0));
@@ -802,31 +836,17 @@ BUILTIN["repeated-punct"] = (text) => scanRegex(text, /([\u061F!\u060C\u061B])\1
 
 BUILTIN["lam-latin-stranded"] = (text) => {
   const re = new RegExp(
-    "(^|[^" + AR_L + "])([وف]?(?:بال|كال|ال|لل|[بلك]))\\u0640([ \\t\\u00A0]+)(?=[A-Za-z0-9$\\u20AC\\u00A3])",
+    "(^|[^" + AR_L + "])([وفبلكال\\u064B-\\u065F\\u0670]+)\\u0640([ \\t\\u00A0\\u2009\\u202F]+)(?=[\"'«“]*[A-Za-zÀ-ɏ0-9\\u0660-\\u0669@#%٪$\\u20AC\\u00A3])",
     "g"
   );
   return scanRegex(text, re, (m) => {
+    if (!cliticPrefix(m[2])) return null;
     const keep = m[1].length + m[2].length + 1;
     return { start: m.index + keep, end: m.index + m[0].length, original: m[3], fix: "" };
   });
 };
 
-BUILTIN["number-noun-unbound"] = (text, ctx) => {
-  const toks = TX().tokenize(text);
-  const off = cpOffsets(text);
-  const labels = ctx.bindLabels || labelMatcher(LINT_BIND_LABELS, ctx.clitics);
-  const out = [];
-  for (let i = 0; i + 2 < toks.length; i++) {
-    const a = toks[i];
-    const s = toks[i + 1];
-    const b = toks[i + 2];
-    if (s.kind !== "space" || s.text !== " ") continue;
-    const numNoun = a.kind === "number" && b.kind === "ar";
-    const labelNum = a.kind === "ar" && labels.has(a.text) && b.kind === "number";
-    if (numNoun || labelNum) out.push({ start: off[s.start], end: off[s.end], original: " ", fix: "\u00A0" });
-  }
-  return out;
-};
+BUILTIN["number-noun-unbound"] = () => []; // The renderer binds plain copy.
 
 BUILTIN["emoji-edge"] = (text) => {
   const out = [];
@@ -921,6 +941,7 @@ function lintText(text, opts) {
       if (rule.kind === "word-map" && isObj(rule.map)) {
         Object.keys(rule.map).forEach((key) => {
           matchEntries([{ id: rule.id, text: key, match: "word", clitics: rule.clitics === true }], text, ctx).forEach((m) => {
+            if (Array.isArray(rule.exceptions) && rule.exceptions.some((s) => m.text.normalize("NFC") === s.normalize("NFC"))) return;
             const tok = foldKey(m.text);
             const k = foldKey(key);
             const prefix = tok.length >= k.length && tok.slice(tok.length - k.length) === k ? tok.slice(0, tok.length - k.length) : "";
@@ -970,8 +991,9 @@ function lintText(text, opts) {
     });
   }
 
+  const offsets = cpOffsets(text), ids = issues.length ? TX().tokenize(text).filter(t => ["url", "email", "handle", "tag", "phone"].includes(t.kind)) : [];
   return issues
-    .filter((it) => !allow.has(foldKey(it.original).toLowerCase().trim()))
+    .filter((it) => /^ORTHO-ENC-00[4-8]$/.test(it.rule) || !ids.some(t => it.start < offsets[t.end] && it.end > offsets[t.start]) && !allow.has(foldKey(it.original).toLowerCase().trim()))
     .sort((a, b) => a.start - b.start || a.end - b.end);
 }
 
@@ -989,6 +1011,22 @@ function applyFixes(text, issues) {
   });
   return out;
 }
+
+function gateInput(value) {
+  if (typeof value === "string") return value.normalize("NFC").replace(/[\u00A0\u2009\u202F]/g, " ")
+    .replace(/[\u00AD\u061C\u200B\u200E\u200F\u202A-\u202E\u2060\u2066-\u2069\uFEFF]/g, "")
+    .replace(/[\p{Cc}\p{Cn}\p{Cs}]/gu, ch => /[\t\n\r]/.test(ch) ? ch : "");
+  if (Array.isArray(value)) return value.map(gateInput);
+  if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([k,v]) => [k,gateInput(v)]));
+  return value;
+}
+const rawContext = buildContext;
+buildContext = function(input, opts) {
+  const ctx = rawContext(input, opts), raw = ctx.spec;
+  ctx.rawSpec = raw; ctx.spec = {...raw};
+  ["captionPack", "hook"].forEach(k => { if (raw[k] !== undefined) ctx.spec[k] = gateInput(raw[k]); });
+  ctx.slides = gateInput(ctx.slides); ctx.spec.slides = ctx.slides; return ctx;
+};
 
   /* ---- file: gates-copy.js ---- */
 /* Copy gates; thresholds and severities come from qa-rules.json. */
@@ -1538,6 +1576,7 @@ function gateC9(ctx, out) {
  * chrome, SRC1 sources, SEN1 sensitivities and A1 AI imagery (the spec-level flags).
  */
 
+
 /* Built-in checks that N1 and B1 own; O1 leaves them out so nothing is
  * reported twice when ortho.json also lists them. */
 const O1_SKIP_CHECKS = ["mixed-digits", "persian-digits", "percent-sign", "lam-latin-stranded", "number-noun-unbound"];
@@ -1550,9 +1589,20 @@ const bindLabelSet = (bundleObj) =>
 /* ------------------------------------------------------------------- O1 */
 
 function gateO1(ctx, out) {
+  if (ctx.rawSpec) ctx = Object.assign({}, ctx, { spec: ctx.rawSpec, slides: Array.isArray(ctx.rawSpec.slides) ? ctx.rawSpec.slides.filter(isObj) : [] });
   if (!active(ctx, "O1.ortho") && !active(ctx, "O1.deny-marker") && !active(ctx, "O1.warn-marker")) return;
   const allow = allowSet(ctx.brand && ctx.brand.voice && ctx.brand.voice.allow);
   const skip = new Set(O1_SKIP_CHECKS);
+  const encoding = ((ctx.bundle.ortho || {}).rules || []).filter((r) => /^ORTHO-ENC-00[4-8]$/.test(r.id));
+  specStrings(ctx.spec).forEach((f) => {
+    lintText(f.text, { ortho: { rules: encoding }, dialectData: null }).forEach((it) => {
+      if (!active(ctx, "O1.ortho")) return;
+      emit(ctx, out, "O1.ortho", { slide: f.slide, el: f.key, sev: it.sev,
+        rule: "O1." + ruleSlug(it.rule), msg: it.msg,
+        vars: { original: it.original, fix: it.fix || "", text: it.original } });
+    });
+  });
+  encoding.forEach((r) => skip.add(r.id));
   lintFields(ctx).forEach((f) => {
     const slide = f.slide ? ctx.slides.find((s) => s.id === f.slide) : null;
     const plain = lintPlain(f);
@@ -1636,9 +1686,7 @@ function gateB1Text(ctx, out) {
         emit(ctx, out, "B1.stranded-lam", Object.assign({ vars: { text: plain.slice(Math.max(0, it.start - 4), it.end + 12) } }, base));
       });
     }
-    if (active(ctx, "B1.unbound-pair") && f.key.indexOf("caption.") !== 0 && BUILTIN["number-noun-unbound"](plain, { bindLabels: labels }).length) {
-      emit(ctx, out, "B1.unbound-pair", base);
-    }
+    // Number/noun bindings are measured in the rendered scope, never in stored copy.
   });
 }
 
@@ -1931,6 +1979,7 @@ function gateA1(ctx, out) {
  * aria-hidden (background, decoration) is never measured.
  */
 
+
 const ZONE_NAMES = {
   "top-left": { ar: "أعلى اليسار", en: "top-left" },
   "top-right": { ar: "أعلى اليمين", en: "top-right" },
@@ -1945,8 +1994,9 @@ const chromeBand = (S, el, p) => el.closest(".cs-header") ? p.header :
   p.innerFooter && S.tokens && S.tokens.art && (p.coverTypes || ["cover", "poster"]).indexOf(S.type) < 0 ? p.innerFooter : p.footer;
 const INVISIBLE_CODES = new Set([0x00a0, 0x200b, 0x200c, 0x200d, 0x200e, 0x200f, 0x2060, 0xfe0f, 0x0a, 0x09, 0x20, 0x202f]);
 
-/* ------------------------------------------------------------ colour maths */
 
+
+/* ------------------------------------------------------------ colour maths */
 const SRGB_LUT = (() => {
   const t = new Float64Array(256);
   for (let i = 0; i < 256; i++) {
@@ -2019,8 +2069,9 @@ function chromaOf(c) {
   return (mx - mn) / 255 / 2.5;
 }
 
-/* ------------------------------------------------------------- DOM helpers */
 
+
+/* ------------------------------------------------------------- DOM helpers */
 function hiddenWithin(el, root) {
   for (let e = el; e; e = e.parentElement) {
     if (e.getAttribute && e.getAttribute("aria-hidden") === "true") return true;
@@ -2084,30 +2135,35 @@ function collectTexts(S) {
   const walker = document.createTreeWalker(S.el, NodeFilter.SHOW_TEXT, null);
   let n;
   while ((n = walker.nextNode())) {
-    const v = n.nodeValue;
+    const v = n.nodeValue.replace(/[\u00AD\u061C\u200B\u200E\u200F\u202A-\u202E\u2060\u2066-\u2069\uFEFF\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]/g, "");
     if (!/\S/.test(v)) continue;
     const el = n.parentElement;
     if (!el || /^(STYLE|SCRIPT|TEMPLATE)$/.test(el.tagName) || hiddenWithin(el, S.el)) continue;
     let it = items.get(el);
     if (!it) {
-      it = { el, key: domKey(S, el), text: "", rects: [], cs: getComputedStyle(el) };
+      it = { el, key: domKey(S, el), text: "", rects: [], inkRects: [], cs: getComputedStyle(el) };
       items.set(el, it);
     }
     // Inline boxes follow the font's content area; the line box is what the
     // layout reserves, so a taller content area is trimmed to the line height.
     const lh = parseFloat(it.cs.lineHeight);
     const range = document.createRange();
-    range.selectNodeContents(n);
+    const chunks = n.nodeValue.matchAll(/[^\s\u00AD\u061C\u200B\u200E\u200F\u202A-\u202E\u2060\u2066-\u2069\uFEFF\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]+/gu);
     const rects = [];
+    for (const chunk of chunks) {
+      range.setStart(n, chunk.index); range.setEnd(n, chunk.index + chunk[0].length);
     Array.prototype.forEach.call(range.getClientRects(), (r) => {
       if (r.width <= 0.5 || r.height <= 0.5) return;
       const rr = S.rel(r);
+        const ink = glyphInk(S, it.cs, chunk[0], rr);
+        if (ink) it.inkRects.push(ink);
       if (lh > 0 && rr.h > lh) {
         rr.y += (rr.h - lh) / 2;
         rr.h = lh;
       }
       rects.push(rr);
     });
+    }
     if (!rects.length) {
       if (!it.text) items.delete(el);
       continue;
@@ -2118,6 +2174,7 @@ function collectTexts(S) {
   S._texts = Array.from(items.values()).map((it) => {
     it.chrome = !!it.el.closest(".cs-header, .cs-footer");
     const roleEl = it.el.closest("[data-role]");
+
     /* a side label sits inside the "sides" slot (role body) but is set small by design */
     it.role = it.chrome ? "micro" : it.el.closest(".cs-side-label") ? "small" : roleEl ? roleEl.getAttribute("data-role") : "";
     it.fontPx = parseFloat(it.cs.fontSize) || 0;
@@ -2150,8 +2207,9 @@ function groupLines(rects) {
   });
 }
 
-/* ------------------------------------------------------------------- D1 */
 
+
+/* ------------------------------------------------------------------- D1 */
 function gateD1Render(rc, out) {
   if (!active(rc, "D1.render-size")) return;
   rc.S.forEach((S) => {
@@ -2163,12 +2221,14 @@ function gateD1Render(rc, out) {
   });
 }
 
-/* ------------------------------------------------------------------- D2 */
 
+
+/* ------------------------------------------------------------------- D2 */
 function gateD2(rc) {
   const out = rc.out;
   const tolOver = param(rc, "D2.overflow").tolerancePx;
   rc.S.forEach((S) => {
+    gatePaintedLayout(rc, S);
     const texts = collectTexts(S);
     const reported = new Set();
     const once = (id, key, extra) => {
@@ -2186,7 +2246,7 @@ function gateD2(rc) {
         }
       });
       texts.forEach((it) => {
-        const slot = it.chrome || it.el.closest(".cs-side-label") ? null : it.el.closest("[data-slot][data-kind]"); /* a side label rides the edge of its card by design */
+        const slot = it.chrome || it.el.closest(".cs-side-label") ? null : it.el.closest("[data-slot][data-kind]");
         if (!slot || !S.el.contains(slot) || slot.getAttribute("data-kind") === "media") return;
         const sr = S.rel(slot.getBoundingClientRect());
         if (sr.w <= 0 || sr.h <= 0) return;
@@ -2293,8 +2353,79 @@ function gateD2(rc) {
   }
 }
 
-/* ------------------------------------------------------------------- D3 */
+function paintVisible(el, root) {
+  if (el.closest('.cs-bg,.cs-decor,.cs-marks,.cs-header,.cs-footer,defs,clipPath,mask,symbol')) return false;
+  for (let e = el; e; e = e.parentElement) {
+    const c = getComputedStyle(e);
+    if (c.display === "none" || c.visibility === "hidden" || +c.opacity === 0) return false;
+    if (e === root) break;
+  }
+  return true;
+}
 
+function paintedBox(el) {
+  const c = getComputedStyle(el), bg = parseCssColor(c.backgroundColor);
+  return bg && bg.a > 0 || c.backgroundImage && c.backgroundImage !== "none" ||
+  ["Top", "Right", "Bottom", "Left"].some(s => parseFloat(c["border" + s + "Width"]) > 0 && parseCssColor(c["border" + s + "Color"])?.a > 0);
+}
+
+function gatePaintedLayout(rc, S) {
+  if (!["D2.text-padding", "D2.block-gap", "D2.clipped-paint"].some(id => active(rc, id, S.slide))) return;
+  const texts = collectTexts(S).filter(it => !it.chrome), seen = new Set();
+  const emitOnce = (id, el) => {
+    const key = domKey(S, el), k = id + key;
+    if (!active(rc, id, S.slide) || seen.has(k)) return;
+    seen.add(k); emit(rc, rc.out, id, { slide: S.id, el: key, vars: { el: key } });
+  };
+  const padRule = param(rc, "D2.text-padding"), gapRule = param(rc, "D2.block-gap"), p = param(rc, "D2.clipped-paint");
+  const unit = parseFloat(getComputedStyle(S.el).getPropertyValue("--cs-unit")) || padRule.unit || gapRule.unit || p.tolerancePx;
+  const padding = (padRule.minUnits - padRule.toleranceUnits) * unit, gap = (gapRule.minUnits - gapRule.toleranceUnits) * unit;
+  const containers = new Set();
+  texts.forEach(it => {
+    // A compact text tag paints emphasis; it is not a body panel.
+    if ((padRule.compactRoles || []).includes(it.role)) return;
+    for (let e = it.el; e && e !== S.el; e = e.parentElement) {
+      if (e.matches('mark,.cs-em,.w,bdi,.cs-content')) continue;
+      if (!paintedBox(e)) continue;
+      const b = S.rel(e.getBoundingClientRect()), ink = it.inkRects.length ? it.inkRects : it.rects;
+      if (ink.some(r => Math.min(r.x - b.x, r.y - b.y, b.x + b.w - r.x - r.w, b.y + b.h - r.y - r.h) < padding)) emitOnce("D2.text-padding", it.el);
+      containers.add(e); break;
+    }
+  });
+  const list = Array.from(containers);
+  list.forEach((a, i) => list.slice(i + 1).forEach(b => {
+    if (a.parentElement !== b.parentElement) return;
+    const frame = getComputedStyle(a.parentElement);
+    // Adjoining cells belong to one enclosing frame; their internal padding still counts.
+    if (["Top", "Right", "Bottom", "Left"].some(s => parseFloat(frame["border" + s + "Width"]) > 0 && parseCssColor(frame["border" + s + "Color"])?.a > 0)) return;
+    const x = S.rel(a.getBoundingClientRect()), y = S.rel(b.getBoundingClientRect());
+    const dx = Math.max(x.x, y.x) - Math.min(x.x + x.w, y.x + y.w), dy = Math.max(x.y, y.y) - Math.min(x.y + x.h, y.y + y.h);
+    if (dx < 0 && dy < gap || dy < 0 && dx < gap) emitOnce("D2.block-gap", a);
+  }));
+  const tol = unit * p.toleranceShare;
+  S.el.querySelectorAll('.cs-content *').forEach(e => {
+    if (!paintVisible(e, S.el)) return;
+    const c = getComputedStyle(e), svg = e.namespaceURI === "http://www.w3.org/2000/svg";
+    const stroke = svg && parseCssColor(c.stroke)?.a > 0 && +c.strokeOpacity > 0 ? parseFloat(c.strokeWidth) || 0 : 0;
+    const shape = svg && /^(path|circle|ellipse|rect|line|polyline|polygon|use)$/.test(e.localName);
+    const text = texts.find(it => it.el === e);
+    const glyph = text && (parseCssColor(c.webkitTextFillColor || c.color)?.a > 0 || parseFloat(c.webkitTextStrokeWidth) > 0 || c.backgroundClip === "text" || c.webkitBackgroundClip === "text");
+    if (!glyph && !paintedBox(e) && !e.matches('img,video') && !(shape && (stroke || parseCssColor(c.fill)?.a > 0 && +c.fillOpacity > 0))) return;
+    const rs = glyph ? text.inkRects.length ? text.inkRects : text.rects : [S.rel(e.getBoundingClientRect())];
+    const mt = stroke && e.getScreenCTM(), sw = mt ? stroke * (c.vectorEffect === "non-scaling-stroke" ? 1 : Math.max(Math.hypot(mt.a, mt.b), Math.hypot(mt.c, mt.d))) / S.scale / 2 : 0;
+    for (let a = glyph ? e : e.parentElement; a; a = a.parentElement) {
+      const ac = getComputedStyle(a), clipX = /^(hidden|clip|scroll|auto)$/.test(ac.overflowX), clipY = /^(hidden|clip|scroll|auto)$/.test(ac.overflowY);
+      if (clipX || clipY) {
+        const b = S.rel(a.getBoundingClientRect()), left = parseFloat(ac.borderLeftWidth) || 0, top = parseFloat(ac.borderTopWidth) || 0;
+        b.x += left; b.y += top; b.w -= left + (parseFloat(ac.borderRightWidth) || 0); b.h -= top + (parseFloat(ac.borderBottomWidth) || 0);
+        if (rs.some(r => r.w > 0 && r.h > 0 && (clipX && (r.x - sw < b.x - tol || r.x + r.w + sw > b.x + b.w + tol) || clipY && (r.y - sw < b.y - tol || r.y + r.h + sw > b.y + b.h + tol)))) { emitOnce("D2.clipped-paint", e); break; }
+      }
+      if (a === S.el) break;
+    }
+  });
+}
+
+/* ------------------------------------------------------------------- D3 */
 function gateD3(rc) {
   const out = rc.out;
   rc.S.forEach((S) => {
@@ -2330,12 +2461,24 @@ function gateD3(rc) {
 
 /* ------------------------------------------------------------------- D4 */
 
+
 /** Backgrounds under an element from the DOM: { kind, colors:[rgb] }. */
 function domBackground(el, S) {
   let translucent = [];
   let e = el;
   for (;;) {
     const c = getComputedStyle(e);
+    if (e === S.el) {
+      const layer = S.el.querySelector('.cs-bg');
+      if (layer && layer !== el) {
+        const lc = getComputedStyle(layer), col = parseCssColor(lc.backgroundColor);
+        if (layer.querySelector('img,video') || /url\(/.test(lc.backgroundImage)) return { kind: "image", colors: [] };
+        if (col?.a > 0 || /gradient/.test(lc.backgroundImage)) {
+          const under = domBackground(layer, { el: layer, tokens: S.tokens });
+          return { kind: under.kind, colors: under.colors.map(bg => translucent.reduceRight((acc, t) => colorOver(t, acc), bg)) };
+        }
+      }
+    }
     const bg = parseCssColor(c.backgroundColor);
     const img = c.backgroundImage || "none";
     if (/url\(/.test(img)) return { kind: "image", colors: [] };
@@ -2410,6 +2553,7 @@ async function measureSlide(S, decile) {
   }
   const items = [];
   collectTexts(S).forEach((it) => {
+
     /* the oversized ghost numeral is ornament behind the copy (the item's title carries its meaning): it is meant to be faint */
     if (S.el.getAttribute("data-variant") === "ghost-number" && it.el.closest(".cs-ord")) return;
     const fg0 = parseCssColor(it.cs.color);
@@ -2485,8 +2629,9 @@ async function gateD4(rc) {
   }
 }
 
-/* ------------------------------------------------------------------- D5 */
 
+
+/* ------------------------------------------------------------------- D5 */
 function firstFamily(cssFamily) {
   const m = /^\s*(?:"([^"]+)"|'([^']+)'|([^,]+))/.exec(cssFamily || "");
   return m ? (m[1] || m[2] || m[3] || "").trim() : "";
@@ -2534,6 +2679,7 @@ function fontIdByFamily(rc, family) {
     try {
       if (firstFamily(reg.fontCss(ids[i])) === family) return ids[i];
     } catch (e) {
+
       /* unknown id */
     }
   }
@@ -2586,7 +2732,7 @@ function gateD5(rc) {
         if (bad && once("D5.text-opacity", it.key)) emit(rc, out, "D5.text-opacity", base);
       }
 
-      if (it.text.indexOf("\u0640") >= 0) {
+      if (it.text.indexOf("\u0640") >= 0 && connectorTatweels(it.el.closest('[data-cs-bind="clitic"]')?.textContent || it.text).includes("\u0640")) {
         it.text.split(/\s+/).forEach((w) => {
           if (w.indexOf("\u0640") < 0) return;
           if (/^[^\u0640]*[\u0644\u0628\u0643]\u0640([^\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\u0640][^\u0640]*)?$/.test(w)) return; // ORTHO-BIDI-001: a clitic before Latin, a digit or a mark
@@ -2634,6 +2780,7 @@ function gateD5(rc) {
               });
             }
           } catch (e) {
+
             /* font not in the registry: nothing to compare against */
           }
         }
@@ -2663,6 +2810,7 @@ function gateD5(rc) {
 
 /* ------------------------------------------------------------------- D6 */
 
+
 /** Slots whose visual lines D6.lines counts, by slide type (default: body). */
 const LINE_SLOTS = {
   cover: ["headline"],
@@ -2679,6 +2827,7 @@ function slotWordRects(S, slotName, skipAnchor) {
   const words = slot.querySelectorAll(".w");
   const rects = [];
   Array.prototype.forEach.call(words, (w) => {
+
     /* a leading numeral set as a block-level anchor ("number" cover, "big-number" re-hook) is a graphic, not a line of copy */
     const run = skipAnchor && w.getAttribute("data-w") === "0" && (w.querySelector('.cs-ltr[data-run="number"]') || w.closest('.cs-ltr[data-run="number"]'));
     if (run && run.textContent.trim() === w.textContent.trim() && getComputedStyle(run).display === "block") return;
@@ -2694,6 +2843,21 @@ function gateD6(rc) {
   rc.S.forEach((S) => {
     const texts = collectTexts(S);
     const cover = S.type === "cover" || S.type === "poster";
+    if (active(rc, "D6.orphan-connector", S.slide)) {
+      const p = param(rc, "D6.orphan-connector"), checked = new Set();
+      S.el.querySelectorAll('.cs-content [data-slot][data-kind="text"]').forEach(slot => {
+        const key = domKey(S, slot), words = Array.from(slot.querySelectorAll('.w'));
+        if (checked.has(key) || hiddenWithin(slot, S.el)) return;
+        checked.add(key);
+        const rects = words.map((w, i) => Object.assign(S.rel(w.getBoundingClientRect()), { text: w.textContent, order: i })).filter(r => r.w > 0 && r.h > 0);
+        const lines = groupLines(rects);
+        const orphan = lines.some((line, i) => {
+          const last = line.rects.reduce((a, b) => a.order > b.order ? a : b), t = last.text.replace(/[ً-ٰٟ]/g, '');
+          return /^[\u0621-\u064A]+$/.test(t) && (t.length <= p.maxLetters || p.connectors.includes(t)) && (i < lines.length - 1 || line.words === 1 && lines.length > 1);
+        });
+        if (orphan) emit(rc, out, "D6.orphan-connector", { slide: S.id, el: key, vars: { el: key } });
+      });
+    }
     texts.forEach((it) => {
       if (hasArabic(it.text)) families.add(firstFamily(it.cs.fontFamily));
     });
@@ -2778,8 +2942,9 @@ function gateD6(rc) {
   }
 }
 
-/* ------------------------------------------------------------------- D7 */
 
+
+/* ------------------------------------------------------------------- D7 */
 function gateD7(rc) {
   const out = rc.out;
   const t = rc.tokens;
@@ -2813,6 +2978,7 @@ function gateD7(rc) {
 
 /* ------------------------------------------------------------------- T1 */
 
+
 /** Hero size and local contrast of a cover at thumbnail size. */
 async function thumbnailOf(slideEl, tokens, ctxLike) {
   const spec = (ctxLike && ctxLike.spec) || { canvas: {}, slides: [] };
@@ -2844,18 +3010,37 @@ async function gateT1(rc) {
   }
 }
 
-/* ------------------------------------------------------- B1 (rendered) */
 
+
+/* ------------------------------------------------------- B1 (rendered) */
 function gateB1Rendered(rc) {
   const out = rc.out;
   if (rc.dialect === "en") return;
   rc.S.forEach((S) => {
     const reported = new Set();
+    if (active(rc, "B1.unbound-pair", S.slide)) {
+      const labels = bindLabelSet(rc.bundle), number = /^[0-9٠-٩]+(?:[.,٫][0-9٠-٩]+)*[%٪]?$/;
+      S.el.querySelectorAll('.cs-content [data-slot][data-kind="text"]').forEach(slot => {
+        const words = Array.from(slot.querySelectorAll('.w'));
+        words.forEach((a, i) => {
+          const b = words[i + 1]; if (!b) return;
+          const x = a.textContent.trim(), y = b.textContent.trim();
+          const pair = number.test(x) && /^[\u0621-\u064A]/.test(y) || labels.has(x) && number.test(y) || /^[A-Za-z][A-Za-z0-9._-]*$/.test(x) && number.test(y);
+          if (!pair) return;
+          const ra = S.rel(a.getBoundingClientRect()), rb = S.rel(b.getBoundingClientRect()), key = domKey(S, slot);
+          if (Math.abs(ra.y + ra.h / 2 - rb.y - rb.h / 2) > Math.min(ra.h, rb.h) / 2 && !reported.has(key)) {
+            reported.add(key); emit(rc, out, "B1.unbound-pair", { slide: S.id, el: key });
+          }
+        });
+      });
+    }
     if (active(rc, "B1.isolation", S.slide)) {
       Array.prototype.forEach.call(S.el.querySelectorAll(".cs-ltr"), (run) => {
         if (hiddenWithin(run, S.el)) return;
         const rects = Array.prototype.filter.call(run.getClientRects(), (r) => r.width > 0.5 && r.height > 0.5).map((r) => S.rel(r));
-        if (rects.length > 1 && groupLines(rects).length > 1) {
+        // A phrase may wrap inside its isolate; atomic URLs/numbers may not.
+        const atomic = run.getAttribute('data-run') !== 'latin' || !/[ \u00A0]/.test(run.textContent);
+        if (atomic && rects.length > 1 && groupLines(rects).length > 1) {
           const key = domKey(S, run);
           if (!reported.has(key + run.textContent)) {
             reported.add(key + run.textContent);
@@ -2891,8 +3076,9 @@ function gateB1Rendered(rc) {
   });
 }
 
-/* ------------------------------------------------------------ entry point */
 
+
+/* ------------------------------------------------------------ entry point */
 async function runRenderedGates(input, opts) {
   opts = opts || {};
   const base = buildContext(input, opts);
@@ -2940,7 +3126,7 @@ async function runRenderedGates(input, opts) {
  * { data, width, height } objects, so the same code runs in the Studio and
  * in tests.
  */
-
+/* Pixel comparisons and painted glyph bounds for QA. */
 function pixelsOf(src) {
   if (!src) throw qaError("E_USAGE", "metrics need an image");
   if (src.data && src.width && src.height) return src;
@@ -2950,6 +3136,7 @@ function pixelsOf(src) {
   }
   throw qaError("E_USAGE", "unsupported image type for metrics");
 }
+
 
 /** Peak signal-to-noise ratio over the RGB channels, in dB (99 when identical). */
 function psnrOf(a, b) {
@@ -2978,6 +3165,7 @@ function grayOf(img) {
   }
   return g;
 }
+
 
 /** Mean SSIM of the luma channel over 8x8 blocks (1 when identical). */
 function ssimOf(a, b) {
@@ -3025,6 +3213,7 @@ function ssimOf(a, b) {
   return blocks ? total / blocks : 1;
 }
 
+
 /** V1 loop check: worst SSIM and PSNR of (frame 0 vs poster) and (last frame
  *  vs frame 0). Thresholds come from the V1.loop check when rules are loaded. */
 function loopCheckOf(frame0, last, poster) {
@@ -3035,6 +3224,7 @@ function loopCheckOf(frame0, last, poster) {
     ssimMin = p.ssim;
     psnrMin = p.psnr;
   } catch (e) {
+
     /* rules not registered: use the platform defaults above */
   }
   const pairs = [[frame0, poster], [last, frame0]];
@@ -3045,6 +3235,16 @@ function loopCheckOf(frame0, last, poster) {
     psnr = Math.min(psnr, psnrOf(p[0], p[1]));
   });
   return { ssim: Math.round(ssim * 100000) / 100000, psnr: Math.round(psnr * 100) / 100, ok: ssim >= ssimMin && psnr >= psnrMin };
+}
+
+function glyphInk(S, c, text, r) {
+  const g = S._ink || (S._ink = document.createElement("canvas").getContext("2d"));
+  g.font = c.fontStyle + " " + c.fontWeight + " " + c.fontSize + " " + c.fontFamily;
+  g.direction = c.direction; g.textAlign = "left";
+  const m = g.measureText(text);
+  if (!Number.isFinite(m.fontBoundingBoxAscent) || !Number.isFinite(m.actualBoundingBoxAscent)) return r;
+  return { x: r.x - m.actualBoundingBoxLeft, y: r.y + m.fontBoundingBoxAscent - m.actualBoundingBoxAscent,
+    w: m.actualBoundingBoxLeft + m.actualBoundingBoxRight, h: m.actualBoundingBoxAscent + m.actualBoundingBoxDescent };
 }
 
   /* ---- file: mp4.js ---- */
@@ -3669,6 +3869,7 @@ function runExportGates(input, opts) {
  * spec, so a result only needs its rule and element key (the fields the
  * qaResult schema allows).
  */
+/* Deterministic text repairs and QA overrides. */
 
 const TEXT_FIX_KINDS = { digits: 1, bind: 1, ortho: 1 };
 const KIND_BUILTINS = { bind: ["lam-latin-stranded", "number-noun-unbound"] };
@@ -3684,7 +3885,7 @@ function fixKindOf(R, f) {
 /** Can CS.qa.autofix repair this finding? */
 function isAutofixable(f) {
   const R = loadRules();
-  if (!f || f.overridden) return false;
+  if (!f || f.overridden || /^s[0-9]{2}\.free(?:-edit)?\./.test(f.el || "")) return false;
   const kind = fixKindOf(R, f);
   if (!kind || !TEXT_FIX_KINDS[kind]) return false;
   if (f.gate === "O1" && R.checks[f.rule] === undefined) {
@@ -3695,46 +3896,40 @@ function isAutofixable(f) {
   return true;
 }
 
-function fixPasses(text, names, ctx) {
+function copyPointer(key) {
+  if (!key.startsWith("/")) return true;
+  const slide = /^\/slides\/[0-9]+\//.test(key), p = key.slice(1).replace(/^slides\/[0-9]+\//, "").replace(/\//g, ".");
+  return /^(captionPack\.(firstLine|keywordLine|body|cta|(perSlide|alt|hashtags)\.[0-9]+)|hook\.(cover|text|slide2))$/.test(p) || slide && /^(kicker|headline|sub|title|body|bridge|attribution|quote|bullets\.[0-9]+|sides\.[0-9]+\.(label|text)|cta\.text|number\.(value|unit)|items\.[0-9]+\.(title|text|value)|demo\.(caption|lines\.[0-9]+\.text)|visual\.anchor\.(word|unit|captions\.[0-9]+|chart\.values\.[0-9]+\.label|mock\.(title|caption|stamp|lines\.[0-9]+\.text|items\.[0-9]+)))$/.test(p);
+}
+
+function fixText(text, kinds, fc) {
   let cur = text;
-  for (let pass = 0; pass < 3; pass++) {
-    const issues = [];
-    names.forEach((n) => {
-      BUILTIN[n](cur, ctx).forEach((it) => issues.push(Object.assign({ autofix: it.fix !== undefined }, it)));
-    });
-    const next = applyFixes(cur, issues);
-    if (next === cur) break;
-    cur = next;
+  const opts = { bundle: fc.bundle, dialect: fc.dialect, digits: fc.digits, allowSet: fc.allow,
+    skip: new Set(O1_SKIP_CHECKS), kashidaWord: fc.kashidaWord };
+  for (let pass = 0; pass < 4; pass++) {
+    const before = cur, all = kinds.has("ortho") ? lintText(cur, opts) : [];
+    let repairs = all.filter(i => i.autofix && /^ORTHO-ENC-/.test(i.rule) && (!fc.encodingOnly || /^ORTHO-ENC-00[4-8]$/.test(i.rule)));
+    if (!repairs.length && !fc.encodingOnly) {
+      if (BUILTIN["unassigned-codepoint"](cur, {}).length || all.some(i => i.rule === "ORTHO-ENC-003")) break;
+      if (kinds.has("bind") || kinds.has("ortho")) {
+        KIND_BUILTINS.bind.forEach(n => BUILTIN[n](cur, fc).forEach(i => repairs.push({...i, autofix: true})));
+      }
+      if (!repairs.length) {
+        if (kinds.has("digits")) cur = TX().digits.convert(cur, fc.digits);
+        if (kinds.has("ortho")) repairs = lintText(cur, opts);
+        if (kinds.has("digits")) BUILTIN["percent-sign"](cur, fc).forEach(i => repairs.push({...i, autofix: true}));
+      }
+    }
+    cur = applyFixes(cur, repairs);
+    if (cur === before) break;
   }
   return cur;
 }
 
-function fixText(text, kinds, fc) {
-  let t = text;
-  if (kinds.has("digits")) t = TX().digits.convert(t, fc.digits);
-  Object.keys(KIND_BUILTINS).forEach((k) => {
-    if (kinds.has(k)) t = fixPasses(t, KIND_BUILTINS[k], { digits: fc.digits, kashidaWord: fc.kashidaWord, bindLabels: fc.bindLabels });
-  });
-  if (kinds.has("ortho")) {
-    for (let pass = 0; pass < 3; pass++) {
-      const issues = lintText(t, {
-        bundle: fc.bundle,
-        dialect: fc.dialect,
-        digits: fc.digits,
-        allowSet: fc.allow,
-        skip: new Set(O1_SKIP_CHECKS),
-        kashidaWord: fc.kashidaWord
-      });
-      const next = applyFixes(t, issues);
-      if (next === t) break;
-      t = next;
-    }
-  }
-  return t;
-}
 
 /** autofix(spec, results, ctx?) -> { spec, applied, remaining }. */
 function autofixSpec(spec, results, c) {
+  if (c && c.autofix === false) return { spec: deepClone(spec), applied: [], remaining: results.slice() };
   const R = loadRules();
   const next = deepClone(spec);
   const brand = (c && c.brand) || null;
@@ -3755,11 +3950,11 @@ function autofixSpec(spec, results, c) {
   });
 
   Object.keys(targets).forEach((el) => {
-    const loc = locateKey(next, el);
+    const loc = el.startsWith("/") ? pointerText(next, el) : locateKey(next, el);
     if (!loc || typeof loc.holder[loc.prop] !== "string") return;
     const slideId = /^(s[0-9]{2})\./.exec(el);
     const slide = slideId ? (next.slides || []).find((s) => s.id === slideId[1]) : null;
-    const local = Object.assign({}, fc, { kashidaWord: slide && /\.headline$/.test(el) ? slide.kashidaWord || "" : "" });
+    const local = Object.assign({}, fc, { encodingOnly: !copyPointer(el), kashidaWord: slide && /\.headline$/.test(el) ? slide.kashidaWord || "" : "" });
     loc.holder[loc.prop] = fixText(loc.holder[loc.prop], targets[el], local);
   });
 
@@ -3772,6 +3967,12 @@ function autofixSpec(spec, results, c) {
     else remaining.push(f);
   });
   return { spec: next, applied, remaining };
+}
+
+function pointerText(spec, key) {
+  const parts = key.slice(1).split("/").map((p) => p.replace(/~1/g, "/").replace(/~0/g, "~"));
+  const prop = parts.pop(), holder = parts.reduce((v, p) => v && Object.hasOwn(v, p) ? v[p] : null, spec);
+  return holder && Object.hasOwn(holder, prop) ? { holder, prop } : null;
 }
 
 /** override(spec, gateOrRule, { slide?, reason, at? }) -> new spec. */

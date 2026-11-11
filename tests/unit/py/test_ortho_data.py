@@ -17,11 +17,11 @@ DIALECTS = ("eg", "gulf", "levant", "msa-white", "en")
 SEVS = {"BLOCK", "FIX", "NOTE"}
 CHECKS = {"mixed-digits", "persian-digits", "persian-letters", "space-before-punct", "missing-space-after-punct",
           "latin-punct-in-arabic", "digit-glued-to-word", "double-space", "programmatic-tatweel", "ellipsis-dots",
-          "repeated-punct", "percent-sign", "lam-latin-stranded", "number-noun-unbound", "emoji-edge"}
+          "repeated-punct", "percent-sign", "lam-latin-stranded", "number-noun-unbound", "emoji-edge", "invalid-codepoint", "unassigned-codepoint"}
 # contract 7.4 (+ N1.percent, which the gate registry lists as autofix)
 AUTOFIX_CHECKS = {"persian-letters", "persian-digits", "space-before-punct", "latin-punct-in-arabic",
                   "digit-glued-to-word", "mixed-digits", "programmatic-tatweel", "double-space", "ellipsis-dots",
-                  "repeated-punct", "lam-latin-stranded", "number-noun-unbound", "percent-sign"}
+                  "repeated-punct", "lam-latin-stranded", "percent-sign", "invalid-codepoint"}
 LEXICON_KEYS = {"not", "will", "want", "think-that", "thing", "how", "why", "now", "a-lot", "do", "before", "free", "this"}
 CTA_KEYS = {"save", "send", "question", "keyword-dm", "follow"}
 CTA_SLOTS = {"who", "reason", "question", "keyword", "asset", "series", "day"}
@@ -68,8 +68,12 @@ class OrthoRulesTests(unittest.TestCase):
                 continue
             if r["kind"] == "check":
                 self.assertIn(r["check"], AUTOFIX_CHECKS, r["id"])
+            elif r["id"] in ("ORTHO-ENC-004", "ORTHO-ENC-005", "ORTHO-ENC-006"):
+                self.assertEqual(r["kind"], "regex")
+                self.assertEqual(r["replace"], "")
+                self.assertIsNone(re.search(r["pattern"], "حروف عربية ABC xyz 0123456789"), "encoding repairs cannot remove visible letters or digits")
             else:
-                self.assertEqual(r["kind"], "char", "%s: only checks and the Urdu-letter map may autofix" % r["id"])
+                self.assertEqual(r["kind"], "char", "%s: only safe checks, encoding controls and the Urdu-letter map may autofix" % r["id"])
                 self.assertEqual(r["id"], "ORTHO-ENC-002")
         for r in self.rules:
             if r["kind"] == "word-map":

@@ -1347,7 +1347,12 @@ CS.visual._.register("settle",settle)})();
       if (!self && !/^(br|img|hr|input|meta|link|source|area|base|embed|wbr|param|track|col)$/.test(tag)) stack.push({ tag: tag, node: node });
       if (stack.length > 64) fail("HTML nesting exceeds 64");
     }
-    return root;
+    function readable(n) { return n.text !== undefined ? /[\p{L}\p{N}]/u.test(n.text) : !!(n.attrs?.["data-field"] || n.attrs?.["data-icon"] || n.attrs?.["data-object"]) || n.children.some(readable); }
+    function panels(n) {
+      if (n.attrs?.["data-tone"] && !readable(n)) fail("data-tone paints a readable panel; remove it from an empty track or decorative element");
+      (n.children || []).forEach(panels);
+    }
+    panels(root); return root;
   }
   function literals(input) {
     var out = [];
@@ -1396,7 +1401,12 @@ CS.visual._.register("settle",settle)})();
   }
   function css(input, id) {
     var d = contract(), s = String(input || ""), out = [], pos = 0;
-    function bad() { fail("Invalid or unsafe free.css", "E_FREE_CSS"); }
+    function bad(message) { fail(message || "Invalid or unsafe free.css", "E_FREE_CSS"); }
+    function propertyError(p) {
+      var sides = { left: "inline-start", right: "inline-end", top: "block-start", bottom: "block-end" }, m = /^(?:(border|padding|margin)-)?(left|right|top|bottom)$/.exec(p);
+      var names = m ? [(m[1] || "inset") + "-" + sides[m[2]]] : /^(inset-inline|inset-block)$/.test(p) ? [p + "-start", p + "-end"] : [];
+      return "Property " + p + " is not allowed. " + (names.length ? "Use " + names.filter(n => d.css.properties.includes(n)).join(" and ") + "." : "Use the logical properties listed in free-design.md.");
+    }
     if (bytes(s) > d.css.maxBytes || /[\\@<>\u0000-\u0008\u000b\u000e-\u001f]|\/\*|\*\/|!\s*important/i.test(s)) bad();
     if (!/^[a-zA-Z0-9_-]+$/.test(id)) bad();
     var prefix = '.cs-slide[data-cs-slide="' + id + '"] .cs-free';
@@ -1428,7 +1438,8 @@ CS.visual._.register("settle",settle)})();
       if (/[{}]/.test(body)) bad();
       split(body, ";").forEach(function (decl) {
         if (!decl.trim()) return; var colon = decl.indexOf(":"), p = decl.slice(0, colon).trim(), v = decl.slice(colon + 1).trim();
-        if (colon < 0 || !d.css.properties.includes(p) || !v || /!/.test(v)) bad();
+        if (!d.css.properties.includes(p)) bad(propertyError(p));
+        if (colon < 0 || !v || /!/.test(v)) bad();
         var low = v.toLowerCase().replace(/\s+/g, " ");
         if (d.css.forbiddenValues.some(function (x) { return low.includes(x); }) || /(?:url|expression|image-set|element)\s*\(|javascript\s*:/.test(low)) bad();
         if (p === "font-family" && !d.css.fontFamilyValues.includes(v) || p === "text-align" && low === "justify" || p === "position" && /^(fixed|sticky)$/.test(low)) bad();

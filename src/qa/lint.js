@@ -9,6 +9,7 @@
  * superscript alef and tatweel removed; offsets map back to the original.
  */
 
+
 const LINT_CLITICS = ["و", "ف", "ب", "ل", "ك", "ال", "وال", "بال", "كال", "فال", "لل", "ولل"];
 const LINT_BIND_LABELS = ["الخطوة", "رقم", "نصيحة", "الجزء"];
 const LTR_SKIP_KINDS = { url: 1, email: 1, handle: 1, tag: 1, phone: 1 };
@@ -174,10 +175,38 @@ function mapDigitChar(ch, to) {
 
 const mapDigits = (s, to) => s.replace(/[0-9\u0660-\u0669\u06F0-\u06F9]/g, (ch) => mapDigitChar(ch, to));
 
-/* ------------------------------------------------------- built-in checks */
-
 const BUILTIN = {};
 
+BUILTIN["invalid-codepoint"] = (text) => scanRegex(text, /[\p{Cc}]/gu, (m) => {
+  if (/^[\t\n\r]$/.test(m[0])) return null;
+  return { fix: "" };
+});
+
+BUILTIN["unassigned-codepoint"] = (text) => scanRegex(text, /[\p{Cn}\p{Cs}]/gu, () => ({}));
+
+function specStrings(spec) {
+  const out = [];
+  function walk(v, path, slide) {
+    if (typeof v === "string") { out.push({ text: v, key: path, slide }); return; }
+    if (!v || typeof v !== "object") return;
+    Object.keys(v).forEach((k) => {
+
+      if (!path && (k === "qa" || k === "frozen")) return;
+      const sid = path === "/slides" && v[k] ? v[k].id : slide;
+      walk(v[k], path + "/" + k.replace(/~/g, "~0").replace(/\//g, "~1"), sid);
+    });
+  }
+  walk(spec, "", undefined);
+  return out;
+}
+
+function cliticPrefix(s) { return /^[وف]?(?:بال|كال|ال|لل|[بلك])$/.test(foldKey(s)); }
+function connectorTatweels(text) {
+  return text.replace(/(^|[^\p{L}\p{M}\u0640])([وفبلكال\u064B-\u065F\u0670]+)\u0640(?=["'«“]*[A-Za-zÀ-ɏ0-9\u0660-\u0669@#%\u066A$€£])/gu,
+    (m, edge, prefix) => cliticPrefix(prefix) ? edge + prefix : m);
+}
+
+/* ------------------------------------------------------- built-in checks */
 function scanRegex(text, re, make) {
   const out = [];
   let m;
@@ -210,6 +239,7 @@ BUILTIN["mixed-digits"] = (text, ctx) => {
 };
 
 BUILTIN["percent-sign"] = (text, ctx) => {
+
   /* Two ways a percent sign can be wrong (CONTRACT 7.2 N1.percent): it does not belong to the digits beside it (% next to
    * Arabic-Indic digits, ٪ next to Western ones), or it is not the sign of the post's digit system. The second wins when both apply. */
   const expected = ctx.digits || "western";
@@ -217,7 +247,7 @@ BUILTIN["percent-sign"] = (text, ctx) => {
   const masked = maskLtr(text);
   const found = new Map();
   const collect = (digits, bad, good) => {
-    const re = new RegExp(digits + "[ \u00A0]?" + bad + "|" + bad + "[ \u00A0]?" + digits, "g");
+    const re = new RegExp(digits + "[ \u00A0\u2009\u202F]?" + bad + "|" + bad + "[ \u00A0\u2009\u202F]?" + digits, "g");
     scanRegex(masked, re, (m) => {
       const i = m[0].indexOf(bad);
       found.set(m.index + i, { start: m.index + i, end: m.index + i + 1, original: bad, fix: good });
@@ -293,9 +323,13 @@ BUILTIN["programmatic-tatweel"] = (text, ctx) => {
   const kw = ctx.kashidaWord ? foldMarks(ctx.kashidaWord).text : "";
   const isL = new RegExp("[" + AR_L + "]");
   return scanRegex(text, /\u0640+/g, (m) => {
+    if (m[0].length === 1) {
+      const head = text.slice(0, m.index + 1).replace(/[\u064B-\u065F\u0670]/g, ""), tail = text.slice(m.index + 1);
+      if (/(?:^|[^\p{L}\p{M}\u0640])[وف]?(?:بال|كال|ال|لل|[بلك])\u0640$/u.test(head) &&
+          /^["'«“]*[A-Za-zÀ-ɏ0-9\u0660-\u0669@#%\u066A$\u20AC\u00A3]/.test(tail)) return null;
+    }
     const prev = text.charAt(m.index - 1);
     const next = text.charAt(m.index + m[0].length);
-    if (isL.test(prev) && /[A-Za-z0-9$\u20AC\u00A3]/.test(next)) return null;
     let a = m.index;
     let b = m.index + m[0].length;
     const inWord = (c) => isL.test(c) || c === "\u0640" || isMarkCode(c.charCodeAt(0));
@@ -313,31 +347,17 @@ BUILTIN["repeated-punct"] = (text) => scanRegex(text, /([\u061F!\u060C\u061B])\1
 
 BUILTIN["lam-latin-stranded"] = (text) => {
   const re = new RegExp(
-    "(^|[^" + AR_L + "])([وف]?(?:بال|كال|ال|لل|[بلك]))\\u0640([ \\t\\u00A0]+)(?=[A-Za-z0-9$\\u20AC\\u00A3])",
+    "(^|[^" + AR_L + "])([وفبلكال\\u064B-\\u065F\\u0670]+)\\u0640([ \\t\\u00A0\\u2009\\u202F]+)(?=[\"'«“]*[A-Za-zÀ-ɏ0-9\\u0660-\\u0669@#%٪$\\u20AC\\u00A3])",
     "g"
   );
   return scanRegex(text, re, (m) => {
+    if (!cliticPrefix(m[2])) return null;
     const keep = m[1].length + m[2].length + 1;
     return { start: m.index + keep, end: m.index + m[0].length, original: m[3], fix: "" };
   });
 };
 
-BUILTIN["number-noun-unbound"] = (text, ctx) => {
-  const toks = TX().tokenize(text);
-  const off = cpOffsets(text);
-  const labels = ctx.bindLabels || labelMatcher(LINT_BIND_LABELS, ctx.clitics);
-  const out = [];
-  for (let i = 0; i + 2 < toks.length; i++) {
-    const a = toks[i];
-    const s = toks[i + 1];
-    const b = toks[i + 2];
-    if (s.kind !== "space" || s.text !== " ") continue;
-    const numNoun = a.kind === "number" && b.kind === "ar";
-    const labelNum = a.kind === "ar" && labels.has(a.text) && b.kind === "number";
-    if (numNoun || labelNum) out.push({ start: off[s.start], end: off[s.end], original: " ", fix: "\u00A0" });
-  }
-  return out;
-};
+BUILTIN["number-noun-unbound"] = () => []; // The renderer binds plain copy.
 
 BUILTIN["emoji-edge"] = (text) => {
   const out = [];
@@ -432,6 +452,7 @@ function lintText(text, opts) {
       if (rule.kind === "word-map" && isObj(rule.map)) {
         Object.keys(rule.map).forEach((key) => {
           matchEntries([{ id: rule.id, text: key, match: "word", clitics: rule.clitics === true }], text, ctx).forEach((m) => {
+            if (Array.isArray(rule.exceptions) && rule.exceptions.some((s) => m.text.normalize("NFC") === s.normalize("NFC"))) return;
             const tok = foldKey(m.text);
             const k = foldKey(key);
             const prefix = tok.length >= k.length && tok.slice(tok.length - k.length) === k ? tok.slice(0, tok.length - k.length) : "";
@@ -481,8 +502,9 @@ function lintText(text, opts) {
     });
   }
 
+  const offsets = cpOffsets(text), ids = issues.length ? TX().tokenize(text).filter(t => ["url", "email", "handle", "tag", "phone"].includes(t.kind)) : [];
   return issues
-    .filter((it) => !allow.has(foldKey(it.original).toLowerCase().trim()))
+    .filter((it) => /^ORTHO-ENC-00[4-8]$/.test(it.rule) || !ids.some(t => it.start < offsets[t.end] && it.end > offsets[t.start]) && !allow.has(foldKey(it.original).toLowerCase().trim()))
     .sort((a, b) => a.start - b.start || a.end - b.end);
 }
 
@@ -500,3 +522,19 @@ function applyFixes(text, issues) {
   });
   return out;
 }
+
+function gateInput(value) {
+  if (typeof value === "string") return value.normalize("NFC").replace(/[\u00A0\u2009\u202F]/g, " ")
+    .replace(/[\u00AD\u061C\u200B\u200E\u200F\u202A-\u202E\u2060\u2066-\u2069\uFEFF]/g, "")
+    .replace(/[\p{Cc}\p{Cn}\p{Cs}]/gu, ch => /[\t\n\r]/.test(ch) ? ch : "");
+  if (Array.isArray(value)) return value.map(gateInput);
+  if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([k,v]) => [k,gateInput(v)]));
+  return value;
+}
+const rawContext = buildContext;
+buildContext = function(input, opts) {
+  const ctx = rawContext(input, opts), raw = ctx.spec;
+  ctx.rawSpec = raw; ctx.spec = {...raw};
+  ["captionPack", "hook"].forEach(k => { if (raw[k] !== undefined) ctx.spec[k] = gateInput(raw[k]); });
+  ctx.slides = gateInput(ctx.slides); ctx.spec.slides = ctx.slides; return ctx;
+};

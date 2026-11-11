@@ -2312,8 +2312,11 @@ CS.core.format = function format(template, params) {
   
 
   
-  function prepText(value, cx) {
-    var s = T().normalize(String(value === undefined || value === null ? "" : value));
+  function prep(value, cx) {
+    var s = T().normalize(value == null ? "" : value);
+    s = s.replace(/[\u00A0\u2009\u202F]/g, " ")
+    .replace(/[\u00AD\u061C\u200B\u200E\u200F\u202A-\u202E\u2060\u2066-\u2069\uFEFF]/g, "")
+    .replace(/[\p{Cc}\p{Cn}\p{Cs}]/gu, function (ch) { return /[\t\n\r]/.test(ch) ? ch : ""; });
     s = s.replace(/\.{3,}/g, "…");
     if (cx.lang === "ar") {
       s = s.replace(RE_LATIN_PUNCT, function (m, ch, p) { return ch + AR_PUNCT[p]; });
@@ -2326,16 +2329,140 @@ CS.core.format = function format(template, params) {
     o = o || {};
     var opts = { digits: cx.digits, lang: cx.lang, markup: o.markup !== false, wordSpans: o.words !== false };
     if (o.kashidaWord) { opts.kashidaWord = o.kashidaWord; opts.allowKashida = !!cx.tokens.decor.kashida.allowed; }
-    return T().toHTML(prepText(value, cx), opts);
+    var text = prep(value, cx);
+    return cx.lang === "ar" ? mixed(text, opts) : T().toHTML(text, opts);
+  }
+  var SHORT = /^(?:[\u0621-\u064A]{1,2}|ولا)$/;
+  var CLITIC = new RegExp("^([" + AR_CH + "\\u200C\\u200D]+)(?=[\"'«“]*[A-Za-zÀ-ɏ0-9\\u0660-\\u0669@#%٪$€£])");
+  var SENTENCE_END = /[.،؛؟:;!?—&]$/;
+  var RUN_TAIL = /[.,،؛؟:;!?—&]+$/;
+  var VERSION = /^(?:[0-9]+(?:\.[0-9]+)+[a-z]?|[0-9]+x)$/i;
+
+  /* Build semantic runs before binding words. A word can contain Arabic AND a number;
+   * a numeric token inside that word must never pull its clitic into an earlier LTR run. */
+  function mixed(text, o) {
+    var pm = o.markup ? T().parseMarkup(text) : { plain: text, spans: [] };
+    var s = T().digits.convert(pm.plain, o.digits), words = [], separator = "";
+    // Copy tokenisation keeps ampersands inside a lexical word. Rendering also needs
+    // their boundaries (API&50%), without adding a separator to the original text.
+    var tokens = T().tokenize(s).flatMap(function (token) {
+      if (token.kind !== "latin" || token.text.indexOf("&") < 0) return [token];
+      var offset = token.start;
+      return token.text.split(/(&)/).flatMap(function (part) {
+        var pieces = T().tokenize(part).map(function (piece) {
+          return { ...piece, start: offset + piece.start, end: offset + piece.end };
+        });
+        offset += part.length;
+        return pieces;
+      });
+    });
+    tokens.forEach(function (token) {
+      if (token.kind === "space") { separator += token.text; return; }
+      var last = words[words.length - 1];
+      var boundary = last && /[.,،؛؟:;!?—&]$/.test(last.text) && (token.ltr || token.kind === "ar" || token.kind === "number");
+      if (!last || separator || boundary) {
+        last = { text: "", start: token.start, end: token.end, sep: separator };
+        words.push(last); separator = "";
+      }
+      last.text += token.text; last.end = token.end;
+      if (token.ltr || token.kind === "number") last.kind = token.kind;
+    });
+    if (!words.some(function (w) {
+      return /[A-Za-zÀ-ɏ]/.test(w.text) || SHORT.test(w.text.replace(/[ً-ٰٟ]/g, "")) || CLITIC.test(w.text);
+    })) return T().toHTML(text, o);
+
+    var wordIndex = 0, groups = [], emphasis = pm.spans[0], kashidaDone = false;
+    function wordHTML(w, lang, raw, prefix, gap) {
+      var value = raw === undefined ? w.text : raw;
+      var kashida = !kashidaDone && o.allowKashida && o.kashidaWord === value;
+      if (kashida) kashidaDone = true;
+      var body = T().toHTML(value, { ...o, lang: lang, markup: false, wordSpans: false, allowKashida: kashida });
+      var style = prefix ? "font-family:var(--cs-font-body)" : "";
+      // The gap is layout only: no space, joining control or pseudo-element enters the copy.
+      if (gap) style += ";margin-inline-end:0.14em";
+      var attrs = (gap ? ' data-cs-clitic-gap="1"' : "") + (style ? ' style="' + style + '"' : "");
+      var out = o.wordSpans ? '<span class="w' + (kashida ? " cs-kashida" : "") + '" data-w="' + wordIndex++ + '"' + attrs + '>' + body + '</span>' :
+        prefix ? '<span' + attrs + '>' + body + '</span>' : body;
+      return emphasis && w.start < emphasis.end && w.end > emphasis.start ? '<mark class="cs-em" data-m="em">' + out + '</mark>' : out;
+    }
+    function ltr(w) {
+      return /[A-Za-zÀ-ɏ0-9]/.test(w.text) && !/[\u0621-\u065F\u066E-\u06FF]/.test(w.text);
+    }
+    function bind(body, kind, rtl) {
+      var attrs = rtl ? ' dir="rtl" style="unicode-bidi:isolate;white-space:nowrap"' :
+        kind === "pair" ? ' dir="ltr" style="display:inline-block;white-space:nowrap"' : "";
+      return '<span data-cs-bind="' + kind + '"' + attrs + '>' + body + '</span>';
+    }
+    function isolate(run, kind) {
+      var body = run.map(function (w, i) { return (i ? w.sep : "") + wordHTML(w, "en"); }).join("");
+      return '<bdi dir="ltr" class="cs-ltr" data-run="' + kind + '"' +
+        (run.length > 1 ? ' style="white-space:normal"' : "") + '>' + body + '</bdi>';
+    }
+    for (var i = 0; i < words.length; i++) {
+      var w = words[i], match = CLITIC.exec(w.text), prefix = match ? match[1] : "";
+      var first = { ...w, text: w.text.slice(prefix.length), start: w.start + prefix.length };
+      if (!ltr(first)) {
+        var native = prefix ? bind(wordHTML(w, "ar", prefix, true) + '<bdi dir="rtl" class="cs-rtl">' + wordHTML(first, "ar") + '</bdi>', "clitic", true) : wordHTML(w, "ar");
+        groups.push({ html: native, text: w.text, sep: w.sep });
+        continue;
   }
 
+      var run = [first], j = i, version = false;
+      // Only Latin words continue a Latin phrase. Sentence boundaries, Arabic prefixes,
+      // percentages and unrelated numbers start another run in the paragraph direction.
+      while (first.kind === "latin" && words[j + 1] && !/[\n\r]/.test(words[j + 1].sep)) {
+        var end = run[run.length - 1], next = words[j + 1];
+        if (SENTENCE_END.test(end.text) || /["»”]$/.test(end.text)) break;
+        if (ltr(next) && next.kind === "latin") { run.push(next); j++; continue; }
+        if (next.text === "&" && words[j + 2] && ltr(words[j + 2]) && words[j + 2].kind === "latin" && !/[\n\r]/.test(words[j + 2].sep)) {
+          run.push(next, words[j + 2]); j += 2; continue;
+        }
+        // Product versions keep their name/version order, but each has its own isolate.
+        if (ltr(next) && next.kind === "number" && VERSION.test(next.text.replace(RUN_TAIL, ""))) {
+          run.push(next); j++; version = true;
+        }
+        break;
+      }
+      var end = run[run.length - 1], punctuation = RUN_TAIL.exec(end.text), tail = null;
+      if (punctuation) {
+        var count = punctuation[0].length;
+        run[run.length - 1] = { ...end, text: end.text.slice(0, -count), end: end.end - count };
+        tail = { text: punctuation[0], start: end.end - count, end: end.end };
+      }
+      var singleClitic = /^[وفبلك]$/.test(prefix.replace(/[ـً-ٰٟ\u200C\u200D]/g, ""));
+      var lead = prefix ? wordHTML({ ...w, end: first.start }, "ar", prefix, true, singleClitic && first.kind === "latin") : "";
+      var body = version ? bind(isolate(run.slice(0, -1), "latin") + run[run.length - 1].sep + isolate(run.slice(-1), "number"), "pair") :
+        isolate(run, first.kind || "latin");
+      if (prefix) body = bind(lead + body, "clitic", true);
+      // Sentence punctuation belongs outside BOTH the foreign isolate and its clitic.
+      if (tail) body += wordHTML(tail, "ar");
+      groups.push({ html: body, text: words.slice(i, j + 1).map(function (w) { return w.text; }).join(" "), sep: w.sep });
+      i = j;
+    }
+    for (var i = groups.length - 2; i >= 0; i--) {
+      var a = groups[i], b = groups[i + 1], bare = a.text.replace(/[ً-ٰٟ]/g, "");
+      if (/[\n\r]/.test(b.sep)) continue;
+      var pair = SHORT.test(bare) || !/[A-Za-zÀ-ɏ]/.test(a.text) && T().bind(a.text + " " + b.text)[a.text.length] === "\u00a0";
+      if (pair) {
+        a.html = bind(a.html + "\u00a0" + b.html, "words"); a.text += " " + b.text;
+        groups.splice(i + 1, 1);
+      }
+    }
+    var last = groups[groups.length - 1], previous = groups[groups.length - 2];
+    if (previous && SHORT.test(last.text.replace(/[ً-ٰٟ]/g, "")) && !/[\n\r]/.test(last.sep)) {
+      previous.html = bind(previous.html + "\u00a0" + last.html, "words"); groups.pop();
+    }
+    return groups.map(function (g) {
+      return (/[\n\r]/.test(g.sep) ? g.sep.replace(/\r\n|\r|\n/g, "<br>") : g.sep) + g.html;
+    }).join("") + separator;
+  }
   function tagWords(root, slotName) {
     var ws = root.querySelectorAll(".w");
     for (var i = 0; i < ws.length; i++) ws[i].setAttribute("data-m-slot", slotName);
   }
-
-  function lineHeightFor(role, text) {
-    if (!T().arabic.hasTashkeel(text)) return null;
+  function textLH(role,text){
+    var mixed=/[A-Za-zÀ-ɏ]/.test(text) && T().arabic.hasArabic(text);
+    if (!T().arabic.hasTashkeel(text) && !mixed) return null;
     if (role === "hero" || role === "h1") return "calc(var(--cs-lh-display) + 0.15)";
     if (role === "title" || role === "h2") return "calc(var(--cs-lh-heading) + 0.15)";
     return "calc(var(--cs-lh-body) + 0.2)";
@@ -2364,13 +2491,11 @@ CS.core.format = function format(template, params) {
 
   
   function vis(kind,cx,arg){var v=(cx.tokens.art||CS.visual?.free?.active(cx.slide))&&cx.type!=="cover"&&CS.visual;return v?.[kind]?.(...kind==="fill"?[arg.kind,cx,arg.index]:kind==="decorate"?[arg,cx]:[cx,arg]);}
-
-  
-  function label(n,text,cx,o) {
+  function label(n,t,cx,o){
     o=o||{};
     var s=o.slot||"art",r=o.role||"small",f=cx.rules.platform.plugin.visual.artLabel;
-    set(n,{"data-slot":s,"data-index":o.index,"data-kind":"text","data-floor":s==="art"?f[/^(numeral|word|chart)$/.test(r)?r:T().arabic.hasArabic(text)?"arabic":r==="tool"?r:"latin"]:null});
-    markFit(n,cx,s,o.index,r);n.innerHTML=html(text,cx);tagWords(n,s);return n;
+    set(n,{"data-slot":s,"data-index":o.index,"data-kind":"text","data-floor":s==="art"?f[/^(numeral|word|chart)$/.test(r)?r:T().arabic.hasArabic(t)?"arabic":r==="tool"?r:"latin"]:null});
+    markFit(n,cx,s,o.index,r);n.innerHTML=html(t,cx);tagWords(n,s);var lh=/hero|h[12]|title/.test(r)&&textLH(r,t);if(lh)n.style.lineHeight=lh;return n;
   }
 
   
@@ -2388,7 +2513,7 @@ CS.core.format = function format(template, params) {
       node.innerHTML = html(raw, cx, { kashidaWord: kw });
       tagWords(node, slot);
       if (node.querySelector(".cs-kashida")) cx.kashida = true;
-      var lh = lineHeightFor(role, raw);
+      var lh=textLH(role,raw);
       if (lh) node.style.lineHeight = lh;
       return true;
     },
@@ -2405,7 +2530,7 @@ CS.core.format = function format(template, params) {
         var icon=vis("fill",cx,{kind:"rowicon",index:i});
         if(icon){icon.setAttribute("data-part","icon");li.insertBefore(icon,li.firstChild);}
         tagWords(li, slot);
-        var lh = lineHeightFor(role, text);
+        var lh=textLH(role,text);
         if (lh) li.style.lineHeight = lh;
         if (li.querySelector(".cs-kashida")) cx.kashida = true;
         node.appendChild(li);
@@ -2435,7 +2560,7 @@ CS.core.format = function format(template, params) {
         if (s.text) {
           p.innerHTML = html(s.text, cx);
           tagWords(p, slot);
-          var lh = lineHeightFor(role, s.text);
+          var lh=textLH(role,s.text);
           if (lh) p.style.lineHeight = lh;
         }
         side.appendChild(p);
@@ -2472,7 +2597,7 @@ CS.core.format = function format(template, params) {
       var asLabel = cx.type === "step" && cx.variant !== "ghost-number" && cx.steps > 0;
       var label = asLabel ? fmt(cx.locale.slideStrings.stepLabel[cx.dialect], { i: conv(n), n: conv(cx.steps) }) : conv(n);
       node.setAttribute("data-ord", n);
-      node.innerHTML = T().toHTML(prepText(label, cx), { digits: cx.digits, lang: cx.lang, markup: false, wordSpans: false });
+      node.innerHTML=T().toHTML(prep(label,cx),{digits: cx.digits,lang: cx.lang,markup: false,wordSpans: false});
       return true;
     },
 
@@ -2747,7 +2872,7 @@ CS.core.format = function format(template, params) {
   
   function prepare(value, spec) {
     var dialect = ((spec && spec.locale) || {}).dialect || "eg";
-    return prepText(value, { lang: dialect === "en" ? "en" : "ar" });
+    return prep(value, { lang: dialect === "en" ? "en" : "ar" });
   }
 
   core.compose = { slide: slide, chrome: chrome, slotKey: slotKey, slots: slots, prepare: prepare, html: html, label: label, context: makeContext };
@@ -2848,9 +2973,9 @@ CS.core.format = function format(template, params) {
 
   function wordsOf(node) {
     var w = node.querySelectorAll(".w");
-    if (w.length) return Array.prototype.slice.call(w);
+    if (w.length) return Array.from(w);
     var parts = node.querySelectorAll(".cs-num, .cs-unit");
-    return parts.length ? Array.prototype.slice.call(parts) : [node];
+    return parts.length ? Array.from(parts) : [node];
   }
 
   function contentBoxOf(node, ctx) {
@@ -3077,14 +3202,13 @@ CS.core.format = function format(template, params) {
   function lineText(words) {
     var out = "";
     for (var i = 0; i < words.length; i++) {
-      if (i) out += separator(words[i - 1], words[i]);
+      if (i) out += sep(words[i - 1],words[i]);
       out += words[i].textContent;
     }
     return out;
   }
-
+  function sep(a,b){
   /** "" | " " | U+00A0: what separates two word units in the DOM (a number is bound to its noun with U+00A0). */
-  function separator(a, b) {
     var rg = document.createRange();
     try { rg.setStartAfter(a); rg.setEndBefore(b); } catch (e) { return " "; }
     var t = rg.toString();
@@ -3111,13 +3235,13 @@ CS.core.format = function format(template, params) {
 
   /** Regroups the .w units of a slot into <span class="cs-ln"> blocks of the given sizes (counts of words per line). Wrappers (emphasis, LTR runs) are cloned per line. */
   function wrapLinesBy(slotEl, counts) {
-    var all = Array.prototype.slice.call(slotEl.querySelectorAll(".w"));
+    var all=Array.from(slotEl.querySelectorAll(".w"));
     var total = counts.reduce(function (a, b) { return a + b; }, 0);
     if (!all.length || total !== all.length) return null;
       slotEl.querySelectorAll('[data-mark-target]:not([data-mark-id])').forEach(function(n,i){n.dataset.markId=slotEl.getAttribute('data-slot-key')+'-m'+i;});
     var slotName = slotEl.getAttribute("data-slot") || "";
     var chains = all.map(function (w) { return chainOf(w, slotEl); });
-    var seps = all.map(function (w, i) { return i < all.length - 1 ? separator(w, all[i + 1]) : ""; });
+    var seps=all.map(function (w,i){return i < all.length - 1 ? sep(w,all[i+1]) : "";});
     var frag = document.createDocumentFragment(), out = [], at = 0;
     counts.forEach(function (n, li) {
       var ln = document.createElement("span");

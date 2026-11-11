@@ -92,9 +92,9 @@
 
   function wordsOf(node) {
     var w = node.querySelectorAll(".w");
-    if (w.length) return Array.prototype.slice.call(w);
+    if (w.length) return Array.from(w);
     var parts = node.querySelectorAll(".cs-num, .cs-unit");
-    return parts.length ? Array.prototype.slice.call(parts) : [node];
+    return parts.length ? Array.from(parts) : [node];
   }
 
   function contentBoxOf(node, ctx) {
@@ -321,14 +321,13 @@
   function lineText(words) {
     var out = "";
     for (var i = 0; i < words.length; i++) {
-      if (i) out += separator(words[i - 1], words[i]);
+      if (i) out += sep(words[i - 1],words[i]);
       out += words[i].textContent;
     }
     return out;
   }
-
+  function sep(a,b){
   /** "" | " " | U+00A0: what separates two word units in the DOM (a number is bound to its noun with U+00A0). */
-  function separator(a, b) {
     var rg = document.createRange();
     try { rg.setStartAfter(a); rg.setEndBefore(b); } catch (e) { return " "; }
     var t = rg.toString();
@@ -355,13 +354,13 @@
 
   /** Regroups the .w units of a slot into <span class="cs-ln"> blocks of the given sizes (counts of words per line). Wrappers (emphasis, LTR runs) are cloned per line. */
   function wrapLinesBy(slotEl, counts) {
-    var all = Array.prototype.slice.call(slotEl.querySelectorAll(".w"));
+    var all=Array.from(slotEl.querySelectorAll(".w"));
     var total = counts.reduce(function (a, b) { return a + b; }, 0);
     if (!all.length || total !== all.length) return null;
       slotEl.querySelectorAll('[data-mark-target]:not([data-mark-id])').forEach(function(n,i){n.dataset.markId=slotEl.getAttribute('data-slot-key')+'-m'+i;});
     var slotName = slotEl.getAttribute("data-slot") || "";
     var chains = all.map(function (w) { return chainOf(w, slotEl); });
-    var seps = all.map(function (w, i) { return i < all.length - 1 ? separator(w, all[i + 1]) : ""; });
+    var seps=all.map(function (w,i){return i < all.length - 1 ? sep(w,all[i+1]) : "";});
     var frag = document.createDocumentFragment(), out = [], at = 0;
     counts.forEach(function (n, li) {
       var ln = document.createElement("span");

@@ -29,7 +29,7 @@ handles, URLs and phones).
 
 ## 4. Writing numbers
 - **Covers use digits, not words:** «3 أدوات»، not «ثلاث أدوات». Spelled-out numbers on a cover are a FIX (rule C1.number-words); in speech and body text words are fine.
-- **A number and its noun stay together:** «5 ساعات» with U+00A0 between them so the pair never splits across lines (ORTHO-BIDI-002, autofix).
+- **A number and its noun stay together:** «5 ساعات» with ordinary space; engine binding so the pair never splits across lines (ORTHO-BIDI-002, autofix).
 - **Ranges in running text use words** («من 10 إلى 20») rather than a dash, which flips unpredictably; tables and chrome can use a single isolated block.
 - **Dates:** write the month in words («22 أكتوبر 2026»). Prices: the currency goes where the audience's country puts it; ask when unsure and keep one form per post.
 - **No digit glued to a word:** «3000سعرة» is wrong, «3000 سعرة» is right (ORTHO-DIG-004, autofix). A prefix joined with a tatweel («بـ3») is the accepted form; a bare «و3» reads fine but the checker may still report it, so keep it only when the conjunction is meant.
@@ -51,3 +51,5 @@ arabic-indic`. Asking "which digits do you want?" by system name misleads (in No
 | the whole text in the other system than the brand's | N1.system | BLOCK, autofix |
 | `%` / `٪` against the system | N1.percent | BLOCK, autofix |
 | a digit glued to an Arabic word | O1.glued-digit | FIX, autofix |
+
+Use plain copy for Arabic prefixes and Latin phrases. No direction marks or special spaces are required. Controls and unassigned characters block every spec text field, including caption body, per-slide captions, alt and hashtags. ZWNJ and ZWJ are preserved. «الـAPI،», «بـ@الاسم» and «بـ50%» are connectors, not decorative kashida; «تجرّبه» is a valid marked verb.

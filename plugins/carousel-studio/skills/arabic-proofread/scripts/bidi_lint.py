@@ -3,10 +3,10 @@
 """bidi_lint.py - text-level digit and bidirectional-text checks (gates N1 and B1, text scope).
 
     bidi_lint.py (--text STRING | --file F | --spec FILE) [--digits western|arabic-indic]
-                 [--dialect D] [--fix] [--format table|json] [--out F]
+                 [--dialect D] [--fix] [--no-autofix] [--format table|json] [--out F]
 
 Runs the built-in checks mixed-digits, persian-digits, percent-sign, lam-latin-stranded,
-number-noun-unbound and digit-glued-to-word of data/rules/ortho.json, plus one check of its
+hidden controls, unassigned characters and digit-glued-to-word of data/rules/ortho.json, plus one check of its
 own: the digit system must equal the locale's (N1.system). Findings carry the QA gate they
 belong to:
 
@@ -15,14 +15,15 @@ belong to:
     N1.system       digits differ from locale.digits         (BLOCK, autofix)
     N1.percent      % beside Arabic-Indic or the reverse     (BLOCK, autofix)
     B1.stranded-lam a prefix (لـ/بـ/الـ) split from its Latin word (BLOCK, autofix)
-    B1.unbound-pair number and noun separated by a plain space (FIX, autofix)
+    O1.ortho-enc-007 hidden control characters             (BLOCK, autofix)
+    O1.ortho-enc-008 unassigned characters or surrogates    (BLOCK, review)
     O1.glued-digit  a digit glued to an Arabic word          (FIX, autofix)
 
 Rendered-isolation checks (contiguous <bdi> runs, bound pairs on one line) need the Studio
-and are not run here. --fix applies the autofix findings (spec: patched copy to --out).
+and are not run here. Plain spaces are valid number/noun copy. --fix runs the shared safe repair/check loop (spec: patched copy to --out); --no-autofix disables it.
 
 JSON: {issues:[{gate,gateRule,rule,sev,confidence,original,fix,start,end,slide?,el?,autofix,msg}],
-fixed?, summary:{status,counts,exitCode}, digits}. Exit codes: 0 clean, 1 FIX pending,
+fixed?, applied:[{before,after,rules,slide?,el?}], summary:{status,counts,exitCode}, digits}. Exit codes: 0 clean, 1 FIX pending,
 2 BLOCK pending, 64 usage, 65 unparseable input, 66 missing input, 73 cannot write.
 """
 
@@ -38,6 +39,8 @@ from _cs import lint, paths, rules, text as cstext  # noqa: E402
 paths.ensure_utf8_stdio()
 
 CHECK_TO_GATE = {
+    "invalid-codepoint": ("O1", "O1.ortho-enc-007"),
+    "unassigned-codepoint": ("O1", "O1.ortho-enc-008"),
     "mixed-digits": ("N1", "N1.mixed"),
     "persian-digits": ("N1", "N1.persian"),
     "percent-sign": ("N1", "N1.percent"),
@@ -66,54 +69,16 @@ class Parser(argparse.ArgumentParser):
 
 
 def iter_spec_fields(spec):
-    """Same field walk as ortho_lint.py: (slide_id | None, el, text, kashida_word)."""
-    hook = spec.get("hook") or {}
-    for key in ("cover", "text", "slide2"):
-        if isinstance(hook.get(key), str):
-            yield None, "hook.%s" % key, hook[key]
-    slides = spec.get("slides") or []
-    for slide in slides:
-        sid = slide.get("id")
-        for key in SLIDE_TEXT_KEYS:
-            if isinstance(slide.get(key), str):
-                yield sid, key, slide[key]
-        for i, item in enumerate(slide.get("bullets") or []):
-            if isinstance(item, str):
-                yield sid, "bullets.%d" % i, item
-        for i, side in enumerate(slide.get("sides") or []):
-            for key in ("label", "text"):
-                if isinstance(side.get(key), str):
-                    yield sid, "sides.%d.%s" % (i, key), side[key]
-        cta = slide.get("cta")
-        if isinstance(cta, dict) and isinstance(cta.get("text"), str):
-            yield sid, "cta.text", cta["text"]
-        number = slide.get("number")
-        if isinstance(number, dict) and isinstance(number.get("unit"), str):
-            yield sid, "number.unit", number["unit"]
-    pack = spec.get("captionPack") or {}
-    for key in ("firstLine", "keywordLine", "body", "cta"):
-        if isinstance(pack.get(key), str):
-            yield None, "captionPack.%s" % key, pack[key]
-    for key in ("perSlide", "alt"):
-        for i, item in enumerate(pack.get(key) or []):
-            if isinstance(item, str):
-                yield (slides[i].get("id") if i < len(slides) else None), "captionPack.%s.%d" % (key, i), item
+    for sid, el, value, _kw in lint.iter_spec_fields(spec):
+        yield sid, el, value
 
 
 def set_spec_field(spec, slide_id, el, value):
-    parts = el.split(".")
-    node = spec if (slide_id is None or parts[0] in ("captionPack", "hook")) else next(
-        s for s in spec["slides"] if s.get("id") == slide_id)
-    for part in parts[:-1]:
-        node = node[int(part)] if isinstance(node, list) else node[part]
-    if isinstance(node, list):
-        node[int(parts[-1])] = value
-    else:
-        node[parts[-1]] = value
+    lint.set_spec_field(spec, slide_id, el, value)
 
 
 def bidi_rule_map():
-    """rule id -> (check name) for the six built-in checks, read from ortho.json."""
+    """Rule ids of the supported built-in checks, read from ortho.json."""
     ortho = rules.load_bundle()["ortho"]
     return {r["id"]: r["check"] for r in ortho["rules"] if r.get("kind") == "check" and r.get("check") in CHECK_TO_GATE}
 
@@ -176,20 +141,21 @@ def run(args):
     digits = args.digits or ((spec or {}).get("locale") or {}).get("digits") or "western"
     dialect = args.dialect or ((spec or {}).get("locale") or {}).get("dialect") or "msa-white"
     rule_checks = bidi_rule_map()
-    issues, fixed = [], None
+    issues, fixed, applied = [], None, []
     if spec is not None:
         patched = json.loads(json.dumps(spec))
         for slide_id, el, text in iter_spec_fields(spec):
-            found = check_text(text, digits, dialect, rule_checks)
+            checked = lint.check_text(text, autofix=args.fix, checker=lambda value: [f for f in check_text(value, digits, dialect, rule_checks) if lint.copy_field(slide_id, el) or f["gateRule"] in ("O1.ortho-enc-007", "O1.ortho-enc-008")])
+            found = checked["issues"]
+            applied += [{**change, "el": el, **({"slide": slide_id} if slide_id else {})} for change in checked["applied"]]
             for f in found:
                 f["el"] = el
                 if slide_id:
                     f["slide"] = slide_id
             if args.fix:
-                new = lint.apply_fixes(text, found)
+                new = checked["fixed"]
                 if new != text:
                     set_spec_field(patched, slide_id, el, new)
-                    found = [f for f in found if not f["autofix"]]
             issues += found
         fixed = patched if args.fix else None
     else:
@@ -203,11 +169,10 @@ def run(args):
                 text = paths.read_text(p)
             except UnicodeDecodeError as exc:
                 raise Fail("E_SCHEMA", "%s is not valid UTF-8: %s" % (p, exc), 65)
-        issues = check_text(text, digits, dialect, rule_checks)
-        if args.fix:
-            fixed = lint.apply_fixes(text, issues)
-            issues = check_text(fixed, digits, dialect, rule_checks)
-    return {"issues": issues, "fixed": fixed, "summary": summarize(issues), "digits": digits}
+        checked = lint.check_text(text, autofix=args.fix, checker=lambda value: check_text(value, digits, dialect, rule_checks))
+        fixed = checked["fixed"] if args.fix else None
+        issues, applied = checked["issues"], checked["applied"]
+    return {"issues": issues, "applied": applied, "fixed": fixed, "summary": summarize(issues), "digits": digits}
 
 
 def render_table(result):
@@ -217,6 +182,7 @@ def render_table(result):
         rows.append("| %s | %s | %s | %s | %s |" % (i["gateRule"], i["sev"], (i["original"] or "").replace("|", "\\|"),
                                                    (i["fix"] or "").replace("|", "\\|"), where))
     s = result["summary"]
+    rows.append("Applied %d safe repairs." % len(result.get("applied", [])))
     rows += ["", "%s  BLOCK=%d FIX=%d  (digits %s)" % (s["status"].upper(), s["counts"]["BLOCK"], s["counts"]["FIX"], result["digits"])]
     return "\n".join(rows)
 
@@ -230,9 +196,11 @@ def main(argv=None):
     ap.add_argument("--digits", choices=("western", "arabic-indic"))
     ap.add_argument("--dialect", choices=("eg", "gulf", "levant", "msa-white", "en"), help="only needed to select dialect data; default msa-white")
     ap.add_argument("--fix", action="store_true")
+    ap.add_argument("--no-autofix", action="store_true", help="disable safe repairs, including with --fix")
     ap.add_argument("--format", choices=("table", "json"), default="table")
     ap.add_argument("--out", help="write the fixed text (or patched spec) here")
     args = ap.parse_args(argv)
+    args.fix = args.fix and not args.no_autofix
     try:
         result = run(args)
         if args.fix and args.spec and not args.out:
@@ -240,7 +208,7 @@ def main(argv=None):
         if args.out and args.fix:
             try:
                 if isinstance(result["fixed"], dict):
-                    paths.write_json(args.out, result["fixed"])
+                    paths.write_text(args.out, lint.json_text(result["fixed"], indent=2) + "\n")
                 else:
                     paths.write_text(args.out, result["fixed"] if result["fixed"].endswith("\n") else result["fixed"] + "\n")
             except OSError as exc:
@@ -249,7 +217,7 @@ def main(argv=None):
         sys.stderr.write("cs-error: %s: %s\n" % (exc.code, exc))
         return exc.exit_code
     if args.format == "json":
-        print(json.dumps({k: v for k, v in result.items() if not (k == "fixed" and v is None)}, ensure_ascii=False))
+        print(lint.json_text({k: v for k, v in result.items() if not (k == "fixed" and v is None)}))
     else:
         print(render_table(result))
         if isinstance(result["fixed"], str) and not args.out:

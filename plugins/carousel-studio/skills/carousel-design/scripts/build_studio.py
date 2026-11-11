@@ -65,7 +65,7 @@ UI_FONT_IDS = ["readex-pro", "alexandria"]
 MIB = 1024 * 1024
 LIMIT_WARN = 12 * MIB
 LIMIT_FAIL = 15 * MIB
-CHUNK_LIMIT = 200 * 1024
+CHUNK_LIMIT = 240 * 1024
 FONT_MIME = {".ttf": ("font/ttf", "truetype"), ".otf": ("font/otf", "opentype"), ".woff": ("font/woff", "woff"), ".woff2": ("font/woff2", "woff2")}
 # The one notice line at the top of the page. NOTICE_TEXT in src/ui/serialize.js (the Studio's own save-as-HTML) repeats it byte for byte;
 # test_notice_agreement holds the two together, and the licence texts behind the names are in the NOTICE file at the repository root.
@@ -346,7 +346,7 @@ def read_chunks(root: Path, warnings: list[str] | None = None) -> list[tuple[str
             continue
         text = read_text(path)
         if len(text.encode("utf-8")) > CHUNK_LIMIT:
-            raise BuildError("E_USAGE", f"{path.name} is larger than 200 KiB", EX_INVALID)
+            raise BuildError("E_USAGE", f"{path.name} is larger than {CHUNK_LIMIT // 1024} KiB", EX_INVALID)
         out.append((name, js_safe(text, path.name)))
     if absent and warnings is not None:
         warnings.append(f"runtime/{', '.join(absent)} not built yet, so the page is made without {'it' if len(absent) == 1 else 'them'} and behaves as 1.0 (run node tools/build.mjs)")

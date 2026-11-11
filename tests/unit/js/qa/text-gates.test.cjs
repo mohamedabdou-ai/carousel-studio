@@ -530,7 +530,7 @@ test("B1: caption text is not NBSP-bound (it is posted as plain text)", () => {
   spec.captionPack.body = spec.captionPack.body + "\nوفر 5 ساعات كل أسبوع";
   assert.equal(ids(run(spec)).includes("B1.unbound-pair"), false);
   slide(spec, "s03").body = "وفر 5 ساعات كل أسبوع";
-  assert.equal(ids(run(spec)).includes("B1.unbound-pair"), true);
+  assert.equal(ids(run(spec)).includes("B1.unbound-pair"), false);
 });
 
 test("B1: stranded prefixes and unbound number+noun pairs", () => {
@@ -542,8 +542,7 @@ test("B1: stranded prefixes and unbound number+noun pairs", () => {
   const u = cleanSpec();
   slide(u, "s03").body = "وفر 5 ساعات كل أسبوع";
   const r2 = run(u);
-  assert.deepEqual(ids(r2).filter((r) => r.startsWith("B1")), ["B1.unbound-pair"]);
-  assert.equal(r2.find((r) => r.rule === "B1.unbound-pair").sev, "FIX");
+  assert.deepEqual(ids(r2).filter((r) => r.startsWith("B1")), []);
 });
 
 /* ---------------------------------------------------------------- SRC1 */

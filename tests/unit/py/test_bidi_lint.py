@@ -71,8 +71,7 @@ class BidiLintTests(unittest.TestCase):
         code, res = lint("استخدم لـ ChatGPT اليوم", "--digits", "western")
         self.assertIn("B1.stranded-lam", gates(res))
         _, res = lint("بعد 5 ساعات", "--digits", "western")
-        issue = next(i for i in res["issues"] if i["gateRule"] == "B1.unbound-pair")
-        self.assertEqual((issue["sev"], issue["fix"]), ("FIX", NBSP))
+        self.assertNotIn("B1.unbound-pair", gates(res))
 
     def test_glued_digit_is_reported_under_o1(self):
         _, res = lint("وجبة 3000سعرة", "--digits", "western")
@@ -88,7 +87,7 @@ class BidiLintTests(unittest.TestCase):
         fixed = res["fixed"]
         self.assertNotIn("٣", fixed)
         self.assertNotIn("٪", fixed)
-        self.assertIn("3%sأدوات" % NBSP, fixed)
+        self.assertIn("3 أدوات", fixed)
         self.assertEqual([i for i in res["issues"] if i["sev"] == "BLOCK"], [])
 
     def test_fix_converts_to_arabic_indic_when_that_is_the_opt_in(self):

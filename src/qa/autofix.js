@@ -7,6 +7,7 @@
  * spec, so a result only needs its rule and element key (the fields the
  * qaResult schema allows).
  */
+/* Deterministic text repairs and QA overrides. */
 
 const TEXT_FIX_KINDS = { digits: 1, bind: 1, ortho: 1 };
 const KIND_BUILTINS = { bind: ["lam-latin-stranded", "number-noun-unbound"] };
@@ -22,7 +23,7 @@ function fixKindOf(R, f) {
 /** Can CS.qa.autofix repair this finding? */
 function isAutofixable(f) {
   const R = loadRules();
-  if (!f || f.overridden) return false;
+  if (!f || f.overridden || /^s[0-9]{2}\.free(?:-edit)?\./.test(f.el || "")) return false;
   const kind = fixKindOf(R, f);
   if (!kind || !TEXT_FIX_KINDS[kind]) return false;
   if (f.gate === "O1" && R.checks[f.rule] === undefined) {
@@ -33,46 +34,40 @@ function isAutofixable(f) {
   return true;
 }
 
-function fixPasses(text, names, ctx) {
+function copyPointer(key) {
+  if (!key.startsWith("/")) return true;
+  const slide = /^\/slides\/[0-9]+\//.test(key), p = key.slice(1).replace(/^slides\/[0-9]+\//, "").replace(/\//g, ".");
+  return /^(captionPack\.(firstLine|keywordLine|body|cta|(perSlide|alt|hashtags)\.[0-9]+)|hook\.(cover|text|slide2))$/.test(p) || slide && /^(kicker|headline|sub|title|body|bridge|attribution|quote|bullets\.[0-9]+|sides\.[0-9]+\.(label|text)|cta\.text|number\.(value|unit)|items\.[0-9]+\.(title|text|value)|demo\.(caption|lines\.[0-9]+\.text)|visual\.anchor\.(word|unit|captions\.[0-9]+|chart\.values\.[0-9]+\.label|mock\.(title|caption|stamp|lines\.[0-9]+\.text|items\.[0-9]+)))$/.test(p);
+}
+
+function fixText(text, kinds, fc) {
   let cur = text;
-  for (let pass = 0; pass < 3; pass++) {
-    const issues = [];
-    names.forEach((n) => {
-      BUILTIN[n](cur, ctx).forEach((it) => issues.push(Object.assign({ autofix: it.fix !== undefined }, it)));
-    });
-    const next = applyFixes(cur, issues);
-    if (next === cur) break;
-    cur = next;
+  const opts = { bundle: fc.bundle, dialect: fc.dialect, digits: fc.digits, allowSet: fc.allow,
+    skip: new Set(O1_SKIP_CHECKS), kashidaWord: fc.kashidaWord };
+  for (let pass = 0; pass < 4; pass++) {
+    const before = cur, all = kinds.has("ortho") ? lintText(cur, opts) : [];
+    let repairs = all.filter(i => i.autofix && /^ORTHO-ENC-/.test(i.rule) && (!fc.encodingOnly || /^ORTHO-ENC-00[4-8]$/.test(i.rule)));
+    if (!repairs.length && !fc.encodingOnly) {
+      if (BUILTIN["unassigned-codepoint"](cur, {}).length || all.some(i => i.rule === "ORTHO-ENC-003")) break;
+      if (kinds.has("bind") || kinds.has("ortho")) {
+        KIND_BUILTINS.bind.forEach(n => BUILTIN[n](cur, fc).forEach(i => repairs.push({...i, autofix: true})));
+      }
+      if (!repairs.length) {
+        if (kinds.has("digits")) cur = TX().digits.convert(cur, fc.digits);
+        if (kinds.has("ortho")) repairs = lintText(cur, opts);
+        if (kinds.has("digits")) BUILTIN["percent-sign"](cur, fc).forEach(i => repairs.push({...i, autofix: true}));
+      }
+    }
+    cur = applyFixes(cur, repairs);
+    if (cur === before) break;
   }
   return cur;
 }
 
-function fixText(text, kinds, fc) {
-  let t = text;
-  if (kinds.has("digits")) t = TX().digits.convert(t, fc.digits);
-  Object.keys(KIND_BUILTINS).forEach((k) => {
-    if (kinds.has(k)) t = fixPasses(t, KIND_BUILTINS[k], { digits: fc.digits, kashidaWord: fc.kashidaWord, bindLabels: fc.bindLabels });
-  });
-  if (kinds.has("ortho")) {
-    for (let pass = 0; pass < 3; pass++) {
-      const issues = lintText(t, {
-        bundle: fc.bundle,
-        dialect: fc.dialect,
-        digits: fc.digits,
-        allowSet: fc.allow,
-        skip: new Set(O1_SKIP_CHECKS),
-        kashidaWord: fc.kashidaWord
-      });
-      const next = applyFixes(t, issues);
-      if (next === t) break;
-      t = next;
-    }
-  }
-  return t;
-}
 
 /** autofix(spec, results, ctx?) -> { spec, applied, remaining }. */
 function autofixSpec(spec, results, c) {
+  if (c && c.autofix === false) return { spec: deepClone(spec), applied: [], remaining: results.slice() };
   const R = loadRules();
   const next = deepClone(spec);
   const brand = (c && c.brand) || null;
@@ -93,11 +88,11 @@ function autofixSpec(spec, results, c) {
   });
 
   Object.keys(targets).forEach((el) => {
-    const loc = locateKey(next, el);
+    const loc = el.startsWith("/") ? pointerText(next, el) : locateKey(next, el);
     if (!loc || typeof loc.holder[loc.prop] !== "string") return;
     const slideId = /^(s[0-9]{2})\./.exec(el);
     const slide = slideId ? (next.slides || []).find((s) => s.id === slideId[1]) : null;
-    const local = Object.assign({}, fc, { kashidaWord: slide && /\.headline$/.test(el) ? slide.kashidaWord || "" : "" });
+    const local = Object.assign({}, fc, { encodingOnly: !copyPointer(el), kashidaWord: slide && /\.headline$/.test(el) ? slide.kashidaWord || "" : "" });
     loc.holder[loc.prop] = fixText(loc.holder[loc.prop], targets[el], local);
   });
 
@@ -110,6 +105,12 @@ function autofixSpec(spec, results, c) {
     else remaining.push(f);
   });
   return { spec: next, applied, remaining };
+}
+
+function pointerText(spec, key) {
+  const parts = key.slice(1).split("/").map((p) => p.replace(/~1/g, "/").replace(/~0/g, "~"));
+  const prop = parts.pop(), holder = parts.reduce((v, p) => v && Object.hasOwn(v, p) ? v[p] : null, spec);
+  return holder && Object.hasOwn(holder, prop) ? { holder, prop } : null;
 }
 
 /** override(spec, gateOrRule, { slide?, reason, at? }) -> new spec. */

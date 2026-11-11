@@ -5,7 +5,7 @@
  * { data, width, height } objects, so the same code runs in the Studio and
  * in tests.
  */
-
+/* Pixel comparisons and painted glyph bounds for QA. */
 function pixelsOf(src) {
   if (!src) throw qaError("E_USAGE", "metrics need an image");
   if (src.data && src.width && src.height) return src;
@@ -15,6 +15,7 @@ function pixelsOf(src) {
   }
   throw qaError("E_USAGE", "unsupported image type for metrics");
 }
+
 
 /** Peak signal-to-noise ratio over the RGB channels, in dB (99 when identical). */
 function psnrOf(a, b) {
@@ -43,6 +44,7 @@ function grayOf(img) {
   }
   return g;
 }
+
 
 /** Mean SSIM of the luma channel over 8x8 blocks (1 when identical). */
 function ssimOf(a, b) {
@@ -90,6 +92,7 @@ function ssimOf(a, b) {
   return blocks ? total / blocks : 1;
 }
 
+
 /** V1 loop check: worst SSIM and PSNR of (frame 0 vs poster) and (last frame
  *  vs frame 0). Thresholds come from the V1.loop check when rules are loaded. */
 function loopCheckOf(frame0, last, poster) {
@@ -100,6 +103,7 @@ function loopCheckOf(frame0, last, poster) {
     ssimMin = p.ssim;
     psnrMin = p.psnr;
   } catch (e) {
+
     /* rules not registered: use the platform defaults above */
   }
   const pairs = [[frame0, poster], [last, frame0]];
@@ -110,4 +114,14 @@ function loopCheckOf(frame0, last, poster) {
     psnr = Math.min(psnr, psnrOf(p[0], p[1]));
   });
   return { ssim: Math.round(ssim * 100000) / 100000, psnr: Math.round(psnr * 100) / 100, ok: ssim >= ssimMin && psnr >= psnrMin };
+}
+
+function glyphInk(S, c, text, r) {
+  const g = S._ink || (S._ink = document.createElement("canvas").getContext("2d"));
+  g.font = c.fontStyle + " " + c.fontWeight + " " + c.fontSize + " " + c.fontFamily;
+  g.direction = c.direction; g.textAlign = "left";
+  const m = g.measureText(text);
+  if (!Number.isFinite(m.fontBoundingBoxAscent) || !Number.isFinite(m.actualBoundingBoxAscent)) return r;
+  return { x: r.x - m.actualBoundingBoxLeft, y: r.y + m.fontBoundingBoxAscent - m.actualBoundingBoxAscent,
+    w: m.actualBoundingBoxLeft + m.actualBoundingBoxRight, h: m.actualBoundingBoxAscent + m.actualBoundingBoxDescent };
 }

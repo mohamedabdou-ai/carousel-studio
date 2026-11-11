@@ -31,7 +31,7 @@
 .cs-slide[data-preset="poster"][data-hl="color"] .cs-em{color:var(--cs-accent)}
 .cs-slide[data-preset="poster"][data-hl="bar"] .cs-em{background:var(--cs-accent);color:var(--cs-on-accent);padding-inline:.14em}
 .cs-slide[data-preset="poster"][data-hl="marker"] .cs-em{background:var(--cs-accent);color:var(--cs-on-accent);padding-inline:.18em;border-radius:.14em}
-.cs-slide[data-preset="poster"][data-hl="underline"] .cs-em{text-decoration:underline;text-decoration-color:var(--cs-accent);text-decoration-thickness:.1em;text-underline-offset:.16em}
+.cs-slide[data-preset="poster"][data-hl="underline"] .cs-em{text-decoration:underline;text-decoration-color:var(--cs-accent);text-decoration-thickness:.1em;text-decoration-skip-ink:none;text-underline-offset:.35em}
 .cs-slide[data-preset="poster"] .cs-num,.cs-slide[data-preset="poster"] .cs-unit{color:var(--cs-ink)}
 .cs-slide[data-preset="poster"][data-hl="color"] .cs-num{color:var(--cs-accent)}
 .cs-slide[data-preset="poster"] .cs-ord{font-weight:800}

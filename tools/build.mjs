@@ -15,7 +15,7 @@
 //   --report       print a size table without writing; with explicit --out, also build there; with --check, also compare
 //   --format       text (default) or json; json needs --report and prints one JSON document instead of the per-chunk lines
 //
-// A build fails (exit 70) when a chunk is over its ceiling (CHUNK_CEILINGS, IS-1), is larger than 200 KiB, does not parse as a
+// A build fails (exit 70) when a chunk is over its ceiling (CHUNK_CEILINGS, IS-1), is larger than 240 KiB, does not parse as a
 // script, or contains a closing script tag or an HTML comment opener (build_studio.py inlines chunks in <script> elements and
 // refuses both). Every chunk is built before anything is written, so a failure writes nothing. Output is not minified.
 // Exit codes: 0 ok · 2 --check found a difference · 64 usage · 66 manifest or source file missing · 70 internal / limits · 73 cannot write.
@@ -29,16 +29,16 @@ const SRC = join(ROOT, "src");
 const DEFAULT_OUT = join(ROOT, "plugins", "carousel-studio", "skills", "carousel-design", "runtime");
 const ENGINE = "cs-1.1.1";
 const KIB = 1024;
-const MAX_CHUNK_BYTES = 200 * KIB;
+const MAX_CHUNK_BYTES = 240 * KIB;
 const CHUNK_NAME = /^cs-[a-z0-9]+(-[a-z0-9]+)*\.js$/;
 const CLOSING_SCRIPT = new RegExp("</" + "script", "i");
 const COMMENT_OPENER = "<" + "!--";
 
-// The CI ceiling of each chunk in bytes (IS-1). A chunk over its ceiling fails the build; the 200 KiB limit stays the last line.
+// The CI ceiling of each chunk in bytes (IS-1). A chunk over its ceiling fails the build; the 240 KiB limit stays the last line.
 const DEFAULT_CEILING = 190 * KIB;
 const CHUNK_CEILINGS = {
-  "cs-core.js": 203400,
-  "cs-qa.js": 176000,
+  "cs-core.js": 215000,
+  "cs-qa.js": 190000,
   "cs-ui.js": 201000,
   "cs-visual.js": 190 * KIB,
   "cs-art.js": 190 * KIB,

@@ -101,7 +101,7 @@
   text-decoration: underline;
   text-decoration-color: var(--cs-accent);
   text-decoration-thickness: 0.1em;
-  text-underline-offset: 0.16em;
+  text-decoration-skip-ink:none;text-underline-offset:.35em;
 }
 .cs-slide[data-preset="interface"][data-hl="color"] .cs-em {
   color: var(--cs-accent);

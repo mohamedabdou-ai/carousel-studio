@@ -160,7 +160,7 @@ test("autofix converts a whole post to Arabic-Indic digits when the brand opted 
   slide(spec, "s03").body = "وفر 50% من الوقت";
   const res = run(spec);
   const out = CS.qa.autofix(spec, res, {});
-  assert.equal(slide(plain(out.spec), "s03").body, "وفر ٥٠٪\u00A0من الوقت", "digits converted and the number bound to its noun");
+  assert.equal(slide(plain(out.spec), "s03").body, "وفر ٥٠٪ من الوقت", "digits converted; the renderer owns number/noun binding");
 });
 
 /* ---------------------------------------------------------------- report */

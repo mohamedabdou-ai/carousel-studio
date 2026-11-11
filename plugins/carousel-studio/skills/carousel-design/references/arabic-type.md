@@ -7,21 +7,23 @@ The engine enforces these rules on its own output and the gates (D5, B1, N1) che
 - One register per post (dialect, white or MSA). Latin brand and tool names stay Latin, in the same weight and colour as the Arabic around them (gate D6).
 
 ## 2. Isolating LTR runs
-Every left-to-right run is wrapped in `<bdi dir="ltr">`: English words, numbers with units (`$20`, `5G`), `%`, @handles, #hashtags without Arabic letters, URLs, e-mail, phone numbers. Consecutive LTR tokens separated by one space form one run (`ChatGPT Plus`). Arabic-script hashtags get `dir="rtl"`. Emoji are not wrapped.
+Every left-to-right run is wrapped in `<bdi dir="ltr">`: English words, numbers with units (`$20`, `5G`), `%`, @handles, #hashtags without Arabic letters, URLs, e-mail, phone numbers. Latin phrases keep their punctuation inside one isolate (`Google Search & Other`, `"Yes, and don't ask again"`). Plain, no-break, narrow no-break and thin spaces have the same rendering policy. Arabic-script hashtags get `dir="rtl"`. Emoji are not wrapped.
 
 Binding (no line break between the parts):
 - «لـ / بـ / الـ / وبـ» stay attached to the Latin word after them: «لـChatGPT» is one word. A stranded «لـ ChatGPT» (space) is a BLOCK (B1) and is auto-fixed.
-- A number and the noun it counts are joined with a no-break space: «5 ساعات», «الخطوة 3». A plain space there is a FIX (auto-fixed).
-- Known two-word pairs (idafa such as «مدير التسويق», noun + definite adjective) are glued so they never split across lines. Mark other pairs for the proofreader to add.
+- Type «5 ساعات», «الخطوة 3» and «Opus 5.5» with ordinary spaces. The engine binds the pair on one line and preserves its order; no copy lint asks for U+00A0. `B1.unbound-pair` measures broken rendered pairs.
+- One- and two-letter Arabic words, plus «ولا», stay with a neighbour. An explicit newline is respected; `D6.orphan-connector` asks for review if it strands a connector. Mixed Arabic/Latin display lines receive extra line height.
 - Never split a word across slides or lines. Never put an LTR run on a line edge alone when it can be bound to its neighbour.
 
-Never type U+200E or U+200F into stored copy; the engine adds direction marks itself.
+Type «وGoogle», «وAI Mode», «وMax 5x», «بـ@الاسم», «بـ50%» and «الـAPI،» as written. The Arabic prefix stays outside the Latin font and isolate, in the body face for clarity, and stays attached to its word.
+
+No invisible workaround is needed. Rendering maps U+00A0, U+202F and U+2009 to ordinary spaces, then binds layout units. It removes direction marks and isolates, overrides, zero-width spaces, soft hyphens, word joiners and BOM. It preserves ZWNJ U+200C and ZWJ U+200D because they can carry shaping intent. Raw copy is linted first: controls other than tab/newline/CR, unassigned characters and isolated surrogates are BLOCK findings in every spec string, captions and alt text included. Safe controls and direction marks have deterministic repairs; unknown characters require review.
 
 ## 3. Digits
 One digit system per design (N1, a BLOCK, auto-fixed). The default is **Western 0–9** everywhere, including formal registers: every numeral on the 16 winning Arabic covers we studied was Western. **Arabic-Indic ٠–٩ is an opt-in** the plugin may only offer (MSA register, or government, finance, health or legal topics in Egypt, Saudi Arabia, Iraq, Sudan or Yemen); show both side by side on the user's own hook, record the choice and the reason, never switch silently. Persian digits ۰–۹ (U+06F0–06F9) are always an error. The counter, cover numerals and the percent sign follow the choice: `%` with Western, `٪` with Arabic-Indic; decimal `.` or `٫`, thousands `,` or `٬`. Conversion is one pass and never touches handles, hashtags, URLs or phone numbers.
 
 ## 4. Punctuation
-Arabic comma «،», semicolon «؛», question mark «؟», ellipsis «…» (one character, not `...`), guillemets «» for quotes. No space before «، ؛ ؟ : ! .» and one space after. No Latin `, ; ?` inside Arabic sentences. Ellipsis marks the two-beat break of a cover («مش X… ده Y»): on the cover it becomes a line break.
+Arabic comma «،», semicolon «؛», question mark «؟», ellipsis «…» (one character, not `...`), guillemets «» for quotes. No space before «، ؛ ؟ : ! .» and one space after. Latin punctuation stays inside a Latin phrase; Arabic punctuation is used after Arabic words. Ellipsis marks the two-beat break of a cover («مش X… ده Y»): on the cover it becomes a line break.
 
 ## 5. Forbidden on Arabic text (D5, never overridable)
 Letter-spacing or tracking of any size · justification · italic or oblique (including synthesised slant) · `font-synthesis` · opacity or RGBA on a text node (a fade uses group opacity on a wrapper around whole words or lines; translucent colours are pre-mixed into solid ones) · per-letter splitting for animation · blend modes, masks, filters or `writing-mode` on text. Fonts must cover every code point used; a fallback font showing in the render is a BLOCK.
@@ -54,3 +56,5 @@ Mirror with the direction: arrows, progress, steps, timelines, list indents, che
 
 ## 11. Hand-editing checklist
 Before you save a text field: NFC text, `==span==` marks at most one emphasis span, `\n` only for a deliberate break, Arabic punctuation, Western digits unless opted in, Latin names unchanged, no pasted tatweel, no `...`, no double spaces. Run `validate.py spec spec.json --lint` after.
+
+Underlines use continuous ink below the dots (`text-decoration-skip-ink:none`), including the notebook double underline. Do not remove emphasis to hide a rendering defect.

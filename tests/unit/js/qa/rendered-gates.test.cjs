@@ -16,8 +16,41 @@ const has = (name, rule, el) => (out[name] || []).some((x) => (el ? x === rule +
 const sev = (name, rule) => ((out[name + ":sev"] || []).find((x) => x.startsWith(rule + "=")) || "").split("=")[1];
 const opts = { skip: chrome ? false : "no Chrome or Edge found (set CHROME)" };
 
+test("D9 treats sparse score bars and icon cells as advice while empty panels need fixing", opts, () => {
+  if (!out) out = runScenario();
+  assert.ok(has('deliberate-panels', 'D9.container-fill'));
+  assert.ok(out['deliberate-panels:sev'].every(f => f.endsWith('=NOTE')));
+  assert.equal(sev('empty-panels', 'D9.container-fill'), 'FIX');
+});
+
+test("painted padding, sibling gaps, clipping, orphans and cover sub-lines", opts, () => {
+  if (!out) out = runScenario();
+  assert.ok(has("packed-bars", "D2.text-padding"));
+  assert.ok(has("packed-bars", "D2.block-gap"));
+  assert.equal(has("airy-bars", "D2.text-padding"), false);
+  assert.equal(has("airy-bars", "D2.block-gap"), false);
+  assert.equal(has("framed-cells", "D2.block-gap"), false, "cells in a shared frame need internal padding, not gaps");
+  assert.equal(has("compact-badge", "D2.text-padding"), false, "an inline text badge is not a body panel");
+  assert.equal(has("ink-padding", "D2.text-padding"), false, "painted glyphs, not the font em-box, own the inset");
+  assert.ok(has("clipped-icon", "D2.clipped-paint"));
+  assert.ok(has("clipped-text-ink", "D2.clipped-paint"), "the painted descenders clip even when the line box fits");
+  assert.equal(has("transparent-clip", "D2.clipped-paint"), false);
+  assert.equal(sev("clipped-icon", "D2.clipped-paint"), "BLOCK");
+  assert.equal(has("unclipped-icon", "D2.clipped-paint"), false);
+  assert.ok(has("orphan-connector", "D6.orphan-connector"));
+  assert.equal(has("joined-connector", "D6.orphan-connector"), false);
+  assert.equal(rules("direction-controls").some(r => /^D2\./.test(r)), false);
+  assert.equal(rules("connector-tatweel").some(r => /^D5\.kashida-/.test(r)), false);
+  assert.ok(has("cover-sub-contrast", "D4.hard", "s01.sub"));
+  assert.equal(out['empty-panel-count'], 4);
+  assert.ok(has('empty-panels', 'D9.container-fill'));
+  assert.equal(sev('empty-panels', 'D9.container-fill'), 'FIX');
+  assert.deepEqual(out['good-panels'], []);
+  for (const [key, value] of Object.entries(out)) if (key.startsWith('visible-copy-')) assert.deepEqual(value, [], key);
+});
+
 test("scenario runs in the browser", opts, () => {
-  out = runScenario();
+  out = out || runScenario();
   assert.ok(out && out.clean, "scenario output");
 });
 
@@ -126,9 +159,10 @@ test("D6.lines: per-type line limits from 00-decisions", opts, () => {
 });
 
 test("B1: a Latin run split over lines and Latin text outside an isolate", opts, () => {
-  assert.ok(has("isolation", "B1.isolation", "s01.body"));
+  assert.equal(has("isolation", "B1.isolation", "s01.body"), false, "a Latin phrase may wrap within its isolate");
   assert.ok(has("raw-ltr", "B1.raw-ltr", "s01.body"));
-  assert.equal(sev("isolation", "B1.isolation"), "BLOCK");
+  assert.equal(sev("atomic-isolation", "B1.isolation"), "BLOCK");
+  assert.equal(sev("broken-version", "B1.unbound-pair"), "FIX");
 });
 
 test("T1: the cover hero at 130 px wide", opts, () => {

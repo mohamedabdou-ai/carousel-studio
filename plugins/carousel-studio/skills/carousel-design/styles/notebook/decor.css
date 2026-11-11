@@ -10,7 +10,7 @@
 .cs-slide[data-preset="notebook"]:is([data-type="cover"],[data-type="poster"]) .cs-kicker{width: fit-content;padding-inline: 22px;background: var(--cs-surface);border: 3px solid var(--cs-ink);border-radius: 14px 22px 16px 20px;color: var(--cs-ink);font-weight: 700}
 .cs-slide[data-preset="notebook"]:is([data-type="cover"],[data-type="poster"])[data-align="center"] .cs-kicker{margin-inline: auto}
 .cs-slide[data-preset="notebook"]:is([data-type="cover"],[data-type="poster"]) .cs-em{background: none;color: inherit}
-.cs-slide[data-preset="notebook"]:is([data-type="cover"],[data-type="poster"])[data-hl="underline"] .cs-em{background: linear-gradient(to bottom, var(--cs-scrim-to) 0%, var(--cs-scrim-to) 77%, var(--cs-accent) 77%, var(--cs-accent) 80.5%, var(--cs-scrim-to) 80.5%, var(--cs-scrim-to) 85%, var(--cs-accent) 85%, var(--cs-accent) 88.5%, var(--cs-scrim-to) 88.5%)}
+.cs-slide[data-preset="notebook"]:is([data-type="cover"],[data-type="poster"])[data-hl="underline"] .cs-em{background:none;text-decoration:underline double var(--cs-accent);text-decoration-thickness:3px;text-decoration-skip-ink:none;text-underline-offset:.35em}
 .cs-slide[data-preset="notebook"]:is([data-type="cover"],[data-type="poster"])[data-hl="bar"] .cs-em{background: var(--cs-accent);color: var(--cs-on-accent);padding-inline: 0.14em}
 .cs-slide[data-preset="notebook"]:is([data-type="cover"],[data-type="poster"])[data-hl="marker"] .cs-em{background: var(--cs-accent);color: var(--cs-on-accent);padding-inline: 0.18em;border-radius: 0.22em 0.34em 0.24em 0.3em}
 .cs-slide[data-preset="notebook"]:is([data-type="cover"],[data-type="poster"])[data-hl="color"] .cs-em{color: var(--cs-accent)}
@@ -58,7 +58,7 @@
 .cs-slide[data-preset="notebook"][data-tone] .cs-rail-seg[data-on="1"]{background:var(--cs-ink-muted)}
 .cs-slide[data-preset="notebook"][data-tone] .cs-rail-seg[data-on="1"]:has(+[data-on="0"]),.cs-slide[data-preset="notebook"][data-tone] .cs-rail-seg[data-on="1"]:last-child{background:var(--cs-accent)}
 .cs-slide[data-preset="notebook"][data-tone] .cs-em{background:none;color:inherit}
-.cs-slide[data-preset="notebook"][data-tone][data-hl="underline"] .cs-em{text-decoration:underline double var(--cs-accent);text-decoration-thickness:3px;text-underline-offset:.12em}
+.cs-slide[data-preset="notebook"][data-tone][data-hl="underline"] .cs-em{text-decoration:underline double var(--cs-accent);text-decoration-thickness:3px;text-decoration-skip-ink:none;text-underline-offset:.35em}
 .cs-slide[data-preset="notebook"][data-tone][data-hl="color"] .cs-em{color:var(--cs-accent)}
 .cs-slide[data-preset="notebook"][data-tone][data-numbering="pill"] .cs-ord{inline-size:fit-content;padding-inline:22px;border:4px solid var(--cs-accent);border-radius:48% 52% 46% 54%;color:var(--cs-ink);background:none}
 .cs-slide[data-preset="notebook"][data-tone][data-variant="ghost-number"] .cs-ord{padding:0;border:0;background:none;color:var(--cs-line)}

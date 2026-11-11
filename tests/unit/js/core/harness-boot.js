@@ -24,7 +24,7 @@
       return;
     }
     FX.real = q.get("presets") === "real";
-    var cases = (q.get("cases") || (FX.real ? "real" : "registry,resolve,compose,fit,freeze,render,spec,archetypes,visual-compose")).split(",");
+    var cases = (q.get("cases") || (FX.real ? "real,mixed-render" : "registry,resolve,compose,fit,freeze,render,spec,archetypes,visual-compose")).split(",");
     for (var i = 0; i < cases.length; i++) await load("/tests/unit/js/core/cases/" + cases[i] + ".test.js");
     await CST.run();
   } catch (e) {

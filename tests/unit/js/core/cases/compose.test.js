@@ -183,6 +183,70 @@
     assert(!q(el, ".cs-title").style.lineHeight, "other slots keep the token line height");
   });
 
+  test("compose: plain mixed phrases keep punctuation, prefixes and versions in reading order", async function () {
+    await FX.setup();
+    var spec = ex(), cx = CS.core.compose.context(spec, spec.slides[2], CS.core.resolve.post(spec, FX.brand()), FX.brand(), {});
+    ["Google Search & Other", "\"Yes, and don't ask again\"", "Opus\u00a05.5", "Opus\u202f5.5", "Opus\u20095.5"].forEach(function (text) {
+      var p = document.createElement("p"); p.dir = "rtl";
+      p.innerHTML = CS.core.compose.html("جرّب " + text + " اليوم", cx);
+      var runs = Array.from(p.querySelectorAll('.cs-ltr,[data-cs-bind="pair"]'));
+      assert(runs.some(function (r) { return r.textContent.replace(/\u00a0/g, " ") === text.replace(/[\u00a0\u202f\u2009]/g, " "); }), "ordered phrase: " + text + " => " + p.innerHTML);
+    });
+    ["وGoogle", "وAI Mode", "وMax 5x", "الـAPI،", "بـ50%", "بـ@الاسم", "وَAI Mode", "و«Google Search & Other»", "وÉlan"].forEach(function (text) {
+      var p = document.createElement("p"); p.innerHTML = CS.core.compose.html(text, cx);
+      assert(p.querySelector('[data-cs-bind="clitic"]'), "bound prefix: " + text);
+      eq(p.textContent, text, "creator wording stays intact");
+      if (text === "الـAPI،") eq(p.querySelector(".cs-ltr").textContent, "API", "Arabic comma stays outside the Latin isolate");
+    });
+    eq(CS.core.compose.prepare("\u2066Opus\u0001\u202f5.5\u2069", spec), "Opus 5.5");
+    eq(CS.core.compose.prepare("نص\u200c\u200d", spec), "نص\u200c\u200d");
+  });
+
+  test("compose: generic display labels get mixed-script line height", async function () {
+    await FX.setup();
+    var spec = ex(), cx = CS.core.compose.context(spec, spec.slides[2], CS.core.resolve.post(spec, FX.brand()), FX.brand(), {});
+    var h = document.createElement('h2'); CS.core.compose.label(h, 'Google في التصميم', cx, { role:'h2', slot:'title' });
+    assert(h.style.lineHeight.includes('--cs-lh-heading'), 'free-lane display labels use the same line-height policy');
+  });
+
+  test("compose: a prefix stays with the first fragment of a wrapping Latin phrase", async function () {
+    await FX.setup();
+    var spec=ex(function(s){s.slides[2].body='وGoogle Search & Other useful tools';}), root=FX.build(spec,2), slot=q(root,'.cs-body');
+    slot.style.width='320px'; slot.style.fontSize='44px';
+    var words=Array.from(slot.querySelectorAll('.w')), prefix=words.find(w=>w.textContent==='و'), first=words.find(w=>w.textContent==='Google');
+    assert(prefix&&first,'both scripts are present');
+    var a=prefix.getBoundingClientRect(), b=first.getBoundingClientRect();
+    assert(Math.abs(a.y+a.height/2-b.y-b.height/2)<22,'the clitic is not stranded');
+    assert(slot.scrollWidth<=slot.clientWidth+1,'the phrase can wrap without overflowing');
+  });
+
+  test("compose: currency binding does not lock the preceding Arabic sentence", async function () {
+    await FX.setup();
+    var spec=ex(function(s){s.slides[2].body='جرّب هذه الفكرة مع فريقك بسعر $20 شهريًا في Google';}), root=FX.build(spec,2),slot=q(root,'.cs-body');
+    slot.style.width='400px';slot.style.fontSize='44px';
+    assert(slot.scrollWidth<=slot.clientWidth+1,'only the number/noun gap binds');
+    assert(slot.textContent.includes('$20\u00a0شهريًا'),'currency stays with its noun');
+    var cx=CS.core.compose.context(spec,spec.slides[2],CS.core.resolve.post(spec,FX.brand()),FX.brand(),{});
+    var node=document.createElement('p');node.innerHTML=CS.core.compose.html('🎯 جرّب Opus 5.5 في عملك',cx);
+    assert(node.querySelector('[data-cs-bind="pair"]').textContent.includes('Opus 5.5'),'astral text cannot shift the name/version pair');
+  });
+
+  test("compose: mixed kashida is added to one occurrence only", async function () {
+    await FX.setup();
+    var spec = ex(function (s) { s.style.presetId = "heritage@1.0"; s.slides[0].headline = "المصمم المصمم مع Google"; s.slides[0].kashidaWord = "المصمم"; });
+    var h = q(FX.build(spec, 0), '.cs-headline');
+    eq((h.textContent.match(/ـ/g) || []).length, 3, 'only one occurrence is stretched');
+  });
+
+  test("compose: short Arabic connectors bind forward and mixed display lines reserve air", async function () {
+    await FX.setup();
+    var spec = ex(function (s) { s.slides[0].headline = "التصميم في Google"; s.slides[2].body = "هذه فكرة ولا تجربة في التصميم"; });
+    var cover = FX.build(spec, 0), inner = FX.build(spec, 2);
+    assert(q(cover, '.cs-headline [data-cs-bind="words"]'), "في stays with Google");
+    assert(q(cover, ".cs-headline").style.lineHeight, "mixed display line-height is explicit");
+    assert(q(inner, '.cs-body [data-cs-bind="words"]'), "ولا and في keep a neighbour");
+  });
+
   test("compose: media (plate in the background, icons inline and sanitised, missing assets)", async function () {
     await FX.setup();
     var png = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";

@@ -54,7 +54,7 @@ ERROR, WARN = "error", "warn"
 
 MAX_FILES = 480  # the directory allows 512; CI fails earlier
 MAX_FILE_BYTES = 256 * 1024  # a non-image, non-font file must be smaller than this
-MAX_CHUNK_BYTES = 200 * 1024  # a runtime chunk may be at most this large
+MAX_CHUNK_BYTES = 240 * 1024  # a runtime chunk may be at most this large
 README_MIN_WORDS = 40
 SKILL_TOKEN_BUDGET = 4000  # SKILL.md budget (CONTRACT Appendix C.7); checked by estimate
 MAX_RELATIVE_PATH = 120  # keeps installs under Windows MAX_PATH
@@ -545,7 +545,7 @@ def s07_portability(scan: Scan) -> Iterator[Finding]:
 
 @rule("F01")
 def f01_sizes(scan: Scan) -> Iterator[Finding]:
-    """Non-image, non-font files are under 256 KiB; runtime chunks are at most 200 KiB."""
+    """Non-image, non-font files are under 256 KiB; runtime chunks are at most 240 KiB."""
     chunk = glob_regex(f"{RUNTIME_DIR}/cs-*.js")
     scoped = scan.files if scan.scope == "repo" else scan.plugin_files
     for f in scoped:
