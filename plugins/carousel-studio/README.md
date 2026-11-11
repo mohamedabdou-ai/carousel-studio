@@ -26,7 +26,7 @@ Carousel Studio is a full writing and design team inside Claude, built for Arabi
 
 ## What you get
 
-3:4 PNG slides, 4:5 JPEG crops, the MP4 cover, a PDF, the caption, per-slide captions, alt text and up to five hashtags, in one light ZIP (about 3 MB for eight slides). You post it yourself, by hand or with your scheduler.
+3:4 PNG slides, 4:5 JPEG crops, the MP4 cover, a PDF, caption, slide captions, alt text and up to five hashtags in one light ZIP. The plugin does not publish itself. After approval it asks once where/how: manual files or your connected tool. It remembers the preference and follows that tool's instructions and limits, on your word each use for named accounts/platforms; no publishing-tool recipe is bundled.
 
 ## Install
 

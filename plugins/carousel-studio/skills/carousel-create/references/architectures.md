@@ -21,7 +21,7 @@ An **architecture** is the order of ideas across the slides (`spec.architecture`
 `contentType` is `soft-sell` for `offer`, `results` and `lead-magnet`, otherwise `value`. The CTA kinds allowed for each intent come from `data/platform-instagram.json` (`plugin.cta.allowedByIntent`): save → save, follow, question; send → send, question; reach → send, follow, question; sell → keyword-dm, follow, question, save.
 
 ## Skeletons
-`N` is the number of payoff slides; a `rehook` can deliver one. Optional context, recap and share slides use the same budget. At most 10 slides, including the still or video cover: Instagram’s publishing API and most schedulers accept at most 10 items. A focused carousel of 4, 5 or 6 slides is complete; 6 to 10 is an optional sweet spot, never a reason to pad the post.
+`N` is payoff slides; a `rehook` can deliver one. Plan 4 to 10 slides including cover; 4 to 6 are fine for a short idea; never more than 10. Optional context, recap and share use the same budget. For a skeleton `slides = payoffs + 3`, payoffs ≤7; count the actual skeleton, whose extra slides may lower N further. Never pad.
 
 | Architecture | Slides, in order | Notes |
 |---|---|---|
@@ -50,7 +50,7 @@ A soft-sell carousel has **one ask**. If both an `offer` slide and a `cta` slide
 7. **A `share` slide** («ابعتها لحد…») comes before a send CTA, and is itself free of a `cta` object.
 8. **A tool topic gets a `setup` slide** (what you need: tool, plan, device, price). The audience asks about setup, free or paid, and Mac.
 9. **Count what you promise.** «5 أدوات» means 5 numbered members (`ord`), regardless of layout type. A cover with a numeral on a list or steps architecture is checked against the slides.
-10. **Change the rhythm.** No more than 3 slides in a row with the same type and variant (gate D8, FIX): vary the item variant, put an item in its `media` variant with a picture, or add a payoff slide of another type (a `stat`, a `compare`, a `quote`, a `proof`) between items. A post that teaches gets one or two **demonstration slides** (show the thing: the same cover at three sizes, the safe zones drawn on a slide, a prompt to paste, a before and after): `archetypes.md` section 6 says which archetype carries which and how to make the picture. The cover's count still equals the `item` and `step` slides, so an extra payoff slide raises the total by one; keep the post at 8 to 12.
+10. **Change the rhythm.** No more than 3 slides in a row with the same type/variant (D8). Vary layout or use a demonstration slide (before/after, safe zones, prompt) within the same 10-slide budget. Cover count equals distinct numbered members (`ord`), regardless of type. Never add an eleventh slide to satisfy variety.
 
 ## Swipe triggers you write
 The engine adds the counter, the «باقي k» label and, for a mixed audience, a quiet progress rail; you write the rest.
@@ -60,7 +60,7 @@ The engine adds the counter, the «باقي k» label and, for a mixed audience,
 4. **A swipe prompt in the caption** («اسحب لآخر سلايد») is cheap and correlated with slightly higher engagement; keep it short.
 5. **Progress that does not drag**: up to 10 slides, including the cover the counter helps; near the end the «باقي 2» label does. Slow-feeling progress raises drop-off, so every slide must pay.
 6. **A video or motion slide in the middle** is optional and only if the user supplies it; mixed media tends to do well, but it is never a reason to pad the post.
-A useful 4 to 6 slide post needs no extra slides. Two-slide reveals and jokes are allowed.
+A useful 4 to 6 slide post needs no extra slides. Plan every carousel within 4 to 10, cover included.
 
 ## Slide types: required and optional fields
 `ord` (the item or step number) is derived by the engine; set it only to override. `sides` for `compare` and `myth-fact` is exactly two entries in logical order (myth then fact; A then B), each `{label?, text}`; `stat.number` is `{value, unit?, sourceId?}` with `value` a string in Western digits (`"5"`, `"1.2"`).

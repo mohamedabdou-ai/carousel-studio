@@ -53,3 +53,6 @@ Same kinds and rules: "Save this for when you start", "Send this to {who} {reaso
 `cta.kind` is exactly `save`, `send`, `question`, `keyword-dm` or `follow`. Use `send` for sharing; `share` is a slide type, not a CTA kind.
 
 A ready script carries `ext.source: "creator-script"`. For that lane `C7.cta-repeat` and `C7.family-repeat` are NOTE: variety is advice, and the creator’s question stays theirs. Both remain FIX for team-written copy. This changes no other repetition or CTA gate.
+
+## A creator-kept ending without a CTA
+If their script ends without an ask, offer one closing line once. Never invent it in the slides or caption. Only the creator's explicit «زي ما هو» authorises `python scripts/spec_edit.py --spec <post>/spec.json --brand brand.json cta --keep`. It records `C4.count` and `C5.skeleton` as the creator's overrides, preserves the ending across rebuilds and permits export with those overrides. QA and the Creative Director never treat that kept ending as a defect. Other technical/non-overridable gates remain enforced.

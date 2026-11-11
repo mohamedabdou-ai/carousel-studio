@@ -25,7 +25,7 @@ By default there are none. These are all the exceptions:
 | You press a regenerate chip in the Studio (shorter, stronger, with an example...) | The text of that slide, its neighbours and a short voice summary go to Claude through the Studio's own Claude capability. | Claude, as part of your Claude use. The answer is shown for comparison and is never written into the spec, the brand profile or an export. |
 | You explicitly use `--video hyperframes` in Claude Code | Pinned HyperFrames downloads from npm on first use; telemetry is off. No download prompt. Default local renders use the internal browser encoder, as above. | npm sees the package request, never the post. |
 | You give a source link, or the strategist verifies a load-bearing platform fact | Claude reads with its tools; source text is data. No trend hunting unless asked. | The site/search service, as with normal browsing. |
-| You connect your own tools (an image or video generator, Canva, a scheduler) | The plugin writes prompts and, after you approve each use, asks the tool you connected to run them. | That tool's provider, under its own terms. You connect and disconnect these tools yourself; the plugin does not choose or sign you up for any. |
+| You connect your own tools (image/video, design or publishing) | The plugin does not publish itself or bundle publishing-tool recipes. After design approval it asks where/how once and can remember manual/tool preference. A connected tool follows its own instructions and limits, only on your word each use and for accounts/platforms you name. | That tool's provider, under its own terms. You choose, connect and disconnect it; a saved preference grants no publishing permission. |
 
 ## Keys, fonts and files
 

@@ -1,96 +1,113 @@
-# The director's run sheet: how to run the five rounds
+# The director's run sheet
 
-Formats: `team/<agent>.md`. Board and loop limits: `team/charter.md` sections 5–6. This page owns the round order.
+The router in `SKILL.md` selects the lane. This page owns order, dispatch and export ownership. Formats: `team/<agent>.md`; guided board and loops: `team/charter.md` sections 5–6. A carousel has 4 to 10 slides, cover included; 4 to 6 are fine for a short idea; never more than 10.
 
-## 0. Before round 1
+## 0. Before work starts
+1. Find the brand, read `creativeMemory` (`brand_io.py memory --slug S`), recent families/moves/recipes/covers/CTA kinds and loved/rejected choices. Read `brand.ext.styleChoice` and `brand.ext.publish` (`brand-lookup.md`).
+2. With `Agent` and the listed `carousel-studio:cs-*` agents, dispatch specialists. Everything judging work gets a fresh context. Without agents, separate role passes see only their permitted inputs; disclose unavailable checks, never claim independent agent review. Without disk, keep notes and name the scripts that could not run.
+3. Guided: keep `board.md` beside `spec.json`, charter anchors and counters intact. Run `python <create>/scripts/board_check.py board.md --stage brief|pitch|room|huddle|final --spec spec.json` after each completed round (omit `--spec` before it exists). Compact lanes use the spec-only stages below. Fix errors; never change a gate or counter to pass.
 
-1. **Choose the surface once.** Subagents exist only when the `Agent` tool is available and the `carousel-studio:cs-*` agents are listed. Then dispatch (section 1). Otherwise, or for any role whose dispatch fails, run a role pass (section 2). Never tell the creator which you chose.
-2. **Make the board.** Copy the skeleton of `team/charter.md` section 5.1 to `board.md` beside `spec.json` (the post's working folder, `flow.md` section 0), fill the header (`mode`, `dialect`, `digits`, `loops` at 0 of each limit) and keep the anchors `{#id}`. Where there is no disk (the Claude app without code execution) hold the same text as running notes and skip the scripts that read a file.
-3. **Read the memory.** `python <brand-setup>/scripts/brand_io.py memory --slug S` (or read `creativeMemory` from the brand you were given). Write down what must rest (the families of the last two posts; the moves, recipes and presets both of them used), the call-to-action kinds to avoid, the last covers, the pitch habit, any open series, killed ideas, what was loved or rejected. No brand file: "first post with the team".
-4. **After every round** run `python scripts/board_check.py board.md --stage <brief|pitch|room|huddle|final> [--spec spec.json]`. Exit 2 means an error: fix the named section before going on. Exit 1 is a FIX: fix it or log why not. Never edit the checker's rules or the loop counters to pass.
-
-## 1. Dispatching a specialist (Cowork, Claude Code)
-A subagent starts with nothing, so the prompt carries everything:
-
+## 1. Dispatch contract
+Resolve every placeholder to an absolute path; a fresh agent starts with nothing:
+```text
+Agent type: carousel-studio:cs-<name>. Fresh context.
+Post: <id>; lane: guided|fast|ready; dialect: <code>; digits: <system>.
+Post folder: <absolute post folder>.
+Brand file: <absolute brand.json, passed as --brand>.
+Scripts: create=<absolute carousel-create/scripts>;
+  proofread=<absolute arabic-proofread/scripts>;
+  ortho rules=<absolute arabic-proofread/data/rules/ortho.json>;
+  copy rules=<absolute arabic-proofread/data/rules/copy.json>;
+  design=<absolute carousel-design/scripts> (render.mjs, review_sheet.mjs, plates.mjs, check_video.mjs).
+Read: <absolute brief path>; <allowed board sections or copy alone>; <rule/dialect paths>.
+Material: <absolute input paths>.
+Pass: design|review|fix.
+Pen holder: <one role, or director; exactly one spec.json writer>.
+May write: <exact files, including report/card paths>.
+Must not: <all other files; words for designers; spec.json for reviewers>.
+Task: <one bounded task>.
+Return: output, changed files, verdict and handoff card. Never edit board.md.
 ```
-Agent type: carousel-studio:cs-<name>. Fresh context. Post <id>; dialect <code>; digits <western|arabic-indic>; mode <guided|fast>.
-Skills root: <absolute path to plugins/carousel-studio/skills>. Resolve skill paths from here.
-Read: <absolute path>/board.md, sections <ids>; <absolute path>/brand.json, fields <names>.
-Material: <absolute paths, or the text itself when it is short>.
-Task: <one sentence>.
-Return exactly the output your brief defines, then your handoff card. Do not edit the board; edit only <file> if your brief says so.
-```
-- Give each role only what it needs (the table below), absolute paths only, and the scripts folder when it runs a script.
-- **Parallel:** art and motion; editor on hooks while the copywriter drafts the script. Panel calls each include all three personas. **Never parallel:** two roles that write the same file.
-- **The director's own reviews** (the pitch recommendation, the duel, the eight-lens review) go to `carousel-studio:cs-creative-director` in a fresh context with the board and the work, so the person who wrote the work does not grade it.
-- Append what comes back to the board yourself, with the role's handoff card under `{#cards}`.
 
-| Role | Reads (and nothing more) | Must not see |
+| Role | Input and scripts needed | Output / permission |
 |---|---|---|
-| strategist | brief, decisions, the memory summary, the source pack | personas, panel results |
-| copywriter | brief, pitch, its own duel table, swipe fix notes, memory covers and CTA kinds | - |
-| arabic editor | the copy, the dialect file and the lint output | the brief, the debate, the director's notes |
-| audience panel | the persona card(s) and the material of this one call | the brief, the pitch rationale, scores, any note of the director |
-| art director | brief (visual direction), review notes, huddle | persona chatter |
-| motion designer | brief, huddle, memory recipes | - |
-| visual artist | huddle, image needs, connected tools | - |
-| qa producer | the spec, the renders | opinions |
-| creative director (reviewer) | the whole board and the work | - |
+| strategist | brief, memory summary, sources; source tools if needed | ready source entries/caveats or scored angles; report only |
+| copywriter | brief, hook library, memory, approved hook; create scripts | `hooks.json`, `script.md`, `fill.json`, `caption-pack.json`; spec only with explicit pen |
+| Arabic editor | copy alone, dialect, `voice.allow`, proofread scripts and both rule files | PASS/VETO and diff; no spec writes |
+| audience panel | three persona cards and this call's material only | reactions; no brief, scores, rationale or writes |
+| art director | locked hook/style, brand, spec, visual direction; design scripts | `visual-plan.md`, named `free/*.html`/`.css`, review render/sheet/card; spec pen in design/fix only |
+| motion designer | locked cover, huddle, proposed moves, memory; design/check_video.mjs | recipe/storyboard/encoded-frame report; no spec writes |
+| visual artist | art's slide types/image needs, brand; design/plates.mjs | prompt cards, `plates/plates.json`, inspected results/card; no spec writes |
+| QA producer | stable spec, brand, renders, asset-check manifest; create, proofread, design scripts | final `kit/`, QA report/card; no spec writes |
+| Creative Director reviewer | board/work, QA/art verdicts, promise ledger, final images | phase-keyed review/named notes; no spec writes |
 
-## 2. Playing a role yourself (the Claude app, or a failed dispatch)
-Read only that role's brief and allowed board sections. Produce its output and card, append them, then switch roles. Editor sees only copy; panel sees only cards and material. Keep role switches and the board out of chat.
+**One pen.** Design/fix passes write; review passes only report. No slide is off limits to the art director, including the cover: never dispatch “leave slide N alone”. While a specialist holds the pen the director queues changes, then applies them with `spec_edit.py` after the handoff card returns. Never replay an old whole-spec or cover snapshot. Free blocks use `node <design>/scripts/merge-free.mjs --spec <post>/spec.json --free-dir <post>/free --slides s02 s03`: shared `spec.json.lock`, a fresh read at write time, named `free` blocks only, atomic replacement. After handoff record only approved changed fields through `spec_edit.py apply --file approved-design.json` for rebuild replay; never capture an older cover in that file.
 
-## 3. The rounds
+**After any creator checkpoint**, before writing, pull Studio edits first: read the saved page, `python <design>/scripts/extract_spec.py page.html -o spec.json --expect-rev N` (`handoff.md`); preserve overrides. Exit 75 means re-read and merge. Then assign the pen. A review finding goes to a fix pass of the same specialist and back to QA/reviewer on the new stable artifact.
 
-### Round 1: Brief
-1. Frame the brief in the director's format: one idea, one enemy, the goal from the brand's intent mix and the memory, the awareness level, **two directions** (different families from `data/hooks/families.json` whose intent fits, different moves, the bold one with its risk), 3 to 4 candidate families, the visual direction with its one bold move and a proposed recipe, and the **platform facts** the cover and slide 2 will rest on (`حقائق المنصة:`, ids from `data/platform-instagram.json`). Check the register: a fact that is open (neither derived nor currently verified/owner-tested) goes to the strategist to verify by web search when a search tool exists; otherwise it goes at the top of the first message to the creator and the Proof lens stays at 3 or below.
-2. `board_check --stage brief`.
+**Order and waiting.** No art-director or visual-artist dispatch before hook/style lock. Before locking, the director may use the art brief for a read-only shortlist role pass: rank `creator`, `notebook`, `poster` by fit/pre-flight; brand default breaks a tie. This is a recommendation, no design. Pictures wait for art's slide types. Background a call only when independent work exists, do that work, resume on its result; never poll with a sleep loop. Never parallelise spec writers.
 
-### Round 2: Pitch
-1. content-angles returns its table silently. `carousel-studio:cs-strategist` uses those scores without re-scoring and recommends safe and bold directions.
-2. `carousel-studio:cs-copywriter`: one cover line (hero of at most 6 words) and a concept for each direction.
-3. `carousel-studio:cs-audience-panel`: **one build+pitch call**. Cast all three personas from the brand (two core, one extension), then react independently to the two cover lines. Write the cards to `{#personas}` and `n/3` stops to `{#pitch}`. Keep the rationale and scores out of the call.
-4. `carousel-studio:cs-creative-director`: the recommendation (stops, cold reads, fit, memory) and the rejected option the creator might prefer. One send-back to the strategist or copywriter is allowed (`pitch 1/1`); after that you decide.
-5. Update the board (`{#pitch}` القرار with its reason, `{#decisions}`), run `board_check --stage pitch`. Every mitigation the decision rests on («الرقم بيحل مشكلة سلطان») goes into `{#decisions}` as `- وعد: … — يتأكد على …` (the promise ledger, charter 4.7).
-6. **Checkpoint 1.** Guided: send the numbered options in the director's format and wait; the creator's number goes to `اختيار المبدع:` (a merge becomes «دمج»). Fast: pick the recommendation, say which in one line, write it. Then build the angle stub (`flow.md` section 1) and validate it.
+**Who renders.** Art runs its review render/sheet in the design pass. QA runs the final export itself with `--brand`, every scope and `--contact-sheet`; the director's own render/report reading never replaces that call. Art owns design judgement; QA objective checks and veto; Creative Director idea/promise judgement; panel stop/scroll reactions.
 
-### Round 3: Writers' room
-1. `carousel-studio:cs-copywriter`: 12 or more hooks, 4 to 6 families, at most 3 per family, in the post's dialect; run `hook_features.py --batch` and write the table `{#duel}` (a failed gate stays as `fail`). Fewer than 3 families surviving: one re-draft of 6 more (`duel 1/1`).
-2. **Heats and champions:** the best hook of each surviving family (score, then your judge's J as `hook-scoring.md` defines it). Write `أبطال العائلات`.
-3. **Panel votes:** one panel call with all three personas and the champion covers only (at most 6): stop or scroll plus the cold read. Write `أصوات اللجنة` and `القراءة الباردة` as `id n/3`.
-4. **Knockout:** `carousel-studio:cs-creative-director` uses clarity → family evidence → stops → gap → fit → freshness → score. Record duels and podium. Score leader differs from panel favourite: copywriter writes one hybrid, one panel call votes for all three personas, record `الهجين:` and the winning cover. Top two other families are alternates.
-5. **Script and caption pack:** `carousel-studio:cs-copywriter`, as `flow.md` sections 3 and 4 (architecture, limits, sources, `cover.motion`), with `scripts/lint_copy.py`, `validate.py` and `voice_check.py` clean.
-6. **Language check:** `carousel-studio:cs-arabic-editor` on the copy alone. VETO: the copywriter fixes exactly the listed rows, the editor re-checks (at most 2 rounds, counter `editor`). A second VETO ends the stage: tell the creator in one line what blocks (cut, add the source, or fix) and stop.
-7. **Swipe test:** one panel call, all three personas, final script only. Record pulls, drop-off map and weakest transition. Copywriter changes only sK's bridge and sK+1's first line; one all-persona re-read changes only affected rows (`swipe 1/1`). Other weak spots become ≤3 review notes.
-8. **Review:** `carousel-studio:cs-creative-director` gives the eight-lens review (`المرحلة: script`). SHIP: go on. REVISE: send the named notes to the named agents (at most 3, `script` counter, at most 2 loops), then review again. KILL: restart from the next angle of the strategist's table (back to round 2, step 4, with the killed idea logged).
-9. Run `flow.md` section 5 (the check loop) on the final spec, then `board_check --stage room`. Write the log lines `director`, `pitch`, `duel`, `swipe`, `editor` into `spec.ext.teamLog`, set `checkpoint: "script"` (guided) or `"design"` (fast) and hand off (`flow.md` section 6).
-10. **Checkpoint 2** (guided): the Studio link on its own line, what to look at, one «ليه؟» line, and the log lines the creator has not yet seen.
+## 2. Role passes
+Read each brief once and only its permitted inputs; produce its named output/card, then move on. The main conversation is the director and, in fast, the copywriter role pass. A dispatched reviewer always gets a fresh context. Keep switches/cards out of chat.
 
-### Round 4: Design huddle (after «تمام، صمّم», or at once in fast mode)
-0. **The style shortlist.** Run `node <carousel-design>/scripts/render.mjs --preflight --spec spec.json --brand brand.json --format text` (nothing is exported; the cover and slide 2 in each preset, through the rendered gates). `carousel-studio:cs-art-director` ranks three presets by the topic table in `presets.md` and what the pre-flight shows (hero size at 130 px, empty band, motion allowed), and prints the `الستايل:` line. Choose by fit, not by habit. If a technical gate forces a swap away from the best fit, run this round again on the new preset (`huddle 1/1`) and carry the reason into the creator's «ليه؟» line and the `design` log line.
-1. List the candidate focal elements from the cover's own text (the hero number, the key word, the symbol). Then, in parallel and without seeing each other, with that list in both prompts: `carousel-studio:cs-art-director` (preset, overrides, the cover's focal element as one noun phrase, the visual metaphor) and `carousel-studio:cs-motion-designer` (recipe with the tag that decided it, the focal element, the metaphor). If both name the same element in the same words, copy their two lines into `{#huddle}`. If not, you rule once and log why (`huddle 1/1`).
-2. `carousel-studio:cs-visual-artist` only when an image or video tool is connected and the creator agreed (`visual-prompts` skill; text-free plates).
-3. The motion designer's six-frame storyboard goes under the huddle lines, with the 0.0s line showing the focal element (the bold move is in the poster, not only mid-video). Show the six lines to the creator and apply their changes before encoding; after the first encode the motion designer pulls the six frames from the MP4 and checks them (clearance, motion share, no empty stretch).
-4. **Visual plan → free design → review sheet.** The director writes one plan line per inner slide in `{#huddle}`; the art director writes and merges every `free` block, renders and Reads the review sheet. Record `التصميم الحر: <files>` and `ورقة المراجعة: <path>`, in that order after `الخطة البصرية`. Then `board_check --stage huddle`.
+## 3. Guided team lane: five rounds
 
-### Round 5: Review
-1. carousel-design renders and exports (pass `--brand`); `carousel-studio:cs-qa-producer` runs the gates and says which scopes ran (the kit's report holds the text, rendered and export gates); `carousel-studio:cs-art-director` reviews the pixels, reads every header and footer string against the brand, checks the 4:5 crop and the empty band, and Reads the cover tile in `contact-sheet.png`; `carousel-studio:cs-audience-panel` reacts to the cover at 130 px and at feed size, one call for all three personas.
-2. `carousel-studio:cs-creative-director`: final eight-lens review with 130 px stops, QA, art verdict and each ledger promise checked on the renders. Open FIX caps Craft, unreadable load-bearing text caps Hook, open platform fact caps Proof at 3. REVISE: ≤3 notes to named roles, ≤2 loops, then render/review. BLOCK and language VETO must be fixed.
-3. Write the `design` log line into `spec.ext.teamLog` (republish the Studio to the same link so it shows), run `board_check --stage final --spec spec.json`.
-4. **Checkpoint 3:** the creator approves. Then, in this order: write the memory entry (`brand_io.py remember`, fields in `team/cs-creative-director.md` "Memory"), append `hooks.history`, deliver the kit. A post the creator abandons before checkpoint 3 is not recorded; a KILLED idea is, with `verdict: killed` and the reason.
+### Round 1: Brief — director
+Twelve-line brief plus `حقائق المنصة:`: idea, enemy, intent/awareness, two directions from different families/moves, bold risk, constraints/facts. `الاتجاه البصري` is a direction, never a chosen preset. Strategist verifies open load-bearing facts when search exists; otherwise disclose and cap Proof at 3. Read memory; `--stage brief`.
 
-## 4. Solo fast lane
-For «بسرعة», "fast" or a quick post, the main thread writes the angle, hooks and script from the writing references. No five rounds, panel, strategist, motion designer or creative-director reviewer. Keep the ready-script lane unchanged.
-1. Find the brand, read memory, choose one angle and score the hooks with hook_features.py; draft at most 10 slides including the cover (4 to 6 is fine) and the caption pack. Use the shipped motion recipe picked by recommend.
-2. Dispatch only carousel-studio:cs-arabic-editor once on the copy (veto). Apply its listed corrections; an unresolved VETO stops the post. Run lint_copy.py, validate.py --lint --brand and voice_check.py where applicable.
-3. Dispatch only carousel-studio:cs-art-director once, marked «fast lane»: visual plan → free design → one render/review sheet check. Rebuild the Studio in Design view.
-4. Dispatch only carousel-studio:cs-qa-producer once on the spec and renders, with brand and skills root. All text, rendered and export gates run. Fix BLOCKs; unresolved ones stop delivery.
-No board checker for this lane: it requires the full team's artifacts. Never fabricate panel votes, reviews or log keys. Give one final review and the Studio link; write memory/history only after creator approval. Keep panels absent from memory when none ran.
+### Round 2: Pitch — strategist → copywriter → panel → Creative Director
+1. Strategist reuses content-angles scores; copywriter writes safe/bold covers; one panel call builds three persona cards and reacts without rationale/scores.
+2. Fresh Creative Director recommends, including the rejected option. One send-back (`pitch 1/1`), then director rules. Record decisions/mitigations as `- وعد: … — يتأكد على …`.
+3. `--stage pitch`. **Checkpoint 1:** two numbered directions, recommendation, open facts first. Wait for the creator; validate the chosen angle stub.
 
-## 4b. Guided mode, end to end
-Guided: brief/pitch → **checkpoint 1** (two directions, recommendation, open fact first) → writers' room → **checkpoint 2** (Studio Script) → huddle/visual plan/free design/review sheet → round 5 → **checkpoint 3** (Studio Design). Wait for the creator at each. Memory only after checkpoint 3.
+### Round 3: Writers' room — copywriter → editor → panel → Creative Director
+1. Copywriter: 12+ hooks, 4 to 6 families, at most 3 per family; `hook_features.py --batch`. Failed gates stay `fail`. Heats, panel cold reads/votes, knockout: clarity → family evidence → stops → gap → fit → freshness → score. Record champions/podium; leader differs from panel favourite: one hybrid/one vote. One re-draft (`duel 1/1`).
+2. Script/caption pack, 4 to 10 slides including cover; clean `lint_copy.py --spec … --brand …`, `validate.py spec … --lint --brand …`, `voice_check.py --spec … --brand …`.
+3. Arabic editor runs both `ortho_lint.py` and `bidi_lint.py` itself on copy alone with real script/rule paths. VETO returns listed fixes to copywriter, at most two rounds; unresolved VETO stops the post.
+4. Panel swipe test: pulls, readers per slide, weakest transition; copywriter fixes its two sides, one re-read (`swipe 1/1`). Fresh Creative Director's eight-lens `المرحلة: script` review: at most three named notes/two script loops. Preserve it when adding the final review.
+5. `render.mjs --covers` on gated hooks; director's art-shortlist role pass ranks styles with `render.mjs --preflight`; `render.mjs --style-sheet`. **Checkpoint 2:** Studio Script link, three fitted covers including a shock cover (loss/contradiction/hard number), style sheet and script. Creator locks hook/style, or «زي ما تشوف» delegates and director states the choice. A standing `brand.ext.styleChoice` skips only the style half. Nothing in round 4 starts before locking. `--stage room --spec spec.json`.
 
-## 5. What the creator sees
-Only decisions and reasons. Team log: ≤6 lines, one per key, ≤160 characters each; decisions and reasons only. It is in the creator's dialect, it is stored in `spec.ext.teamLog`, and the Studio shows it as «الفريق قرر إيه؟». Never show the board, the handoff cards, the duel table or a persona's raw reaction unless the creator asks «وريني».
+### Round 4: Design huddle — art + motion → art → visual artist
+1. Pull Studio edits. Dispatch art/motion after locking; separate first lines name the same focal element/metaphor. Art records ranked shortlist and creator choice. One convergence, then ruling (`huddle 1/1`). Motion designer decides the recipe; move tables/Studio recommendation only propose. Director writes the decision: `spec_edit.py --spec spec.json --brand brand.json apply --file approved-motion.json`, file shape `{"post":{"cover":{"motion":{"recipe":"stamp","feel":"story","seconds":6,"fps":30,"source":"internal"}}}}`.
+2. Motion writes six planned lines at 0.0, 0.4, 1.5, 3.0, 4.5, 5.9 seconds; frame 0 carries the focal element. Creator approves before encoding; no encoded-frame check yet.
+3. Art writes `visual-plan.md`, sets picture-slide types, designs every slide including engine cover, merges named free blocks under the pen. Review render `out-design/`, `sheet.png`; judge/fix hierarchy, anchor, empty band, crowding, rhythm. Board: `الخطة البصرية` → `التصميم الحر` → `ورقة المراجعة`; `--stage huddle`.
+4. Pictures only with agreement and connected image tool: artist runs `plates.mjs slots --dir <post> --brand brand.json --format json`, writes prompts/manifest; director approves/calls tool; artist opens every original, checks no letters/digits/logos/watermarks, records dated `textCheck`, runs `plates.mjs check --dir <post>`. Director runs `plates.mjs apply --dir <post> --brand brand.json`, then check again. No ad-hoc fitting.
 
-Memory values: `move` = `big-number`, `enemy`, `reveal`, `mirror`, `before-after`, `cheat-sheet`, `insider-leak`, `confession`, `free-vs-paid`, `countdown`; `verdict` = `ship`, `revised`, `killed`. Use these exact IDs with `brand_io.py remember`, not descriptions.
+### Round 5: Review — QA → motion/art review + panel → Creative Director
+1. QA exports with brand, every gate, `--contact-sheet`; opens every full-size slide and 130 px sheet, reads text against spec/brand strings, checks 4:5 crop, AI checks, kit. BLOCK veto stops delivery.
+2. Now the MP4 exists: motion checks encoded frames/V1; actual times go under `اللقطات المقاسة من MP4:` after the six planned lines. Art's review pass reports without writing. Panel reacts to the cover tile of `contact-sheet.png` and feed-size cover. Stable artifact for all judges.
+3. Fresh Creative Director adds a second `{#review}` keyed `المرحلة: final`, re-checks promises. Open findings cap lenses. REVISE: ≤3 named notes, ≤2 review loops; fix → QA/review again. VETO/BLOCK never waived. `design` log names QA result/director verdict; `--stage final --spec spec.json`.
+4. **Checkpoint 3:** reviewed Studio Design, what to inspect, log. After approval: memory → `hooks.history` → kit → publishing choice (section 5).
+
+## 4. Team fast lane
+For source material (news, article, link, PDF, notes, transcript), or «بسرعة» / "fast" after the router's earlier rows. Exactly one owner per step; no invented pitch/duel/panel.
+1. **Director:** brand/memory; `<post>/brief.md`, five lines: idea, enemy, intent, constraints (4 to 10 including cover), facts the post rests on.
+2. **Strategist, one call only if claims/numbers and search exists:** verify, return source entries (label, URL, figure supported) and caveats. Background while step 3 runs. Director registers verified sources once slide ids exist: `spec_edit.py --spec spec.json --brand brand.json source add --url <url> --label <label> --excerpt <figure> --verified --slide s02`. Without search, state uncertainty; never attest silently.
+3. **Copywriter role pass:** `hooks.json`, 8 to 12 hooks from ≥3 families; `hook_features.py --batch`; `render.mjs --covers` on gate-passing hooks. Director's read-only art-shortlist role pass recommends by fit/pre-flight; `render.mjs --style-sheet`.
+4. **Creator checkpoint A, one message:** three rendered covers that already fit, always one shock cover (loss/contradiction/hard number), and style sheet. Creator chooses or «زي ما تشوف» delegates and director states which. Standing style skips only style question. **Hook/style lock here; nothing after this step starts before it.**
+5. **Copywriter role pass:** `script.md`, `caption-pack.json`, `fill.json`, `spec.json` under director's pen; at most 10 slides; clean `lint_copy.py`, `validate.py spec … --lint --brand …`, `voice_check.py` when fingerprint exists. Register verified sources with `source add`.
+6. **Arabic editor, one fresh-context call:** copy alone; proofread folder, dialect and real `data/rules/ortho.json`/`copy.json`; runs both lints, PASS/VETO plus rows. Director applies listed corrections; unresolved VETO stops the post.
+7. **Art director, one design pass marked «fast lane»:** own visual plan, every slide including cover, named free merges, one render/review sheet. Holds spec pen; director queues changes until card returns.
+8. **Visual artist, only agreed pictures/connected image tool:** slots/manifest → prompts → director's approved tool call → artist inspects every original (no letters/digits/logos/watermarks) → director's `plates.mjs apply` and `check`. Art has set slide types first.
+9. **QA producer, one call:** full export itself with `--brand`, every gate, every full-size slide and 130 px sheet; BLOCK/FIX with slide ids. BLOCK veto stops delivery.
+10. **Creative Director, one fresh-context call:** compact final review from its brief; `اللجنة: لم تُشغَّل`. REVISE: ≤3 notes to named roles, one loop (fix → QA → review); unresolved issues stop delivery. Director stores only `director`, `editor`, `design`; design names `QA: ok|PASS|FIX|BLOCK` and `المدير الإبداعي: SHIP|REVISE|KILL`. `python <create>/scripts/board_check.py --stage fast --spec spec.json` before handoff.
+11. **Creator checkpoint B:** Studio Design link, what to inspect, log. After approval: memory (panel fields absent) → `hooks.history` → kit → publishing choice. No substitute audience test or guessed panel values.
+
+## 5. What the creator sees and publishing
+Decisions/reasons only. `spec.ext.teamLog`: ≤6 `{k,t}` lines, one per actual key, ≤160 characters each. Never show board/cards/raw reactions unless asked. Compact lanes have no `pitch`, `duel`, `swipe` keys. Ready has `director`, `design`, optional `editor` only if one ran; `board_check.py --stage ready --spec spec.json`.
+
+Use natural Arabic for the visible design result, for example `الجودة: سليم؛ المدير الإبداعي: جاهز — اكتمل الوعد`. The checker also accepts the English labels above: `سليم/تعديل/موقوف` correspond to QA pass/FIX/BLOCK, and `جاهز/تعديل/مرفوض` to SHIP/REVISE/KILL. It still requires both results and refuses delivery over a BLOCK or a non-SHIP verdict.
+
+After design approval ask once, in their dialect: connected publishing tool, or files for manual posting? Read `brand.ext.publish` (`manual`/`tool`) first; a saved answer skips only that preference question. Manual: posting guide's four steps. Tool: read its own instructions/limits from the tool; act only on the creator's word each time for accounts/platforms they name. Never infer a platform or treat preference as publishing permission. Save through brand-setup (`brand-lookup.md`). The plugin publishes nothing itself and ships no tool-specific recipe.
+
+Memory: `move` = `big-number`, `enemy`, `reveal`, `mirror`, `before-after`, `cheat-sheet`, `insider-leak`, `confession`, `free-vs-paid`, `countdown`; `verdict` = `ship`, `revised`, `killed`. Write after approval; killed ideas record a reason, abandoned unfinished posts record nothing.
+
+## 6. Wiring map (one page)
+| Lane | Ordered owner → files | QA veto and Creative Director |
+|---|---|---|
+| Ready script | director → verbatim `script.md`, parsed spec; copywriter role pass → missing `fill.json`; director → commands/`spec.edits.json`, hook/style lock; art → plan/free/review render; optional artist → prompts/manifest, director → plates; QA → kit/reports; reviewer → `review-final.md`; director → log/Studio | QA exports/vetoes before reviewer; reviewer scores team work only, never creator words; `--stage ready`; approval before memory/history/kit/publishing choice |
+| Own Reel/post | director → owned material as `script.md`, ready lane from step 2 | Same ready QA veto/review |
+| Team fast | director → brand/memory/brief; strategist → sources alongside copywriter role pass → hooks; checkpoint A locks hook/style; copywriter → script/caption/fill/spec; editor → PASS/VETO; art → plan/free/render; optional artist → prompts/manifest; director → plates; QA → kit/reports; reviewer → compact final; director → log/Studio | Editor veto before design; QA veto step 9; fresh Creative Director step 10, one revision loop; `--stage fast`; checkpoint B before memory/history/kit/publishing choice |
+| Guided team | R1 director → brief/board; R2 strategist/copywriter/panel/reviewer → pitch/personas, checkpoint 1; R3 copywriter/editor/panel/reviewer → hooks/script/caption/script review, checkpoint 2 locks hook/style; R4 art/motion → plan/free/storyboard, optional artist → prompts/manifest; R5 QA/motion/art/panel/reviewer → kit/frames/final review; director → board/log/Studio | Editor veto R3; QA veto R5; fresh Creative Director at script and final, phase-keyed blocks; `--stage final`; checkpoint 3 before memory/history/kit/publishing choice |

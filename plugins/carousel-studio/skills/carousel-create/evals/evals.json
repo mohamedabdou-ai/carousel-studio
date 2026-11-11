@@ -309,7 +309,7 @@
     {
       "id": 6,
       "name": "team-hook-duel",
-      "prompt": "بسرعة: كاروسيل عن إن النص الكتير في السلايد بيخلي الناس تعدّي. عايز الهوك يكسب بمبارزة بين الهوكات مش بمجرد درجة.",
+      "prompt": "بالفريق كله: كاروسيل عن إن النص الكتير في السلايد بيخلي الناس تعدّي. عايز الهوك يكسب بمبارزة بين الهوكات مش بمجرد درجة.",
       "expected_output": "Twelve or more hooks from four to six families, a duel decided on clarity first, and a podium of three families.",
       "files": [],
       "expectations": [
@@ -327,14 +327,15 @@
     {
       "id": 7,
       "name": "team-editor-verdict",
-      "prompt": "بسرعة: كاروسيل 8 سلايدات عن إزاي تراجع كاروسيلك قبل النشر. وراجع اللغة كويس قبل التصميم.",
-      "expected_output": "An explicit PASS or VETO from an independent editor step, recorded on the board.",
+      "prompt": "بسرعة: كاروسيل 8 سلايدات عن إزاي تراجع كاروسيلك قبل النشر. وراجع اللغة كويس قبل التصميم. الهوك والستايل اختارهما زي ما تشوف، وقل لي الاختيار قبل التصميم.",
+      "expected_output": "Team fast: checkpoint A locks hook/style, then a fresh editor runs both proofread scripts and returns PASS/VETO before art.",
       "files": [],
       "expectations": [
         "An independent Arabic editor pass (or the cs-arabic-editor agent) returns PASS or VETO with a diff table before the post is designed.",
-        "The editor judges only the copy, the dialect and the rules, not the writing conversation or the brief, and the verdict is written on the board with its round (n of 2).",
+        "The editor receives absolute proofread script and data/rules paths, runs ortho_lint.py and bidi_lint.py itself on copy alone, and its real PASS/VETO is recorded; no open VETO reaches design.",
         "A VETO is fixed on exactly the listed rows and re-checked at most twice; the post never moves to design on an open VETO.",
-        "Nothing in the reply or in the files names the tool's author or promotes anything."
+        "Nothing in the reply or in the files names the tool's author or promotes anything.",
+        "Team fast has 8 to 12 hooks from at least 3 families, no panel or duel; spec.ext.teamLog has director/editor/design and board_check.py --stage fast --spec checks the actual work."
       ],
       "fixtures": [],
       "behaviour": [
@@ -361,7 +362,7 @@
     {
       "id": 9,
       "name": "team-design-huddle",
-      "prompt": "بسرعة: كاروسيل 8 سلايدات عن 5 أخطاء بتموّت الكاروسيل. عايز اتفاق بين التصميم والحركة على عنصر واحد يبقى بطل الغلاف، واعرضلي ستوري بورد الحركة.",
+      "prompt": "بالفريق كله: كاروسيل 8 سلايدات عن 5 أخطاء بتموّت الكاروسيل. عايز اتفاق بين التصميم والحركة على عنصر واحد يبقى بطل الغلاف، واعرضلي ستوري بورد الحركة.",
       "expected_output": "One agreed focal element in the same words, one metaphor and a six-frame storyboard at the six times.",
       "files": [],
       "expectations": [
@@ -378,13 +379,13 @@
     {
       "id": 10,
       "name": "team-director-review",
-      "prompt": "بسرعة: كاروسيل 8 سلايدات عن ليه الكابشن الطويل مش عيب. قبل ما تسلّمني، عايز مراجعة المدير الإبداعي.",
-      "expected_output": "Eight scored lenses with evidence and one verdict that follows from the scores.",
+      "prompt": "بسرعة: كاروسيل 8 سلايدات عن ليه الكابشن الطويل مش عيب. قبل ما تسلّمني، عايز مراجعة المدير الإبداعي. الهوك والستايل اختارهما زي ما تشوف، وقل لي الاختيار قبل التصميم.",
+      "expected_output": "A fresh-context compact final review after QA export/veto, with no panel and one bounded revision loop.",
       "files": [],
       "expectations": [
-        "The director reviews the finished script against eight lenses (idea, hook, flow, value, voice, craft, proof, call to action), scored 1 to 5 with one evidence line each, and ends with exactly one of SHIP, REVISE or KILL.",
-        "The verdict follows the rules: SHIP only with every lens at 4 or more and at least two of three personas at the last slide; KILL when Idea or Hook is 2 or less; otherwise REVISE.",
-        "A REVISE carries at most three notes, each addressed to one named agent and saying what to change, not how to write it.",
+        "The QA producer runs the final export with --brand and opens every full-size slide and the 130 px sheet. A fresh cs-creative-director then reviews eight lenses with evidence in the compact fast form before the creator sees Design.",
+        "SHIP needs every assessed lens at least 4 and no unresolved veto/BLOCK or failed promise; no panel runs, the review prints اللجنة: لم تُشغَّل, and no stop votes or panel memory values are invented.",
+        "REVISE has at most 3 notes to named roles and one loop: fix pass, QA export, fresh review. Design log names QA and director verdict; board_check.py --stage fast --spec accepts only actual compact log keys.",
         "Nothing in the reply or in the files names the tool's author or promotes anything."
       ],
       "fixtures": [],
@@ -412,13 +413,13 @@
     {
       "id": 12,
       "name": "team-creative-memory",
-      "prompt": "ده ملف brand.json بتاع البراند (فيه ذاكرة الفريق الإبداعي: آخر بوستين استخدموا عائلة هوك واحدة وحركة واحدة وستايل حركة واحد). بسرعة: اعملي كاروسيل أبعته لصاحبي اللي بيرُدّ على كل تعليق بنفسه، وبعد التصميم اعتبرني وافقت وسجّل البوست في الذاكرة.",
-      "expected_output": "The pitch avoids what the last two posts used and the finished post is written back to creativeMemory.",
+      "prompt": "ده ملف brand.json بتاع البراند (فيه ذاكرة الفريق الإبداعي: آخر بوستين استخدموا عائلة هوك واحدة وحركة واحدة وستايل حركة واحد). بسرعة: اعملي كاروسيل أبعته لصاحبي اللي بيرُدّ على كل تعليق بنفسه، وبعد التصميم اعتبرني وافقت وسجّل البوست في الذاكرة. الهوك والستايل اختارهما زي ما تشوف، وقل لي الاختيار قبل التصميم.",
+      "expected_output": "The director reads memory before fast hooks, rests repeated choices, and records approved work with panel fields absent.",
       "files": [],
       "expectations": [
         "The director reads the creative memory (brand_io.py memory) before writing the brief.",
-        "The hook family, the creative move and the motion recipe that both of the last two posts used do not appear in either pitch direction or in the cover motion, and the call-to-action kind differs from the last two.",
-        "No cover echoes a recent winning cover, and the finished post is appended to creativeMemory with its cover, family, move, pitch, preset, motion, intent, CTA kind, panel result and verdict.",
+        "Fast hooks/cover and motion avoid the repeated family, move and recipe when an honest alternative fits; no pitch or panel is invented. CTA differs from the last two.",
+        "After creator design approval the director appends actual cover/family/move/preset/motion/intent/CTA/verdict to creativeMemory; omit pitch and panel fields because they did not run, then hooks.history, kit and publishing preference.",
         "Nothing in the reply or in the files names the tool's author or promotes anything."
       ],
       "fixtures": [],
@@ -446,13 +447,13 @@
     {
       "id": 14,
       "name": "team-guided-checkpoints",
-      "prompt": "اعملي كاروسيل عن الحاجات اللي لازم أتأكد منها قبل ما أنشر أي كاروسيل. أنا عايز أشوف وأوافق في كل مرحلة، مش بسرعة.",
+      "prompt": "اعملي كاروسيل عن الحاجات اللي لازم أتأكد منها قبل ما أنشر أي كاروسيل. أنا عايز أشوف وأوافق في كل مرحلة.",
       "expected_output": "The guided flow stops at each of its three checkpoints and never runs past one without the creator's word.",
       "files": [],
       "expectations": [
         "Checkpoint 1 (angle): the reply shows the two pitch directions as numbered options with one recommendation and the panel's stops, says first in one line any platform fact the cover rests on that could not be verified, and waits for a number; no script, caption or hooks list appears yet.",
-        "Checkpoint 2 (script): after the creator's choice the script is handed to the Studio's Script view (a link on its own line, a one-line «ليه؟», the team log lines not yet seen) and the reply stops again; slide text is never pasted in chat.",
-        "Checkpoint 3 (design): the Design view and the storyboard wait for the creator's «تمام، صمّم»; the design stage starts from the art director's style shortlist, and the memory entry is written only after the creator approves the design.",
+        "Checkpoint 2: Studio Script, 3 fitted rendered covers (one shock cover), style sheet and actual team log; hook and style lock on creator choice or explicit delegation before any art/visual-artist dispatch.",
+        "Checkpoint 3 is reviewed Design after QA export/veto, encoded-frame inspection in round 5 and fresh Creative Director final review. Script and final review blocks remain keyed by المرحلة. Memory follows approval only.",
         "The board's loop counters and `board_check.py` stages are updated at each stage, and nothing past a checkpoint is produced before the creator answers.",
         "Nothing in the reply or in the files names the tool's author or promotes anything."
       ],
@@ -468,7 +469,7 @@
       "expectations": [
         "Gate B2 (placeholder chrome) is reported as a BLOCK, because `@yourbrand` would print in the header of every slide, the MP4 and the PDF; the text gates were run with the brand file passed in.",
         "The reply asks the creator for the real handle in one short line, or offers to leave the handle out (the slot is then left out of every slide); it never exports with `@yourbrand` and never invents a handle from the brand name.",
-        "The art director's review reads the handle, series label and counter on the slides against brand.json, not only the slide text against spec.json.",
+        "The QA producer reads every slide text against spec and all printed brand strings (handle, series, counter) against brand.json, checks the 4:5 crop and kit; art owns design, not a duplicated objective checklist.",
         "Nothing in the reply or in the files names the tool's author or promotes anything."
       ],
       "fixtures": [
@@ -487,6 +488,37 @@
         "No more than three consecutive slides share the same type and variant (gate D8 is clear); a post that teaches includes one or two demonstration slides (a picture, a prompt to paste, a before and after) or says why not.",
         "The caption's first line gives a reason to swipe that the cover does not and does not list all seven checks; any claim about what Instagram allows after publishing is tied to a fact in the platform register or flagged as unverified.",
         "Nothing in the reply or in the files names the tool's author or promotes anything."
+      ],
+      "fixtures": [],
+      "behaviour": []
+    },
+    {
+      "id": 17,
+      "name": "team-source-material-fast-router",
+      "prompt": "حوّل هذه الملاحظات إلى كاروسيل: يبدأ الكاتب من هدف واضح، ثم يرتب مثالًا عمليًا، ثم يحذف التكرار. أريد اختيار الغلاف والستايل قبل أي صور.",
+      "expected_output": "Source material routes to team fast without a speed request; checkpoint A shows three fitted covers and a style sheet before design.",
+      "files": [],
+      "expectations": [
+        "The first matching router row selects team fast for notes, not ready-script or guided; it has a five-line brief with facts and a 4-to-10-slide constraint.",
+        "Copywriter role pass drafts 8 to 12 hooks from at least 3 families, runs hook_features.py --batch and render.mjs --covers on gate-passing candidates. One of 3 fitted covers is a loss, contradiction or hard-number shock cover.",
+        "Checkpoint A is one message with the covers and render.mjs --style-sheet. It waits for hook/style choice; no art/visual-artist dispatch or image call starts first. Brand default only recommends; standing ext.styleChoice skips only style question.",
+        "No panel, pitch or duel is invented. Missing browser commands are reported honestly rather than claiming unseen covers fit."
+      ],
+      "fixtures": [],
+      "behaviour": []
+    },
+    {
+      "id": 18,
+      "name": "team-ready-director-kept-ending",
+      "prompt": "ده السكريبت، زي ما هو من غير إضافة قفلة. اختار الستايل زي ما تشوف.\n1. الغلاف: وقت واحد للكتابة\n2. الهدف: ابدأ بهدف واضح.\n3. المثال: اكتب مثالًا قبل الشرح.\n4. الخلاصة: احذف السطر المكرر.",
+      "expected_output": "Ready preserves all creator words and ending, QA exports/vetoes, then a fresh Creative Director reviews only team work before Design.",
+      "files": [],
+      "expectations": [
+        "Ready wins the first router row. script.md stays verbatim, cta --keep records only the explicit creator choice with C4.count/C5.skeleton overrides; no ask is invented in slides or caption.",
+        "Hook/style lock precedes art. Dispatch carries absolute Post folder/Brand file/script and rule paths, exact write permissions, pass and one spec pen; art owns every slide including s01. Free blocks use merge-free.mjs, not a whole-spec snapshot.",
+        "QA producer runs full export with --brand and all scopes, opens full-size slides and 130 px sheet, then fresh cs-creative-director reviews rendered hook/split/craft/proof/placed CTA. Idea/Value/Voice print لا تُقيَّم: كلمات المبدع, no rewording request and no penalty for kept ending.",
+        "Review prints اللجنة: لم تُشغَّل; log has director/design and editor only if one ran, no pitch/duel/swipe; board_check.py --stage ready --spec checks QA/director results. Memory has no panel values.",
+        "After design approval: memory, hooks.history, kit, one neutral publishing question; remembered ext.publish skips preference only, never assumes a platform or grants tool permission."
       ],
       "fixtures": [],
       "behaviour": []

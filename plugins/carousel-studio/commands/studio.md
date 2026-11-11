@@ -12,3 +12,5 @@ Work with the Studio through the `carousel-design` skill. Arguments: $ARGUMENTS
 - If no spec exists yet, hand over to `carousel-create` instead of building an empty page.
 
 Same thing in plain words: «افتح الاستوديو» · «صمّم» · «صدّر» · «جهّز للنشر» · "open the Studio".
+
+For a new Design handoff in every content lane: locked hook/style → art design/review render → QA producer runs final export with brand and holds the veto → fresh Creative Director review → creator approval. No slide is off limits to art. A saved Studio edit is extracted before the next write; one spec pen at a time. Publishing is separate: ask where/how once, remember brand.ext.publish, then follow the named connected tool's own instructions on the creator's word each use, never assuming a platform.
