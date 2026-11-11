@@ -14,6 +14,18 @@ const find = (res, rule) => res.filter((r) => r.rule === rule);
 const words = (n, w) => Array.from({ length: n }, () => w || "كلمة").join(" ");
 const slide = (spec, id) => spec.slides.find((s) => s.id === id);
 
+test("C6: an unnumbered list falls back to the other list layout", () => {
+  for (const [architecture, type] of [["steps", "item"], ["listicle", "step"]]) {
+    const spec = cleanSpec();
+    spec.architecture = architecture;
+    spec.slides.forEach((s) => { if (s.type === "item") s.type = type; delete s.ord; });
+    spec.slides[0].headline = "4 خطوات لصفحة مشروعك";
+    assert.equal(find(run(spec, { gates: ["C6"] }), "C6.list-count")[0]?.sev, "BLOCK", architecture);
+    spec.slides[0].headline = "5 خطوات لصفحة مشروعك";
+    assert.equal(find(run(spec, { gates: ["C6"] }), "C6.list-count").length, 0, architecture);
+  }
+});
+
 test("C5: 10 slides pass, 11 block, and 4 through 6 never raise a count FIX", () => {
   for (const n of [4, 5, 6, 10, 11]) {
     const spec = cleanSpec();

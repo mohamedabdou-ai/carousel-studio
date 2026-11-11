@@ -324,7 +324,7 @@ function SlideTab(ctx) {
       btn(t("slide.move-earlier"), "arrow-up", function () { ctx.moveSlide(s.id, -1); }, i <= 0),
       btn(t("slide.move-later"), "arrow-down", function () { ctx.moveSlide(s.id, 1); }, i >= n - 1),
       btn(t("slide.duplicate"), "copy-plus", function () { var id = ctx.duplicateSlide(s.id); if (id) ctx.select(id); }),
-      btn(t("slide.split"), "scissors", function () { if (ctx.splitSlide(s.id)) toast(t("slide.split.done"), "ok", { action: { label: t("common.undo"), fn: function () { ctx.undo(); } } }); else toast(t("slide.split.none"), "info"); }),
+      btn(t("slide.split"), "scissors", function () { if (ctx.slides().length >= 10) { ctx.splitSlide(s.id); return; } if (ctx.splitSlide(s.id)) toast(t("slide.split.done"), "ok", { action: { label: t("common.undo"), fn: function () { ctx.undo(); } } }); else toast(t("slide.split.none"), "info"); }),
       addAnchor,
       btn(t("common.delete"), "trash-2", function () { confirmDelete(ctx, s); }, n <= 1, true)));
   }

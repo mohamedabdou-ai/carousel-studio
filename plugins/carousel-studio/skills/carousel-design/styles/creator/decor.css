@@ -122,3 +122,10 @@
 .cs-slide[data-preset="creator"]{ --cs-logo-align:flex-start; --cs-logo-radius:24px; }
 .cs-slide[data-preset="creator"][data-variant="media"] :is(.cs-a-step,.cs-a-checklist,.cs-a-summary,.cs-a-cta,.cs-a-offer) > .cs-media-slot:not([data-media-kind="icon"]){ border:4px solid var(--cs-ink); border-radius:24px; box-shadow:6px 6px 0 var(--cs-ink); background:var(--cs-surface); }
 .cs-slide[data-preset="creator"][data-type="cover"] .cs-media-slot[data-slot="logo"]{ border:2px solid var(--cs-line); border-radius:var(--cs-logo-radius,8px); box-shadow:none; transform:none; }
+
+/* Clip covers lead with a full-width 16:9 window; the headline stays below the footage. */
+.cs-slide[data-preset="creator"][data-cover-clip="1"] .cs-content.cs-a-cover { justify-content:flex-start; gap:16px; padding-block:0; }
+.cs-slide[data-preset="creator"][data-cover-clip="1"] .cs-content.cs-a-cover > .cs-media-slot[data-slot="media"] { order:-2; position:relative; inset:auto; flex:0 0 auto; inline-size:100%; block-size:auto; min-block-size:0; max-block-size:none; aspect-ratio:16 / 9; margin:0; align-self:stretch; transform:none; }
+.cs-slide[data-preset="creator"][data-cover-clip="1"] .cs-content.cs-a-cover > .cs-kicker { order:-1; }
+.cs-slide[data-preset="creator"][data-cover-clip="1"] .cs-content.cs-a-cover > .cs-headline { order:0; inline-size:100%; line-height:1.1; }
+.cs-slide[data-preset="creator"][data-cover-clip="1"] .cs-content.cs-a-cover > .cs-sub { order:1; max-inline-size:100%; }

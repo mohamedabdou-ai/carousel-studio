@@ -529,9 +529,11 @@ def gate_c6(ctx: Ctx, out: list) -> None:
             numbered = {s["ord"] for s in ctx.slides if isinstance(s.get("ord"), (int, float))
                         and not isinstance(s.get("ord"), bool) and s["ord"] > 0 and s["ord"] % 1 == 0}
             # Explicit membership wins over layout type. Legacy lists without ord use
-            # only their architecture's item type; context is never inferred from proof.
+            # their architecture's list type, then the other list type if it is absent.
             primary = "step" if ctx.spec.get("architecture") == "steps" else "item"
             items = len(numbered) if numbered else sum(1 for s in ctx.slides if s.get("type") == primary)
+            if not items:
+                items = sum(1 for s in ctx.slides if s.get("type") in ("item", "step"))
             if nums and items > 0 and items not in nums:
                 emit(ctx, out, "C6.list-count", slide=cover.get("id"), el=f"{cover.get('id')}.headline", vars={"count": nums[0], "n": items})
 
@@ -583,7 +585,8 @@ def gate_c7(ctx: Ctx, out: list) -> None:
     kind = with_cta[-1]["cta"].get("kind") if with_cta else None
     hook = ctx.spec.get("hook")
     family = hook.get("family") if is_obj(hook) else None
-    variety_sev = "NOTE" if (ctx.spec.get("ext") or {}).get("source") == "creator-script" else None
+    ext = ctx.spec.get("ext")
+    variety_sev = "NOTE" if is_obj(ext) and ext.get("source") == "creator-script" else None
     if kind and ctx.active("C7.cta-repeat"):
         recent = hist[-ctx.param("C7.cta-repeat")["window"]:]
         if any(e.get("cta") == kind for e in recent):

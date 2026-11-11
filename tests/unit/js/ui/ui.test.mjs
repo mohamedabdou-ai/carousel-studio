@@ -8,6 +8,10 @@ import vm from "node:vm";
 import os from "node:os";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
+
+const { load: loadQa, cleanSpec } = createRequire(import.meta.url)("../qa/support/env.cjs");
+const qa = loadQa().CS.qa;
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const skill = path.resolve(here, "../../../../plugins/carousel-studio/skills/carousel-design");
@@ -28,7 +32,7 @@ class Element {
   removeChild(node) { this.children.splice(this.children.indexOf(node), 1); }
   get firstChild() { return this.children[0] || null; }
   setAttribute(key, value) { this.attrs[key] = value; }
-  addEventListener() {}
+  addEventListener(type, fn) { (this.listeners ||= {})[type] = fn; }
   insertBefore(node, before) { this.children.splice(this.children.indexOf(before), 0, node); }
 }
 const strings = JSON.parse(fs.readFileSync(path.join(skill, "runtime", "ui-strings.json"), "utf8"));
@@ -53,6 +57,7 @@ function loadChunks(extra = {}) {
       head: { querySelectorAll: () => [] },
     },
     CS: {
+      qa,
       emit() {},
       CSError: class extends Error { constructor(code, msg) { super(msg); this.code = code; } },
       core: {
@@ -68,7 +73,7 @@ function loadChunks(extra = {}) {
   sandbox.window = sandbox;
   vm.createContext(sandbox);
   let ui = chunkText("cs-ui.js");
-  if (extra.internals) ui = ui.replace(/\}\)\(\);\s*$/, "CS.ui.__test = { slideEditors, VisualTab, CheckScreen, ensureExport, lateScreen, createCtx };\n})();");
+  if (extra.internals) ui = ui.replace(/\}\)\(\);\s*$/, "CS.ui.__test = { slideEditors, SlideTab, VisualTab, CheckScreen, ensureExport, lateScreen, createCtx };\n})();");
   if (extra.toasts) { sandbox.__toasts = extra.toasts; ui = ui.replace(/\}\)\(\);\s*$/, "toast = function (message) { window.__toasts.push(message); };\n})();"); }
   vm.runInContext(ui, sandbox, { filename: "cs-ui.js" });
   if (!extra.coreOnly) vm.runInContext(chunkText("cs-brandbook.js"), sandbox, { filename: "cs-brandbook.js" });
@@ -96,6 +101,24 @@ test("Studio add, duplicate and split refuse the eleventh slide with a localized
     assert.equal(messages.length, 3);
     for (const m of messages) { assert.match(m, /10/); assert.match(m, dialect === "en" ? /cover/i : /الغلاف/); }
   }
+});
+
+test("Design split at ten slides shows only the limit toast", () => {
+  const messages = [], w = loadChunks({ internals: true, toasts: messages, coreOnly: true });
+  vm.runInContext(fs.readFileSync(path.join(root, "src/core/spec.js"), "utf8"), w);
+  w.CS.ui._pure.loadUiStrings();
+  w.CS.ui.setUiDialect("en");
+  const spec = { locale: { dialect: "en" }, slides: Array.from({ length: 10 }, (_, i) => ({ id: "s" + String(i + 1).padStart(2, "0"), n: i + 1, type: "item", body: "one two three four" })) };
+  const c = w.CS.ui.__test.createCtx(new Element("div"), { spec }, {});
+  c.preset = () => null;
+  const tab = w.CS.ui.__test.SlideTab(c);
+  const nodes = (n) => [n, ...(n.children || []).flatMap(nodes)];
+  const split = nodes(tab.el).find((n) => n.tagName === "button" && n.children.some((s) => s.nodeValue === w.CS.ui.t("slide.split")));
+  assert.ok(split);
+  split.listeners.click();
+  assert.equal(messages.length, 1, messages.join(" | "));
+  assert.match(messages[0], /10/);
+  assert.equal(c.slides().length, 10);
 });
 
 test("both chunks load and publish the contract surface", () => {
@@ -237,14 +260,52 @@ test("lengthSiblings: one override of the cover's length covers its open sibling
   assert.deepEqual(plain(P.lengthSiblings([hero, total], gap)), []);
 });
 
-test("placeCover: a cover over the hero limit moves its second beat to the sub line", () => {
+test("placeCover: the same first beat as C1 becomes the headline even below six total words", () => {
   const wc = (x) => x.trim().split(/\s+/).filter(Boolean).length;
   const NL = String.fromCharCode(10);
   const twoBeats = "وكلاء AI اتواصلوا…" + NL + "من غير إنترنت!";
-  assert.deepEqual(plain(P.placeCover(twoBeats, 6, wc)), { headline: twoBeats });
-  assert.deepEqual(plain(P.placeCover("5 تطبيقات ببلاش… بتخليك تتحكم في مصاريفك", 6, wc)), { headline: "5 تطبيقات ببلاش…", sub: "بتخليك تتحكم في مصاريفك" });
+  assert.deepEqual(plain(P.placeCover(twoBeats, 6, wc)), { headline: "وكلاء AI اتواصلوا", sub: "من غير إنترنت!" });
+  assert.deepEqual(plain(P.placeCover("5 تطبيقات ببلاش… بتخليك تتحكم في مصاريفك", 6, wc)), { headline: "5 تطبيقات ببلاش", sub: "بتخليك تتحكم في مصاريفك" });
   const question = "إزاي وكلاء AI" + NL + "اتواصلوا من غير شبكة؟";
-  assert.deepEqual(plain(P.placeCover(question, 6, wc)), { headline: question }, "one sentence stays whole; the gate flags it and the creator may override");
+  assert.deepEqual(plain(P.placeCover(question, 6, wc)), { headline: "إزاي وكلاء AI", sub: "اتواصلوا من غير شبكة؟" });
+  for (const mark of ["؟", "?", "!", ":", "\n"]) {
+    const head = "كيف تبدأ مشروعك اليوم";
+    const suffix = /[؟?!]/.test(mark) ? mark : "";
+    assert.deepEqual(plain(P.placeCover(head + mark + " بخطوات واضحة من البداية", 6, wc)), { headline: head + suffix, sub: "بخطوات واضحة من البداية" });
+  }
+  const long = "one two three four five six seven? next beat";
+  assert.deepEqual(plain(P.placeCover(long, 6, wc)), { headline: long });
+});
+
+test("cover headline meter measures the C1 hero while total words keep both beats", () => {
+  const w = loadChunks({ internals: true, coreOnly: true });
+  const slide = { id: "s01", type: "cover", n: 1, headline: "كيف تبدأ مشروعك اليوم؟ بخطوات واضحة من البداية" };
+  const c = { plugin, words: ctx.words, isEn: () => false, slide: () => slide };
+  const fields = w.CS.ui.__test.slideEditors(c, slide);
+  const nodes = (n) => [n, ...(n.children || []).flatMap(nodes)];
+  const field = fields.find((f) => nodes(f).some((n) => n.dataset?.field === "headline"));
+  const count = () => nodes(field).find((n) => n.className === "ui-meter-n").children[0].nodeValue;
+  assert.equal(count(), "4");
+  assert.equal(P.slideTotals(c, slide).words, 8);
+  const ta = nodes(field).find((n) => n.tagName === "textarea");
+  ta.value = "كيف تبدأ؟ خطوة واضحة";
+  ta.listeners.input();
+  assert.equal(count(), "2");
+  ta.value = "==كيف تبدأ؟ بخطوة واضحة== قبل نهاية اليوم";
+  ta.listeners.input();
+  assert.equal(count(), "7", "C1 does not split inside an emphasis span");
+});
+
+test("renumber shares ordinals across item and step layouts so C6 counts every member", () => {
+  const w = loadChunks({ coreOnly: true });
+  vm.runInContext(fs.readFileSync(path.join(root, "src/core/spec.js"), "utf8"), w);
+  const spec = cleanSpec();
+  spec.slides.filter((s) => s.type === "item").forEach((s, i) => { if (i >= 3) s.type = "step"; });
+  const next = w.CS.core.spec.renumber(spec);
+  assert.deepEqual(plain(next.slides.filter((s) => ["item", "step"].includes(s.type)).map((s) => s.ord)), [1, 2, 3, 4, 5]);
+  assert.equal(qa.runText({ spec: next, gates: ["C6"] }).filter((r) => r.rule === "C6.list-count").length, 0);
+  assert.equal(w.CS.core.spec.renumber(next), next, "stable on the second pass");
+  assert.deepEqual(spec.slides.filter((s) => s.type === "step").map((s) => s.ord), [4, 5], "input untouched");
 });
 
 const registryFamilies = JSON.parse(fs.readFileSync(path.join(skill, "fonts", "registry.json"), "utf8")).families;

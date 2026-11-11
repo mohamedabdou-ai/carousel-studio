@@ -534,12 +534,17 @@
 
   function slide(spec, slideSpec, tokens, brand, opts) {
     opts = opts || {};
+    var clipCover = spec.cover && spec.cover.motion && spec.cover.motion.clip && spec.slides && spec.slides[0] && slideSpec.id === spec.slides[0].id;
+    if (clipCover) {
+      slideSpec = Object.assign({}, slideSpec, { media: Object.assign({}, slideSpec.media, { slot: "screenshot" }) });
+    }
     var cx = makeContext(spec, slideSpec, tokens, brand, opts);
     var root = el("section", "cs-slide");
     var canvas = spec.canvas || {};
     set(root, {
       dir: cx.dir, lang: cx.lang, "data-cs-slide": cx.id, "data-n": cx.index + 1, "data-total": cx.total, "data-last": cx.index === cx.total - 1 ? 1 : 0,
       "data-type": cx.type, "data-variant": cx.variant, "data-preset": tokens.presetId, "data-occasion": tokens.occasionId || "",
+      "data-cover-clip": clipCover ? "1" : null,
       "data-dialect": cx.dialect, "data-digits": cx.digits, "data-swipe": cx.swipe, "data-align": tokens.layout.align, "data-cover-anchor": tokens.layout.coverAnchor,
       "data-hl": tokens.decor.highlight, "data-numbering": tokens.decor.numbering, "data-kashida": 0, "data-bgkind": tokens.background.kind,
       "data-texture": tokens.decor.texture && tokens.decor.texture !== "none" ? tokens.decor.texture : null, "data-motif": tokens.decor.motif || null
@@ -559,7 +564,7 @@
       main.appendChild(set(el("p", "cs-slot cs-bridge"), { "data-slot": "bridge", "data-field": "bridge", "data-kind": "text", "data-role": "small", "data-max-lines": "2", "data-m": "bridge", "data-optional": "", "data-edit": "text" }));
     }
     vis("begin",cx);
-    var bgMedia = (cx.slide.media && cx.slide.media.slot === "plate") || (cx.variant === "photo" && ["cover", "quote", "poster"].indexOf(cx.type) >= 0);
+    var bgMedia = !clipCover && ((cx.slide.media && cx.slide.media.slot === "plate") || (cx.variant === "photo" && ["cover", "quote", "poster"].indexOf(cx.type) >= 0));
     if (!main.classList.contains("cs-free")) main.querySelectorAll("[data-slot]").forEach(function (node) {
       var kind = node.getAttribute("data-kind"), field = node.getAttribute("data-field");
       var filled = FILL[kind] ? FILL[kind](node, cx.slide[field], cx) : vis("slot",cx,node);

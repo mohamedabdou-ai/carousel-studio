@@ -62,6 +62,10 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 
 ### Design
 
+- Splitting at the slide limit shows one clear message. Mixed item and step layouts keep one list count, and script lists without ordinals still check the cover's promise.
+- Studio hook placement and headline meters use the same first beat as the copy checks. Cover-lab sheets and rankings retain your hook IDs and labels.
+- Variety checks keep running when a post carries malformed extension data.
+
 - Try surviving hooks across styles in one cover-lab run, with measured fit, ranked findings and a sheet at feed size and 130 px. A style sheet shows your own cover and slide 2 in every shipped style before you choose.
 - Cover fitting searches line arrangements without changing your words, keeps forced breaks and offers a punctuated second beat in the sub-line. Creator's top and center anchors work, and cover controls explain which type setting sizes each line.
 - Hook choices are rendered before they are offered; a stronger set includes a truthful shock cover with a different kind of tension.
@@ -76,6 +80,10 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 - Picture prompts now use the measured ratio and a safe subject band; step, checklist and call-to-action slides keep their engine layouts when a picture fits.
 
 ### Cover motion
+
+- Clip covers give the footage a full-width 16:9 window above the headline in every style. The local renderer reports frame progress while composing.
+- The clip contrast check follows the ink that covers the footage, so a headline placed just below the window no longer stops the export.
+- Standalone clip checks match browser-decoded poster colours. Dark footage no longer receives still-loop advice from a whole-frame average.
 
 - Attach your own local clip inside the cover's media window for a silent 6 to 15 second video, with trim points, fit and focus. Both ratios are recomposed after a style change or export, with the original layout and readable text.
 - Clip covers hold the finished poster first and return with a dissolve for similar endpoints or a wipe for one-way footage. Their PNG, JPEG and PDF cover come from the MP4 first frame, avoiding a second colour round trip in the loop check.

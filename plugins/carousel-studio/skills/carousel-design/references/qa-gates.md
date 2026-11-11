@@ -141,7 +141,7 @@ Applies to formats [carousel].
 
 | Rule | Sev | Ovr | Auto-fix | Engine | Condition |
 |---|---|---|---|---|---|
-| `C6.list-count` | BLOCK |  |  | py+js | Count distinct positive integer `ord` members across slide types, not unnumbered context. With no ord, use `item` for listicle or `step` for steps. A nonzero count that disagrees with the cover numeral is BLOCK. |
+| `C6.list-count` | BLOCK |  |  | py+js | Count distinct positive integer `ord` members across slide types, not unnumbered context. With no ord, use `item` for listicle or `step` for steps; when the primary type is absent, count the other list type. A nonzero count that disagrees with the cover numeral is BLOCK. |
 | `C6.slide2-promise` | FIX |  |  | py+js | Architecture is listicle, steps or framework, the cover text names a counted integer (2 to 99) in front of a noun, slide 2 is not itself an item or step slide, and slide 2 contains neither one of those integers (digits of either system) nor the title of the first item or step slide that follows it. A viewer Instagram re-serves from slide 2 never saw the cover's promise. Params: `architectures` = [listicle, steps, framework]; `itemTypes` = [item, step]. |
 
 #### C7 · Repetition · التكرار
@@ -441,7 +441,7 @@ Scope `export`.
 | `V1.loop` | BLOCK |  |  | js | Export: the SSIM of the last frame against frame 0 (or, in the Studio, of the painted frame 0 against the poster) is below params.ssim, or the PSNR below params.psnr dB (params: `ssim` = 0.995; `psnr` = 45). Frame 0 of the encoded MP4 is also compared with the poster PNG (`check_video.mjs`), at the lower floor `plugin.motion.posterSsimMin` / `posterPsnrMinDb` (0.99 / 32 dB) of `platform-instagram.json`, because a lossy 4:2:0 encode cannot match a lossless PNG at the binding bar. |
 | `V1.blank` | BLOCK |  |  | js | Export: the video reports blank frames between the hold-in and settle times. |
 | `V1.flashes` | BLOCK |  |  | js | Export: the video flashes more than params.max times per second. Params: `max` = 3. |
-| `V1.still-hold` | NOTE |  |  | js | Export: more than params.maxShare of the frames repeat the frame before them (a mean change under params.delta luma levels on a 108x144 grey copy), so the loop is mostly a held picture. Target stillShare ≤60% (motion ≥40%). Params: `maxShare` = 0.6; `delta` = 0.03. |
+| `V1.still-hold` | NOTE |  |  | js | Export, engine loops only: more than params.maxShare of the frames repeat the frame before them (a mean change under params.delta luma levels on a 108x144 grey copy), so the loop is mostly a held picture. Target stillShare ≤60% (motion ≥40%). Clip covers omit this whole-frame statistic because it cannot measure movement inside their media window. Params: `maxShare` = 0.6; `delta` = 0.03. |
 | `V1.thin-frames` | NOTE |  |  | js | Export: between the hold-in and settle times a run of consecutive frames longer than params.maxSeconds holds less than params.share of the content of frame 0, so the viewer sees only the header and footer and a ghost of the hero. Params: `maxSeconds` = 0.6; `share` = 0.25. |
 | `V1.static` | NOTE |  |  | js | Export: motion is off (recipe none or compat.mp4 off) or the kit holds no cover video. |
 
@@ -535,7 +535,7 @@ The registry is authoritative; model judgement never replaces engine findings. K
 ## Count, creator copy and export completion
 At most 10 slides, including the still or video cover: Instagram’s publishing API and most schedulers accept at most 10 items. A focused carousel of 4, 5 or 6 slides is complete; 6 to 10 is an optional sweet spot, never a reason to pad the post.
 
-`C6.list-count` counts distinct positive integer `ord` values across slide types, including `proof`. Unnumbered context before or after the numbered list is excluded. With no `ord`, legacy `listicle` uses only `item`, and `steps` only `step`. A continuation with the same `ord` is the same member. A real disagreement is BLOCK.
+`C6.list-count` counts distinct positive integer `ord` values across slide types, including `proof`. Unnumbered context before or after the numbered list is excluded. With no `ord`, legacy `listicle` uses `item`, and `steps` uses `step`; when the primary type is absent, count the other list type. The Studio numbers mixed `item` and `step` layouts with one running counter. A continuation with the same `ord` is the same member. A real disagreement is BLOCK.
 
 The ready-script marker is `ext.source: "creator-script"`. Only `C7.cta-repeat` and `C7.family-repeat` become NOTE there; team-written copy keeps FIX. Do not rewrite the creator’s question to clear a variety preference.
 
