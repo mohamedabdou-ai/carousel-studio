@@ -1102,6 +1102,9 @@ function attachRender(ctx) {
   var chain = Promise.resolve();
   var slideGen = {};
   var variantCache = new Map();
+  function previewSpec(s) { return CS.export?.mp4?.clip?.layoutSpec(s) || s; }
+  function clipPoster(s, r, i) { return CS.export?.mp4?.clip?.preview(s, ctx, r, i) || r; }
+  if (CS.on) CS.on("cs:cover-clip", function () { ctx.renderAll(); });
   ctx.renderError = null;
   ctx.deck = null;
   ctx.tokens = null;
@@ -1126,9 +1129,10 @@ function attachRender(ctx) {
     return queue(async function () {
       if (gen !== ctx.thumbGen || !engineReady()) return;
       var deck;
-      try { deck = await CS.core.render.deck(ctx.spec, ctx.brand, { mode: "thumb", assets: ctx.assets }); }
+      try { deck = await CS.core.render.deck(previewSpec(ctx.spec), ctx.brand, { mode: "thumb", assets: ctx.assets }); }
       catch (e) { fail(e); return; }
       if (gen !== ctx.thumbGen) { try { deck.dispose(); } catch (e) { /* stage already gone */ } return; }
+      await Promise.all(deck.slides.map(function (r, i) { return clipPoster(ctx.spec, r, i); }));
       ctx.renderError = null;
       var old = ctx.deck;
       clear(holder);
@@ -1153,8 +1157,9 @@ function attachRender(ctx) {
       var i = ctx.index(id);
       if (i < 0) return;
       var r;
-      try { r = await CS.core.render.slide(ctx.spec, ctx.brand, i, { mode: "thumb", assets: ctx.assets }); }
+      try { r = await CS.core.render.slide(previewSpec(ctx.spec), ctx.brand, i, { mode: "thumb", assets: ctx.assets }); }
       catch (e) { fail(e); return; }
+      await clipPoster(ctx.spec, r, i);
       if (gen !== slideGen[id]) return;
       var prev = ctx.thumbs.get(id);
       if (prev && prev.el.parentNode) prev.el.remove();
@@ -1172,7 +1177,7 @@ function attachRender(ctx) {
       if (!engineReady()) throw new CS.CSError("E_USAGE", "engine not loaded");
       var i = ctx.index(id);
       if (i < 0) throw new CS.CSError("E_USAGE", "unknown slide " + id);
-      return CS.core.render.slide(ctx.spec, ctx.brand, i, { mode: "edit", assets: ctx.assets });
+      return clipPoster(ctx.spec, await CS.core.render.slide(previewSpec(ctx.spec), ctx.brand, i, { mode: "edit", assets: ctx.assets }), i);
     });
   };
 
@@ -1181,7 +1186,8 @@ function attachRender(ctx) {
     if (variantCache.has(key)) return Promise.resolve(variantCache.get(key));
     return queue(async function () {
       if (variantCache.has(key)) return variantCache.get(key);
-      var r = await CS.core.render.slide(variantSpec, ctx.brand, index || 0, { mode: "thumb", assets: ctx.assets, useFrozen: false });
+      var r = await CS.core.render.slide(previewSpec(variantSpec), ctx.brand, index || 0, { mode: "thumb", assets: ctx.assets, useFrozen: false });
+      await clipPoster(variantSpec, r, index || 0);
       holder.appendChild(r.el);
       variantCache.set(key, r.el);
       return r.el;
@@ -1190,7 +1196,7 @@ function attachRender(ctx) {
 
   /** A fresh render of slide `index` that the caller owns (the motion preview animates it, so it must not be shared). */
   ctx.renderFresh = function (index, mode) {
-    return queue(function () { return CS.core.render.slide(ctx.spec, ctx.brand, index, { mode: mode || "thumb", assets: ctx.assets }); });
+    return queue(async function () { return clipPoster(ctx.spec, await CS.core.render.slide(previewSpec(ctx.spec), ctx.brand, index, { mode: mode || "thumb", assets: ctx.assets }), index); });
   };
 
   /** Render a whole deck for one operation (QA, freeze, export-like checks) and always dispose it. */
@@ -3105,7 +3111,8 @@ function DesignScreen(ctx) {
   var film = h("div", { class: "ui-film", dataset: { csFilmstrip: "" }, role: "listbox", "aria-label": t("design.film"), tabindex: "-1" });
   var hint = h("p", { class: "ui-hint ui-stage-hint" }, icon("pencil"), t("design.hint"));
 
-  var stage = h("div", { class: "ui-stage" }, stagebar, h("div", { class: "ui-bigwrap" }, big.frame), editbar, fitNotes, film, hint, teamLogCard(ctx.spec));
+  var clipNote = CS.export?.mp4?.clip?.picker(ctx, uiLang()) || h("span");
+  var stage = h("div", { class: "ui-stage" }, stagebar, clipNote, h("div", { class: "ui-bigwrap" }, big.frame), editbar, fitNotes, film, hint, teamLogCard(ctx.spec));
 
   /* ---- panel ------------------------------------------------------------------------------------------------ */
   var tabs = {};
@@ -3161,6 +3168,7 @@ function DesignScreen(ctx) {
 
   function paintCounter() {
     stageNav.update(ctx.index(), ctx.slides().length);
+    if (clipNote.update) clipNote.update();
     var s = ctx.slide();
     stageNav.el.setAttribute("title", s ? typeLabel(s.type) : "");
   }

@@ -2,5 +2,5 @@
   "module": "mp4",
   "chunk": "cs-mp4.js",
   "order": 0,
-  "files": ["mp4.js"]
+  "files": ["mp4.js", "clip.js"]
 }

@@ -1,8 +1,8 @@
 # Cover motion
 
-Slide 1 ships as a looping MP4 (1080×1440, 30 fps, 5–6 s, no audio) beside its PNG. Motion is **on by default**; "calm" is an option. The cover's finished design is frame 0 and the last frame, so the loop has no visible seam and Instagram, which has no cover picker for carousel videos, shows the finished cover first. The loop in the approved prototype (counter roll, word wipe, word drops, heartbeat to flatline, hold, cue nudge) is the quality floor: every recipe must feel at least that deliberate.
+Slide 1 ships as a silent MP4 (1080×1440, 30 fps) beside its PNG. Engine loops last 5–6 seconds; local clip covers last 6–15 seconds (section 5a). Motion is **on by default**; "calm" is an option. The cover's finished design is frame 0 and the last frame, so the loop has no visible seam and Instagram, which has no cover picker for carousel videos, shows the finished cover first. The loop in the approved prototype (counter roll, word wipe, word drops, heartbeat to flatline, hold, cue nudge) is the quality floor: every recipe must feel at least that deliberate.
 
-## 1. The poster-first timeline
+## 1. The poster-first engine timeline
 For every element, the state at time `t` is a pure function of the timeline:
 
 | Time (defaults) | State |
@@ -53,7 +53,7 @@ Motion is on and the engine picks a story from the cover's own words; the first 
 
 The script-to-spec picker uses the same order. In a `post-*` folder it reads the newest earlier sibling's `spec.json`; if that post used the same recipe, it takes the next matching allowed rule, else the first different allowed recipe. It prints `motion: <new> (the last post used <old>)`. Missing/unreadable siblings are ignored. Preset defaults stay unchanged.
 
-The user can switch recipe, feel (`calm` or `story`) and external plate in the Motion tab. In the spec: `cover.motion = { "recipe": "counter", "feel": "calm", "seconds": 6, "fps": 30, "source": "internal" }`. Seconds are 5–6; fps is 30. The preset lists the recipes it allows (`motion.allowed`).
+The user can switch recipe, feel (`calm` or `story`) and external plate in the Motion tab. In the spec: `cover.motion = { "recipe": "counter", "feel": "calm", "seconds": 6, "fps": 30, "source": "internal" }`. Engine-loop seconds are 5–6; a local clip cover is 6–15 seconds (section 5a). Fps is 30. The preset lists the recipes it allows (`motion.allowed`).
 
 ## 3b. The motion designer's checks (from the encoded frames)
 The storyboard written before the encode is a plan from the recipe's code. After the first encode, pull the six frames from the MP4 itself (use `render.mjs --contact-sheet` for posters; inspect saved encoded frames at the six storyboard times if available, else mark that check unverified and use kit metrics) and check, with measured numbers:
@@ -73,6 +73,29 @@ The storyboard written before the encode is a plan from the recipe's code. After
 ## 5. External motion (optional, Q19)
 With a video tool connected and the user's agreement, AI animates **only a text-free background plate**: first frame equals last frame (or ping-pong), subtle motion, locked camera. The type layer builds on top with `calm`; the loop gate still applies. In Claude Code the plate is a `<video>` layer inside the HyperFrames composition; in the Studio it is decoded frame by frame under the page. If the Studio path is not ready, say «الحركة الخارجية متاحة في Claude Code» and offer the internal motion instead. Prompts and checks: the `visual-prompts` skill (`visual-prompts/references/motion-plates.md`).
 
+## 5a. A real clip inside the cover
+Offer a clip cover when the topic has useful real footage and the creator has a clip. Ask for the local file, the in/out points, a total length of 6–15 seconds, fit (`cover` or `contain`) and focus, and the source to credit in the caption. Use only the creator's own or licensed footage. The plugin never finds or downloads a clip. Output is silent.
+
+Keep the clip in the post folder and reference it by its relative path; never embed its bytes in the spec. Example:
+
+```json
+"cover": {
+  "motion": {
+    "recipe": "calm", "source": "internal", "seconds": 12, "fps": 30,
+    "clip": {
+      "file": "assets/product-demo.mp4", "in": 1, "out": 9,
+      "fit": "cover", "focus": { "x": 0.5, "y": 0.5 }, "ending": "auto"
+    }
+  }
+}
+```
+
+`in` and `out` are source seconds (`out > in`, inside the clip). The selected segment plays once, retimed to fill the cover between its 0.4-second poster holds. The last 0.6 seconds of playback return to the poster. `auto` uses a dissolve only when endpoint SSIM is at least 0.985; otherwise it wipes from the reading start, avoiding doubled objects in one-way footage. `wipe` always wipes; a requested `dissolve` also falls back to a wipe when the endpoints differ.
+
+The engine lays out the cover's media window and text. Change the style and re-export: the window is measured again and both ratios are recomposed. Every frame must preserve the calm-zone text contrast; a failure names the frame, time and text slot. Move the media away from text or use an opaque text panel when it fails. There is no automatic text fade.
+
+The browser decodes with its own codecs and the existing pinned MP4 library, and encodes with the usual H.264 path. No ffmpeg or Python imaging is needed for clip composition. An unsupported codec error names the codec and asks for an H.264 MP4, 8-bit SDR. Reattach the local file when reopening a standalone Studio; it is not stored in the HTML or JSON. The Design screen says a video is attached and shows its decoded poster.
+
 ## 6. How it is rendered
 The cover is generated as one HTML file in HyperFrames composition format (`cover.hf.html`) from slide 1's own DOM and CSS plus the timeline. Studio: the page seeks it frame by frame at 30 fps, paints each frame, converts it to BT.709 limited-range I420 itself, encodes H.264 (level 4.0) in the browser and writes the MP4 with `faststart` and BT.709 limited range stated in the SPS and the container, the same facts the HyperFrames lane writes. `cover.hf.html` is only built on request (the source files). Claude Code defaults to the internal encoder. HyperFrames runs only with `--video hyperframes`; no download prompt. `check_video.mjs` verifies it (`lanes.md`). If a browser has no H.264 encoder the kit keeps the static cover and says «صدّر الفيديو من الكمبيوتر».
 
@@ -83,4 +106,5 @@ The cover is generated as one HTML file in HyperFrames composition format (`cove
 | «أبطأ / أسرع» | seconds 5–6 only; stagger and easing belong to the recipe |
 | «حرّك كل كلمة حرف حرف» | no: letter animation breaks Arabic joins; offer word-by-word |
 | «حركة تانية للموضوع ده» | show the three nearest recipes by the order above and let the Motion tab preview them |
-| a longer or audio video | not in v1: carousel covers are short, silent loops |
+| a longer cover with real footage | offer a local clip cover, 6–15 seconds, silent (section 5a) |
+| audio on the cover | covers are silent; put the spoken explanation in the caption |

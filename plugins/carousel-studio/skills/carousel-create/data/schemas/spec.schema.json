@@ -298,7 +298,7 @@
             "seconds": {
               "type": "number",
               "minimum": 5,
-              "maximum": 6
+              "maximum": 15
             },
             "fps": {
               "enum": [
@@ -314,12 +314,98 @@
             },
             "plateAssetId": {
               "$ref": "#/$defs/shortId"
+            },
+            "clip": {
+              "type": "object",
+              "description": "Local footage in the cover media window. Trim points are seconds; out must exceed in and stay inside the clip duration (checked when decoding).",
+              "properties": {
+                "file": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 512,
+                  "pattern": "^[^./\\\\:%?#\\u0000-\\u001f][^/\\\\:%?#\\u0000-\\u001f]*(/[^./\\\\:%?#\\u0000-\\u001f][^/\\\\:%?#\\u0000-\\u001f]*)*$"
+                },
+                "in": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "out": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "fit": {
+                  "type": "string",
+                  "enum": [
+                    "cover",
+                    "contain"
+                  ]
+                },
+                "focus": {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "y": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    }
+                  },
+                  "required": [
+                    "x",
+                    "y"
+                  ],
+                  "additionalProperties": false
+                },
+                "ending": {
+                  "type": "string",
+                  "enum": [
+                    "auto",
+                    "wipe",
+                    "dissolve"
+                  ],
+                  "description": "Dissolve only when endpoints resemble each other; otherwise a wipe returns to the poster."
+                }
+              },
+              "required": [
+                "file",
+                "in",
+                "out",
+                "fit",
+                "focus",
+                "ending"
+              ],
+              "additionalProperties": false
             }
           },
           "required": [
             "recipe"
           ],
-          "additionalProperties": false
+          "additionalProperties": false,
+          "oneOf": [
+            {
+              "properties": {
+                "clip": false,
+                "seconds": {
+                  "maximum": 6
+                }
+              }
+            },
+            {
+              "required": [
+                "clip",
+                "seconds"
+              ],
+              "properties": {
+                "seconds": {
+                  "minimum": 6
+                }
+              }
+            }
+          ]
         }
       },
       "additionalProperties": false

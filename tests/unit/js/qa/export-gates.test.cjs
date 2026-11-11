@@ -369,3 +369,17 @@ test("loopCheck: identical frames pass, a changed last frame fails", () => {
   assert.ok(r.ssim < 0.995);
   assert.ok(CS.qa.metrics.psnr(img(100), img(101)) > 40);
 });
+
+
+test("V1: a 12-second clip uses its real 360 frames in both kit ratios", async () => {
+  const spec = specWithMotion();
+  spec.cover.motion.seconds = 12;
+  spec.cover.motion.clip = { file: "assets/fresh.mp4", in: 0, out: 10, fit: "cover", focus: { x: 0.5, y: 0.5 }, ending: "auto" };
+  const files = [file("3x4/01-cover.mp4", mp4({ frames: 360 })), file("4x5/01-cover.mp4", mp4({ frames: 360, h: 1350 }))];
+  const loop = { frame0VsPoster: { ssim: 1, psnr: 100 }, lastVsFrame0: { ssim: 0.9999, psnr: 60 } };
+  assert.deepEqual(await exportRun(spec, files, { video: files.map(f => ({ file: f.path, loop })) }), []);
+  const truncated = await exportRun(spec, [file("3x4/01-cover.mp4", mp4({ frames: 180 }))]);
+  assert.ok(ids(truncated).includes("V1.frames"));
+  const wrongEnd = await exportRun(spec, files, { video: { loop: { frame0VsPoster: { ssim: 1, psnr: 100 }, lastVsFrame0: { ssim: 0.98, psnr: 40 } } } });
+  assert.ok(ids(wrongEnd).includes("V1.loop"), "clip covers retain the same strict return-to-poster gate");
+});

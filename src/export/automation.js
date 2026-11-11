@@ -64,6 +64,15 @@ function createAutomation() {
       try { return await CS.qa.run({ spec: c.spec, brand: c.brand, tokens: deck.tokens, deck: deck, checkpoint: c.spec.checkpoint || "design", lane: "claude-code" }); }
       finally { deck.dispose(); }
     },
+    cover: async function (opts) {
+      opts = opts || {};
+      var c = current(), result = await renderCover(c.spec, { brand: c.brand, assets: inlineAssetResolver(c.spec, c.brand) },
+        { variants: [opts.variant === "4x5" ? "4x5" : "3x4"] });
+      var all = result.files.concat(result.stills || []);
+      all.forEach(function (f) { window.__csFiles.set(f.path, f.bytes); });
+      var results = CS.qa ? await CS.qa.runExport({ spec: c.spec, files: all, video: result.info, expected: [] }, { gates: ["V1"] }) : [];
+      return { files: all.map(function (f) { return { path: f.path, bytes: f.bytes.length }; }), info: Object.assign({}, CS.qa ? CS.qa.inspectMp4(result.files[0].bytes) : {}, result.info[0]), timeline: result.timeline, results: results };
+    },
     exportAll: async function (opts) {
       opts = opts || {};
       var c = current(), ctx = { brand: c.brand, assets: inlineAssetResolver(c.spec, c.brand), dialect: opts.dialect, lane: "claude-code",

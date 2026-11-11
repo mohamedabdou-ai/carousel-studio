@@ -29,7 +29,7 @@ import os from "node:os";
 import path from "node:path";
 import vm from "node:vm";
 import { pathToFileURL, fileURLToPath } from "node:url";
-import { EXIT, LaneError, buildStudioPage, haveTool, launchChromium, openStudio, renderCoverVideo, HYPERFRAMES_VERSION } from "./cover_video.mjs";
+import { EXIT, LaneError, buildStudioPage, haveTool, launchChromium, openStudio, renderCoverVideo, attachCoverClip, HYPERFRAMES_VERSION } from "./cover_video.mjs";
 import { planSpec, savePlanSpec, readPlanSource, loadPlanner } from "./plan.mjs";
 import { drawContact } from "./render_contact.mjs";
 
@@ -232,6 +232,7 @@ async function main(argv) {
     studio = await openStudio({ browser, studioFile, timeout: o.timeoutMs });
     const { page } = studio;
     await page.evaluate(([s, b]) => window.CS.automation.setSpec(s, b), [spec, brand]);
+    if (!o.preflight) await attachCoverClip(page, path.resolve(o.specFile), spec);
 
     if (o.preflight) {
       const rows = await preflight(page, spec, brand, o.presetList);
@@ -245,7 +246,7 @@ async function main(argv) {
     const motion = spec.cover && spec.cover.motion;
     const wantsVideo = o.video !== "none" && spec.format !== "single";
     const videos = [], videoSummary = { mode: o.video, files: [], skipped: [] };
-    if (o.video === "hyperframes" && wantsVideo) {
+    if (o.video === "hyperframes" && wantsVideo && !motion?.clip) {
       for (const variant of o.variantList.includes("4x5") ? ["3x4", "4x5"] : ["3x4"]) {
           const rel = `${variant}/01-cover.mp4`, dest = path.join(outDir, rel);
           try {

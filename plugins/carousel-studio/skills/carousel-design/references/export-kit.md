@@ -11,7 +11,7 @@ At most 10 slides, including the still or video cover: Instagram’s publishing 
 |---|---|
 | `3x4/NN.png` | 1080×1440, sRGB, no alpha, painted at 2× and downscaled; `NN` is the two-digit slide position |
 | `4x5/NN.jpg` | 1080×1350 (rows 45–1395 of the design), quality 0.92 stepped down until it is at most 8,000,000 bytes; for schedulers and the API only |
-| `3x4/01-cover.mp4` | 1080×1440, H.264 High at level 4.0 (`avc1.640028`), yuv420p, **limited (TV) range, BT.709** primaries, transfer and matrix, 30 fps constant, 6 s (5–6), no audio, `moov` before `mdat`, keyframe at 0 and at least every 30 frames, 8 Mbit/s; the Studio and HyperFrames lanes write the same facts (`ffprobe` shows `yuv420p`, `tv`, `bt709`, level 40) |
+| `3x4/01-cover.mp4` | 1080×1440, H.264 High at level 4.0 (`avc1.640028`), yuv420p, **limited (TV) range, BT.709** primaries, transfer and matrix, 30 fps constant, 6 s (5–6) for engine loops or 6–15 s for a local clip, no audio, `moov` before `mdat`, keyframe at 0 and at least every 30 frames, 8 Mbit/s; the Studio and HyperFrames lanes write the same facts (`ffprobe` shows `yuv420p`, `tv`, `bt709`, level 40) |
 | `4x5/01-cover.mp4` | the same frames cropped to 1080×1350 |
 | `carousel.pdf` | one page per slide, 1080×1440, each page one JPEG, producer "Carousel Studio", no author |
 | `caption.txt` | firstLine + keywordLine, body, cta, hashtags, separated by blank lines; exactly what the user pastes: the AI-label reminder is never written into it, it lives in `posting-guide.md` |
@@ -65,3 +65,17 @@ Three lines in the user's dialect: where the files are, whether anything was ski
 | `V1.range` or `V1.pixfmt` BLOCK on a video | the file is full range (`yuvj420p`) or not 8-bit 4:2:0: the Studio's exporter converts its frames itself and never produces this, so it comes from another encoder or an older export; export the cover again |
 | `V1.level` FIX | the encoder wrote H.264 level 4.2 or higher and the stream did not fit level 4.0 well enough to lower it; advice only, current phones play it |
 | fonts look different in the PNG | the live page used a font the export could not embed: re-run after `document.fonts.ready`; check the font is a registry font or a re-attached upload |
+
+## 8. Local clip covers
+`cover.motion.clip` attaches a post-local clip to the engine cover's media window; see `motion-recipes.md`, section 5a. Both MP4 ratios stay in the kit. A new export always recomposes the attached clip, including after a style change and with `--video hyperframes`; it never substitutes the engine loop. `--video none` omits the MP4s intentionally, but still derives the cover poster from an encoded frame.
+
+For clip covers, the 3:4 PNG, the 4:5 JPEG and the PDF's first page come from their MP4's decoded first frame. The still is never independently repainted over a finished clip. The loop's last-versus-first thresholds remain SSIM 0.995 / PSNR 45 dB; the decoded first frame is compared directly with the kit poster, without another colour conversion. Every clip frame, including both holds, is checked for blank or near-blank content.
+
+```text
+node cover_video.mjs --spec POST/spec.json --out POST/cover.mp4 --variant 3x4
+node check_video.mjs POST/kit/3x4/01-cover.mp4 --poster POST/kit/3x4/01-cover.png --spec POST/spec.json
+```
+
+`cover_video.mjs` uses the same browser compositor and writes a decoded poster beside the requested MP4 (PNG for 3:4, JPEG for 4:5). The standalone checker also accepts `--kind clip --seconds 12` when no spec is supplied. It still uses its existing ffprobe/ffmpeg inspection tools; composition and the kit's browser gates do not require them.
+
+The opt-in sources of a clip post are `spec.json` and `studio-source.html`. `cover.hf.html` belongs to engine loops; clip posts do not ship a misleading engine composition. The original clip stays in the post folder and must be reattached when reopening the Studio. Credit its source in the caption. Longer footage also makes a larger kit; the old small-loop kit size is not a clip-cover size promise.

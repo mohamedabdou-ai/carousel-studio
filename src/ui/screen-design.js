@@ -63,7 +63,8 @@ function DesignScreen(ctx) {
   var film = h("div", { class: "ui-film", dataset: { csFilmstrip: "" }, role: "listbox", "aria-label": t("design.film"), tabindex: "-1" });
   var hint = h("p", { class: "ui-hint ui-stage-hint" }, icon("pencil"), t("design.hint"));
 
-  var stage = h("div", { class: "ui-stage" }, stagebar, h("div", { class: "ui-bigwrap" }, big.frame), editbar, fitNotes, film, hint, teamLogCard(ctx.spec));
+  var clipNote = CS.export?.mp4?.clip?.picker(ctx, uiLang()) || h("span");
+  var stage = h("div", { class: "ui-stage" }, stagebar, clipNote, h("div", { class: "ui-bigwrap" }, big.frame), editbar, fitNotes, film, hint, teamLogCard(ctx.spec));
 
   /* ---- panel ------------------------------------------------------------------------------------------------ */
   var tabs = {};
@@ -119,6 +120,7 @@ function DesignScreen(ctx) {
 
   function paintCounter() {
     stageNav.update(ctx.index(), ctx.slides().length);
+    if (clipNote.update) clipNote.update();
     var s = ctx.slide();
     stageNav.el.setAttribute("title", s ? typeLabel(s.type) : "");
   }

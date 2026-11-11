@@ -35,7 +35,7 @@ function kitDefaults(spec, opts) {
   var exportsList = spec.canvas && spec.canvas.exports;
   return {
     carousel: carousel,
-    video: opts.video !== undefined ? !!opts.video : carousel && !!motion && motion.recipe !== "none" && !(spec.compat && spec.compat.mp4 === "off"),
+    video: opts.video !== undefined ? !!opts.video : carousel && !!motion && (!!motion.clip || motion.recipe !== "none") && !(spec.compat && spec.compat.mp4 === "off"),
     variants4x5: opts.variants4x5 !== undefined ? !!opts.variants4x5 : !exportsList || exportsList.indexOf("4x5") >= 0,
     pdf: opts.pdf !== undefined ? !!opts.pdf : true,
     source: opts.source !== undefined ? !!opts.source : false,        // the editable source files (about 12 MB) are an opt-in: the default kit is made to travel to a phone
@@ -64,7 +64,7 @@ function kitFilesOf(spec, opts) {
 /** Relative paths of the optional source files: the spec, the cover composition (carousels with motion) and the Studio page. */
 function sourceFilesOf(spec, opts) {
   var o = kitDefaults(spec, opts), out = ["spec.json"];
-  if (o.carousel && motionOf(spec) && motionOf(spec).recipe !== "none") out.push("cover.hf.html");
+  if (o.carousel && motionOf(spec) && !motionOf(spec).clip && motionOf(spec).recipe !== "none") out.push("cover.hf.html");
   out.push("studio-source.html");
   return out;
 }
@@ -80,11 +80,17 @@ async function exportSlides(spec, ctx, opts) {
   ctx = ctx || {};
   var signal = opts.signal || ctx.signal, format = opts.format === "jpeg4x5" ? "jpeg4x5" : "png";
   applyPainterPreference(spec);
-  var deck = await CS.core.render.deck(spec, ctx.brand || null, deckOptions(ctx, { slideIds: opts.only, signal: signal })), files = [], i, s, r, carousel = spec.format !== "single";
+  var clip = motionOf(spec) && motionOf(spec).clip;
+  var deck = await CS.core.render.deck(clip ? X.mp4.clip.layoutSpec(spec) : spec, ctx.brand || null, deckOptions(ctx, { slideIds: opts.only, signal: signal })), files = [], i, s, r, carousel = spec.format !== "single", cover = null;
   try {
     for (i = 0; i < deck.slides.length; i++) {
       abortIf(signal);
       s = deck.slides[i];
+      if (clip && s.index === 0) {
+        cover = cover || await renderClipCover(spec, ctx, { variants: ["3x4", "4x5"], signal: signal });
+        files.push(cover.stills.find(function (f) { return f.path.indexOf(format === "png" ? "3x4/" : "4x5/") === 0; }));
+        continue;
+      }
       r = await CS.paint.raster(s.el, format === "png" ? { type: "png", crop: "3x4" } : { type: "jpeg", crop: "4x5", quality: JPEG_QUALITY, maxBytes: JPEG_MAX_BYTES });
       files.push(makeFile((format === "png" ? "3x4/" : "4x5/") + slideStem(spec, s.index, carousel) + (format === "png" ? ".png" : ".jpg"), r.bytes, { w: r.w, h: r.h }));
       reportProgress(opts, { job: "slides", done: i + 1, total: deck.slides.length, file: files[files.length - 1].path });
@@ -168,6 +174,7 @@ async function renderCover(spec, ctx, o) {
   o = o || {};
   ctx = ctx || {};
   var signal = o.signal || ctx.signal, motion = motionOf(spec) || { recipe: "calm" }, variants = o.variants || ["3x4"], fps = FPS_EXPORT;
+  if (motion.clip) { applyPainterPreference(spec); return renderClipCover(spec, ctx, o); }
   if (motion.source === "external") throw exportError("E_NO_CAPABILITY", "External motion plates are rendered in Claude Code (HyperFrames), not in the Studio.", { reason: "external-plate" });
   if (motion.recipe === "none") throw exportError("E_NO_CAPABILITY", "This cover has no motion.", { reason: "motion-off" });
   applyPainterPreference(spec);
@@ -277,9 +284,10 @@ function exportZip(files, opts) {
 
 async function buildKit(spec, ctx, opts) {
   opts = opts || {};
+  if (motionOf(spec) && motionOf(spec).clip) opts = Object.assign({}, opts, { videoFiles: undefined, videoErrors: undefined });
   ctx = ctx || {};
   var signal = opts.signal || ctx.signal, o = kitDefaults(spec, opts), dialect = opts.dialect || ctx.dialect || (spec.locale && spec.locale.dialect) || "msa-white";
-  var files = [], skipped = [], videoInfos = [], carousel = o.carousel, n = (spec.slides || []).length, composition = null;
+  var files = [], skipped = [], videoInfos = [], carousel = o.carousel, n = (spec.slides || []).length, composition = null, clipCover = null, clipFailed = false;
   var steps = n + (o.video ? 1 : 0) + 3, done = 0;
   var bump = function (label, file) { done += 1; reportProgress(opts, { job: "kit", done: Math.min(done, steps), total: steps, label: label, file: file }); };
   applyPainterPreference(spec);
@@ -287,7 +295,7 @@ async function buildKit(spec, ctx, opts) {
   if (o.video && opts.videoErrors && opts.videoErrors.length) {
     skipped = skipped.concat(opts.videoErrors);
   }
-  if (o.video && opts.videoFiles && opts.videoFiles.length) {
+  if (o.video && opts.videoFiles && opts.videoFiles.length && !(motionOf(spec) && motionOf(spec).clip)) {
     // the cover was already rendered elsewhere (Claude Code lane: HyperFrames); its bytes and measurements are used as they are
     opts.videoFiles.forEach(function (v) { files.push(makeFile(v.path, v.bytes, v.w ? { w: v.w, h: v.h } : undefined)); if (v.info) videoInfos.push(Object.assign({ file: v.path }, v.info)); });
     bump("video");
@@ -295,21 +303,47 @@ async function buildKit(spec, ctx, opts) {
     try {
       var cover = await renderCover(spec, ctx, { variants: o.variants4x5 ? ["3x4", "4x5"] : ["3x4"], composition: o.source, onProgress: opts.onProgress, signal: signal });
       files = files.concat(cover.files); videoInfos = cover.info; composition = cover.composition;
+      if (motionOf(spec) && motionOf(spec).clip) clipCover = cover;
     } catch (e) {
       if (e && e.code === "E_ABORTED") throw e;
       var why = e && e.code === "E_ENCODER_UNSUPPORTED" ? "no H.264 encoder" : e && e.code === "E_DEP_LOAD" ? "the MP4 writer could not be loaded" :
         e && e.detail && e.detail.reason === "external-plate" ? "external motion plate (Claude Code)" : String(e && e.message || e);
+      if (motionOf(spec) && motionOf(spec).clip) { clipFailed = true; skipped.push({ path: "clip-cover", reason: why }); }
       skipped.push({ path: "3x4/01-cover.mp4", reason: why });
       if (o.variants4x5) skipped.push({ path: "4x5/01-cover.mp4", reason: why });
     }
     bump("video");
   }
 
-  var deck = await CS.core.render.deck(spec, ctx.brand || null, deckOptions(ctx, { signal: signal })), png = [], jpg = [], pdfSources = [], i, s, outs, r;
+  // A still-only export of a clip cover still takes its poster from an encoded frame.
+  if (!o.video && motionOf(spec) && motionOf(spec).clip) {
+    try { clipCover = await renderClipCover(spec, ctx, { variants: o.variants4x5 ? ["3x4", "4x5"] : ["3x4"], signal: signal, onProgress: opts.onProgress }); }
+    catch (e) {
+      if (e && e.code === "E_ABORTED") throw e;
+      clipFailed = true; skipped.push({ path: "clip-cover", reason: String(e && e.message || e) });
+    }
+  }
+  var deck = await CS.core.render.deck(clipCover ? X.mp4.clip.layoutSpec(spec) : spec, ctx.brand || null, deckOptions(ctx, { signal: signal })), png = [], jpg = [], pdfSources = [], i, s, outs, r;
   try {
+    if (clipCover && clipCover.mediaPoster) {
+      var media = deck.slides[0].el.querySelector('[data-slot="media"]');
+      if (media) {
+        var image = document.createElement("img"); image.src = clipCover.mediaPoster; image.alt = "";
+        image.style.cssText = "width:100%;height:100%;object-fit:fill"; media.replaceChildren(image);
+        if (image.decode) await image.decode();
+      }
+    }
     for (i = 0; i < deck.slides.length; i++) {
       abortIf(signal);
       s = deck.slides[i];
+      if (clipFailed && s.index === 0) { bump("slides", "3x4/01-cover.png"); continue; }
+      if (clipCover && s.index === 0) {
+        png.push(clipCover.stills.find(function (f) { return f.path === "3x4/01-cover.png"; }));
+        if (o.variants4x5) jpg.push(clipCover.stills.find(function (f) { return f.path === "4x5/01-cover.jpg"; }));
+        if (o.pdf) pdfSources.push(makeFile("3x4/01-cover.jpg", await encodeBytes(clipCover.posters["3x4"], "image/jpeg", JPEG_QUALITY), { w: 1080, h: 1440 }));
+        bump("slides", "3x4/01-cover.png");
+        continue;
+      }
       outs = [{ type: "png", crop: "3x4" }];
       if (o.variants4x5) outs.push({ type: "jpeg", crop: "4x5", quality: JPEG_QUALITY, maxBytes: JPEG_MAX_BYTES });
       if (o.pdf) outs.push({ type: "jpeg", crop: "3x4", quality: JPEG_QUALITY });
@@ -323,7 +357,7 @@ async function buildKit(spec, ctx, opts) {
   files = files.concat(png, jpg);
 
   files.push(textApi.caption(spec), textApi.hashtags(spec), textApi.slideCaptions(spec), textApi.alt(spec));
-  if (o.pdf) files.push(await exportPdf(pdfSources, { title: (spec.hook && spec.hook.cover) || (spec.brief && spec.brief.topic) || "" }));
+  if (o.pdf && !clipFailed) files.push(await exportPdf(pdfSources, { title: (spec.hook && spec.hook.cover) || (spec.brief && spec.brief.topic) || "" }));
   bump("pdf");
   if (o.source) {
     var source = await exportSource(spec, ctx, { composition: composition, signal: signal });
