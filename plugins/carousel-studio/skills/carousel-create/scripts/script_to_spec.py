@@ -29,17 +29,23 @@ Exit codes: 0 done (FIX or NOTE may remain), 1 something to fill or a FIX, 2 a B
 from __future__ import annotations
 
 import argparse
+import copy
+from contextlib import contextmanager
 import datetime as _dt
+import hashlib
+import importlib.util
 import json
+import os
 import re
 import subprocess
 import sys
 from pathlib import Path
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 try:
-    from _cs import paths, report as csreport, text as cstext
+    from _cs import CSError, paths, qa as csqa, report as csreport, rules as cs_rules, schema, text as cstext
 except ImportError as exc:  # the shared package is synced next to the scripts
     sys.stderr.write("cs-error: E_DEP_LOAD: the shared _cs package is missing next to this script: %s\n" % exc)
     sys.exit(70)
@@ -50,7 +56,7 @@ SEPARATOR = re.compile(r"^\s*(?:-{3,}|_{3,}|\*{3,}|—{2,}|={3,})\s*$")
 CIRCLED = "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳"
 NUMBER = r"(?:[%s]|[0-9٠-٩]{1,2})" % CIRCLED
 HEADER = re.compile(
-    r"^\s*(?:#{1,6}\s*)?(?:\*\*|__)?\s*(?:(?:slide|سلايد|شريحة|الشريحة|السلايد)\s*(?:رقم\s*)?%s\s*[:.)\-–—]?|[%s]\s*[:.)\-–—]?|[0-9٠-٩]{1,2}\s*[:.)\-–—](?![0-9٠-٩])|\(%s\))\s*(?P<rest>.*?)\s*(?:\*\*|__)?\s*$"
+    r"^\s*(?:#{1,6}\s*)?(?:\*\*|__)?\s*(?:(?:slide|سلايد|شريحة|الشريحة|السلايد)\s*(?:رقم\s*)?%s\s*[:.)|\-–—]?|[%s]\s*[:.)|\-–—]?|[0-9٠-٩]{1,2}\s*[:.)|\-–—](?![0-9٠-٩])|\(%s\))\s*(?P<rest>.*?)\s*(?:\*\*|__)?\s*$"
     % (NUMBER, CIRCLED, NUMBER), re.IGNORECASE)  # a bare digit needs its separator («١ — …», «1.»): «٩٠ دقيقة…» is copy
 CIRCLED_ONLY = re.compile(r"^\s*(?:#{1,6}\s*)?(?:\*\*|__)?\s*[%s]" % CIRCLED)
 BOLD_LINE = re.compile(r"^\s*(?:\*\*|__)(?P<rest>.+?)(?:\*\*|__)\s*$")
@@ -94,17 +100,24 @@ MOTION_LEXICON = {
 ARCHITECTURES = ("listicle", "steps", "myth-fact", "story", "case-study", "framework", "comparison", "opinion", "news", "offer",
                  "results", "lead-magnet")
 SENTENCE_END = re.compile(r"(?<=[.!?؟…])\s+")
-MAX_SLIDES = 20  # Instagram's limit for one carousel
+MARKDOWN_LINK = re.compile(r"\[([^\]\n]+)\]\((https?://(?:[^\s()]|\([^\s()]*\))+)(?:\s+\"[^\"]*\")?\)")
+URL = re.compile(r"https?://[^\s<>`\"*]+", re.IGNORECASE)
+SOURCE_NAME = r"[A-Z][A-Za-z0-9&.-]*(?: [A-Z][A-Za-z0-9&.-]*){0,3}"
+SOURCE_TAIL = re.compile(r"(?:^|\s)(?P<source>" + SOURCE_NAME + r" by " + SOURCE_NAME + r"|(?:www\.)?[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[a-z]{2,24})\s*$")
+
+
+def max_slides() -> int:
+    return int(cs_rules.platform("plugin.slides.hardMax", 10))
 
 
 class _Parser(argparse.ArgumentParser):
     def error(self, message):
-        sys.stderr.write("cs-error: E_USAGE: %s\n" % message)
+        output("cs-error: E_USAGE: %s\n" % message, sys.stderr)
         sys.exit(64)
 
 
 def fail(code: str, message: str, status: int = 65):
-    sys.stderr.write("cs-error: %s: %s\n" % (code, message))
+    output("cs-error: %s: %s\n" % (code, message), sys.stderr)
     sys.exit(status)
 
 
@@ -124,6 +137,7 @@ def clean(line: str, digits: str, removed: list) -> str:
         removed.append(True)
     out = re.sub(r"\*\*|__", "", out)
     out = ITALIC.sub(lambda m: m.group(1), out)  # «*فكرة توضيحية*» is emphasis in the chat, not copy
+    out = re.sub(r"`([^`]+)`", r"\1", out)
     out = re.sub(r"[ \t ]+", " ", out).strip()
     return cstext.convert_digits(out, digits)
 
@@ -143,28 +157,66 @@ def header_text(line: str):
 
 def split_sections(raw: str) -> list[list[str]]:
     lines = raw.replace("\r\n", "\n").replace("\r", "\n").lstrip("﻿").split("\n")
-    if any(SEPARATOR.match(l) for l in lines):
-        out, cur = [], []
-        for l in lines:
-            if SEPARATOR.match(l):
-                out.append(cur)
-                cur = []
-            else:
-                cur.append(l)
-        out.append(cur)
-    else:  # no separators: a numbered header line starts each section
-        out, cur = [], []
-        for l in lines:
-            if HEADER.match(l) and header_text(l) is not None and any(x.strip() for x in cur):
-                out.append(cur)
-                cur = []
+    lines = [l for l in lines if not re.fullmatch(r"\s*</?pasted_content\b[^>]*>\s*", l)]
+    first = next((i for i, l in enumerate(lines) if HEADER.match(l) and header_text(l) is not None), None)
+    if first is not None:
+        lines = lines[first:]  # chat instructions and a post label before slide 1 are not slide copy
+    out, cur = [], []
+    for l in lines:
+        boundary = HEADER.match(l) and header_text(l) is not None
+        if SEPARATOR.match(l) or (boundary and any(x.strip() for x in cur)):
+            out.append(cur)
+            cur = []
+        if not SEPARATOR.match(l):
             cur.append(l)
-        out.append(cur)
+    out.append(cur)
     return [s for s in out if any(x.strip() for x in s)]
 
 
+def normalize_url(ref: str) -> str:
+    """Canonical HTTP(S) reference, offline. Remove tracking only; retain meaningful query values and anchors."""
+    try:
+        u = urlsplit(ref)
+        if u.scheme.lower() not in ("http", "https") or not u.hostname or u.username or u.password:
+            raise ValueError("use an http(s) URL without credentials")
+        host = u.hostname.lower()
+        port = u.port
+        netloc = ("[" + host + "]" if ":" in host else host)
+        if port and (u.scheme.lower(), port) not in (("http", 80), ("https", 443)):
+            netloc += ":%d" % port
+        query = [(k, v) for k, v in parse_qsl(u.query, keep_blank_values=True)
+                 if not k.lower().startswith("utm_") and k.lower() not in ("fbclid", "gclid", "dclid", "msclkid", "mc_cid", "mc_eid")]
+        return urlunsplit((u.scheme.lower(), netloc, u.path or "/", urlencode(query), u.fragment))
+    except ValueError as exc:
+        raise CSError("E_USAGE", "invalid source URL: %s" % exc) from exc
+
+
+def extract_sources(line: str, refs: list, mentions: list) -> str:
+    def link(m):
+        refs.append({"ref": normalize_url(m.group(2)), "label": m.group(1)})
+        return ""
+    line = MARKDOWN_LINK.sub(link, line)
+    def bare(m):
+        raw = m.group(0)
+        ref = raw.rstrip(".,،؛;!؟")
+        while ref and ref[-1] in ")]}":
+            close = ref[-1]
+            if ref.count(close) <= ref.count({")": "(", "]": "[", "}": "{"}[close]):
+                break
+            ref = ref[:-1]
+        refs.append({"ref": normalize_url(ref), "label": urlsplit(ref).hostname})
+        return raw[len(ref):]
+    line = URL.sub(bare, line)
+    m = SOURCE_TAIL.search(line) if not HEADER.match(line) else None
+    if m:
+        mentions.append(m.group("source"))
+        line = line[:m.start()].rstrip()
+    return line
+
+
 def parse_section(lines: list[str], digits: str, removed: list, first: bool, emoji_list: bool = False) -> dict:
-    body = [l for l in lines]
+    refs, mentions = [], []
+    body = [extract_sources(l, refs, mentions) for l in lines]
     while body and not body[0].strip():
         body.pop(0)
     if first and body and header_text(body[0]) is None and re.match(r"^\s*(?:اعملي|اعمل|اعمللي|سوّ لي|سو لي|عايز|ابغى|make|create)\b", body[0], re.IGNORECASE):
@@ -187,9 +239,14 @@ def parse_section(lines: list[str], digits: str, removed: list, first: bool, emo
             if not head:  # «**سلايد ٢**» alone: the bold line under it is the title
                 while body and not body[0].strip():
                     body.pop(0)
-                m = (BOLD_LINE.match(body[0]) or HEADING.match(body[0])) if body else None
-                if m and clean(m.group("rest"), digits, []):
-                    head, body = clean(m.group("rest"), digits, removed), body[1:]
+                if body and (BOLD_LINE.match(body[0]) or HEADING.match(body[0]) or re.match(r"^\s*\*\*", body[0])):
+                    title = [body.pop(0)]
+                    if title[0].count("**") % 2:
+                        while body and body[0].strip():
+                            title.append(body.pop(0))
+                            if "**" in title[-1]:
+                                break
+                    head = "\n".join(clean(l, digits, removed) for l in title)
     items = []
     for l in body:
         if not l.strip():
@@ -199,21 +256,28 @@ def parse_section(lines: list[str], digits: str, removed: list, first: bool, emo
         kind = "bullet" if b else ("emoji" if EMOJI_LEAD.match(l) else "line")
         items.append((kind, clean(b.group("rest") if b else l, digits, removed)))
     emoji_bullets = emoji_list and sum(1 for k, _ in items if k == "emoji") >= 2  # «🎮 …» «🎬 …» lines are a list
-    paras, cur, bullets, open_item = [], [], [], False
+    paras, cur, bullets, open_item, ordered = [], [], [], False, []
     for kind, t in items + [("break", "")]:
         if kind == "break":
             open_item = False
             if cur:
                 paras.append("\n".join(cur))
+                ordered.append(("para", paras[-1]))
                 cur = []
         elif t and (kind == "bullet" or (kind == "emoji" and emoji_bullets)):
+            if cur:
+                paras.append("\n".join(cur))
+                ordered.append(("para", paras[-1]))
+                cur = []
             bullets.append(t)
+            ordered.append(("bullet", t))
             open_item = kind == "emoji"
         elif t and open_item:  # «🎮 **Playable Games**» then «متاح على كل خطط…» under it: one item
             bullets[-1] = bullets[-1] + " " + t
+            ordered[-1] = ("bullet", bullets[-1])
         elif t:
             cur.append(t)
-    return {"head": head, "paras": paras, "bullets": bullets}
+    return {"head": head, "paras": paras, "bullets": bullets, "ordered": ordered, "sources": refs, "mentions": mentions}
 
 
 def cta_kinds(line: str) -> list[str]:
@@ -228,6 +292,7 @@ def one_line(s: str) -> str:
 
 def build_slides(sections: list[dict], split2: bool, notes: list, split_more: bool = True) -> list[dict]:
     slides = []
+    limit = max_slides()
     cover = sections[0]
     head, paras = cover["head"], list(cover["paras"])
     if head and not COVER_LABEL.match(head):
@@ -238,71 +303,21 @@ def build_slides(sections: list[dict], split2: bool, notes: list, split_more: bo
     s = {"type": "cover", "headline": headline.strip()}
     if sub:
         s["sub"] = sub
-    if paras:
-        s["notes"] = " / ".join(one_line(p) for p in paras)[:300]
-        notes.append("cover: %d extra line(s) kept in the slide notes, not on the cover" % len(paras))
+    if paras or cover["bullets"]:
+        s["sub"] = "\n".join(([s["sub"]] if s.get("sub") else []) + paras + cover["bullets"])
+    s["_sources"] = cover.get("sources", [])
     slides.append(s)
 
     middle, last = sections[1:-1], (sections[-1] if len(sections) > 1 else None)
     for sec in middle:
         slides.append(content_slide(sec))
     if last is not None:
-        if last["head"] and END_LABEL.match(last["head"]):  # «الـ CTA» names the slide for the creator; it is not copy
-            last = {**last, "head": None}
-        paras = last["paras"]
-        is_q = lambda p: bool(QUESTION_END.search(one_line(p))) and words(p) <= 14
-        cta = next((p for p in reversed(paras) if cta_kinds(p) and words(p) <= 16 and not QUESTION_END.search(one_line(p))), None)
-        if last["head"] and is_q(last["head"]):  # «**أول لعبة تعملها هتكون إيه؟**»: the title is the ask
-            question, start, last = last["head"], 0, {**last, "head": None}
-        else:
-            qi = next((i for i, p in enumerate(paras) if is_q(p) and p is not cta), None)  # the first question is the ask
-            question, start = (paras[qi], qi + 1) if qi is not None else (None, 0)
-        # short questions right after the ask («سباق في الشوارع… ولا لعبة بطلها إنت؟», the options) stay under it, in order
-        after = []
-        for p in (paras[start:] if question else []):
-            if p is cta or not is_q(p):
-                break
-            after.append(p)
-        last = {**last, "paras": [p for p in paras if not any(p is a for a in after)]}
-        if not (question or cta):  # one paragraph of short lines: the question line, then the lines that follow it
-            lines = [l for p in last["paras"] for l in p.split("\n") if l.strip()]
-            qi = next((i for i, l in enumerate(lines) if QUESTION_END.search(l) and words(l) <= 14), None)
-            if qi is not None:
-                question, after = lines[qi], lines[qi + 1:]
-                ci = next((i for i, l in enumerate(after) if cta_kinds(l) and words(l) <= 16), None)
-                cta = after.pop(ci) if ci is not None else None
-                last = {**last, "paras": lines[:qi]}
-        rest = [p for p in last["paras"] if p is not question and p is not cta]
-        if not (question or cta) and last["head"] and not rest and not last["bullets"] and (cta_kinds(last["head"]) or QUESTION_END.search(last["head"])):
-            if QUESTION_END.search(last["head"]):
-                question = last["head"]
-            else:
-                cta = last["head"]
-            last = {**last, "head": None}
-        if question or cta:
-            if rest or last["bullets"]:
-                slides.append(content_slide({"head": last["head"], "paras": rest, "bullets": last["bullets"]}))
-                title = one_line(question) if question else one_line(cta)
-            else:
-                title = one_line(question) if question else (last["head"] or one_line(cta))
-            kinds = cta_kinds(cta) if cta else []
-            kind = "question" if (question and not kinds) else (kinds[0] if kinds else "question")
-            text = one_line(cta) if cta else ("اكتب إجابتك في كومنت" if question else title)
-            slides.append({"type": "cta", "title": title, "cta": {"kind": kind, "text": text[:160]}})
-            if after:  # the creator's lines after the ask stay on the last slide, in order
-                body = " ".join(one_line(l) for l in after)
-                slides[-1] = {"type": "cta", "title": title, "body": body, "cta": slides[-1]["cta"]}
-                long_end = words(title) + words(body) + words(text) > cta_max()
-                notes.append("last slide: %d line(s) after the ask kept as its body, in order%s" % (
-                    len(after), "; it runs over %d words, offer a shorter last slide in one line (fill.edits on yes, keep on no)" % cta_max() if long_end else ""))
-            many = [k for k in kinds if k != "question"]
-            if len(many) > 1:
-                notes.append("last slide: one line asks for %s; it stays as written: offer the one action that fits the post in one line, never cut it yourself (fill.edits on yes, keep on no)" % " + ".join(many))
-        else:
-            slides.append(content_slide(last))
-            notes.append("last slide: no question or call to action found; add one in fill.edits if you want it")
+        closing = closing_slides(last, limit - len(slides), split_more, notes)
+        for slide in closing:
+            slide["_sources"] = last.get("sources", [])
+        slides.extend(closing)
 
-    if split2 and len(slides) > 2 and slides[1]["type"] == "item" and words(slides[1].get("title", "") + " " + slides[1].get("body", "")) > 12:
+    if split2 and len(slides) < limit and len(slides) > 2 and slides[1]["type"] == "item" and words(slides[1].get("title", "") + " " + slides[1].get("body", "")) > 12:
         s2 = slides[1]
         paras2 = s2.pop("_paras", [s2.get("body", "")])
         title_w = words(s2.get("title", ""))
@@ -321,8 +336,12 @@ def build_slides(sections: list[dict], split2: bool, notes: list, split_more: bo
         if rest:
             new.append({"type": "story-beat", "body": " ".join(one_line(p) for p in rest), "_paras": [one_line(p) for p in rest]})
         slides[1:2] = new
+        for slide in new:
+            slide["_sources"] = s2.get("_sources", [])
         notes.append("slide 2 had %d words (a second cover holds 12): split into a rehook and a story-beat; --no-split2 keeps it" %
                      (title_w + sum(words(p) for p in paras2)))
+    elif split2 and len(slides) >= limit and len(slides) > 2 and words(slides[1].get("title", "") + " " + slides[1].get("body", "")) > 12:
+        notes.append("slide 2: not split at the %d-slide limit; offer a shorter version" % limit)
     runs = split_long(slides, body_max(), 1 if split2 else 2) if split_more else []  # --no-split2 keeps slide 2 whole
     number(slides)
     for first, parts, total, long_one in runs:
@@ -334,8 +353,62 @@ def build_slides(sections: list[dict], split2: bool, notes: list, split_more: bo
                          (long_one[0]["id"], long_one[1], body_max()))
         if not parts:
             notes.append("%s had %d words: the carousel already has %d slides, so it was not split; offer a shorter version (fill.edits)" %
-                         (first["id"], total, MAX_SLIDES))
+                         (first["id"], total, limit))
+    if len(slides) > limit:
+        pairs = sorted(((sum(words(t) for t in csqa.slide_strings(a, False, True) + csqa.slide_strings(b, False, True)), a["id"], b["id"])
+                        for a, b in zip(slides, slides[1:])), key=lambda x: (x[0], x[1]))
+        notes.extend("merge candidate: %s + %s (%d words together); offer the creator, do not merge automatically" % (a, b, count)
+                     for count, a, b in pairs)
+        notes.append("%d slides exceed the platform limit of %d; none were truncated" % (len(slides), limit))
     return [dict([("id", s["id"]), ("n", s["n"])] + [(k, v) for k, v in s.items() if k not in ("id", "n")]) for s in slides]
+
+
+def closing_slides(section: dict, available: int, may_split: bool, notes: list) -> list[dict]:
+    """Map the ending in its reading order: title, optional body, then the creator's action lines. Never add copy."""
+    blocks = section.get("ordered") or [("para", p) for p in section["paras"]] + [("bullet", b) for b in section["bullets"]]
+    lines = ([section["head"]] if section["head"] else []) + [l for _, block in blocks for l in block.split("\n") if l.strip()]
+    action = next((i for i, line in enumerate(lines) if any(re.match(r"^(?:و|ف)?(?:" + rx + r")", line, re.IGNORECASE)
+                  for _, rx in CTA_KINDS) and not line.lstrip().startswith(("«", '"'))), None)
+    missing = "last slide: no explicit call to action found; offer the creator one closing line (save, send, question, keyword-dm or follow). Never invent it. On «زي ما هو», record it with spec_edit.py cta --keep; C4.count stays open unless the shared gate permits an override"
+    if action is None:
+        notes.append(missing)
+        return [content_slide(section)]
+    before, after = lines[:action], lines[action:]
+    out = []
+    # A question after the information can open a separate closing tile, but never beyond the post's budget.
+    question = next((i for i, line in enumerate(before) if QUESTION_END.search(line) and words(line) <= 14), None)
+    if question and available >= 2 and may_split:
+        prefix, before = before[:question], before[question:]
+        head = prefix.pop(0) if section["head"] else None
+        out.append(content_slide({"head": head, "paras": prefix, "bullets": []}))
+    elif question and available < 2:
+        notes.append("last slide: not split at the %d-slide limit; all closing copy kept together" % max_slides())
+    if before:
+        title, body = before[0], " ".join(one_line(l) for l in before[1:])
+    else:
+        # An action-only ending still needs two slots. Divide its own words, without repeating or inventing a title.
+        first, space, rest = after[0].partition(" ")
+        if not space and len(after) == 1:
+            notes.append(missing)
+            return [content_slide(section)]
+        title, body = first, ""
+        after = ([rest] if rest else []) + after[1:]
+    text = " ".join(one_line(l) for l in after)
+    if len(text) > 160:
+        notes.append("last slide: the action is longer than the CTA field; offer one shorter closing line, never truncate it")
+        return [content_slide(section)]
+    kinds = list(dict.fromkeys(k for line in lines[action:] for k in cta_kinds(line)))
+    slide = {"type": "cta", "title": title, "cta": {"kind": kinds[0], "text": text}}
+    if body:
+        slide["body"] = body
+        notes.append("last slide: %d line(s) after the ask kept as its body, in order" % max(1, len(before) - 1))
+    total = words(title) + words(body) + words(text)
+    if total > cta_max():
+        notes.append("last slide: %d words; offer a shorter last slide in one line, never cut it yourself (spec_edit.py cta on yes, keep on no)" % total)
+    many = [k for k in kinds if k != "question"]
+    if len(many) > 1:
+        notes.append("last slide: one line asks for %s; it stays as written: offer one action in one line, never cut it yourself (spec_edit.py cta on yes, keep on no)" % " + ".join(many))
+    return out + [slide]
 
 
 def number(slides: list[dict]) -> None:
@@ -401,14 +474,14 @@ def split_long(slides: list[dict], limit: int, start: int = 1) -> list[tuple]:
             i += 1
             continue
         chunks = halves(pieces(s, limit), limit)
-        if len(chunks) > 1 and len(slides) + len(chunks) - 1 > MAX_SLIDES:
+        if len(chunks) > 1 and len(slides) + len(chunks) - 1 > max_slides():
             out.append((s, [], total, None))
             i += 1
             continue
         if len(chunks) > 1:
             s["body"] = " ".join(chunks[0])
             s.pop("_paras", None)
-        parts = [s] + [{"type": "story-beat", "body": " ".join(c)} for c in chunks[1:]]
+        parts = [s] + [{"type": "story-beat", "body": " ".join(c), "_sources": s.get("_sources", [])} for c in chunks[1:]]
         slides[i + 1:i + 1] = parts[1:]
         long_one = next(((p, words(u)) for p, c in zip(parts, chunks) for u in c if words(u) > limit), None)
         out.append((s, parts, total, long_one))
@@ -418,14 +491,20 @@ def split_long(slides: list[dict], limit: int, start: int = 1) -> list[tuple]:
 
 def content_slide(sec: dict) -> dict:
     head, paras, bullets = sec["head"], [one_line(p) for p in sec["paras"]], sec["bullets"]
+    ordered = sec.get("ordered") or [("para", p) for p in paras] + [("bullet", b) for b in bullets]
+    # A checklist has no prose slot in the engine. Mixed lists stay in body order, including the words between bullets.
+    if bullets and (paras or len(bullets) > 8):
+        body = " ".join(one_line(t) for _, t in ordered)
+        s = {"type": "item", "title": head, "body": body, "_paras": [body]} if head else {"type": "story-beat", "body": body}
+        return {**s, "_sources": sec.get("sources", [])}
     if len(bullets) >= 2 and head:
-        s = {"type": "checklist", "title": head, "bullets": bullets[:8]}
+        s = {"type": "checklist", "title": head, "bullets": bullets}
         if paras:
             s["body"] = " ".join(paras)
-        return s
+        return {**s, "_sources": sec.get("sources", [])}
     if head:
-        return {"type": "item", "title": head, "body": " ".join(paras + bullets), "_paras": paras + bullets}
-    return {"type": "story-beat", "body": " ".join(paras + bullets)}
+        return {"type": "item", "title": head, "body": " ".join(paras + bullets), "_paras": paras + bullets, "_sources": sec.get("sources", [])}
+    return {"type": "story-beat", "body": " ".join(paras + bullets), "_sources": sec.get("sources", [])}
 
 
 def guess_architecture(slides: list[dict]) -> str:
@@ -547,6 +626,8 @@ def make_spec(args, raw: str, brand: dict) -> tuple[dict, list]:
     raw_sections = split_sections(raw)
     sections = [parse_section(s, digits, removed, i == 0, 0 < i < len(raw_sections) - 1) for i, s in enumerate(raw_sections)]
     sections = [s for s in sections if s["head"] or s["paras"] or s["bullets"]]
+    for section in sections:
+        notes.extend("source mention (not verified): %s; supply a reference with spec_edit.py source add" % s for s in section.get("mentions", []))
     if len(sections) < 2:
         fail("E_SCRIPT", "found %d section(s); number the slides (①, 1., Slide 1) or split them with a line of ---" % len(sections))
     slides = build_slides(sections, not (args.no_split2 or args.no_split), notes, not args.no_split)
@@ -587,7 +668,369 @@ def make_spec(args, raw: str, brand: dict) -> tuple[dict, list]:
     spec["locale"].setdefault("appLanguage", "en" if en else "ar")
     spec["locale"].setdefault("swipeCue", "arrow-ltr" if spec["locale"]["appLanguage"] == "en" else "arrow-rtl")
     spec["cover"] = {"motion": pick_motion(spec, load_preset(preset_id), Path(args.out), notes)}
+    for slide in slides:
+        for ref in slide.pop("_sources", []):
+            sid = add_source(spec, {"kind": "url", "ref": ref["ref"], "location": ref["label"]})
+            slide.setdefault("sourceIds", [])
+            if sid not in slide["sourceIds"]:
+                slide["sourceIds"].append(sid)
     return spec, notes
+
+
+def add_source(spec: dict, source: dict) -> str:
+    source = copy.deepcopy(source)
+    if source["kind"] == "url":
+        source["ref"] = normalize_url(source["ref"])
+    sources = spec.setdefault("sources", [])
+    found = next((s for s in sources if s.get("kind") == source["kind"] and s.get("ref") == source.get("ref")), None)
+    if found is not None:
+        # A later bare URL does not erase the first, more useful Markdown label.
+        for key, value in source.items():
+            if key not in ("id", "location") or not found.get(key):
+                found[key] = value
+        return found["id"]
+    source.setdefault("id", "src-" + hashlib.sha256((source["kind"] + ":" + source.get("ref", "")).encode("utf-8")).hexdigest()[:12])
+    if any(s["id"] == source["id"] for s in sources):
+        raise CSError("E_CONFLICT", "source id %s is already used by a different reference" % source["id"])
+    sources.append(source)
+    return source["id"]
+
+
+# --------------------------------------------------------- durable edits and shared writer
+
+def output(value: str, stream=None) -> None:
+    """A wrapped legacy console may lack reconfigure(); never let its code page abort a completed write."""
+    stream = sys.stdout if stream is None else stream
+    try:
+        stream.write(value)
+    except UnicodeEncodeError:
+        stream.write(value.encode(getattr(stream, "encoding", None) or "ascii", errors="backslashreplace").decode(
+            getattr(stream, "encoding", None) or "ascii"))
+
+
+def output_json(value) -> None:
+    body = json.dumps(value, ensure_ascii=False)
+    try:
+        body.encode(getattr(sys.stdout, "encoding", None) or "utf-8")
+    except (UnicodeEncodeError, LookupError):
+        body = json.dumps(value, ensure_ascii=True)
+    output(body + "\n")
+
+
+def read_json(path: Path):
+    try:
+        return paths.read_json(path, strict_keys=True)
+    except FileNotFoundError as exc:
+        raise CSError("E_MISSING", "input file missing: %s" % path) from exc
+    except (ValueError, UnicodeError) as exc:
+        raise CSError("E_INPUT", "cannot read JSON %s: %s" % (path, exc)) from exc
+
+
+@contextmanager
+def post_lock(spec_path: Path):
+    """Both writers use the same exclusive lock; a busy or abandoned lock is a conflict, never silently stolen."""
+    spec_path = spec_path.resolve()
+    spec_path.parent.mkdir(parents=True, exist_ok=True)
+    lock = spec_path.with_name(spec_path.name + ".lock")
+    try:
+        fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+    except FileExistsError as exc:
+        raise CSError("E_CONFLICT", "another writer holds %s; retry after it finishes (inspect an abandoned lock before removing it)" % lock) from exc
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(str(os.getpid()) + "\n")
+        yield
+    finally:
+        lock.unlink()
+
+
+def record_path(spec_path: Path) -> Path:
+    return spec_path.with_name(spec_path.stem + ".edits.json")
+
+
+def new_record(spec: dict) -> dict:
+    return {"schemaVersion": 1, "specId": spec["id"], "slideIds": [s["id"] for s in spec["slides"]], "fill": {}, "edits": []}
+
+
+def read_record(spec_path: Path, spec: dict) -> dict:
+    p = record_path(spec_path)
+    if not p.exists():
+        return new_record(spec)
+    record = read_json(p)
+    if not isinstance(record, dict) or record.get("schemaVersion") != 1 or not isinstance(record.get("edits"), list) or not isinstance(record.get("fill"), dict):
+        raise CSError("E_INPUT", "invalid edit record: %s" % p)
+    if any(not isinstance(e, dict) or e.get("kind") not in ("fields", "cover", "caption", "source", "attest", "keep-cta", "keep") for e in record["edits"]):
+        raise CSError("E_INPUT", "invalid saved edit in %s" % p)
+    if record.get("specId") == spec["id"] and not record["edits"] and not record["fill"]:
+        record["slideIds"] = [s["id"] for s in spec["slides"]]
+    if record.get("specId") != spec["id"] or record.get("slideIds") != [s["id"] for s in spec["slides"]]:
+        raise CSError("E_CONFLICT", "the saved edits belong to a different post or slide structure; review them before rebuilding")
+    return record
+
+
+def merge_fields(target: dict, fields: dict) -> None:
+    for key, value in fields.items():
+        if value is None:
+            target.pop(key, None)
+        elif isinstance(value, dict) and isinstance(target.get(key), dict):
+            merge_fields(target[key], value)
+        elif key in ("sources", "assets") and isinstance(value, list) and isinstance(target.get(key), list):
+            for entry in value:
+                existing = next((s for s in target[key] if isinstance(s, dict) and s.get("id") == entry.get("id")), None) if isinstance(entry, dict) else None
+                if existing is None:
+                    target[key].append(copy.deepcopy(entry))
+                else:
+                    existing.update(copy.deepcopy(entry))
+        else:
+            target[key] = copy.deepcopy(value)
+
+
+def find_slide(spec: dict, selector: str) -> dict:
+    if selector.isascii() and selector.isdigit():
+        position = int(selector)
+        slide = spec["slides"][position - 1] if 1 <= position <= len(spec["slides"]) else None
+    else:
+        slide = next((s for s in spec["slides"] if s["id"] == selector), None)
+    if slide is None:
+        raise CSError("E_USAGE", "unknown slide %s; valid ids: %s" % (selector, ", ".join(s["id"] for s in spec["slides"])))
+    return slide
+
+
+def pack_entry(spec: dict, field: str, sid: str, value: str) -> None:
+    slide = find_slide(spec, sid)
+    pack = spec.setdefault("captionPack", {})
+    entries = pack.setdefault(field, [])
+    while len(entries) < len(spec["slides"]):
+        entries.append("")
+    entries[spec["slides"].index(slide)] = value
+
+
+def cover_edit(spec: dict, fields: dict, original: dict | None = None) -> None:
+    cover = next((s for s in spec["slides"] if s["type"] in ("cover", "poster")), None)
+    if cover is None:
+        raise CSError("E_USAGE", "the post has no cover")
+    replacements = []
+    for key, value in fields.items():
+        old = cover.get(key)
+        if old:
+            replacements.append((cstext.strip_markup(old), cstext.strip_markup(value or "")))
+        cover[key] = value
+        if (original or {}).get(key):
+            replacements.append((cstext.strip_markup(original[key]), cstext.strip_markup(value or "")))
+    def replace(text):
+        mapping = {" ".join(old.split()): new for old, new in replacements if old.strip()}
+        if not mapping:
+            return text
+        patterns = [r"[ \t\n\r\u00A0\u202F]+".join(re.escape(w) for w in old.split())
+                    for old in sorted(mapping, key=len, reverse=True)]
+        return re.sub("|".join(patterns), lambda m: mapping[" ".join(m.group(0).split())], text)
+    pack = spec.get("captionPack") or {}
+    for field in ("firstLine", "keywordLine", "body", "cta"):
+        if isinstance(pack.get(field), str):
+            pack[field] = replace(pack[field])
+    for field in ("alt", "perSlide"):
+        if isinstance(pack.get(field), list):
+            pack[field] = [replace(s) for s in pack[field]]
+    hook = spec.setdefault("hook", {})
+    hook["cover"] = cover.get("headline", "")
+    hook["text"] = one_line(cover.get("headline", ""))
+
+
+def numeric_signature(slide: dict) -> list[str]:
+    return sorted(csqa.numbers_in(" ".join(csqa.slide_strings(slide, True, True))))
+
+
+def attestation_edit(spec: dict) -> dict:
+    # Run SRC1 with no sources to discover claims using the same exclusions as QA (dates, ordinals, counts).
+    bare = copy.deepcopy(spec)
+    bare["sources"] = []
+    claims = {r.get("slide") for r in csqa.run_text_gates(bare, gates=["SRC1"]) if r["rule"] == "SRC1.missing" and r.get("slide")}
+    by_id = {s["id"]: s for s in spec.get("sources", [])}
+    targets = {}
+    for slide in spec["slides"]:
+        ids = slide.get("sourceIds", []) + ([slide["number"]["sourceId"]] if (slide.get("number") or {}).get("sourceId") else [])
+        if slide["id"] in claims and not any(sid in by_id for sid in ids):
+            targets[slide["id"]] = numeric_signature(slide)
+    return {"kind": "attest", "slides": targets, "at": now()}
+
+
+def apply_edit(spec: dict, edit: dict) -> list[str]:
+    kind, notes = edit.get("kind"), []
+    if kind == "fields":
+        merge_fields(spec, edit.get("post", {}))
+        for sid, fields in edit.get("slides", {}).items():
+            merge_fields(find_slide(spec, sid), fields)
+    elif kind == "cover":
+        cover_edit(spec, edit["fields"], edit.get("original"))
+    elif kind == "caption":
+        if edit.get("slide"):
+            pack_entry(spec, edit["field"], edit["slide"], edit["value"])
+        else:
+            spec.setdefault("captionPack", {})[edit["field"]] = copy.deepcopy(edit["value"])
+    elif kind == "source":
+        sid = add_source(spec, edit["source"])
+        for selector in edit["slides"]:
+            slide = find_slide(spec, selector)
+            if sid not in slide.setdefault("sourceIds", []):
+                slide["sourceIds"].append(sid)
+    elif kind == "attest":
+        valid = []
+        for sid, signature in edit["slides"].items():
+            slide = find_slide(spec, sid)
+            if numeric_signature(slide) == signature:
+                valid.append(slide)
+            else:
+                notes.append("%s: figures changed; ask for a new attestation" % sid)
+        other = {s["id"] for s in spec.get("sources", []) if s["kind"] != "user"}
+        valid = [s for s in valid if not any(i in other for i in s.get("sourceIds", []) +
+                 ([(s.get("number") or {})["sourceId"]] if (s.get("number") or {}).get("sourceId") else []))]
+        if valid:
+            values = sorted({n for slide in valid for n in numeric_signature(slide)})
+            sid = add_source(spec, {"kind": "user", "ref": "creator-attested:" + edit["at"], "verified": True,
+                                    "excerpt": "Creator-attested figures: " + ", ".join(values)})
+            for slide in valid:
+                if sid not in slide.setdefault("sourceIds", []):
+                    slide["sourceIds"].append(sid)
+    elif kind == "keep-cta":
+        spec.setdefault("ext", {}).setdefault("readyScript", {})["keepWithoutCta"] = {"reason": edit["reason"], "at": edit["at"]}
+        notes.append("the creator kept the ending; C4.count and C5.skeleton are still open when the shared rules do not allow an override")
+    elif kind == "keep":
+        pass  # applied to fresh QA findings after every content edit
+    else:
+        raise CSError("E_INPUT", "unknown saved edit kind: %s" % kind)
+    return notes
+
+
+def replay_edits(spec: dict, record: dict) -> list[str]:
+    notes = []
+    refs = {"creator-attested:" + e["at"] for e in record["edits"] if e.get("kind") == "attest"}
+    expired = {s["id"] for s in spec.get("sources", []) if s.get("kind") == "user" and s.get("ref") in refs}
+    if expired:
+        spec["sources"] = [s for s in spec["sources"] if s["id"] not in expired]
+        for slide in spec["slides"]:
+            if "sourceIds" in slide:
+                slide["sourceIds"] = [sid for sid in slide["sourceIds"] if sid not in expired]
+    try:
+        for edit in record["edits"]:
+            if edit.get("kind") != "attest":
+                notes.extend(apply_edit(spec, edit))
+        for edit in record["edits"]:
+            if edit.get("kind") == "attest":
+                notes.extend(apply_edit(spec, edit))
+    except (KeyError, TypeError, AttributeError, ValueError) as exc:
+        raise CSError("E_INPUT", "invalid saved edit: %s" % exc) from exc
+    return notes
+
+
+def legacy_edit(spec: dict) -> dict:
+    """Migrate existing hand repairs once, without freezing all the body copy from the original script."""
+    post = {k: copy.deepcopy(spec[k]) for k in ("assets", "sources", "captionPack", "style", "cover", "hook", "compat", "ext") if k in spec}
+    urls = {k: spec["meta"][k] for k in ("studioUrl", "brandHomeUrl") if (spec.get("meta") or {}).get(k)}
+    if urls:
+        post["meta"] = urls
+    slides = {s["id"]: {k: copy.deepcopy(v) for k, v in s.items() if k in ("media", "sourceIds", "overrides", "free", "visual") or
+                       (s["type"] in ("cover", "poster") and k in ("headline", "sub", "kicker"))} for s in spec["slides"]}
+    return {"kind": "fields", "post": post, "slides": {sid: fields for sid, fields in slides.items() if fields}}
+
+
+def migrate_record(spec: dict, record: dict) -> None:
+    record["edits"].append(legacy_edit(spec))
+    for finding in (spec.get("qa") or {}).get("results", []):
+        if finding.get("overridden") and csreport.is_overridable(finding.get("rule", "")):
+            mark = finding["overridden"]
+            record["edits"].append({"kind": "keep", "rule": finding["rule"], "slide": finding.get("slide", ""),
+                                    "reason": mark["reason"], "at": mark["at"]})
+
+
+def bump(spec: dict, previous: dict | None = None) -> None:
+    spec["rev"] = int((previous if previous is not None else spec).get("rev") or 0) + 1
+    spec.setdefault("meta", {}).update({"updatedAt": now(), "updatedBy": "tool"})
+    spec.pop("frozen", None)
+    spec.setdefault("style", {}).pop("resolvedHash", None)
+    spec.setdefault("approvals", {}).pop("design", None)
+    if spec["approvals"].get("script"):
+        spec["approvals"]["script"]["rev"] = spec["rev"]
+    spec["checkpoint"] = "design"
+
+
+def reconcile_sources(spec: dict) -> None:
+    """Legacy posts can use a different id for the same URL. Keep one reference and update all its links."""
+    sources, by_ref, aliases, seen = [], {}, {}, set()
+    for source in spec.get("sources", []):
+        if source["id"] in seen:
+            raise CSError("E_SCHEMA", "duplicate source id: %s" % source["id"])
+        seen.add(source["id"])
+        if source["kind"] != "url":
+            sources.append(source)
+            continue
+        if not isinstance(source.get("ref"), str) or not source["ref"]:
+            raise CSError("E_SCHEMA", "URL source %s needs a reference" % source["id"])
+        source["ref"] = normalize_url(source["ref"])
+        if source["ref"] in by_ref:
+            original = by_ref[source["ref"]]
+            aliases[source["id"]] = original["id"]
+            original.update({k: v for k, v in source.items() if k != "id"})
+        else:
+            by_ref[source["ref"]] = source
+            sources.append(source)
+    if "sources" in spec:
+        spec["sources"] = sources
+    for slide in spec["slides"]:
+        if "sourceIds" in slide:
+            slide["sourceIds"] = list(dict.fromkeys(aliases.get(sid, sid) for sid in slide["sourceIds"]))
+        num = slide.get("number") or {}
+        if num.get("sourceId") in aliases:
+            num["sourceId"] = aliases[num["sourceId"]]
+
+
+def saved_keep_marks(spec: dict, rep: dict, record: dict) -> None:
+    for edit in record["edits"]:
+        if edit.get("kind") == "keep":
+            for finding in rep["qa"]["results"]:
+                if finding.get("overridden") and finding.get("rule") == edit["rule"] and (not edit.get("slide") or finding.get("slide") == edit["slide"]):
+                    finding["overridden"] = {"reason": edit.get("reason", KEEP_REASON), "at": edit.get("at", now())}
+    store_qa(spec, rep)
+
+
+def check_spec(spec: dict, brand: dict | None = None, keep=()) -> dict:
+    errors = schema.validate_named("spec", spec)
+    if errors:
+        raise CSError("E_SCHEMA", "; ".join("%s %s" % (e["path"], e["message"]) for e in errors[:8]))
+    reconcile_sources(spec)
+    module = importlib.util.spec_from_file_location("_ready_script_validate", HERE / "validate.py")
+    validator = importlib.util.module_from_spec(module)
+    module.loader.exec_module(validator)
+    results = csqa.run_text_gates(spec, brand)
+    rep = {"errors": [], "structure": validator.structure_checks(spec, "design", brand),
+           "qa": {**csreport.summarize(results), "engine": csreport.ENGINE, "results": results}}
+    free_errors, _ = validator.free_checks(spec)
+    rep["structure"].extend(free_errors)
+    if keep:
+        rep["notes"] = apply_keep(spec, rep, list(keep))
+        results = csqa.run_text_gates(spec, brand)
+        rep["qa"] = {**csreport.summarize(results), "engine": csreport.ENGINE, "results": results}
+    store_qa(spec, rep)
+    errors = schema.validate_named("spec", spec)
+    if errors:
+        raise CSError("E_SCHEMA", "; ".join("%s %s" % (e["path"], e["message"]) for e in errors[:8]))
+    return rep
+
+
+def save_post(spec_path: Path, spec: dict, record: dict, before: bytes | None) -> None:
+    errors = schema.validate_named("spec", spec)
+    if errors:
+        raise CSError("E_SCHEMA", "; ".join("%s %s" % (e["path"], e["message"]) for e in errors[:8]))
+    current = spec_path.read_bytes() if spec_path.exists() else None
+    if current != before:
+        raise CSError("E_CONFLICT", "spec changed during this command; re-read it before retrying")
+    # The record is the write-ahead intent. If interrupted between atomic replacements, replay recovers the edit.
+    paths.write_json(record_path(spec_path), record)
+    paths.write_json(spec_path, spec)
+
+
+def error_status(exc: CSError) -> int:
+    output("cs-error: %s: %s\n" % (exc.code, exc), sys.stderr)
+    return {"E_USAGE": 64, "E_MISSING": 66, "E_INPUT": 65, "E_SCHEMA": 2, "E_CONFLICT": 75}.get(exc.code, 70)
 
 
 # ---------------------------------------------------------------- fill
@@ -599,6 +1042,14 @@ def wrap_once(s: str, word: str):
 
 
 def apply_fill(spec: dict, fill: dict) -> list:
+    if not isinstance(fill, dict):
+        raise CSError("E_INPUT", "the fill must be a JSON object")
+    for key, allowed in (("bridges", (dict, list)), ("emphasis", (dict,)), ("edits", (dict,)), ("caption", (dict,)),
+                         ("motion", (dict,)), ("perSlide", (list,)), ("alt", (list,)), ("keep", (list,)), ("teamLog", (list,))):
+        if fill.get(key) is not None and not isinstance(fill[key], allowed):
+            raise CSError("E_INPUT", "invalid fill.%s value" % key)
+    if any(value is not None and not isinstance(value, str) for value in (fill.get("emphasis") or {}).values()):
+        raise CSError("E_INPUT", "fill.emphasis values must be text")
     notes = []
     slides = spec["slides"]
     by_id = {s["id"]: s for s in slides}
@@ -812,65 +1263,94 @@ def main(argv=None) -> int:
     p.add_argument("--id", help="post id (default: the folder name when it looks like post-YYYYMMDD-NNNN)")
     p.add_argument("--no-split2", action="store_true", help="keep a long slide 2 as written")
     p.add_argument("--no-split", action="store_true", help="keep every slide as written: no split of slide 2 or of a slide too long to hold")
+    p.add_argument("--attest-numbers", action="store_true", help="only after the creator confirms: attest their currently unsourced figures")
+    p.add_argument("--expect-rev", type=int, help="refuse a stale writer (exit 75)")
     p.add_argument("--format", choices=("text", "json"), default="text")
     a = p.parse_args(argv)
-    brand = {}
-    if a.brand:
-        try:
-            brand = paths.read_json(a.brand)
-        except (OSError, ValueError) as exc:
-            fail("E_BRAND", "cannot read %s: %s" % (a.brand, exc))
-    lines, notes, fill = [], [], {}
-    if a.script:
-        if not a.out:
-            p.error("--script needs --out (the post folder)")
-        try:
-            raw = Path(a.script).read_text(encoding="utf-8")
-        except (OSError, UnicodeDecodeError) as exc:
-            fail("E_SCRIPT", "cannot read %s: %s" % (a.script, exc))
-        spec, notes = make_spec(a, raw, brand)
-        spec_path = Path(a.out) / "spec.json"
-        spec_path.parent.mkdir(parents=True, exist_ok=True)
-    elif a.spec and a.fill:
-        spec_path = Path(a.spec)
-        try:
-            spec = paths.read_json(spec_path)
-            fill = paths.read_json(a.fill)
-        except (OSError, ValueError) as exc:
-            fail("E_INPUT", str(exc))
-        if not isinstance(fill, dict):
-            fail("E_INPUT", "the fill file must be a JSON object: " + FILL_SHAPE)
-        notes = apply_fill(spec, fill)
-    else:
+    if not ((a.script and a.out and not a.spec) or (a.spec and a.fill and not a.script)):
         p.error("use --script FILE --out DIR (step 1) or --spec FILE --fill FILE (step 2)")
-        return 64
-    bind_all(spec)
-    paths.write_json(spec_path, spec)
-    need = todo(spec)
+    spec_path = (Path(a.out) / "spec.json" if a.script else Path(a.spec)).resolve()
+    try:
+        brand = read_json(Path(a.brand)) if a.brand else {}
+        if not isinstance(brand, dict):
+            raise CSError("E_INPUT", "the brand must be a JSON object")
+        with post_lock(spec_path):
+            before = spec_path.read_bytes() if spec_path.exists() else None
+            previous = read_json(spec_path) if before is not None else None
+            if previous is not None:
+                errors = schema.validate_named("spec", previous)
+                if errors:
+                    raise CSError("E_SCHEMA", "; ".join("%s %s" % (e["path"], e["message"]) for e in errors[:8]))
+            if a.expect_rev is not None and (previous or {}).get("rev") != a.expect_rev:
+                raise CSError("E_CONFLICT", "expected rev %s, found %s" % (a.expect_rev, (previous or {}).get("rev")))
+            notes = []
+            if a.script:
+                try:
+                    raw = Path(a.script).read_text(encoding="utf-8")
+                except FileNotFoundError as exc:
+                    raise CSError("E_MISSING", "input file missing: %s" % a.script) from exc
+                except UnicodeError as exc:
+                    raise CSError("E_INPUT", "the script must be UTF-8") from exc
+                spec, notes = make_spec(a, raw, brand)
+            else:
+                if previous is None:
+                    raise CSError("E_MISSING", "input file missing: %s" % spec_path)
+                spec = copy.deepcopy(previous)
+            record = read_record(spec_path, spec)
+            if previous and not record_path(spec_path).exists():
+                migrate_record(previous, record)
+                notes.append("existing sources, caption pack, cover and picture assets saved in spec.edits.json")
+            if a.fill:
+                fill = read_json(Path(a.fill))
+                if not isinstance(fill, dict):
+                    raise CSError("E_INPUT", "the fill file must be a JSON object: " + FILL_SHAPE)
+                merge_fields(record["fill"], fill)
+            elif previous and not record_path(spec_path).exists() and (spec_path.parent / "fill.json").exists():
+                record["fill"] = read_json(spec_path.parent / "fill.json")
+            if record["fill"]:
+                notes.extend(apply_fill(spec, record["fill"]))
+            notes.extend(replay_edits(spec, record))
+            if a.attest_numbers:
+                edit = attestation_edit(spec)
+                if edit["slides"]:
+                    record["edits"].append(edit)
+                    notes.extend(apply_edit(spec, edit))
+            bind_all(spec)
+            if previous:
+                bump(spec, previous)
+            keep = keep_list(record["fill"]) + [(e["rule"], e.get("slide", "")) for e in record["edits"] if e.get("kind") == "keep"]
+            try:
+                rep = check_spec(spec, brand, keep)
+            except CSError as exc:
+                if exc.code == "E_SCHEMA" and len(spec["slides"]) > max_slides():
+                    advice = [n for n in notes if n.startswith("merge candidate:")][:3]
+                    raise CSError("E_SCHEMA", str(exc) + "; " + "; ".join(advice)) from exc
+                raise
+            saved_keep_marks(spec, rep, record)
+            save_post(spec_path, spec, record, before)
+    except CSError as exc:
+        return error_status(exc)
+    except OSError as exc:
+        output("cs-error: E_WRITE: %s\n" % exc, sys.stderr)
+        return 73
+    need, lines = todo(spec), []
     lines.append("%s: rev %d · %s" % (spec_path.as_posix(), spec["rev"], summary(spec)))
     lines += ["note: " + n for n in notes]
-    status = 0
+    lines += ["note: " + n for n in rep.get("notes", [])]
+    status = rep["qa"]["exitCode"]
     if need:
         lines.append("to fill (write fill.json, then run step 2 with --spec and --fill):")
         lines += ["  - " + n for n in need]
         lines.append("  shape: " + FILL_SHAPE)
-        status = 1
-    else:
-        code, rep = run_validate(spec_path, a.brand)
-        keep = keep_list(fill)
-        if keep:
-            lines += ["note: " + n for n in apply_keep(spec, rep, keep)]
-            paths.write_json(spec_path, spec)
-            code, rep = run_validate(spec_path, a.brand)
-            store_qa(spec, rep)
-            paths.write_json(spec_path, spec)
-        lines += report(code, rep, "en")
-        status = code if code in (0, 1, 2) else 2
+        status = max(status, 1)
+    if rep["structure"]:
+        status = 2
+    lines += report(status, rep, "en")
     if a.format == "json":
-        print(json.dumps({"spec": spec_path.as_posix(), "rev": spec["rev"], "summary": summary(spec), "notes": notes, "toFill": need,
-                          "exit": status}, ensure_ascii=False))
+        output_json({"spec": spec_path.as_posix(), "rev": spec["rev"], "summary": summary(spec), "notes": notes, "toFill": need,
+                     "qa": rep["qa"], "exit": status})
     else:
-        print("\n".join(lines))
+        output("\n".join(lines) + "\n")
     return status
 
 
