@@ -69,11 +69,21 @@
       if (b.w > 0 && b.h > 0) boxes.push(b);
       return b;
     }
+    // A painted free-lane element is a panel when it holds content (its fill is then measured), or when it is an empty leaf the size of a card
+    // (a frame with nothing in it). Every other painted element is a drawn shape: a chart bar, a track, a piece of a scene. Published posts
+    // draw whole scenes this way, and a shape is not an empty container.
+    var card = o.platform && o.platform.plugin && o.platform.plugin.visual && o.platform.plugin.visual.owner && o.platform.plugin.visual.owner.card || { minW: 40, minH: 160, minArea: 8 };
+    function holdsContent(e) { return /\S/.test(e.textContent) || !!e.querySelector('svg,img,video,canvas,[data-icon],[data-object],[data-picture],[data-field],.cs-icon'); }
+    function emptyCard(e) {
+      if (e.firstElementChild) return false;
+      var r = rect(e.getBoundingClientRect());
+      return r.w * 100 >= card.minW * z.w && r.h >= card.minH && r.w * r.h * 100 >= card.minArea * z.w * z.h;
+    }
     Array.prototype.forEach.call(el.querySelectorAll(OWN + ',.cs-free *'), function (e) {
       if (!visible(e, el)) return;
       var c = getComputedStyle(e), freePanel = !e.closest('svg') && !e.matches('mark,.cs-em,.w,bdi,style') &&
         (alpha(c.backgroundColor) > 0 || c.backgroundImage && c.backgroundImage !== 'none' || Math.max(num(c.borderTopWidth), num(c.borderRightWidth), num(c.borderBottomWidth), num(c.borderLeftWidth)) > 0);
-      if (e.matches(OWN) || freePanel) { ownerIds.set(e, 'owner-' + owners.length); owners.push(e); }
+      if (e.matches(OWN) || freePanel && (holdsContent(e) || emptyCard(e))) { ownerIds.set(e, 'owner-' + owners.length); owners.push(e); }
     });
     owners.forEach(function (e) {
       var c = getComputedStyle(e), border = Math.max(num(c.borderTopWidth), num(c.borderRightWidth), num(c.borderBottomWidth), num(c.borderLeftWidth));

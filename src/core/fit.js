@@ -277,8 +277,10 @@
       var rg = document.createRange();
       rg.setStartAfter(ws[i - 1]);
       rg.setEndBefore(ws[i]);
-      if (rg.cloneContents().querySelector("br")) required.push(i);
-      if (separator(ws[i - 1], ws[i]) === "\u00a0") forbidden.push(i);
+      var forced = !!rg.cloneContents().querySelector("br"), sep = separator(ws[i - 1], ws[i]), clitic = ws[i - 1].closest('[data-cs-bind="clitic"]');
+      if (forced) required.push(i);
+      // A clitic and its Latin or number run are one word («الـ5», «وGoogle»), and so are two units with nothing between them.
+      if (sep === "\u00a0" || !forced && (sep === "" || clitic && clitic === ws[i].closest('[data-cs-bind="clitic"]'))) forbidden.push(i);
     }
     if (subBeat && !sub && !required.length && n <= 16) ws.forEach(function (w, i) {
       if (i < n - 1 && /[…،؛؟!?:]$/.test(w.textContent)) cuts.push(i + 1);

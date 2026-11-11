@@ -36,6 +36,7 @@ test("painted padding, sibling gaps, clipping, orphans and cover sub-lines", opt
   assert.ok(has("clipped-text-ink", "D2.clipped-paint"), "the painted descenders clip even when the line box fits");
   assert.equal(has("transparent-clip", "D2.clipped-paint"), false);
   assert.equal(sev("clipped-icon", "D2.clipped-paint"), "BLOCK");
+  assert.equal(sev("clipped-shape", "D2.clipped-paint"), "FIX", "a drawn shape cut by its frame may be a deliberate bleed");
   assert.equal(has("unclipped-icon", "D2.clipped-paint"), false);
   assert.ok(has("orphan-connector", "D6.orphan-connector"));
   assert.equal(has("joined-connector", "D6.orphan-connector"), false);

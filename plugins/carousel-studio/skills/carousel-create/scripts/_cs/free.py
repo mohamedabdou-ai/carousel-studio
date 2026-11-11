@@ -144,14 +144,6 @@ class _Html(HTMLParser):
         self.fields = tuple(doc["fields"]["allowed"])
         self.stack: list[tuple[str, bool]] = []  # (tag, carries class f-chat)
         self.pictures: set[int] = set()
-        self.panels = []
-
-    def close_panels(self, all_open=False):
-        for p in self.panels:
-            if not p["closed"] and (all_open or p["depth"] >= len(self.stack)):
-                p["closed"] = True
-                if not p["readable"]:
-                    self.add("data-tone paints a readable panel; remove it from an empty track or decorative element")
 
     def where(self) -> str:
         line, col = self.getpos()
@@ -179,7 +171,6 @@ class _Html(HTMLParser):
             if top not in _OPTIONAL_CLOSE:
                 self.note("<%s> is not closed before </%s> (%s)" % (top, tag, self.where()))
         self.pictures = {depth for depth in self.pictures if depth <= len(self.stack)}
-        self.close_panels()
 
     def handle_entityref(self, name):
         self.mark_readable(unescape("&" + name + ";"))
@@ -190,10 +181,6 @@ class _Html(HTMLParser):
     def mark_readable(self, data):
         if self.pictures and data.strip():
             self.add("a picture placeholder must be empty (%s)" % self.where())
-        if any(ch.isalnum() for ch in data):
-            for p in self.panels:
-                if not p["closed"]:
-                    p["readable"] = True
 
     def handle_data(self, data) -> None:
         self.mark_readable(data)
@@ -213,7 +200,6 @@ class _Html(HTMLParser):
         self.add("<?...> instructions are not allowed (%s)" % self.where())
 
     def finish(self) -> None:
-        self.close_panels(True)
         for tag, _c in self.stack:
             if tag not in _OPTIONAL_CLOSE:
                 self.note("<%s> is never closed" % tag)
@@ -252,12 +238,6 @@ class _Html(HTMLParser):
                 self.add("a picture placeholder allows only class, data-picture and data-fit (%s)" % self.where())
         elif "data-fit" in values:
             self.add("data-fit belongs to a picture placeholder (%s)" % self.where())
-        if "data-tone" in values:
-            self.panels.append({"depth": len(self.stack), "readable": False, "closed": False})
-        if any(k in values for k in ("data-field", "data-icon", "data-object", "data-picture")):
-            for p in self.panels:
-                if not p["closed"]:
-                    p["readable"] = True
         return "f-chat" in values.get("class", "").split()
 
     def bad(self, tag, name, value, what) -> None:

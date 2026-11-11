@@ -33,9 +33,11 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 - Hidden controls are blocked across the whole spec, including captions and alt text. Direction marks and special spaces are normalised for rendering; safe proofread repairs are re-checked and report the field changes they actually applied.
 - Legitimate connectors such as «الـAPI،», «بـ@الاسم» and «بـ50%» keep their wording, and «تجرّبه» no longer receives a false spelling suggestion.
 - Underlines stay continuous below Arabic dots in every preset, including the notebook's double underline.
-- Rendered checks flag tight text padding, cramped sibling panels, clipped artwork and stranded short words. Contrast follows the painted cover ground, and empty free panels count as empty containers.
+- Rendered checks flag tight text padding, cramped sibling panels, clipped artwork and stranded short words. Cut text, icons and pictures stop the export; a drawn shape cut by its frame and a short word at a line end are reported for review. Contrast follows the painted cover ground.
+- In a free design, a painted element is judged as a panel only when it holds content or is an empty card-sized frame. Drawn scenes, chart bars and symbols keep their tones and raise no finding.
+- Existing posts keep their layout: short words are not glued to their neighbours, a Latin word does not raise a title's line height, and an ellipsis after a Latin word stays at the end of the Arabic sentence.
 - Panels with deliberate air receive layout advice rather than a required container-fill fix. An empty panel, or one small icon alone in a large frame, still needs fixing.
-- Free design errors name accepted logical CSS properties. A tone needs content or artwork; it cannot paint an empty decorative track.
+- Free design errors name accepted logical CSS properties.
 
 ### Publishing limits and checks
 

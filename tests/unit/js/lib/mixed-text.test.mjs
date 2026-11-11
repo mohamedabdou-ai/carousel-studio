@@ -10,6 +10,7 @@ const runs = (html) => [...html.matchAll(/<bdi dir="ltr"[^>]*>([\s\S]*?)<\/bdi>/
 // One outer LTR isolate across these boundaries would exchange the two runs.
 for (const [copy, expected] of [
   ["جرّب API 50% اليوم", ["API", "50%"]],
+  ["الشات مع Work… هيبدأ اختبار دمجهم", ["Work"]],
   ["جرّب 50% API اليوم", ["50%", "API"]],
   ["جرّب Opus 5.5 اليوم", ["Opus", "5.5"]],
   ["جرّب وMax 5x اليوم", ["Max", "5x"]],

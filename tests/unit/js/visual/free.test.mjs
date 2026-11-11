@@ -25,9 +25,11 @@ test('pictures accept only an empty div with an asset id and optional contain or
   }
 });
 
-test('a tone paints a readable panel, never an empty track', () => {
-  assert.throws(() => F.sanitize('<div class="f-track" data-tone="field"><span class="f-fill"></span></div>'), /data-tone.*panel/i);
-  assert.doesNotThrow(() => F.sanitize('<div data-tone="field"><p data-field="body"></p></div>'));
+test('a tone may paint a drawn scene, a chart bar or a symbol: published posts do all three', () => {
+  for (const html of ['<div class="f-bar f-hi" data-tone="field"></div>', '<div class="f-scene" data-tone="field"><div class="f-sun"></div><div class="f-hill"></div></div>',
+    '<div class="f-stage" data-tone="field"><div class="f-q">؟</div></div>', '<div class="f-pause" data-tone="s1">∞</div>', '<div data-tone="field"><p data-field="body"></p></div>']) {
+    assert.doesNotThrow(() => F.sanitize(html), html);
+  }
 });
 
 test('free CSS errors name accepted logical spellings', () => {

@@ -202,11 +202,13 @@
     eq(CS.core.compose.prepare("نص\u200c\u200d", spec), "نص\u200c\u200d");
   });
 
-  test("compose: generic display labels get mixed-script line height", async function () {
+  test("compose: a free-design label keeps the line height its own CSS gives it", async function () {
     await FX.setup();
     var spec = ex(), cx = CS.core.compose.context(spec, spec.slides[2], CS.core.resolve.post(spec, FX.brand()), FX.brand(), {});
-    var h = document.createElement('h2'); CS.core.compose.label(h, 'Google في التصميم', cx, { role:'h2', slot:'title' });
-    assert(h.style.lineHeight.includes('--cs-lh-heading'), 'free-lane display labels use the same line-height policy');
+    for (var text of ['Google في التصميم', 'قبل ما تتحمّس… اعرف الفرق']) {
+      var h = document.createElement('h2'); CS.core.compose.label(h, text, cx, { role:'h2', slot:'title' });
+      assert(!h.style.lineHeight, 'the engine sets no inline line height on a free-design label: ' + text);
+    }
   });
 
   test("compose: a prefix stays with the first fragment of a wrapping Latin phrase", async function () {
@@ -238,13 +240,13 @@
     eq((h.textContent.match(/ـ/g) || []).length, 3, 'only one occurrence is stretched');
   });
 
-  test("compose: short Arabic connectors bind forward and mixed display lines reserve air", async function () {
+  test("compose: short Arabic words keep an ordinary space; a Latin word does not raise the line height", async function () {
     await FX.setup();
     var spec = ex(function (s) { s.slides[0].headline = "التصميم في Google"; s.slides[2].body = "هذه فكرة ولا تجربة في التصميم"; });
     var cover = FX.build(spec, 0), inner = FX.build(spec, 2);
-    assert(q(cover, '.cs-headline [data-cs-bind="words"]'), "في stays with Google");
-    assert(q(cover, ".cs-headline").style.lineHeight, "mixed display line-height is explicit");
-    assert(q(inner, '.cs-body [data-cs-bind="words"]'), "ولا and في keep a neighbour");
+    assert(!q(cover, '.cs-headline [data-cs-bind="words"]'), "a big headline may break between في and Google instead of shrinking");
+    assert(!q(cover, ".cs-headline").style.lineHeight, "a Latin word alone does not raise the line height of a headline");
+    assert(!q(inner, '.cs-body [data-cs-bind="words"]'), "ولا and في are not glued to a neighbour");
   });
 
   test("compose: media (plate in the background, icons inline and sanitised, missing assets)", async function () {

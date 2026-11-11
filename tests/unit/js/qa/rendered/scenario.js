@@ -363,8 +363,10 @@
   var cutText='<div style="overflow:hidden;block-size:28px;line-height:28px;font-size:60px">نص واضح</div>';
   await runCase("clipped-text-ink",[makeSlide("s01","item",{extra:cutText})],null,null,{gates:["D2"]});
   await runCase("transparent-clip",[makeSlide("s01","item",{extra:cutText.replace('font-size:60px','font-size:60px;color:transparent')})],null,null,{gates:["D2"]});
-  var iconClip = '<div style="overflow:hidden;width:80px;height:80px"><svg width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="#111" stroke-width="8"/></svg></div>';
+  var shapeClip = '<div style="overflow:hidden;width:80px;height:80px"><svg width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="#111" stroke-width="8"/></svg></div>';
+  var iconClip = shapeClip.replace('<svg ', '<svg class="cs-icon" ');
   await runCase("clipped-icon", [makeSlide("s01", "item", { extra: iconClip })], null, null, { gates: ["D2"] });
+  await runCase("clipped-shape", [makeSlide("s01", "item", { extra: shapeClip })], null, null, { gates: ["D2"] });
   await runCase("unclipped-icon", [makeSlide("s01", "item", { extra: iconClip.replace('width:80px;height:80px', 'width:110px;height:110px') })], null, null, { gates: ["D2"] });
   await runCase("orphan-connector", [makeSlide("s01", "cover", { headHtml: w(["عنوان", "واضح"]) + '<br>' + w(["في"]) })], null, null, { gates: ["D6"] });
   await runCase("joined-connector", [makeSlide("s01", "cover", { heroPx: 120, headHtml: w(["عنوان"]) + '<br>' + w(["في", "التصميم"]) })], null, null, { gates: ["D6"] });

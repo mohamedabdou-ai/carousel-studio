@@ -14,17 +14,12 @@ def tearDownModule():
 
 
 class PackageDTests(unittest.TestCase):
-    def test_entity_only_tone_panels_are_readable(self):
+    def test_entity_only_text_in_a_tone_panel_is_accepted(self):
         for entity in ("&#1634;", "&#x662;", "&eacute;", "&#65;"):
             with self.subTest(entity=entity):
                 errors, notes = free.check_html('<div data-tone="field">' + entity + '</div>', {"id": "s03"})
                 self.assertEqual(errors, [])
                 self.assertEqual(notes, [])
-
-    def test_empty_entities_do_not_make_a_panel_readable(self):
-        for entity in ("&nbsp;", "&amp;", "&#32;"):
-            errors, _ = free.check_html('<div data-tone="field">' + entity + '</div>', {"id": "s03"})
-            self.assertTrue(any("readable panel" in e for e in errors))
 
     def test_entities_still_cannot_fill_a_picture(self):
         for entity in ("&#1634;", "&amp;", "&lt;"):

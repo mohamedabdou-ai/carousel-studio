@@ -67,10 +67,9 @@
     var text = prep(value, cx);
     return cx.lang === "ar" ? mixed(text, opts) : T().toHTML(text, opts);
   }
-  var SHORT = /^(?:[\u0621-\u064A]{1,2}|ولا)$/;
   var CLITIC = new RegExp("^([" + AR_CH + "\\u200C\\u200D]+)(?=[\"'«“]*[A-Za-zÀ-ɏ0-9\\u0660-\\u0669@#%٪$€£])");
-  var SENTENCE_END = /[.،؛؟:;!?—&]$/;
-  var RUN_TAIL = /[.,،؛؟:;!?—&]+$/;
+  var SENTENCE_END = /[.،؛؟:;!?—&…]$/;
+  var RUN_TAIL = /[.,،؛؟:;!?—&…]+$/;
   var VERSION = /^(?:[0-9]+(?:\.[0-9]+)+[a-z]?|[0-9]+x|[0-9]+)$/i;
 
   /* Build semantic runs before binding words. A word can contain Arabic AND a number;
@@ -108,7 +107,7 @@
       if (token.ltr || token.kind === "number") last.kind = token.kind;
     });
     if (!words.some(function (w) {
-      return w.tight || /[A-Za-zÀ-ɏ]/.test(w.text) || SHORT.test(w.text.replace(/[ً-ٰٟ]/g, "")) || CLITIC.test(w.text);
+      return w.tight || /[A-Za-zÀ-ɏ]/.test(w.text) || CLITIC.test(w.text);
     })) return T().toHTML(text, o);
 
     var wordIndex = 0, groups = [], emphasis = pm.spans[0], kashidaDone = false;
@@ -182,17 +181,15 @@
       i = j;
     }
     for (var i = groups.length - 2; i >= 0; i--) {
-      var a = groups[i], b = groups[i + 1], bare = a.text.replace(/[ً-ٰٟ]/g, "");
+      var a = groups[i], b = groups[i + 1];
       if (/[\n\r]/.test(b.sep)) continue;
-      var pair = SHORT.test(bare) || !/[A-Za-zÀ-ɏ]/.test(a.text) && T().bind(a.text + " " + b.text)[a.text.length] === "\u00a0";
+      // Only the pairs the text library binds (a number and its noun), as in 1.1. Gluing every short word to its neighbour made
+      // unbreakable runs that shrank covers («حد الـ5 ساعات») and pushed giant titles out of their panels («المرجع ده»).
+      var pair = !/[A-Za-zÀ-ɏ]/.test(a.text) && T().bind(a.text + " " + b.text)[a.text.length] === "\u00a0";
       if (pair) {
         a.html = bind(a.html + "\u00a0" + b.html, "words"); a.text += " " + b.text;
         groups.splice(i + 1, 1);
       }
-    }
-    var last = groups[groups.length - 1], previous = groups[groups.length - 2];
-    if (previous && SHORT.test(last.text.replace(/[ً-ٰٟ]/g, "")) && !/[\n\r]/.test(last.sep)) {
-      previous.html = bind(previous.html + "\u00a0" + last.html, "words"); groups.pop();
     }
     return groups.map(function (g) {
       return (/[\n\r]/.test(g.sep) ? g.sep.replace(/\r\n|\r|\n/g, "<br>") : g.sep) + g.html;
@@ -203,8 +200,8 @@
     for (var i = 0; i < ws.length; i++) ws[i].setAttribute("data-m-slot", slotName);
   }
   function textLH(role,text){
-    var mixed=/[A-Za-zÀ-ɏ]/.test(text) && T().arabic.hasArabic(text);
-    if (!T().arabic.hasTashkeel(text) && !mixed) return null;
+    // Only vowelled text needs taller lines, as in 1.1. Raising every title that holds a Latin word moved finished layouts down.
+    if (!T().arabic.hasTashkeel(text)) return null;
     if (role === "hero" || role === "h1") return "calc(var(--cs-lh-display) + 0.15)";
     if (role === "title" || role === "h2") return "calc(var(--cs-lh-heading) + 0.15)";
     return "calc(var(--cs-lh-body) + 0.2)";
@@ -237,7 +234,7 @@
     o=o||{};
     var s=o.slot||"art",r=o.role||"small",f=cx.rules.platform.plugin.visual.artLabel;
     set(n,{"data-slot":s,"data-index":o.index,"data-kind":"text","data-floor":s==="art"?f[/^(numeral|word|chart)$/.test(r)?r:T().arabic.hasArabic(t)?"arabic":r==="tool"?r:"latin"]:null});
-    markFit(n,cx,s,o.index,r);n.innerHTML=html(t,cx);tagWords(n,s);var lh=/hero|h[12]|title/.test(r)&&textLH(r,t);if(lh)n.style.lineHeight=lh;return n;
+    markFit(n,cx,s,o.index,r);n.innerHTML=html(t,cx);tagWords(n,s);return n; // a free design sets its own line height, as in 1.1
   }
 
   

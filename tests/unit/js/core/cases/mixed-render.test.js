@@ -14,6 +14,24 @@
       middle: box.top + box.height / 2, height: box.height };
   }
 
+  test("mixed render: a fitted cover never breaks a line between a clitic and its number", async function () {
+    await FX.setup({ real: true });
+    for (var preset of ["poster@1.0", "creator@1.0", "notebook@1.0"]) {
+      var spec = FX.example(); spec.style.presetId = preset; spec.style.overrides = {};
+      spec.slides[0].headline = "كلود ==شال== حد الـ5 ساعات"; spec.slides[0].sub = "للحسابات الموثقة";
+      var rendered = await CS.core.render.slide(spec, FX.brand(), 0, { mode: "export" });
+      try {
+        var words = Array.from(rendered.el.querySelectorAll('[data-slot="headline"] .w'));
+        var article = words.find(function (w) { return w.textContent === "الـ"; }), number = words.find(function (w) { return w.textContent === "5"; });
+        assert(article && number, preset + ": both parts of «الـ5» are on the cover");
+        var a = article.getBoundingClientRect(), n = number.getBoundingClientRect();
+        assert(Math.abs((a.top + a.bottom) / 2 - (n.top + n.bottom) / 2) < Math.min(a.height, n.height) / 2,
+          preset + ": «الـ» and «5» share one line: " + JSON.stringify({ article: [Math.round(a.top), Math.round(a.bottom)], number: [Math.round(n.top), Math.round(n.bottom)] }));
+        assert(a.left >= n.right - 2, preset + ": «الـ» stays on the right of its number");
+      } finally { rendered.el.remove(); }
+    }
+  });
+
   test("mixed render: s03 keeps API to the right of 50% and each clitic with its run", async function () {
     await FX.setup({ real: true });
     var spec = FX.example(); spec.style.presetId = "poster@1.0"; spec.style.overrides = {};

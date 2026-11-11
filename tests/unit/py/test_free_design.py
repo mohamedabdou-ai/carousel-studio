@@ -84,9 +84,12 @@ class FreeHtmlAccepts(unittest.TestCase):
         ]:
             self.assertTrue(html_findings(html), html)
 
-    def test_empty_track_cannot_paint_a_tone_panel(self):
-        self.assertTrue(any('data-tone' in f and 'panel' in f for f in html_findings('<div class="f-track" data-tone="field"><span class="f-fill"></span></div>')))
-        self.assertEqual(html_findings('<div data-tone="field"><p data-field="body"></p></div>'), [])
+    def test_a_tone_may_paint_a_scene_a_bar_or_a_symbol(self):
+        # Published posts use tones on drawn scenes, chart bars and symbol panels; none of them holds letters.
+        for html in ('<div class="f-bar f-hi" data-tone="field"></div>', '<div class="f-scene" data-tone="field"><div class="f-sun"></div><div class="f-hill"></div></div>',
+                     '<div class="f-stage" data-tone="field"><div class="f-q">؟</div></div>', '<div class="f-pause" data-tone="s1">∞</div>',
+                     '<div data-tone="field"><p data-field="body"></p></div>'):
+            self.assertEqual(html_findings(html), [], html)
 
     def test_css_error_names_the_accepted_logical_property(self):
         for prop, accepted in [('border-left', 'border-inline-start'), ('inset-block', 'inset-block-start'), ('left', 'inset-inline-start')]:

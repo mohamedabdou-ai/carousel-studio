@@ -1360,12 +1360,7 @@ CS.visual._.register("settle",settle)})();
       if (n.attrs?.["data-picture"] && n.children.some(function (c) { return c.tag || c.text.trim(); })) fail("A picture placeholder must be empty");
       (n.children || []).forEach(pictures);
     }
-    function readable(n) { return n.text !== undefined ? /[\p{L}\p{N}]/u.test(n.text) : !!(n.attrs?.["data-field"] || n.attrs?.["data-icon"] || n.attrs?.["data-object"] || n.attrs?.["data-picture"]) || n.children.some(readable); }
-    function panels(n) {
-      if (n.attrs?.["data-tone"] && !readable(n)) fail("data-tone paints a readable panel; remove it from an empty track or decorative element");
-      (n.children || []).forEach(panels);
-    }
-    pictures(root); panels(root); return root;
+    pictures(root); return root;
   }
   function literals(input) {
     var out = [];

@@ -400,10 +400,10 @@ function paintedBox(el) {
 function gatePaintedLayout(rc, S) {
   if (!["D2.text-padding", "D2.block-gap", "D2.clipped-paint"].some(id => active(rc, id, S.slide))) return;
   const texts = collectTexts(S).filter(it => !it.chrome), seen = new Set();
-  const emitOnce = (id, el) => {
+  const emitOnce = (id, el, sev) => {
     const key = domKey(S, el), k = id + key;
     if (!active(rc, id, S.slide) || seen.has(k)) return;
-    seen.add(k); emit(rc, rc.out, id, { slide: S.id, el: key, vars: { el: key } });
+    seen.add(k); emit(rc, rc.out, id, { slide: S.id, el: key, sev, vars: { el: key } });
   };
   const padRule = param(rc, "D2.text-padding"), gapRule = param(rc, "D2.block-gap"), p = param(rc, "D2.clipped-paint");
   const unit = parseFloat(getComputedStyle(S.el).getPropertyValue("--cs-unit")) || padRule.unit || gapRule.unit || p.tolerancePx;
@@ -446,7 +446,11 @@ function gatePaintedLayout(rc, S) {
       if (clipX || clipY) {
         const b = S.rel(a.getBoundingClientRect()), left = parseFloat(ac.borderLeftWidth) || 0, top = parseFloat(ac.borderTopWidth) || 0;
         b.x += left; b.y += top; b.w -= left + (parseFloat(ac.borderRightWidth) || 0); b.h -= top + (parseFloat(ac.borderBottomWidth) || 0);
-        if (rs.some(r => r.w > 0 && r.h > 0 && (clipX && (r.x - sw < b.x - tol || r.x + r.w + sw > b.x + b.w + tol) || clipY && (r.y - sw < b.y - tol || r.y + r.h + sw > b.y + b.h + tol)))) { emitOnce("D2.clipped-paint", e); break; }
+        if (rs.some(r => r.w > 0 && r.h > 0 && (clipX && (r.x - sw < b.x - tol || r.x + r.w + sw > b.x + b.w + tol) || clipY && (r.y - sw < b.y - tol || r.y + r.h + sw > b.y + b.h + tol)))) {
+          // Cut text, icons and pictures lose meaning. A drawn shape cut by its frame is often a deliberate bleed (rings running off a panel
+          // on published posts), so it is reported for review instead of stopping the export.
+          emitOnce("D2.clipped-paint", e, glyph || e.closest('.cs-icon,[data-icon],[data-object],[data-picture],.cs-media-slot,img,video') ? "BLOCK" : "FIX"); break;
+        }
       }
       if (a === S.el) break;
     }
