@@ -11,6 +11,35 @@
 
   var PNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
 
+  test("real: mixed names keep visual order, display air and continuous underlines", async function () {
+    await FX.setup({ real: true });
+    for (var id of ids()) {
+      var spec = ex(function (s) {
+        s.style.presetId = id + "@1.0"; s.style.overrides = { decor: { highlight: "underline" } };
+        s.slides[0].headline = "وOpus 5.5"; s.slides[0].sub = "==بالإنجليزي==";
+        s.slides[2].body = "==بالإنجليزي== والتاريخ العربي";
+      });
+      var r = await CS.core.render.slide(spec, FX.brand(), 0, { mode: "export" });
+      try {
+        var slot = r.el.querySelector('[data-slot="headline"]'), run = slot.querySelector('[data-cs-bind="pair"]');
+        assert(run && run.textContent === "Opus 5.5", id + " name/version keep their LTR order with separate isolates");
+        eq(run.querySelectorAll('bdi').length, 2, id + " each run owns its isolate");
+        var ws = Array.from(run.querySelectorAll('.w'));
+        assert(ws[0].getBoundingClientRect().left < ws[1].getBoundingClientRect().left, id + " name precedes version visually");
+        var prefix = slot.querySelector('[data-cs-bind="clitic"] > .w');
+        var pr=prefix && prefix.getBoundingClientRect(), first=ws[0].getBoundingClientRect();
+        assert(pr && Math.abs(pr.y+pr.height/2-first.y-first.height/2)<Math.min(pr.height,first.height)/2, id + " clitic shares the model line");
+        assert(pr && pr.left>=Math.max.apply(null,ws.map(w=>w.getBoundingClientRect().right))-1,id + " waw is on the Arabic side");
+        var cs = getComputedStyle(slot);
+        assert(parseFloat(cs.lineHeight) / parseFloat(cs.fontSize) >= 1.3, id + " mixed display has room for Arabic dots");
+        r.el.dataset.hl = 'underline';
+        var em = r.el.querySelector('mark.cs-em'), cs = getComputedStyle(em);
+        assert(cs.textDecorationLine.includes('underline'), id + " keeps underline emphasis");
+        eq(cs.textDecorationSkipInk, 'none', id + " underline never skips Arabic dots");
+      } finally { r.el.remove(); }
+    }
+  });
+
   test("real: notebook Latin words match the Arabic slot weight using the registered face", async function () {
     await FX.setup({ real: true });
     var spec = ex(function (s) {

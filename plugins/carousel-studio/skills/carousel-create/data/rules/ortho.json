@@ -63,7 +63,7 @@
       "kind": "regex",
       "sev": "FIX",
       "confidence": 0.95,
-      "autofix": false,
+      "autofix": true,
       "pattern": "[\\u200B\\uFEFF\\u00AD\\u2060]",
       "replace": "",
       "msg": {
@@ -76,7 +76,7 @@
       "kind": "regex",
       "sev": "FIX",
       "confidence": 0.9,
-      "autofix": false,
+      "autofix": true,
       "pattern": "[\\u200E\\u200F\\u061C\\u202A-\\u202C\\u2066-\\u2069]",
       "replace": "",
       "msg": {
@@ -89,12 +89,36 @@
       "kind": "regex",
       "sev": "BLOCK",
       "confidence": 0.98,
-      "autofix": false,
+      "autofix": true,
       "pattern": "[\\u202D\\u202E]",
       "replace": "",
       "msg": {
         "ar": "محرف قلب الاتجاه القسري (LRO/RLO): ممنوع نهائيًا لأنه يكسر النسخ والبحث وقارئ الشاشة.",
         "en": "Forced direction override (LRO/RLO): never allowed; it breaks copy, search and screen readers."
+      }
+    },
+    {
+      "id": "ORTHO-ENC-007",
+      "kind": "check",
+      "check": "invalid-codepoint",
+      "sev": "BLOCK",
+      "confidence": 1.0,
+      "autofix": true,
+      "msg": {
+        "ar": "محرف تحكم خفي داخل النص. احذفه قبل النشر.",
+        "en": "Hidden control character in the copy. Remove it before publishing."
+      }
+    },
+    {
+      "id": "ORTHO-ENC-008",
+      "kind": "check",
+      "check": "unassigned-codepoint",
+      "sev": "BLOCK",
+      "confidence": 1,
+      "autofix": false,
+      "msg": {
+        "ar": "محرف غير معرّف داخل النص. راجع مصدره واستبدله بالحرف المقصود.",
+        "en": "Unassigned character in the copy. Check its source and replace it with the intended letter."
       }
     },
     {
@@ -246,11 +270,11 @@
       "kind": "check",
       "sev": "FIX",
       "confidence": 0.85,
-      "autofix": true,
+      "autofix": false,
       "check": "number-noun-unbound",
       "msg": {
-        "ar": "الرقم ومعدوده بمسافة عادية: تُستبدل بمسافة غير فاصلة (U+00A0) حتى لا ينفصلا بين سطرين.",
-        "en": "Number and noun separated by an ordinary space: bind with U+00A0 so they never split across lines."
+        "ar": "يربط المحرك الرقم بالكلمة المجاورة عند التصيير؛ لا تضف مسافات خاصة.",
+        "en": "The engine binds numbers to neighbouring words when rendering; no special spaces are needed."
       }
     },
     {
@@ -743,7 +767,12 @@
         "تنميه": "تنمية",
         "تغذيه": "تغذية",
         "حكايه": "حكاية"
-      }
+      },
+      "exceptions": [
+        "تجرّبه",
+        "وتجرّبه",
+        "فتجرّبه"
+      ]
     },
     {
       "id": "ORTHO-TAA-002",

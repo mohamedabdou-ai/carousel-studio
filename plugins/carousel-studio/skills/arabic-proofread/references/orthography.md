@@ -79,7 +79,7 @@ normalise a dialect word into standard Arabic unless the register is `white` or 
 | direction marks U+200E, U+200F, U+061C and the embedding or isolate controls | FIX: delete; the engine isolates Latin runs itself |
 | forced overrides U+202D, U+202E | BLOCK: never allowed |
 | ZWJ U+200D and ZWNJ U+200C | never stripped by the tool; leave them unless the user asks |
-| non-breaking space U+00A0 | correct between a number and its noun; do not remove it |
+| non-breaking space U+00A0 | accepted paste input, normalised to a space before engine binding; do not request it |
 | Persian ی ک ھ, Urdu ہ ۃ ے | BLOCK, autofix to ي ك ه ه ة ي |
 | Persian digits ۰-۹ | BLOCK, autofix to the brand's digits |
 | Arabic Presentation Forms (U+FB50 to U+FDF9, U+FE70 to U+FEFE) | BLOCK: text pasted from a PDF; re-source it with base letters (Unicode NFKC conversion also restores them) |
@@ -89,3 +89,5 @@ Tool and brand names stay Latin (ChatGPT، Canva، Instagram), in the brand's `l
 attaches with a tatweel and no space: «لـChatGPT»، «بـCanva»، «الـAI» (rule ORTHO-BIDI-001). The
 lint notes Arabic spellings of well-known names (انستجرام، واتساب، كانفا) at confidence 0.5; if the
 brand prefers them, add them to `voice.allow`.
+
+Use plain copy for Arabic prefixes and Latin phrases. No direction marks or special spaces are required. Controls and unassigned characters block every spec text field, including caption body, per-slide captions, alt and hashtags. ZWNJ and ZWJ are preserved. «الـAPI،», «بـ@الاسم» and «بـ50%» are connectors, not decorative kashida; «تجرّبه» is a valid marked verb.

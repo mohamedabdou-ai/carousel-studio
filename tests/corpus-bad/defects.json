@@ -1691,33 +1691,41 @@
 ]
 },
 {
-"id": "B1.unbound-pair/eg",
+"id": "O1.control-caption",
 "base": "spec.eg.8slides.json",
 "brand": "brand.eg.creator.json",
 "patch": [
 {
 "op": "add",
-"path": "/slides/2/title",
-"value": "5 أدوات ببلاش"
+"path": "/captionPack",
+"value": {
+"body": "أداة\u0001 واضحة",
+"perSlide": [
+"نص\u0001"
+],
+"alt": [
+"وصف\u0001"
+]
+}
 }
 ],
 "expect": [
-"B1.unbound-pair@s03"
+"O1.ortho-enc-007"
 ]
 },
 {
-"id": "B1.unbound-pair/step",
+"id": "O1.unassigned-text",
 "base": "spec.eg.8slides.json",
 "brand": "brand.eg.creator.json",
 "patch": [
 {
 "op": "add",
 "path": "/slides/3/body",
-"value": "اتبع خطوة 3 دلوقتي."
+"value": "نص͸ واضح"
 }
 ],
 "expect": [
-"B1.unbound-pair@s04"
+"O1.ortho-enc-008@s04"
 ]
 },
 {

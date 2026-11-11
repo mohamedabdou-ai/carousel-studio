@@ -25,6 +25,17 @@ test('pictures accept only an empty div with an asset id and optional contain or
   }
 });
 
+test('a tone paints a readable panel, never an empty track', () => {
+  assert.throws(() => F.sanitize('<div class="f-track" data-tone="field"><span class="f-fill"></span></div>'), /data-tone.*panel/i);
+  assert.doesNotThrow(() => F.sanitize('<div data-tone="field"><p data-field="body"></p></div>'));
+});
+
+test('free CSS errors name accepted logical spellings', () => {
+  for (const [prop, accepted] of [['border-left', 'border-inline-start'], ['inset-block', 'inset-block-start'], ['left', 'inset-inline-start']]) {
+    assert.throws(() => F.css('.f-card{' + prop + ':2px}', 's03'), new RegExp(accepted));
+  }
+});
+
 test('whitelist parser preserves allowed tags, attributes, classes and literal entities', () => {
   const html = '<div class="f-card wrong cs-slot" dir="rtl" data-tone="field"><h2 data-field="items.0.title"></h2><p data-edit="">مرحبا &amp; أهلا &#x31;</p><br></div>';
   assert.equal(F.sanitize(html), html.replace('f-card wrong cs-slot', 'f-card cs-slot').replace('&#x31;', '1'));

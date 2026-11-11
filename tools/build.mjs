@@ -38,8 +38,8 @@ const COMMENT_OPENER = "<" + "!--";
 // when a release needs the room (1.2.0: the cover fit search, picture variants and the Latin-run text model), never met by squeezing code.
 const DEFAULT_CEILING = 190 * KIB;
 const CHUNK_CEILINGS = {
-  "cs-core.js": 215000,
-  "cs-qa.js": 190000,
+  "cs-core.js": 225000,
+  "cs-qa.js": 200000,
   "cs-ui.js": 201000,
   "cs-visual.js": 190 * KIB,
   "cs-art.js": 190 * KIB,

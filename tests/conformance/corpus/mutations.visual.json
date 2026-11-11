@@ -10,7 +10,6 @@
       {"op": "replace", "path": "/slides/6", "value": {"id": "s07", "n": 7, "type": "timeline", "title": "رحلة شهر", "items": [{"title": "الأسبوع الأول", "text": "ابدأ بسيط", "value": "يوم 7"}, {"title": "الأسبوع الثاني", "text": "ثبّت العادة", "value": "يوم ۱۴"}, {"title": "آخر الشهر", "hi": true}]}}
     ], "expect": [
       {"gate": "O1", "el": "s03.items.1", "rule": "O1.ortho-hamza-001"},
-      {"gate": "B1", "el": "s03.items-text.0", "rule": "B1.unbound-pair"},
       {"gate": "N1", "el": "s03.items-value.0", "rule": "N1.system"},
       {"gate": "C8", "el": "s03.items-text.2", "rule": "C8.hype"},
       {"gate": "O1", "el": "s03.items.0", "absent": true},
@@ -26,7 +25,6 @@
       {"gate": "O1", "el": "s05.chart.1.label", "absent": true},
       {"gate": "O1", "el": "s06.mock.title", "rule": "O1.ortho-punct-004"},
       {"gate": "O1", "el": "s06.mock.lines.0", "rule": "O1.ortho-punct-004"},
-      {"gate": "B1", "el": "s06.mock.items.0", "rule": "B1.unbound-pair"},
       {"gate": "N1", "el": "s06.mock.caption", "rule": "N1.persian"},
       {"gate": "O1", "el": "s06.mock.stamp", "rule": "O1.ortho-hamza-001"},
       {"gate": "O1", "el": "s06.mock.lines.1", "absent": true},

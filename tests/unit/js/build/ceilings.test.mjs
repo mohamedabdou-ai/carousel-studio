@@ -14,7 +14,7 @@ const KIB = 1024;
 const INTERIM = JSON.parse(readFileSync(join(REAL_ROOT, "tools", "build.mjs"), "utf8").match(/const INTERIM_CEILINGS = (\{[^}]*\});/)[1]);
 const UI_TARGET = 201000;
 const CEILINGS = {
-  "cs-core.js": 215000, "cs-qa.js": 190000, "cs-ui.js": INTERIM["cs-ui.js"] ?? UI_TARGET,
+  "cs-core.js": 225000, "cs-qa.js": 200000, "cs-ui.js": INTERIM["cs-ui.js"] ?? UI_TARGET,
   "cs-visual.js": 190 * KIB, "cs-art.js": 190 * KIB, "cs-visual-ui.js": 190 * KIB, "cs-qa-visual.js": 190 * KIB,
   "cs-brandbook.js": 190 * KIB, "cs-export.js": 190 * KIB, "cs-hf.js": 190 * KIB, "cs-motion.js": 190 * KIB, "cs-mp4.js": 190 * KIB, "cs-paint.js": 190 * KIB
 };

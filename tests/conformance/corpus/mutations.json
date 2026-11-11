@@ -163,6 +163,8 @@
     ]},
     {"id": "variety-team", "base": "spec.eg.8slides.json", "history": [{"cta": "question", "family": "P3"}], "patch": [
       {"op": "add", "path": "/slides/7/cta", "value": {"kind": "question", "text": "ما الخطوة التي ستجربها؟"}}
-    ]}
+    ]},
+    {"id":"mixed-caption-controls","base":"spec.eg.8slides.json","patch":[{"op":"add","path":"/captionPack","value":{"body":"Opus\u0001 5.5","perSlide":["نص\u0001"],"alt":["وصف\u0001"],"hashtags":["وسم\u0001"]}}]},
+    {"id":"mixed-correct-marked-verb","base":"spec.eg.8slides.json","patch":[{"op":"add","path":"/slides/2/body","value":"يمكنك تجرّبه مع الـAPI، وبـ50% وبـ@الاسم"}]}
   ]
 }

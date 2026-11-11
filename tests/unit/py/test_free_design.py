@@ -84,6 +84,14 @@ class FreeHtmlAccepts(unittest.TestCase):
         ]:
             self.assertTrue(html_findings(html), html)
 
+    def test_empty_track_cannot_paint_a_tone_panel(self):
+        self.assertTrue(any('data-tone' in f and 'panel' in f for f in html_findings('<div class="f-track" data-tone="field"><span class="f-fill"></span></div>')))
+        self.assertEqual(html_findings('<div data-tone="field"><p data-field="body"></p></div>'), [])
+
+    def test_css_error_names_the_accepted_logical_property(self):
+        for prop, accepted in [('border-left', 'border-inline-start'), ('inset-block', 'inset-block-start'), ('left', 'inset-inline-start')]:
+            self.assertTrue(any(accepted in f for f in css_findings('.f-card{%s:2px}' % prop)), prop)
+
     def ok(self, html: str, slide: dict | None = None) -> None:
         self.assertEqual(html_findings(html, slide), [], html)
 
@@ -101,7 +109,7 @@ class FreeHtmlAccepts(unittest.TestCase):
         self.ok('<span data-icon="bookmark" data-size="xl" data-treatment="sticker"></span>')
         self.ok('<div data-object="lightbulb" data-size="hero" data-tone="s2" data-mark="scribble"></div>')
         self.ok('<div class="f-chat"><p data-from="them">أهلا</p><div><p data-from="me" data-field="demo.lines.0.text"></p></div></div>')
-        self.ok('<div data-tone="invert" data-edit="hero.title" data-role="hero"></div>')
+        self.ok('<div data-tone="invert" data-edit="hero.title" data-role="hero">عنوان</div>')
 
     def test_every_listed_icon_size_treatment_mark_and_tone(self) -> None:
         doc = free.contract()
@@ -114,7 +122,7 @@ class FreeHtmlAccepts(unittest.TestCase):
         for mark in doc["art"]["mark"]["values"]:
             self.ok('<span data-mark="%s">كلمة</span>' % mark)
         for tone in doc["art"]["tone"]["values"]:
-            self.ok('<div data-tone="%s"></div>' % tone)
+            self.ok('<div data-tone="%s">لوحة</div>' % tone)
 
     def test_entities_and_unclosed_li_or_p_are_fine(self) -> None:
         self.ok("<ul><li>أ<li>ب</ul><p>فقرة &amp; &lt;نص&gt; &#1633;")

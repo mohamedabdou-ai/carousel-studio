@@ -57,6 +57,28 @@ def normalize(s) -> str:
     return unicodedata.normalize("NFC", "" if s is None else str(s))
 
 
+def render_input(s) -> str:
+    """Composer input policy. Ordinary spaces, no direction/layout controls.
+
+    Stored/raw input remains available to encoding lint. ZWNJ and ZWJ are
+    meaningful shaping controls and are preserved.
+    """
+    value = normalize(s).translate(dict.fromkeys((0x00a0, 0x2009, 0x202f), " "))
+    value = re.sub("[\u00AD\u061C\u200B\u200E\u200F\u202A-\u202E\u2060\u2066-\u2069\uFEFF]", "", value)
+    return "".join(ch for ch in value if ch in "\t\n\r" or unicodedata.category(ch) not in ("Cc", "Cn", "Cs"))
+
+
+def gate_input(value):
+    """Rendered copy for gates; preserve the raw spec for orthography."""
+    if isinstance(value, str):
+        return render_input(value)
+    if isinstance(value, list):
+        return [gate_input(item) for item in value]
+    if isinstance(value, dict):
+        return {key: gate_input(item) for key, item in value.items()}
+    return value
+
+
 def translate_pattern(pattern: str) -> str:
     """Portable-subset pattern (CONTRACT 3.1) -> Python regex source: ``$`` means end of string only (``\\Z``; a trailing newline
     must not match) and ``\\/`` is a plain slash. Character classes and every other escape are kept."""

@@ -52,7 +52,7 @@ CS.qa.report.toMarkdown(rep, "ar");                                          // 
 | Kind | Repairs | Rules |
 |---|---|---|
 | `digits` | converts every digit and the percent sign to `locale.digits` (handles, tags, URLs and Latin tokens untouched) | N1.* |
-| `bind` | joins «لـ/بـ/الـ» to the Latin word after it; binds a number to its noun with U+00A0 | B1.stranded-lam, B1.unbound-pair |
+| `bind` | joins a stranded «لـ/بـ/الـ» to its word; number/noun bindings belong to rendering | B1.stranded-lam |
 | `ortho` | every `ortho.json` rule with `autofix: true`: space before ، ؛ ؟, Latin `, ; ?` in Arabic, spaces after marks and between digit and letter, double spaces, repeated marks, `...` to the ellipsis character, programmatic tatweel outside the slide's `kashidaWord`, Persian letters | O1.ortho-* |
 | `refit`, `split`, `scrim`, `oklch` | layout repairs done by the engine or the Studio; `autofix` leaves these in `remaining` | D2.overflow, B1.isolation, D3.*, D4.* |
 
@@ -228,8 +228,8 @@ Scope `text+rendered`.
 | Rule | Sev | Ovr | Auto-fix | Engine | Condition |
 |---|---|---|---|---|---|
 | `B1.stranded-lam` | BLOCK |  | bind | py+js | A one-letter or short clitic (لـ بـ كـ الـ بالـ وبـ …) ends in tatweel and is followed by whitespace and a Latin word, digit or currency sign. |
-| `B1.unbound-pair` | FIX |  | bind | py+js | Slide text only (captions are posted as plain text): a number token and the Arabic word after it (or a bindLabels word and the number after it) are separated by an ordinary space instead of U+00A0. One finding per element. |
-| `B1.isolation` | BLOCK |  | refit | js | Rendered: a .cs-ltr run is laid out on more than one line, or two words joined by U+00A0 sit on different lines. |
+| `B1.unbound-pair` | FIX | | refit | js | Rendered number/noun or name/version pairs occupy different lines; ordinary spaces are valid copy. |
+| `B1.isolation` | BLOCK | | refit | js | An atomic number, handle or URL splits over lines, or an engine-bound pair separates. A Latin phrase may wrap within its isolate. |
 | `B1.raw-ltr` | BLOCK |  |  | js | Rendered: Latin letters sit in a text node that is not inside a .cs-ltr isolate. |
 
 #### B2 · Placeholder chrome · عناصر الرأس الجاهزة
@@ -387,7 +387,7 @@ Stage 0 caps D9.*, VA1/VA2/VA9 and visual rhythm findings at **NOTE**; `prospect
 | `D9.band` | cover NOTE ≥10%, FIX ≥15%; working NOTE ≥8%, FIX ≥12%; pause 18/24%; BLOCK switches off |
 | `D9.rect` | cover NOTE ≥20%, FIX ≥24%; working 15/20%; pause 30/40%; BLOCK switches off |
 | `D9.fill` | working empty cells NOTE ≥40%, FIX ≥50%; pause 60/70% |
-| `D9.container-fill` | occupied rows/columns ≥65%; large container ≥80%; below 50% or bad owner metadata prospects FIX |
+| `D9.container-fill` | occupied rows/columns ≥65%; large container ≥80%; populated panels below these thresholds receive NOTE; genuinely empty panels warrant FIX |
 | `VA1.anchor-present` | spec-scope missing anchors; stage-0 NOTE, not permission to omit one |
 | `D10.nesting` | >2 nested owners: FIX |
 | `D10.icon-tile-stack` | ≥3 sibling icon-over-heading tiles: FIX |
@@ -544,3 +544,20 @@ C1 and HG1 use `_cs.qa.split_cover` / `CS.qa.splitCover`: the first beat is the 
 The schema rejects new specs over 10 slides. The Studio accepts an older spec whose only schema error is `/slides` `maxItems`, so it can be shortened; C5 still blocks its export. `lint_copy.py --spec` reports the same C5 BLOCK without failing to load it.
 
 `render.mjs` always writes both QA reports, regardless of `--formats`. A complete export with FIX exits 0; `--strict` restores 1. BLOCK and real failures stay nonzero. A requested missing MP4 is `X1.complete` BLOCK even if skipped, is named on stderr and in JSON `video.missing` / `video.errors`, and exits nonzero. `--video none` explicitly requests a still-only kit.
+
+## Mixed text and painted layout
+
+- `O1.ortho-enc-007` is a BLOCK on controls (except tab, LF and CR); `O1.ortho-enc-008` blocks unassigned characters and isolated surrogates in every string leaf of the spec, including caption body, per-slide captions, alt, hashtags and nested additions. Prior `qa` and `frozen` reports are excluded. Controls can be deleted safely; unassigned characters need review. Direction/layout controls have deterministic repairs, and rendered geometry ignores their zero-ink ranges. ZWNJ and ZWJ remain meaningful input.
+- `D2.text-padding` (FIX) measures painted glyph ink against the nearest body-panel edge. `D2.block-gap` (FIX) measures edge gaps between painted sibling containers with text. Both use 2 units of the rendered `--cs-unit`, falling back to `geometry.grid.baselinePx`, with a quarter-unit tolerance for rounding and small transforms. Compact text badges (`small`, `micro`, `chip`, `tool`) paint emphasis rather than body panels. Marks and slide backgrounds are excluded. Adjoining cells in one enclosing painted border share that frame; their internal text padding still counts.
+- `D2.clipped-paint` (BLOCK) checks painted content, including SVG strokes, against each ancestor's overflow clip. Tolerance is one eighth of a baseline-grid unit. Intentionally hidden slide decoration is excluded; an icon's decorative accessibility label does not exempt its visible stroke.
+- `D6.orphan-connector` (FIX) reports a one- or two-letter Arabic word, or «ولا», stranded at a non-final line end or alone on the last line. The engine binds ordinary copy; explicit author line breaks remain reviewable.
+- `D9.container-fill` includes free-lane painted panels even without `data-owner`. Empty free panels produce a real FIX independently of the visual rollout. Low row/column coverage in a populated panel is only a NOTE: centred icon cells and score bars deliberately leave air, so coverage alone cannot justify a required redesign. The occupancy thresholds still inform the dead-space measure.
+- `D4` measures a cover sub-line too. The painted `.cs-bg` layer takes precedence over the root's fallback colour; a coloured ground cannot inherit a false contrast pass from the paper behind it.
+
+The new D2 and D6 checks are DOM measurements (JS only, like their existing gate families). Python keeps the text-gate and free-validator twins; it does not claim to measure an unrendered slide.
+
+Safe proofread repair runs in `_cs.lint.check_text`: apply deterministic repairs, re-lint the actual result, repeat to stability (at most 4 passes). Both proofread CLIs use it with `--fix --out spec.fixed.json`; `--no-autofix` disables repair. `applied` lists the actual before/after field values and paths; `issues` contains what remains. Continue checks and rendering from the saved fixed spec. The input file is never overwritten. Browser repairs remain `CS.qa.autofix(spec, results)`; `{autofix:false}` returns the unchanged spec.
+
+All text-scope gates receive a normalised copy of slide, hook and caption text: special spaces become spaces and non-rendering controls are removed. Word and caption limits therefore count the copy the reader sees. O1 always scans the original strings, so this view cannot hide a control, a direction workaround or a spelling finding. The spec itself is unchanged until a repaired copy is saved. The JS input hook lives with the lint helpers; `_cs.text.gate_input` and `_cs.qa.Ctx` provide the Python twin.
+
+Language fixes leave URLs, e-mail, handles, hashtags and phone identifiers intact. Encoding checks still inspect them for hidden controls and unknown characters. Safe repairs process encoding, then clitic attachment, before other spelling or punctuation repairs.

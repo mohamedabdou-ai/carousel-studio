@@ -17,7 +17,7 @@
 .cs-slide[data-preset="creator"][data-hl="marker"] .cs-em{background:var(--cs-accent);color:var(--cs-on-accent);padding-inline:.16em;border-radius:.2em;box-shadow:.06em .06em 0 var(--cs-ink)}
 .cs-slide[data-preset="creator"][data-hl="bar"] .cs-em{background:var(--cs-accent);color:var(--cs-on-accent);padding-inline:.14em;box-shadow:.07em .07em 0 var(--cs-ink)}
 .cs-slide[data-preset="creator"][data-hl="marker"] .cs-art .cs-em{background:var(--cs-bg);color:var(--cs-ink)}
-.cs-slide[data-preset="creator"][data-hl="underline"] .cs-em{text-decoration:underline;text-decoration-color:var(--cs-accent);text-decoration-thickness:.14em;text-underline-offset:.1em}
+.cs-slide[data-preset="creator"][data-hl="underline"] .cs-em{text-decoration:underline;text-decoration-color:var(--cs-accent);text-decoration-thickness:.14em;text-decoration-skip-ink:none;text-underline-offset:.35em}
 .cs-slide[data-preset="creator"][data-hl="color"] .cs-em{color:var(--cs-accent)}
 .cs-slide[data-preset="creator"] .cs-ord{font-weight:800}
 .cs-slide[data-preset="creator"][data-numbering="pill"] .cs-ord,.cs-slide[data-preset="creator"][data-variant="side-number"] .cs-ord,.cs-slide[data-preset="creator"][data-variant="pill"] .cs-ord{width:fit-content;padding-inline:24px;background:var(--cs-accent);border:3px solid var(--cs-ink);border-radius:999px;color:var(--cs-on-accent)}

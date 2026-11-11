@@ -352,6 +352,56 @@
   out["rendered-prospect"] = [hookResults[0].prospect, reportA.results[0].prospect, reportB.results[0].prospect];
   await runCase("rendered-hook-filtered", reportSlides, null, null, { gates: ["D3"] });
 
+  var packed = '<div style="background:#eee;padding:2px;margin-bottom:2px">' + w(["عنوان", "واضح"]) + '</div>';
+  await runCase("packed-bars", [makeSlide("s01", "item", { bodyHtml: packed.repeat(4) })], null, null, { gates: ["D2"] });
+  var airy = '<div style="background:#eee;padding:24px;margin-bottom:24px">' + w(["عنوان", "واضح"]) + '</div>';
+  await runCase("airy-bars", [makeSlide("s01", "item", { bodyHtml: airy.repeat(4) })], null, null, { gates: ["D2"] });
+  var frame = '<div style="border:3px solid #111">' + '<div style="padding:24px;background:#eee">' + w(["عنوان", "واضح"]) + '</div><div style="padding:24px;background:#ddd">' + w(["عنوان", "واضح"]) + '</div></div>';
+  await runCase("framed-cells", [makeSlide("s01", "item", { bodyHtml: frame })], null, null, { gates: ["D2"] });
+  await runCase("compact-badge", [makeSlide("s01", "item", { extra: '<span data-slot="kicker" data-role="small" style="display:inline-block;background:#ddd;line-height:1.4;font-size:34px;padding:0 22px">عنوان</span>' })], null, null, { gates: ["D2"] });
+  await runCase("ink-padding", [makeSlide("s01", "item", { extra: '<div data-role="body" style="background:#ddd;line-height:80px;width:250px;text-align:center;font-size:48px">3</div>' })], null, null, { gates: ["D2"] });
+  var cutText='<div style="overflow:hidden;block-size:28px;line-height:28px;font-size:60px">نص واضح</div>';
+  await runCase("clipped-text-ink",[makeSlide("s01","item",{extra:cutText})],null,null,{gates:["D2"]});
+  await runCase("transparent-clip",[makeSlide("s01","item",{extra:cutText.replace('font-size:60px','font-size:60px;color:transparent')})],null,null,{gates:["D2"]});
+  var iconClip = '<div style="overflow:hidden;width:80px;height:80px"><svg width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="#111" stroke-width="8"/></svg></div>';
+  await runCase("clipped-icon", [makeSlide("s01", "item", { extra: iconClip })], null, null, { gates: ["D2"] });
+  await runCase("unclipped-icon", [makeSlide("s01", "item", { extra: iconClip.replace('width:80px;height:80px', 'width:110px;height:110px') })], null, null, { gates: ["D2"] });
+  await runCase("orphan-connector", [makeSlide("s01", "cover", { headHtml: w(["عنوان", "واضح"]) + '<br>' + w(["في"]) })], null, null, { gates: ["D6"] });
+  await runCase("joined-connector", [makeSlide("s01", "cover", { heroPx: 120, headHtml: w(["عنوان"]) + '<br>' + w(["في", "التصميم"]) })], null, null, { gates: ["D6"] });
+  // Only one letter range paints. The isolate controls have zero ink.
+  await runCase("direction-controls", [makeSlide("s01", "item", { bodyHtml: '\u2066' + w(["نص"]) + '\u2069' })], null, null, { gates: ["D2"] });
+  await runCase("atomic-isolation", [makeSlide("s01", "item", { bodyStyle: 'width:150px;word-break:break-all', bodyHtml: '<bdi dir="ltr" class="cs-ltr" data-run="url">https://example.invalid/long-path</bdi>' })], null, null, { gates: ["B1"] });
+  await runCase("broken-version", [makeSlide("s01", "item", { bodyHtml: '<bdi dir="ltr" class="cs-ltr">' + w(['Opus']) + '</bdi><br><bdi dir="ltr" class="cs-ltr">' + w(['5.5']) + '</bdi>' })], null, null, { gates: ["B1"] });
+  await runCase("connector-tatweel", [makeSlide("s01", "item", { bodyHtml: w(["الـAPI،", "بـ@الاسم", "بـ50%", "وبـ50%"]) })], null, null, { gates: ["D5"] });
+  await runCase("cover-sub-contrast", [makeSlide("s01", "cover", { rootBg: "#FFFFFF", bgStyle: "background:#555555", extra: '<p data-slot="sub" data-role="body" style="font-size:44px;color:#5A5A5A">سطر توضيحي واضح</p>' })], null, null, { gates: ["D4"] });
+
+  window.__loadSpace();
+  var empty = makeSlide("s01", "item");
+  var main = empty.querySelector('main'); main.classList.add('cs-free');
+  main.innerHTML = '<div style="height:180px;width:700px;margin-bottom:24px;background:#ddd"></div>'.repeat(4);
+  stage.innerHTML = ''; stage.appendChild(empty);
+  var emptySpec = spec([empty]); emptySpec.slides[0].free = { html: '<div class="f-bar"></div>' };
+  var emptyFindings = await QA.runRendered({ spec: emptySpec, deck: { slides: [{ id: 's01', el: empty, tokens: tokens() }] } }, { gates: ['D9.container-fill'] });
+  out['empty-panels'] = emptyFindings.map(f => f.rule + '@' + f.el);
+  out['empty-panels:sev'] = emptyFindings.map(f => f.rule + '=' + f.sev);
+  out['empty-panel-count'] = CS.qav.collectBoxes(empty).filter(b => b.kind === 'owner').length;
+  main.innerHTML = '<p>لوحة واضحة تحمل فكرة مفيدة للقارئ</p>';
+  var goodFindings = await QA.runRendered({ spec: emptySpec, deck: { slides: [{ id: 's01', el: empty, tokens: tokens() }] } }, { gates: ['D9.container-fill'] });
+  out['good-panels'] = goodFindings.map(f => f.rule);
+  // A score bar or centred icon cell is populated even with substantial deliberate air.
+  main.innerHTML = '<div style="background:#ddd;width:700px;height:180px;display:flex;align-items:center;justify-content:center;font-size:90px">74.6</div>' +
+    '<div style="background:#ddd;width:700px;height:180px;margin-top:24px;display:flex;align-items:center;justify-content:center"><svg width="48" height="48" viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" stroke="#111" stroke-width="3" fill="none"/></svg></div>';
+  var deliberateFindings = await QA.runRendered({ spec: emptySpec, deck: { slides: [{ id: 's01', el: empty, tokens: tokens() }] } }, { gates: ['D9.container-fill'] });
+  out['deliberate-panels'] = deliberateFindings.map(f => f.rule + '@' + f.el);
+  out['deliberate-panels:sev'] = deliberateFindings.map(f => f.rule + '=' + f.sev);
+  window.__loadText();
+  for (var copy of ['وGoogle', 'وAI Mode', 'فـGoogle', 'جرّب Opus\u202f5.5', 'جرّب \u2066Google Search & Other\u2069', 'جرّب Opus\u20095.5', 'جرّب Opus\u00a05.5', 'جرّب Opus\u00015.5']) {
+    main.innerHTML = '<p data-slot="body" data-kind="text" data-role="body" data-slot-key="s01.body" style="font-size:44px"></p>';
+    main.firstChild.innerHTML = CS.core.compose.html(copy, { lang: 'ar', digits: 'western' });
+    var copySpec = spec([empty]); copySpec.slides = [{ id: 's01', type: 'item', body: copy }];
+    var copyFindings = await QA.runRendered({ spec: copySpec, deck: { slides: [{ id: 's01', el: empty, tokens: tokens() }] } }, { gates: ['C2.text-dropped', 'D2'] });
+    out['visible-copy-' + copy] = copyFindings.map(f => f.rule);
+  }
   document.title = "done";
   document.getElementById("out").textContent = btoa(unescape(encodeURIComponent(JSON.stringify(out))));
 })().catch(function (e) {

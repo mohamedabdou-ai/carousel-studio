@@ -68,6 +68,8 @@ Thresholds are in `data/platform-instagram.json`; the exact conditions are in `q
 
 ## 4. Crowding · ازدحام
 
+Read the full rendered report for `D2.text-padding` and `D2.block-gap` (FIX): they measure glyph ink inside body panels and air between panels from the spacing grid. Compact text badges and cells in a shared frame keep their own typography. `D2.clipped-paint` blocks a painted child cut by an overflow clip. `D6.orphan-connector` flags short Arabic words stranded by a forced break.
+
 **What it is.** Too much text for one swipe: a body over 25 words, more than 4 bullets, more than 50 words on a slide, a cover with more than 12 words or 8 rows, text over too many lines.
 
 **Why it costs.** Readers take in about a fifth of a page; a slide that needs study gets swiped past. One idea per slide is what makes the carousel a swipe funnel.

@@ -13,7 +13,7 @@ const cp = require("child_process");
 const { loadBundle, DESIGN, REPO } = require("../support/stub-core.cjs");
 
 function findChrome() {
-  const env = process.env.CHROME || process.env.CHROME_PATH;
+  const env = process.env.CS_CHROME || process.env.CHROME || process.env.CHROME_PATH;
   const list = [env].concat(
     process.platform === "win32"
       ? [
@@ -40,6 +40,8 @@ function buildPage() {
     "<script>window.CS={version:'cs-1.1.1',emit:function(){},core:{text:StubLib.text,color:StubLib.color,registry:{rules:function(){return window.__BUNDLE},fontCss:function(){return '\"x\"'},missingGlyphs:function(){return []}}}};</script>",
     "<script>" + inline(read(path.join(REPO, "src/lib/text.js"))) + "\nCS.core.text=Object.assign({},StubLib.text,{visualFields:CS.core.text.visualFields});</script>",
     "<script>" + inline(read(process.env.CS_QA_CHUNK || path.join(DESIGN, "runtime/cs-qa.js"))) + "</script>",
+    "<script>window.__loadSpace=function(){" + inline(read(path.join(DESIGN, "runtime/cs-visual.js")) + read(path.join(REPO, "src/qa-visual/register.js")) + read(path.join(REPO, "src/qa-visual/deadspace-gates.js"))) + "};</script>",
+    "<script>window.__loadText=function(){" + inline(read(path.join(REPO, "src/lib/text.js")) + read(path.join(REPO, "src/core/compose.js")) + read(path.join(REPO, "src/qa-visual/text-integrity.js"))) + "};</script>",
     "<script>" + inline(read(path.join(__dirname, "scenario.js"))) + "</script>",
     "</body></html>"
   ].join("\n");
@@ -54,35 +56,36 @@ function runScenario() {
   const page = path.join(dir, "page.html");
   fs.writeFileSync(page, buildPage(), "utf8");
   const r = cp.spawnSync(
-    chrome,
-    [
-      "--headless=new",
-      "--disable-gpu",
-      "--no-sandbox",
-      "--disable-extensions",
-      "--hide-scrollbars",
-      "--user-data-dir=" + path.join(dir, "profile"),
-      "--virtual-time-budget=30000",
-      "--dump-dom",
-      "file:///" + page.replace(/\\/g, "/")
-    ],
-    { encoding: "utf8", maxBuffer: 256 * 1024 * 1024, timeout: 120000 }
+    process.execPath, [__filename, "--worker", page],
+    { encoding: "utf8", maxBuffer: 256 * 1024 * 1024, timeout: 120000, windowsHide: true }
   );
   try {
     fs.rmSync(dir, { recursive: true, force: true });
   } catch (e) {
     /* temp cleanup is best effort */
   }
-  const m = /<pre id="out">([^<]*)<\/pre>/.exec(r.stdout || "");
-  if (!m || !m[1]) throw new Error("scenario produced no output: " + String(r.stderr || "").slice(0, 400));
-  const out = JSON.parse(Buffer.from(m[1], "base64").toString("utf8"));
+  const encoded = String(r.stdout || "").trim();
+  if (!encoded) throw new Error("scenario produced no output: " + String(r.error || r.stderr || "").slice(0, 400));
+  const out = JSON.parse(Buffer.from(encoded, "base64").toString("utf8"));
   if (out.__error) throw new Error(out.__error);
   return out;
 }
 
 module.exports = { runScenario, findChrome };
 
-if (require.main === module) {
+if (require.main === module && process.argv.includes("--worker")) {
+  (async () => {
+    const { chromium } = require("playwright-core");
+    const { pathToFileURL } = require("node:url");
+    const browser = await chromium.launch({ executablePath: findChrome(), headless: true, args: ["--disable-gpu", "--no-sandbox"] });
+    try {
+      const page = await browser.newPage();
+      await page.goto(pathToFileURL(process.argv[3]).href);
+      await page.waitForFunction(() => /^(done|failed)$/.test(document.title), { timeout: 90000 });
+      console.log(await page.locator("#out").textContent());
+    } finally { await browser.close(); }
+  })().catch(e => { console.error(e); process.exitCode = 1; });
+} else if (require.main === module) {
   const out = runScenario();
   console.log(out ? JSON.stringify(out, null, 1) : "no Chrome found");
 }

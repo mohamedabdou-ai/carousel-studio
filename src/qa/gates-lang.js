@@ -4,6 +4,7 @@
  * chrome, SRC1 sources, SEN1 sensitivities and A1 AI imagery (the spec-level flags).
  */
 
+
 /* Built-in checks that N1 and B1 own; O1 leaves them out so nothing is
  * reported twice when ortho.json also lists them. */
 const O1_SKIP_CHECKS = ["mixed-digits", "persian-digits", "percent-sign", "lam-latin-stranded", "number-noun-unbound"];
@@ -16,9 +17,20 @@ const bindLabelSet = (bundleObj) =>
 /* ------------------------------------------------------------------- O1 */
 
 function gateO1(ctx, out) {
+  if (ctx.rawSpec) ctx = Object.assign({}, ctx, { spec: ctx.rawSpec, slides: Array.isArray(ctx.rawSpec.slides) ? ctx.rawSpec.slides.filter(isObj) : [] });
   if (!active(ctx, "O1.ortho") && !active(ctx, "O1.deny-marker") && !active(ctx, "O1.warn-marker")) return;
   const allow = allowSet(ctx.brand && ctx.brand.voice && ctx.brand.voice.allow);
   const skip = new Set(O1_SKIP_CHECKS);
+  const encoding = ((ctx.bundle.ortho || {}).rules || []).filter((r) => /^ORTHO-ENC-00[4-8]$/.test(r.id));
+  specStrings(ctx.spec).forEach((f) => {
+    lintText(f.text, { ortho: { rules: encoding }, dialectData: null }).forEach((it) => {
+      if (!active(ctx, "O1.ortho")) return;
+      emit(ctx, out, "O1.ortho", { slide: f.slide, el: f.key, sev: it.sev,
+        rule: "O1." + ruleSlug(it.rule), msg: it.msg,
+        vars: { original: it.original, fix: it.fix || "", text: it.original } });
+    });
+  });
+  encoding.forEach((r) => skip.add(r.id));
   lintFields(ctx).forEach((f) => {
     const slide = f.slide ? ctx.slides.find((s) => s.id === f.slide) : null;
     const plain = lintPlain(f);
@@ -102,9 +114,7 @@ function gateB1Text(ctx, out) {
         emit(ctx, out, "B1.stranded-lam", Object.assign({ vars: { text: plain.slice(Math.max(0, it.start - 4), it.end + 12) } }, base));
       });
     }
-    if (active(ctx, "B1.unbound-pair") && f.key.indexOf("caption.") !== 0 && BUILTIN["number-noun-unbound"](plain, { bindLabels: labels }).length) {
-      emit(ctx, out, "B1.unbound-pair", base);
-    }
+    // Number/noun bindings are measured in the rendered scope, never in stored copy.
   });
 }
 

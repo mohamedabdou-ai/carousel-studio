@@ -78,3 +78,5 @@ Cut in this order: introductions and hedges («في الحقيقة»، «بشك�
 
 ## What the limits mean on the canvas
 The cover hero is set between 120 and 180 px (auto-fit, target 150, floor 96). Body text is 44 to 48 px and never under 42. The engine fits every text box to the content area; copy that is too long does not overflow, it shrinks until it hits the floor and the gate fails. Do not try to hand-wrap body text; do not insert U+00A0 or tatweel yourself (the engine binds «لـ» to its Latin word and a number to its noun).
+
+Mixed Arabic and Latin copy uses ordinary spaces: «وGoogle», «وAI Mode» and «Opus 5.5» keep their order and bind in the engine. Do not add direction marks or special spaces to make a line fit. Short Arabic connectors stay with a neighbour; a forced newline that strands one receives a rendered FIX. Mixed display lines reserve room for Arabic dots.

@@ -3,7 +3,7 @@
 """ortho_lint.py - deterministic Arabic orthography, punctuation, digit and dialect lint.
 
     ortho_lint.py (--text STRING | --file F | --spec FILE) [--dialect D] [--digits western|arabic-indic]
-                  [--brand FILE] [--allow w1,w2] [--allow-file F] [--fix]
+                  [--brand FILE] [--allow w1,w2] [--allow-file F] [--fix] [--no-autofix]
                   [--format table|json] [--out F]
 
 A thin wrapper over _cs.lint.lint_text: it runs every rule of data/rules/ortho.json (hamza, taa
@@ -16,7 +16,7 @@ the dialect deny and warn lists of data/dialects/<dialect>.json.
 * --brand FILE adds brand.voice.allow to the allow-list and supplies the dialect and digits.
 * --allow adds words the lint must not flag (the brand allow-list; «اللهجة كده صح»).
 * --fix applies only issues marked autofix (Persian letters and digits, spacing, punctuation,
-  mixed digits, tatweel, ellipsis dots, repeated marks, lam-Latin attach, number-noun binding).
+  mixed digits, tatweel, ellipsis dots, repeated marks, lam-Latin attach, hidden controls and direction marks).
   Hamza, taa marbuta, yaa, translationese and dialect words are suggestions: never applied.
 
 JSON: {issues:[{rule,sev,confidence,original,fix,start,end,slide?,el?,autofix,msg}], fixed?,
@@ -53,57 +53,11 @@ class Parser(argparse.ArgumentParser):
 
 # ----------------------------------------------------------------------------- spec walking
 def iter_spec_fields(spec):
-    """Yield (slide_id | None, el, text, kashida_word) for every human-readable text field."""
-    hook = spec.get("hook") or {}
-    for key in ("cover", "text", "slide2"):
-        if isinstance(hook.get(key), str):
-            yield None, "hook.%s" % key, hook[key], None
-    slides = spec.get("slides") or []
-    for slide in slides:
-        sid, kashida = slide.get("id"), slide.get("kashidaWord")
-        for key in SLIDE_TEXT_KEYS:
-            if isinstance(slide.get(key), str):
-                yield sid, key, slide[key], kashida
-        for i, item in enumerate(slide.get("bullets") or []):
-            if isinstance(item, str):
-                yield sid, "bullets.%d" % i, item, None
-        for i, side in enumerate(slide.get("sides") or []):
-            for key in ("label", "text"):
-                if isinstance(side.get(key), str):
-                    yield sid, "sides.%d.%s" % (i, key), side[key], None
-        cta = slide.get("cta")
-        if isinstance(cta, dict) and isinstance(cta.get("text"), str):
-            yield sid, "cta.text", cta["text"], None
-        number = slide.get("number")
-        if isinstance(number, dict) and isinstance(number.get("unit"), str):
-            yield sid, "number.unit", number["unit"], None
-    pack = spec.get("captionPack") or {}
-    for key in ("firstLine", "keywordLine", "body", "cta"):
-        if isinstance(pack.get(key), str):
-            yield None, "captionPack.%s" % key, pack[key], None
-    for key in ("perSlide", "alt"):
-        for i, item in enumerate(pack.get(key) or []):
-            if isinstance(item, str):
-                sid = slides[i].get("id") if i < len(slides) else None
-                yield sid, "captionPack.%s.%d" % (key, i), item, None
+    yield from lint.iter_spec_fields(spec)
 
 
 def set_spec_field(spec, slide_id, el, value):
-    """Write `value` back to the field addressed by (slide_id, el)."""
-    parts = el.split(".")
-    if slide_id is None:
-        node = spec
-    else:
-        node = next(s for s in spec["slides"] if s.get("id") == slide_id)
-    if parts[0] in ("captionPack", "hook"):
-        node = spec
-    for part in parts[:-1]:
-        node = node[int(part)] if isinstance(node, list) else node[part]
-    last = parts[-1]
-    if isinstance(node, list):
-        node[int(last)] = value
-    else:
-        node[last] = value
+    lint.set_spec_field(spec, slide_id, el, value)
 
 
 # ----------------------------------------------------------------------------- core
@@ -156,21 +110,22 @@ def run(args):
     if not dialect:
         raise Fail("E_USAGE", "--dialect is required (or give --spec / --brand to take it from the locale)", 64)
     allow = load_allow(args, brand)
-    issues, fixed = [], None
+    issues, fixed, applied = [], None, []
 
     if spec is not None:
         patched = json.loads(json.dumps(spec))
         for slide_id, el, text, kashida in iter_spec_fields(spec):
-            found = lint_text(text, dialect=dialect, digits=digits, allow=allow, kashida_word=kashida)
+            checked = lint.check_text(text, autofix=args.fix, checker=lambda value: lint_text(value, dialect=dialect, digits=digits, allow=allow, kashida_word=kashida) if lint.copy_field(slide_id, el) else lint.encoding_issues(value))
+            found = checked["issues"]
+            applied += [{**change, "el": el, **({"slide": slide_id} if slide_id else {})} for change in checked["applied"]]
             for f in found:
                 f["el"] = el
                 if slide_id:
                     f["slide"] = slide_id
             if args.fix:
-                new = lint.apply_fixes(text, found)
+                new = checked["fixed"]
                 if new != text:
                     set_spec_field(patched, slide_id, el, new)
-                    found = [f for f in found if not f["autofix"]]
             issues += found
         fixed = patched if args.fix else None
     else:
@@ -184,12 +139,10 @@ def run(args):
                 text = paths.read_text(p)
             except UnicodeDecodeError as exc:
                 raise Fail("E_SCHEMA", "%s is not valid UTF-8: %s" % (p, exc), 65)
-        found = lint_text(text, dialect=dialect, digits=digits, allow=allow)
-        if args.fix:
-            fixed = lint.apply_fixes(text, found)
-            found = lint_text(fixed, dialect=dialect, digits=digits, allow=allow)  # what is left after the fixes
-        issues = found
-    return {"issues": issues, "fixed": fixed, "summary": summarize(issues), "dialect": dialect, "digits": digits}
+        checked = lint.check_text(text, autofix=args.fix, checker=lambda value: lint_text(value, dialect=dialect, digits=digits, allow=allow))
+        fixed = checked["fixed"] if args.fix else None
+        issues, applied = checked["issues"], checked["applied"]
+    return {"issues": issues, "applied": applied, "fixed": fixed, "summary": summarize(issues), "dialect": dialect, "digits": digits}
 
 
 def where(issue):
@@ -205,6 +158,7 @@ def render_table(result):
             i["sev"], i["rule"], (i["original"] or "").replace("|", "\\|").replace("\n", " "),
             (i["fix"] or "").replace("|", "\\|").replace("\n", " "), i.get("confidence", 1.0), where(i)))
     s = result["summary"]
+    rows.append("Applied %d safe repairs." % len(result.get("applied", [])))
     rows.append("")
     rows.append("%s  BLOCK=%d FIX=%d NOTE=%d  (dialect %s, digits %s)"
                 % (s["status"].upper(), s["counts"]["BLOCK"], s["counts"]["FIX"], s["counts"]["NOTE"],
@@ -223,16 +177,18 @@ def main(argv=None):
     ap.add_argument("--brand", help="brand.json: dialect, digits and voice.allow")
     ap.add_argument("--allow", help="comma separated words the lint must not flag")
     ap.add_argument("--allow-file", help="one allowed word per line")
-    ap.add_argument("--fix", action="store_true", help="apply autofix issues only")
+    ap.add_argument("--fix", action="store_true", help="apply safe repairs and re-check the result")
+    ap.add_argument("--no-autofix", action="store_true", help="disable safe repairs, including with --fix")
     ap.add_argument("--format", choices=("table", "json"), default="table")
     ap.add_argument("--out", help="write the fixed text (or patched spec) here")
     args = ap.parse_args(argv)
+    args.fix = args.fix and not args.no_autofix
     try:
         result = run(args)
         if args.out and args.fix:
             try:
                 if isinstance(result["fixed"], dict):
-                    paths.write_json(args.out, result["fixed"])
+                    paths.write_text(args.out, lint.json_text(result["fixed"], indent=2) + "\n")
                 else:
                     paths.write_text(args.out, result["fixed"] if result["fixed"].endswith("\n") else result["fixed"] + "\n")
             except OSError as exc:
@@ -244,7 +200,7 @@ def main(argv=None):
         return exc.exit_code
     if args.format == "json":
         out = {k: v for k, v in result.items() if not (k == "fixed" and v is None)}
-        print(json.dumps(out, ensure_ascii=False))
+        print(lint.json_text(out))
     else:
         print(render_table(result))
         if isinstance(result["fixed"], str) and not args.out:

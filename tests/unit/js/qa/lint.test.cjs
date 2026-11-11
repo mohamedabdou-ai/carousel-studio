@@ -54,11 +54,10 @@ test("Persian letters and digits, Latin prefixes stranded from their word", () =
   assert.equal(byCheck(lint("استخدم لـChatGPT"), ruleOf("lam-latin-stranded")).length, 0);
 });
 
-test("number + noun pairs are bound with a no-break space", () => {
-  const hits = expectIssue("وفر 5 ساعات", "number-noun-unbound", NBSP);
-  assert.equal(hits[0].original, " ");
-  assert.equal(byCheck(lint("وفر 5" + NBSP + "ساعات"), ruleOf("number-noun-unbound")).length, 0);
-  expectIssue("اقرأ الخطوة 3 الآن", "number-noun-unbound", NBSP);
+test("ordinary number/noun spaces are accepted; layout owns binding", () => {
+  for (const text of ["وفر 5 ساعات", "وفر 5" + NBSP + "ساعات", "اقرأ الخطوة 3 الآن"]) {
+    assert.equal(byCheck(lint(text), ruleOf("number-noun-unbound")).length, 0);
+  }
 });
 
 test("tatweel is flagged unless it stretches the kashida word or joins a Latin word", () => {

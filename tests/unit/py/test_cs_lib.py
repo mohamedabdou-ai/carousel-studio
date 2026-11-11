@@ -358,7 +358,7 @@ class LintTests(unittest.TestCase):
         self.assertTrue(any(i["rule"] == "ORTHO-DIG-002" and i["sev"] == "BLOCK" for i in issues))
 
     def test_number_noun_unbound(self) -> None:
-        self.assertIn("ORTHO-BIDI-002", self.rules_of("5 خطوات"))
+        self.assertNotIn("ORTHO-BIDI-002", self.rules_of("5 خطوات"))
         self.assertNotIn("ORTHO-BIDI-002", self.rules_of("5" + NBSP + "خطوات"))
 
     def test_autofix_applies_the_fixes(self) -> None:

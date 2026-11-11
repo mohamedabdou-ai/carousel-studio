@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import math
 import re
+import copy
 import unicodedata
 
 from . import CSError, lint, report, rules, text as cstext
@@ -105,6 +106,8 @@ class Ctx:
     """Everything a text gate needs, computed once per run."""
 
     def __init__(self, spec, brand, history, gates, fast, family_limits, slides_filter=None):
+        self.raw_spec = spec
+        spec = {**spec, **{k: cstext.gate_input(spec[k]) for k in ("slides", "captionPack", "hook") if k in spec}}
         self.spec = spec
         self.brand = brand
         self.idx = rules.index()
@@ -771,13 +774,25 @@ def _bind_labels(ctx: Ctx) -> lint.LabelMatcher:
 
 
 def gate_o1(ctx: Ctx, out: list) -> None:
+    if hasattr(ctx, "raw_spec"):
+        ctx = copy.copy(ctx)
+        ctx.spec = ctx.raw_spec
+        ctx.slides = [s for s in ctx.spec.get("slides", []) if is_obj(s)]
     if not ctx.active("O1.ortho") and not ctx.active("O1.deny-marker") and not ctx.active("O1.warn-marker"):
         return
     allow = lint.allow_set(((ctx.brand or {}).get("voice") or {}).get("allow"))
+    encoding = [r for r in ctx.bundle["ortho"]["rules"] if re.match("^ORTHO-ENC-00[4-8]$", r["id"])]
+    encoding_bundle = {**ctx.bundle, "ortho": {"rules": encoding}, "dialects": {}}
+    for f in lint.spec_strings(ctx.spec):
+        for it in lint.lint_text(f["text"], bundle=encoding_bundle):
+            if ctx.active("O1.ortho"):
+                emit(ctx, out, "O1.ortho", slide=f["slide"], el=f["key"], sev=it["sev"],
+                     rule="O1." + _rule_slug(it["rule"]), msg=it["msg"],
+                     vars={"original": it["original"], "fix": it.get("fix") or "", "text": it["original"]})
     for f in lint_fields(ctx):
         slide = next((s for s in ctx.slides if s.get("id") == f["slide"]), None) if f["slide"] else None
         plain = lint_plain(f)
-        issues = lint.lint_text(plain, dialect=ctx.dialect, digits=ctx.digits, allow=allow, skip=O1_SKIP_CHECKS,
+        issues = lint.lint_text(plain, dialect=ctx.dialect, digits=ctx.digits, allow=allow, skip=list(O1_SKIP_CHECKS) + [r["id"] for r in encoding],
                                 kashida_word=(slide.get("kashidaWord") if slide and f["field"] == "headline" else "") or "")
         seen: set = set()
         for it in issues:

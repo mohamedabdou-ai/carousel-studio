@@ -26,11 +26,12 @@ The copy (a `spec.json`, a caption pack, or pasted text), the dialect (`spec.loc
 ## Procedure
 1. **Deterministic pass** (UTF-8, no network):
 ```
-python scripts/ortho_lint.py --spec spec.json --brand brand.json --format json
-python scripts/bidi_lint.py  --spec spec.json --format json
-python scripts/ortho_lint.py --text "..." --dialect eg --digits western --format json     # pasted copy
+python scripts/ortho_lint.py --spec spec.json --brand brand.json --fix --out spec.ortho-checked.json --format json
+python scripts/bidi_lint.py --spec spec.ortho-checked.json --fix --out spec.checked.json --format json
+python scripts/ortho_lint.py --text "..." --dialect eg --digits western --fix --format json     # pasted copy
 ```
-   `--fix` applies only `autofix` findings (Persian letters and digits, spacing, punctuation, mixed digits, tatweel, ellipsis dots, repeated marks, lam-Latin attach, number-noun binding); with `--spec` write the patched copy with `--out` and re-run. Hamza, taa marbuta, yaa, translationese and dialect words are suggestions and are never applied by the script.
+   `--fix` applies only `autofix` findings (Persian letters and digits, spacing, punctuation, mixed digits, tatweel, ellipsis dots, repeated marks, lam-Latin attach, hidden controls and direction marks); with `--spec` write the patched copy with `--out`. The shared check loop re-lints actual repairs and reports `applied` field changes; continue from that fixed spec. `--no-autofix` disables repairs. Ordinary number/noun spaces are valid: the renderer owns binding. Hamza, taa marbuta, yaa, translationese and dialect words are suggestions and are never applied by the script.
+   Continue checks and rendering from `spec.checked.json`. Keep the original spec; combine both passes’ `applied` field changes in the proofread diff. Repeat this same check loop after a rebuild. For a read-only audit, use `--no-autofix` on the original spec and do not supply an output file.
 2. **Read pass** (what lints cannot see). Read every flagged item with its sentence and decide: for each finding with confidence below 0.9, accept, reject or choose another fix. Then read the whole copy once for: spelling the lists miss, agreement of gender and number, the register and dialect (`references/dialect-purity.md`), translated syntax (`references/translationese.md`), tashkeel that does not disambiguate, a word, number or idafa split across lines or slides, English names that should stay Latin, and sensitivities. Quote the sentence, not the whole slide.
 3. **Diff table.** One row per change: original, fix, area, confidence. Chat format (an Arabic list, never a wide table; each Arabic or Latin item wrapped in «»):
 ```

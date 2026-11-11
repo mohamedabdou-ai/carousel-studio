@@ -84,11 +84,11 @@
     return{ lines: lines,minL: minL,maxR: maxR };
   }
 
-  function wordsOf(node){
-    var w=node.querySelectorAll(".w");
-    if (w.length) return Array.prototype.slice.call(w);
-    var parts=node.querySelectorAll(".cs-num, .cs-unit");
-    return parts.length ? Array.prototype.slice.call(parts) : [node];
+  function wordsOf(node) {
+    var w = node.querySelectorAll(".w");
+    if (w.length) return Array.from(w);
+    var parts = node.querySelectorAll(".cs-num, .cs-unit");
+    return parts.length ? Array.from(parts) : [node];
   }
 
   function contentBoxOf(node,ctx){
@@ -368,20 +368,23 @@
     return report.slots[key];
   }
 
-  function lineText(words){
-    var out="";
-    for (var i=0; i < words.length; i++){
-      if (i) out +=separator(words[i - 1],words[i]);
-      out +=words[i].textContent;
+  /* ---- lines ------------------------------------------------------------------------------------------------------- */
+
+  function lineText(words) {
+    var out = "";
+    for (var i = 0; i < words.length; i++) {
+      if (i) out += separator(words[i - 1],words[i]);
+      out += words[i].textContent;
     }
     return out;
   }
 
-  function separator(a,b){
-    var rg=document.createRange();
-    try{ rg.setStartAfter(a); rg.setEndBefore(b); } catch (e){ return " "; }
-    var t=rg.toString();
-    if (t.indexOf("\u00A0") >=0) return "\u00A0";
+  /** "" | " " | U+00A0: what separates two word units in the DOM (a number is bound to its noun with U+00A0). */
+  function separator(a, b) {
+    var rg = document.createRange();
+    try { rg.setStartAfter(a); rg.setEndBefore(b); } catch (e) { return " "; }
+    var t = rg.toString();
+    if (t.indexOf("\u00A0") >= 0) return "\u00A0";
     return /[ \t\n\r\f]/.test(t) ? " " : "";
   }
 
@@ -401,26 +404,27 @@
     return chain;
   }
 
-  function wrapLinesBy(slotEl,counts){
-    var all=Array.prototype.slice.call(slotEl.querySelectorAll(".w"));
-    var total=counts.reduce(function (a,b){ return a + b; },0);
-    if (!all.length || total !==all.length) return null;
+  /** Regroups the .w units of a slot into <span class="cs-ln"> blocks of the given sizes (counts of words per line). Wrappers (emphasis, LTR runs) are cloned per line. */
+  function wrapLinesBy(slotEl, counts) {
+    var all=Array.from(slotEl.querySelectorAll(".w"));
+    var total = counts.reduce(function (a, b) { return a + b; }, 0);
+    if (!all.length || total !== all.length) return null;
       slotEl.querySelectorAll('[data-mark-target]:not([data-mark-id])').forEach(function(n,i){n.dataset.markId=slotEl.getAttribute('data-slot-key')+'-m'+i;});
-    var slotName=slotEl.getAttribute("data-slot") || "";
-    var chains=all.map(function (w){ return chainOf(w,slotEl); });
-    var seps=all.map(function (w,i){ return i < all.length - 1 ? separator(w,all[i + 1]) : ""; });
-    var frag=document.createDocumentFragment(),out=[],at=0;
-    counts.forEach(function (n,li){
-      var ln=document.createElement("span");
-      ln.className="cs-ln";
-      ln.setAttribute("data-m","ln"); ln.setAttribute("data-m-i",li); ln.setAttribute("data-m-slot",slotName);
-      var open=[];
-      for (var k=0; k < n; k++,at++){
-        var chain=chains[at],common=0;
-        if (k > 0){
-          while (common < open.length && common < chain.length && open[common].orig===chain[common]) common++;
-          open.length=common;
-          var host=common ? open[common - 1].clone : ln;
+    var slotName = slotEl.getAttribute("data-slot") || "";
+    var chains = all.map(function (w) { return chainOf(w, slotEl); });
+    var seps=all.map(function (w,i){return i < all.length - 1 ? separator(w, all[i + 1]) : "";});
+    var frag = document.createDocumentFragment(), out = [], at = 0;
+    counts.forEach(function (n, li) {
+      var ln = document.createElement("span");
+      ln.className = "cs-ln";
+      ln.setAttribute("data-m", "ln"); ln.setAttribute("data-m-i", li); ln.setAttribute("data-m-slot", slotName);
+      var open = [];
+      for (var k = 0; k < n; k++, at++) {
+        var chain = chains[at], common = 0;
+        if (k > 0) {
+          while (common < open.length && common < chain.length && open[common].orig === chain[common]) common++;
+          open.length = common;
+          var host = common ? open[common - 1].clone : ln;
           if (seps[at - 1]) host.appendChild(document.createTextNode(seps[at - 1]));
         } else open.length=0;
         for (var d=common; d < chain.length; d++){

@@ -18,6 +18,16 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 - Covers can show a separate creator-supplied product or partner logo on a clear ground, in stills and cover video.
 - The shared renderer resolves asset refs through the same blob route as the Studio. Picture refs can hold up to 2,000,000 characters, and the plates tools read that limit from the schema.
 - Egyptian brands can choose light or full dialect strength once during setup. The saved setting travels in the brand capsule; existing brands keep their voice until they choose a level.
+### Arabic text and visible checks
+
+- Type Arabic prefixes, Latin phrases, punctuation and model versions as ordinary text. The engine isolates them, keeps names with their numbers and short connectors with a neighbour, and reserves more room for mixed display lines.
+- Separate Latin and numeric runs retain their order across sentence punctuation and Arabic prefixes. Glued one-letter Arabic prefixes get a small visual gap from Latin text without changing the creator's copy.
+- Hidden controls are blocked across the whole spec, including captions and alt text. Direction marks and special spaces are normalised for rendering; safe proofread repairs are re-checked and report the field changes they actually applied.
+- Legitimate connectors such as «الـAPI،», «بـ@الاسم» and «بـ50%» keep their wording, and «تجرّبه» no longer receives a false spelling suggestion.
+- Underlines stay continuous below Arabic dots in every preset, including the notebook's double underline.
+- Rendered checks flag tight text padding, cramped sibling panels, clipped artwork and stranded short words. Contrast follows the painted cover ground, and empty free panels count as empty containers.
+- Sparse populated panels receive layout advice rather than a required container-fill fix; genuinely empty panels still need fixing.
+- Free design errors name accepted logical CSS properties. A tone needs content or artwork; it cannot paint an empty decorative track.
 
 ### Publishing limits and checks
 

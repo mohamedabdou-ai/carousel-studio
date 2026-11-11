@@ -21,7 +21,7 @@ translates or reads aloud correctly.
 | Situation | Do | Rule |
 |---|---|---|
 | An Arabic prefix before a Latin or digit word («لـ، بـ، الـ، وبـ، كـ») | attach it with a tatweel and **no space**: «لـChatGPT»، «بـCanva»، «الـAI». A space leaves the prefix stranded at the wrong end | ORTHO-BIDI-001 → B1.stranded-lam, BLOCK, autofix |
-| A number and its noun or unit | join with a non-breaking space U+00A0: «5 ساعات»، «30 ثانية»، «10 KB» | ORTHO-BIDI-002 → B1.unbound-pair, FIX, autofix |
+| A number and its noun or unit | type ordinary spaces; the engine binds: «5 ساعات»، «30 ثانية»، «10 KB» | B1.unbound-pair, rendered FIX |
 | A digit touching an Arabic word | add a space: «3000 سعرة» | ORTHO-DIG-004 → O1.glued-digit, FIX, autofix |
 | A Latin name at the very start or end of a line | keep a short Arabic word beside it where possible; the engine isolates it either way | note only |
 | A handle, a URL or a phone number | put it on its own line, or inside a sentence with Arabic on both sides; never directly before a full stop or comma | note only |
@@ -38,7 +38,7 @@ is shown. Notation for a logical sequence: `A` Arabic, `L` Latin, `N` number, `n
 | 1 | a Latin brand inside a sentence | the closing full stop sticks to the wrong side | keep the paragraph direction right-to-left; the engine isolates the name |
 | 2 | amount plus currency symbol | the symbol jumps to the other side of the figure | ask the audience's convention, then keep figure and symbol together in one run |
 | 3 | percentage | the sign leaves the number | use the sign of the digit system (`%` with 0-9) and keep it glued |
-| 4 | number plus Latin unit (kg, GB) | unit separated or on the wrong side | U+00A0 between them |
+| 4 | number plus Latin unit (kg, GB) | unit separated or on the wrong side | ordinary space; engine binding |
 | 5 | a range between two numbers | the reader cannot tell which is smaller | write it in words: «من 10 إلى 20» |
 | 6 | a numeric date | day and month swap | write the month in words |
 | 7 | a phone number | the plus sign jumps to the end | keep it as one isolated run, no formatting characters inside |
@@ -65,8 +65,10 @@ before a line break. Show finished slide copy on the Script page, not as long ch
 | digit system differs from `locale.digits` | N1.system | BLOCK |
 | `percent-sign` | N1.percent | BLOCK |
 | `lam-latin-stranded` | B1.stranded-lam | BLOCK |
-| `number-noun-unbound` | B1.unbound-pair | FIX |
+| engine number/noun binding | B1.unbound-pair | rendered JS only; plain spaces are valid |
 | `digit-glued-to-word` | O1.glued-digit | FIX |
 
 Not checked here (rendered scope): contiguous `<bdi>` rectangles, bound pairs on one line, raw Latin
 outside an isolated run. Use `--fix` for the autofix findings and re-run until clean.
+
+Use plain copy for Arabic prefixes and Latin phrases. No direction marks or special spaces are required. Controls and unassigned characters block every spec text field, including caption body, per-slide captions, alt and hashtags. ZWNJ and ZWJ are preserved. «الـAPI،», «بـ@الاسم» and «بـ50%» are connectors, not decorative kashida; «تجرّبه» is a valid marked verb.

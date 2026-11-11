@@ -125,7 +125,7 @@
   text-decoration: underline;
   text-decoration-color: var(--cs-accent);
   text-decoration-thickness: 0.08em;
-  text-underline-offset: 0.18em;
+  text-decoration-skip-ink:none;text-underline-offset:.35em;
 }
 
 /* ---------- Numbering (decor.numbering): a diamond on each side of a plain numeral ---------- */

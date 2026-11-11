@@ -30,7 +30,8 @@
     var z = zoneOf(el, o), root = el.getBoundingClientRect(), sx = root.width / (o.canvasW || el.offsetWidth || 1080) || 1,
         sy = root.height / (o.canvasH || el.offsetHeight || 1440) || sx, boxes = [], owners = [], ownerIds = new Map();
     function rect(r) { return { x: Math.round((r.left - root.left) / sx - z.x), y: Math.round((r.top - root.top) / sy - z.y), w: Math.round(r.width / sx), h: Math.round(r.height / sy) }; }
-    function up(e) { var p = e.parentElement && e.parentElement.closest(OWN); return ownerIds.get(p); }
+    function ownerOf(e) { for (var p = e; p && p !== el; p = p.parentElement) if (ownerIds.has(p)) return ownerIds.get(p); }
+    function up(e) { return ownerOf(e.parentElement); }
     function add(e, r, kind, props) {
       var b = Object.assign(rect(r), { kind: kind }, props || {}), id = up(e);
       if (id != null) b.ownerOf = id;
@@ -38,7 +39,12 @@
       if (b.w > 0 && b.h > 0) boxes.push(b);
       return b;
     }
-    Array.prototype.forEach.call(el.querySelectorAll(OWN), function (e) { if (visible(e, el)) { ownerIds.set(e, 'owner-' + owners.length); owners.push(e); } });
+    Array.prototype.forEach.call(el.querySelectorAll(OWN + ',.cs-free *'), function (e) {
+      if (!visible(e, el)) return;
+      var c = getComputedStyle(e), freePanel = !e.closest('svg') && !e.matches('mark,.cs-em,.w,bdi,style') &&
+        (alpha(c.backgroundColor) > 0 || c.backgroundImage && c.backgroundImage !== 'none' || Math.max(num(c.borderTopWidth), num(c.borderRightWidth), num(c.borderBottomWidth), num(c.borderLeftWidth)) > 0);
+      if (e.matches(OWN) || freePanel) { ownerIds.set(e, 'owner-' + owners.length); owners.push(e); }
+    });
     owners.forEach(function (e) {
       var c = getComputedStyle(e), border = Math.max(num(c.borderTopWidth), num(c.borderRightWidth), num(c.borderBottomWidth), num(c.borderLeftWidth));
       var fill = c.backgroundImage && c.backgroundImage !== 'none' ? 1 : alpha(c.backgroundColor), op = 1;
@@ -66,7 +72,7 @@
         var line = e.closest('.cs-ln') || e.closest('[data-slot-key],[data-slot]') || e,
             rs = lines.get(line) || [], b = rect(r), hit = rs.find(function (a) { return Math.abs(a.y - b.y) < Math.min(a.h, b.h) / 2; });
         if (hit) { var right = Math.max(hit.x + hit.w, b.x + b.w); hit.x = Math.min(hit.x, b.x); hit.w = right - hit.x; hit.h = Math.max(hit.y + hit.h, b.y + b.h) - Math.min(hit.y, b.y); hit.y = Math.min(hit.y, b.y); }
-        else rs.push(Object.assign(b, { kind: 'text', ownerOf: ownerIds.get(e.closest(OWN)), anchor: !!e.closest(ANCHOR) }));
+        else rs.push(Object.assign(b, { kind: 'text', ownerOf: ownerOf(e), anchor: !!e.closest(ANCHOR) }));
         lines.set(line, rs);
       });
     }
@@ -122,7 +128,14 @@
             cover = S.type === 'cover' || S.type === 'poster', cls = pause ? 'pause' : cover ? 'cover' : 'working', sev, value, need;
         if (!d) return;
         if (id === 'D9.container-fill') {
-          d.owners.forEach(function (o) { if (!o.ok) { var pct = Math.min(o.rows, o.cols); out.push(finding(ctx, id, S, pct < c.owner.fixBelow || o.meta !== 'ok' ? 'FIX' : 'NOTE', { el: o.id, pct: pct, min: o.need }, o.id)); } });
+          d.owners.forEach(function (o) { if (!o.ok) {
+            // Occupied rows/columns are not a design-quality score: score bars and icon
+            // cells deliberately leave air. Only a genuinely empty panel warrants FIX.
+            var pct = Math.min(o.rows, o.cols), sev = o.rows === 0 && o.cols === 0 ? 'FIX' : 'NOTE', f = finding(ctx, id, S, sev, { el: o.id, pct: pct, min: o.need }, o.id);
+            // An empty painted free panel is visible evidence, independent of the visual rollout.
+            if (CS.visual?.free?.active(s) && sev === 'FIX') { f.sev = sev; f.prospect = false; }
+            out.push(f);
+          } });
           return;
         }
         if (id === 'VA2.anchor-size') {

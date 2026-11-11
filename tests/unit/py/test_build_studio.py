@@ -366,7 +366,7 @@ class TestVisualChunks(BuilderCase):
         run = self.build("--view", "design", root=root)
         self.assertEqual(run.code, 70)
         self.assertIn("closing script tag", run.err)
-        root = make_root(self.tmp / "big", {"art": "x" * (201 * 1024)})
+        root = make_root(self.tmp / "big", {"art": "x" * (241 * 1024)})
         self.assertEqual(self.build("--view", "design", root=root).code, 2)
         root = make_root(self.tmp / "comment", {"visual": "var s = '<" + "!-- x';"})
         self.assertEqual(self.build("--view", "design", root=root).code, 70)
@@ -659,8 +659,8 @@ class TestBuildErrors(BuilderCase):
         self.assertEqual(run.code, 2)
         self.assertIn("at least one slide", run.err)
 
-    def test_chunk_over_200_kib_is_refused(self):
-        root = make_root(self.tmp / "big", {"ui": "x" * (201 * 1024)})
+    def test_chunk_over_240_kib_is_refused(self):
+        root = make_root(self.tmp / "big", {"ui": "x" * (241 * 1024)})
         self.assertEqual(self.build("--view", "design", root=root).code, 2)
 
     def test_chunk_with_a_closing_script_tag_is_refused(self):

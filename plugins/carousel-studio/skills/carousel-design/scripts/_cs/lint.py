@@ -7,6 +7,7 @@ text that was passed in. Matching runs on a "folded" copy (tashkeel and tatweel 
 from __future__ import annotations
 
 import re
+import unicodedata
 
 from . import rules, text as cstext
 
@@ -114,7 +115,7 @@ def _percent_sign(text, ctx):
     found = {}
 
     def collect(digits, bad, good):
-        rx = re.compile(digits + "[ \u00A0]?" + re.escape(bad) + "|" + re.escape(bad) + "[ \u00A0]?" + digits)
+        rx = re.compile(digits + "[ \u00A0\u2009\u202F]?" + re.escape(bad) + "|" + re.escape(bad) + "[ \u00A0\u2009\u202F]?" + digits)
         for m in rx.finditer(masked):
             start = m.start() + m.group(0).index(bad)
             found[start] = {"start": start, "end": start + 1, "original": bad, "fix": good}
@@ -177,6 +178,32 @@ def _double_space(text, ctx):
     return _scan(text, re.compile("[ \\t]{2,}"), lambda m: {"fix": " "})
 
 
+def _invalid_codepoint(text, ctx):
+    return [{"start": i, "end": i + 1, "original": ch,
+             **({"fix": ""} if unicodedata.category(ch) == "Cc" else {})}
+            for i, ch in enumerate(text)
+            if unicodedata.category(ch) == "Cc" and ch not in "\t\n\r"]
+
+
+def _unassigned_codepoint(text, ctx):
+    return [{"start": i, "end": i + 1, "original": ch} for i, ch in enumerate(text)
+            if unicodedata.category(ch) in ("Cn", "Cs")]
+
+
+def spec_strings(spec):
+    """All string leaves, addressed by JSON pointer; prior QA is not author copy."""
+    def walk(value, path="", slide=None):
+        if isinstance(value, str):
+            yield {"text": value, "key": path, "slide": slide}
+        elif isinstance(value, (dict, list)):
+            for key, child in (value.items() if isinstance(value, dict) else enumerate(value)):
+                if not path and key in ("qa", "frozen"):
+                    continue
+                sid = child.get("id") if path == "/slides" and isinstance(child, dict) else slide
+                yield from walk(child, path + "/" + str(key).replace("~", "~0").replace("/", "~1"), sid)
+    return list(walk(spec))
+
+
 def _programmatic_tatweel(text, ctx):
     kw = fold_key(ctx["kashidaWord"]) if ctx.get("kashidaWord") else ""
 
@@ -184,10 +211,12 @@ def _programmatic_tatweel(text, ctx):
         return _IS_AR_LETTER.match(c) is not None or c == "ـ" or rules.is_mark(c)
 
     def make(m):
+        head, tail = text[:m.end()], text[m.end():]
+        head = re.sub("[" + _AR_MARKS + "]", "", head)
+        if len(m.group()) == 1 and re.search("(^|[^" + _AR_L + _AR_MARKS + "ـ])[وف]?(?:بال|كال|ال|لل|[بلك])ـ$", head) and re.match("[\"'«“]*[A-Za-zÀ-ɏ0-9٠-٩@#%٪$€£]", tail):
+            return None
         prev = text[m.start() - 1] if m.start() > 0 else ""
         nxt = text[m.end()] if m.end() < len(text) else ""
-        if prev and _IS_AR_LETTER.match(prev) and nxt and re.match("[A-Za-z0-9$\\u20AC\\u00A3]", nxt):
-            return None
         a, b = m.start(), m.end()
         while a > 0 and in_word(text[a - 1]):
             a -= 1
@@ -209,9 +238,11 @@ def _repeated_punct(text, ctx):
 
 
 def _lam_latin_stranded(text, ctx):
-    rx = re.compile("(^|[^" + _AR_L + "])([وف]?(?:بال|كال|ال|لل|[بلك]))\\u0640([ \\t\\u00A0]+)(?=[A-Za-z0-9$\\u20AC\\u00A3])")
+    rx = re.compile("(^|[^" + _AR_L + "])([وفبلكال" + _AR_MARKS + "]+)\\u0640([ \\t\\u00A0\\u2009\\u202F]+)(?=[\"'«“]*[A-Za-zÀ-ɏ0-9\\u0660-\\u0669@#%٪$\\u20AC\\u00A3])")
     out = []
     for m in rx.finditer(text):
+        if not re.fullmatch("[وف]?(?:بال|كال|ال|لل|[بلك])", fold_key(m.group(2))):
+            continue
         keep = len(m.group(1)) + len(m.group(2)) + 1
         out.append({"start": m.start() + keep, "end": m.end(), "original": m.group(3), "fix": ""})
     return out
@@ -237,16 +268,8 @@ def bind_label_matcher(clitics=None) -> LabelMatcher:
 
 
 def _number_noun_unbound(text, ctx):
-    toks = cstext.tokenize(text)
-    labels = ctx.get("bindLabels") or LabelMatcher(LINT_BIND_LABELS, ctx.get("clitics"))
-    out = []
-    for i in range(len(toks) - 2):
-        a, s, b = toks[i], toks[i + 1], toks[i + 2]
-        if s["kind"] != "space" or s["text"] != " ":
-            continue
-        if (a["kind"] == "number" and b["kind"] == "ar") or (a["kind"] == "ar" and labels.has(a["text"]) and b["kind"] == "number"):
-            out.append({"start": s["start"], "end": s["end"], "original": " ", "fix": " "})
-    return out
+    # Binding belongs to layout, not stored copy.
+    return []
 
 
 def _emoji_edge(text, ctx):
@@ -266,6 +289,8 @@ BUILTIN = {
     "persian-digits": _persian_digits,
     "mixed-digits": _mixed_digits,
     "percent-sign": _percent_sign,
+    "invalid-codepoint": _invalid_codepoint,
+    "unassigned-codepoint": _unassigned_codepoint,
     "persian-letters": _persian_letters,
     "space-before-punct": _space_before_punct,
     "missing-space-after-punct": _missing_space_after_punct,
@@ -341,6 +366,8 @@ def lint_text(text: str, *, dialect: str | None = None, digits: str = "western",
             for key, replacement in rule["map"].items():
                 entry = {"id": rule["id"], "text": key, "match": "word", "clitics": rule.get("clitics") is True}
                 for m in rules.entries_match([entry], text, dialect=dialect, clitics=clitics, prepared=prepared):
+                    if cstext.normalize(m["text"]) in [cstext.normalize(v) for v in rule.get("exceptions", [])]:
+                        continue
                     tok, k = fold_key(m["text"]), fold_key(key)
                     prefix = tok[:len(tok) - len(k)] if len(tok) >= len(k) and tok.endswith(k) else ""
                     push(rule, {"start": m["start"], "end": m["end"], "original": m["text"], "fix": prefix + replacement})
@@ -375,7 +402,10 @@ def lint_text(text: str, *, dialect: str | None = None, digits: str = "western",
                     "msg": entry.get("note"), "kind": "dialect", "entry": entry.get("id"),
                 })
 
-    kept = [it for it in issues if fold_key(it["original"]).lower().strip() not in allowed]
+    identifiers = [t for t in cstext.tokenize(text) if t["kind"] in LTR_SKIP_KINDS] if issues else []
+    kept = [it for it in issues if re.fullmatch("ORTHO-ENC-00[4-8]", it["rule"]) or
+            (fold_key(it["original"]).lower().strip() not in allowed and
+             not any(it["start"] < t["end"] and it["end"] > t["start"] for t in identifiers))]
     kept.sort(key=lambda it: (it["start"], it["end"]))
     return kept
 
@@ -395,3 +425,83 @@ def apply_fixes(text: str, issues: list[dict]) -> str:
         out = out[:it["start"]] + it["fix"] + out[it["end"]:]
         limit = it["start"]
     return out
+
+
+def check_text(text: str, *, autofix: bool = True, checker=None, **options) -> dict:
+    """The repair/check loop. Re-lint actual output; never hide unapplied fixes.
+
+    ``applied`` records whole field changes, including the rules that caused
+    them. Callers attach the field path and save ``fixed`` explicitly.
+    """
+    check = checker or (lambda value: lint_text(value, **options))
+    current, applied = text, []
+    for _ in range(4):
+        issues = check(current)
+        repairs = [i for i in issues if i.get("autofix") and i.get("fix") is not None]
+        encoding = [i for i in repairs if i["rule"].startswith("ORTHO-ENC-")]
+        binding = [i for i in repairs if i["rule"] == "ORTHO-BIDI-001"]
+        # Repair encoding, then attachment, before judging the tatweel in context.
+        repairs = encoding or binding or repairs
+        if not encoding and any(i["rule"] in ("ORTHO-ENC-003", "ORTHO-ENC-008") for i in issues):
+            repairs = []
+        fixed = apply_fixes(current, repairs) if autofix else current
+        if fixed == current:
+            break
+        applied.append({"before": current, "after": fixed,
+                        "rules": sorted({i["rule"] for i in repairs})})
+        current = fixed
+    return {"fixed": current, "issues": check(current), "applied": applied}
+
+
+def iter_spec_fields(spec):
+    """One walk for both proofread CLIs, including captions and new fields."""
+    for f in spec_strings(spec):
+        parts = [s.replace("~1", "/").replace("~0", "~") for s in f["key"][1:].split("/")]
+        slide, el, kashida = None, ".".join(parts), None
+        if len(parts) > 2 and parts[0] == "slides":
+            s = spec["slides"][int(parts[1])]
+            slide, el = s.get("id"), ".".join(parts[2:])
+            if el == "headline":
+                kashida = s.get("kashidaWord")
+        if len(parts) > 2 and parts[0] == "captionPack" and parts[1] in ("perSlide", "alt") and parts[2].isdigit():
+            i = int(parts[2])
+            if i < len(spec.get("slides", [])):
+                slide = spec["slides"][i].get("id")
+        if any("." in part for part in parts):
+            el = f["key"]  # Token overrides have literal dots in their keys.
+        yield slide, el, f["text"], kashida
+
+
+def set_spec_field(spec, slide_id, el, value):
+    """Write a checked field, retaining literal dots and JSON-pointer escapes."""
+    if el.startswith("/"):
+        parts = [p.replace("~1", "/").replace("~0", "~") for p in el[1:].split("/")]
+        node = spec
+    else:
+        parts = el.split(".")
+        node = spec if slide_id is None or parts[0] in ("captionPack", "hook") else next(s for s in spec["slides"] if s.get("id") == slide_id)
+    for part in parts[:-1]:
+        node = node[int(part)] if isinstance(node, list) else node[part]
+    node[int(parts[-1]) if isinstance(node, list) else parts[-1]] = value
+
+
+def copy_field(slide_id, el):
+    """Language repairs apply to copy, never to URLs, CSS, identifiers or tokens."""
+    if re.fullmatch(r"captionPack\.(firstLine|keywordLine|body|cta|(perSlide|alt|hashtags)\.[0-9]+)", el):
+        return True
+    if el in ("hook.cover", "hook.text", "hook.slide2"):
+        return True
+    return bool(slide_id and re.fullmatch(
+        r"kicker|headline|sub|title|body|bridge|attribution|quote|bullets\.[0-9]+|sides\.[0-9]+\.(label|text)|cta\.text|number\.(value|unit)|items\.[0-9]+\.(title|text|value)|demo\.(caption|lines\.[0-9]+\.text)|visual\.anchor\.(word|unit|captions\.[0-9]+|chart\.values\.[0-9]+\.label|mock\.(title|caption|stamp|lines\.[0-9]+\.text|items\.[0-9]+))", el))
+
+
+def encoding_issues(value):
+    bundle = rules.load_bundle()
+    ortho = {"rules": [r for r in bundle["ortho"]["rules"] if re.fullmatch("ORTHO-ENC-00[4-8]", r["id"])]}
+    return lint_text(value, bundle={**bundle, "ortho": ortho, "dialects": {}})
+
+
+def json_text(value, indent=None):
+    """Keep Arabic readable and represent invalid surrogates safely for review."""
+    import json
+    return json.dumps(value, ensure_ascii=False, indent=indent).encode("utf-8", "backslashreplace").decode("utf-8")

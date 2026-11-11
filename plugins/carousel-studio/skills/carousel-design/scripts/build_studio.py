@@ -346,7 +346,7 @@ def read_chunks(root: Path, warnings: list[str] | None = None) -> list[tuple[str
             continue
         text = read_text(path)
         if len(text.encode("utf-8")) > CHUNK_LIMIT:
-            raise BuildError("E_USAGE", f"{path.name} is larger than 240 KiB", EX_INVALID)
+            raise BuildError("E_USAGE", f"{path.name} is larger than {CHUNK_LIMIT // 1024} KiB", EX_INVALID)
         out.append((name, js_safe(text, path.name)))
     if absent and warnings is not None:
         warnings.append(f"runtime/{', '.join(absent)} not built yet, so the page is made without {'it' if len(absent) == 1 else 'them'} and behaves as 1.0 (run node tools/build.mjs)")
