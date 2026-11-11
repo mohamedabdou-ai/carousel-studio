@@ -1,6 +1,6 @@
 schema_version: "1.0"
 name: bhv-39-editor-verdict-exists
-description: "An independent Arabic editor pass (or the cs-arabic-editor agent) returns PASS or VETO with a diff table, sees only the copy, and a VETO is fixed and re-checked at most twice before the post is designed."
+description: "An independent Arabic editor pass (or the cs-arabic-editor agent) returns PASS or VETO with a diff table, sees only the copy, and a VETO is fixed and re-checked before the post is designed; team fast has no panel."
 tags: [behaviour, needs-bash, carousel-create, creative-team, editor-verdict]
 plugins: ["../../../plugins/carousel-studio"]
 execution:
@@ -10,10 +10,10 @@ execution:
         [Carousel Studio brand capsule v1]
         brand: ورشة المحتوى (content-workshop) | dialect: eg | register: dialect | digits: western | swipe: arrow-rtl
         voice: ودود وعملي، جمل قصيرة. نستخدم «ببلاش» و«جرّب». لا نستخدم «ثورة» ولا «سر».
-        palette: bg #F4F4F2 ink #111111 accent #E3262B | fonts: ibm-plex-sans-arabic / readex-pro / inter | preset: swiss
+        palette: bg #F4F4F2 ink #111111 accent #E3262B | fonts: ibm-plex-sans-arabic / readex-pro / inter | preset: creator
         home: -
 
-    بسرعة: كاروسيل 8 سلايدات عن إزاي تراجع كاروسيلك قبل النشر. وراجع اللغة كويس قبل التصميم.
+    بسرعة: كاروسيل 8 سلايدات عن إزاي تراجع كاروسيلك قبل النشر. وراجع اللغة كويس قبل التصميم. الهوك والستايل زي ما تشوف، وقل لي اختيارك قبل التصميم.
   append_system_prompt: |
     This is an automated evaluation of the Carousel Studio plugin, not a live session. There is no Artifact tool, no network access and no connected image, video or design tool. Save every file you create in the current working directory and never in a home folder: name the post spec spec.json, the production board board.md, a brand profile brand.json and a plan plan-YYYY-MM.json, and when a script offers a workspace or root option (for example brand_io.py --dir) point it at the current directory. Subagents may be unavailable: when they are, run each team role as an explicit role pass, as the skill says. Otherwise answer the user exactly as you normally would.
   max_turns: 80
@@ -34,14 +34,20 @@ graders:
   - type: tool_used
     name: runs-the-orthography-lint
     tool: Bash
-    input_match: 'ortho_lint\.py|lint_copy\.py'
+    input_match: 'ortho_lint\.py'
+    min: 1
+    weight: 2
+  - type: tool_used
+    name: runs-the-bidi-lint-itself
+    tool: Bash
+    input_match: 'bidi_lint\.py'
     min: 1
     weight: 2
   - type: regex
-    name: editor-verdict-on-the-board
-    pattern: '\{#editor\}[\s\S]*?الحكم:\s*(PASS|VETO)'
+    name: editor-verdict-in-the-log
+    pattern: '"k"\s*:\s*"editor"'
     match: contains
-    target: {source: file, path: board.md}
+    target: {source: file, path: spec.json}
     weight: 2
   - type: tool_used
     name: runs-the-board-checker
@@ -52,7 +58,7 @@ graders:
   - type: llm
     name: independent-verdict
     criteria: |
-      A separate Arabic editor step, run after the copy was written and judged only on the copy, the dialect and the rules (not on the writing conversation or the brief), ends in an explicit PASS or VETO and, when it finds anything, a table of original, fix, rule id and confidence.
+      A fresh Arabic editor with absolute proofread/scripts and data/rules/ortho.json and copy.json paths runs ortho_lint.py and bidi_lint.py itself. This separate step, run after the copy was written and judged only on the copy, the dialect and the rules (not on the writing conversation or the brief), ends in an explicit PASS or VETO and, when it finds anything, a table of original, fix, rule id and confidence.
     focus: trace
     weight: 2
   - type: llm

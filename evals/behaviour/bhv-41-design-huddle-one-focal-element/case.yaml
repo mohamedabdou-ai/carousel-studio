@@ -10,10 +10,10 @@ execution:
         [Carousel Studio brand capsule v1]
         brand: ورشة المحتوى (content-workshop) | dialect: eg | register: dialect | digits: western | swipe: arrow-rtl
         voice: ودود وعملي، جمل قصيرة. نستخدم «ببلاش» و«جرّب». لا نستخدم «ثورة» ولا «سر».
-        palette: bg #F4F4F2 ink #111111 accent #E3262B | fonts: ibm-plex-sans-arabic / readex-pro / inter | preset: swiss
+        palette: bg #F4F4F2 ink #111111 accent #E3262B | fonts: ibm-plex-sans-arabic / readex-pro / inter | preset: creator
         home: -
 
-    بسرعة: كاروسيل 8 سلايدات عن 5 أخطاء بتموّت الكاروسيل. عايز اتفاق بين التصميم والحركة على عنصر واحد يبقى بطل الغلاف، واعرضلي ستوري بورد الحركة.
+    بالفريق كله: كاروسيل 8 سلايدات عن 5 أخطاء بتموّت الكاروسيل. عايز اتفاق بين التصميم والحركة على عنصر واحد يبقى بطل الغلاف، واعرضلي ستوري بورد الحركة.
   append_system_prompt: |
     This is an automated evaluation of the Carousel Studio plugin, not a live session. There is no Artifact tool, no network access and no connected image, video or design tool. Save every file you create in the current working directory and never in a home folder: name the post spec spec.json, the production board board.md, a brand profile brand.json and a plan plan-YYYY-MM.json, and when a script offers a workspace or root option (for example brand_io.py --dir) point it at the current directory. Subagents may be unavailable: when they are, run each team role as an explicit role pass, as the skill says. Otherwise answer the user exactly as you normally would.
   max_turns: 80

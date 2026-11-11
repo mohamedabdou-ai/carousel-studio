@@ -9,6 +9,8 @@ Name things the way `data/glossary.json` does, in chat and in the Studio alike: 
 |---|---|
 | the angle list (checkpoint 1), short questions, status lines, the link, the «ليه؟» tip | slide copy, hook text, the caption, per-slide captions, alt text |
 
+Team fast checkpoint A is one message with three **rendered** covers that already fit (one shock cover) and the style sheet; no pasted hook list. Lock hook/style on the creator's choice, or state the choice after «زي ما تشوف», before design/pictures. Checkpoint B/ready Design follow QA's veto check and a fresh Creative Director review. `اللجنة: لم تُشغَّل` when absent; no invented votes. After approval, the one publishing preference question follows memory/history/kit; remembered `brand.ext.publish` skips it, never the creator's permission to use a tool.
+
 If the user asks to see a hook or a slide in chat, give **one** line, formatted by the rules below, and point to the Studio for the rest. Never paste a whole script or caption into chat.
 
 ## Rules for every chat line

@@ -9,6 +9,8 @@ import contextlib
 import io
 import json
 import re
+import shutil
+import subprocess
 import tempfile
 import unittest
 from datetime import date
@@ -98,7 +100,7 @@ REVIEW = """المرحلة: script
 الحكم: SHIP"""
 
 FINAL_REVIEW = (REVIEW.replace("المرحلة: script", "المرحلة: final") + "\nغلاف 130px: 3 من 3 وقفوا\nQA: ok\nالمدير الفني: PASS"
-                "\nالوعد: الرقم 5 بيتقري على بلاطة 130px — ✓ — «5» واضح على tile.png")
+                "\nالوعد: الرقم 5 بيتقري على بلاطة 130px — ✓ — «5» واضح على contact-sheet.png (cover tile)")
 
 HUDDLE = """الستايل: creator — بدائل: poster (حكم واضح)، notebook (قايمة بتتحفظ) — اختبار V1: creator ok
 عنصر البطل: الرقم 5 | الاستعارة: عدّاد بيقف | المدير الفني ✓
@@ -115,7 +117,7 @@ HUDDLE = """الستايل: creator — بدائل: poster (حكم واضح)، n
 5.9s — الغلاف كامل، نفس الإطار الأول"""
 
 DECISIONS = ("- R2 · البيتش: جريء — السبب: اتنين من تلاتة وقفوا عنده\n- R3 · الهوك: h06 — السبب: الوضوح 3/3\n"
-             "- وعد: الرقم 5 بيتقري على بلاطة 130px — يتأكد على tile.png")
+             "- وعد: الرقم 5 بيتقري على بلاطة 130px — يتأكد على contact-sheet.png (cover tile)")
 
 CARDS = """من: cs-copywriter → إلى: cs-arabic-editor
 سلّمت: السكريبت في spec.json
@@ -168,7 +170,7 @@ def run(text, stage="final", spec=None):
 
 class TestValidBoard(unittest.TestCase):
     def test_a_good_board_passes_at_every_stage(self):
-        for stage in BC.STAGES:
+        for stage in ("brief", "pitch", "room", "huddle", "final"):
             rep = run(board(stage), stage)
             self.assertEqual(rep.items, [], "%s: %s" % (stage, rep.items))
 
@@ -304,7 +306,7 @@ class TestWhatTheFirstReviewFoundMissing(unittest.TestCase):
         self.assertNotIn("T84", codes(run(board("huddle"), "huddle")))
 
     def test_the_final_review_rechecks_every_promise(self):
-        no_ledger = FINAL_REVIEW.replace("\nالوعد: الرقم 5 بيتقري على بلاطة 130px — ✓ — «5» واضح على tile.png", "")
+        no_ledger = FINAL_REVIEW.replace("\nالوعد: الرقم 5 بيتقري على بلاطة 130px — ✓ — «5» واضح على contact-sheet.png (cover tile)", "")
         self.assertIn("T79", codes(run(board("final", review=no_ledger), "final")))
         broken = FINAL_REVIEW.replace("— ✓ —", "— ✗ —")
         rep = run(board("final", review=broken), "final")
@@ -357,6 +359,29 @@ class TestEditorAndSwipe(unittest.TestCase):
 
 
 class TestReview(unittest.TestCase):
+    def test_two_review_blocks_are_selected_by_phase(self):
+        text = board("final", review=REVIEW) + "\n## مراجعة نهائية {#review}\n" + FINAL_REVIEW
+        self.assertEqual(run(text, "room").items, [])
+        self.assertEqual(run(text, "final").items, [])
+        wrong_final = text.replace("QA: ok", "QA: BLOCK")
+        self.assertIn("T76", codes(run(wrong_final, "final")))
+        self.assertEqual(run(wrong_final, "room").items, [])
+        duplicate = text + "\n## مراجعة أخرى {#review}\n" + FINAL_REVIEW
+        self.assertIn("T06", codes(run(duplicate, "final")))
+
+    def test_phase_selection_uses_the_existing_label_formatting_rules(self):
+        text = (board("final", review=REVIEW.replace("المرحلة: script", "- **المرحلة**: script"))
+                + "\n## مراجعة نهائية {#review}\n"
+                + FINAL_REVIEW.replace("المرحلة: final", "**المرحلة**: final"))
+        self.assertEqual(run(text, "room").items, [])
+        self.assertEqual(run(text, "final").items, [])
+
+    def test_verdict_word_can_have_an_explanation(self):
+        text = board("final", editor="الحكم: PASS — النص سليم\nالجولة: 1 من 2",
+                     review=FINAL_REVIEW.replace("الحكم: SHIP", "الحكم: SHIP — الوعود تحققت"))
+        self.assertEqual(run(text).items, [])
+        self.assertIn("T51", codes(run(board("room", editor="الحكم: VETO — خطأ مفتوح\nالجولة: 1 من 2"), "room")))
+
     def test_ship_needs_every_lens_at_four_and_two_personas_at_the_end(self):
         low = REVIEW.replace("التدفق 4", "التدفق 3")
         self.assertIn("T73", codes(run(board("room", review=low), "room")))
@@ -413,6 +438,21 @@ class TestHuddleCardsAndLog(unittest.TestCase):
         self.assertIn("T83", codes(run(board("huddle", huddle=HUDDLE.replace("1.5s —", "2.0s —")), "huddle")))
         self.assertIn("T83", codes(run(board("huddle", huddle="\n".join(HUDDLE.split("\n")[:-1])), "huddle")))
 
+    def test_measured_encoded_frames_do_not_replace_the_six_planned_beats(self):
+        measured = "\nاللقطات المقاسة من MP4:\n0.000s — الغلاف\n0.433s — التفكيك\n1.533s — البناء\n3.033s — الحركة\n4.533s — الاستقرار\n5.967s — النهاية"
+        self.assertEqual(run(board("huddle", huddle=HUDDLE + measured), "huddle").items, [])
+        self.assertIn("T83", codes(run(board("huddle", huddle=HUDDLE.replace("1.5s —", "2.0s —") + measured), "huddle")))
+
+    def test_measured_frames_can_have_a_markdown_heading(self):
+        for heading in ("### اللقطات المقاسة من MP4", "## Measured frames from MP4:"):
+            measured = "\n" + heading + "\n0.000s — الغلاف\n0.433s — التفكيك\n5.967s — النهاية"
+            self.assertEqual(run(board("huddle", huddle=HUDDLE + measured), "huddle").items, [])
+
+    def test_carousel_slide_budget_is_four_to_ten(self):
+        for n in (1, 3, 11, 20):
+            self.assertIn("T03", codes(run(board("room").replace("slides: 10", "slides: %d" % n), "room")))
+        self.assertNotIn("T03", codes(run(board("room").replace("slides: 10", "slides: 4"), "room")))
+
     def test_a_handoff_card_is_complete(self):
         self.assertIn("T94", codes(run(board("pitch", cards=CARDS.replace("ثقتي: عالية", "ثقتي: ممتازة")), "pitch")))
         self.assertIn("T94", codes(run(board("pitch", cards=CARDS.replace("محتاج منك: PASS أو VETO\n", "")), "pitch")))
@@ -445,6 +485,141 @@ class TestHuddleCardsAndLog(unittest.TestCase):
             self.assertIn("T98", codes(run(board("final"), "final", str(path))))
             path.write_text(json.dumps({"ext": {"teamLog": "text"}}), encoding="utf-8")
             self.assertIn("T98", codes(run(board("final"), "final", str(path))))
+
+
+class TestCompactLanes(unittest.TestCase):
+    def check(self, stage="fast", entries=None, slides=6, board_text=""):
+        if entries is None:
+            entries = [("director", "الفكرة: وقت واضح. العدو: التشتت."),
+                       ("editor", "PASS — تمت مراجعة اللغة."),
+                       ("design", "creator؛ QA: ok؛ المدير الإبداعي: SHIP — الوعد ظاهر.")]
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "spec.json"
+            path.write_text(json.dumps({"slides": [{"id": "s%02d" % n} for n in range(1, slides + 1)],
+                                        "ext": {"teamLog": [{"k": k, "t": t} for k, t in entries]}},
+                                       ensure_ascii=False), encoding="utf-8", newline="\n")
+            return run(board_text, stage, str(path))
+
+    def test_fast_and_ready_need_only_the_work_they_ran(self):
+        self.assertEqual(self.check().items, [])
+        ready = [("director", "الكلمات محفوظة."), ("design", "QA: PASS؛ المدير الإبداعي: SHIP")]
+        self.assertEqual(self.check("ready", ready).items, [])
+        self.assertIn("T97", codes(self.check("fast", ready)))
+        self.assertIn("T98", codes(run("", "fast")))
+
+    def test_no_invented_panel_pitch_duel_or_swipe_log(self):
+        for key in ("pitch", "duel", "swipe"):
+            entries = [("director", "الفكرة واضحة."), ("editor", "PASS"),
+                       ("design", "QA: ok؛ المدير الإبداعي: SHIP"), (key, "نتيجة لم تجر.")]
+            self.assertIn("T99", codes(self.check(entries=entries)))
+
+    def test_design_names_both_qa_and_the_directors_result(self):
+        for result in ("SHIP", "QA: ok", "QA: BLOCK؛ المدير الإبداعي: SHIP",
+                       "QA: ok؛ المدير الإبداعي: REVISE", "QA: ok؛ المدير الإبداعي: KILL"):
+            entries = [("director", "الفكرة واضحة."), ("editor", "PASS"), ("design", result)]
+            self.assertIn("T99", codes(self.check(entries=entries)), result)
+        entries = [("director", "الفكرة واضحة."), ("editor", "VETO — لم يحل."),
+                   ("design", "QA: ok؛ المدير الإبداعي: SHIP")]
+        self.assertIn("T51", codes(self.check(entries=entries)))
+
+    def test_arabic_log_results_check_the_same_substance(self):
+        entries = [("director", "الفكرة واضحة."), ("editor", "PASS — النص سليم."),
+                   ("design", "الجودة: سليم؛ المدير الإبداعي: جاهز — اكتمل الوعد.")]
+        self.assertEqual(self.check(entries=entries).items, [])
+        for line in ("الجودة: موقوف؛ المدير الإبداعي: جاهز", "الجودة: سليم؛ المدير الإبداعي: تعديل",
+                     "الجودة: سليم؛ المدير الإبداعي: مرفوض", "الجودة: غير سليم؛ المدير الإبداعي: جاهز"):
+            self.assertIn("T99", codes(self.check(entries=entries[:2] + [("design", line)])))
+
+    def test_compact_lanes_keep_the_ten_slide_limit(self):
+        for stage in ("fast", "ready"):
+            self.assertIn("T03", codes(self.check(stage, slides=11)))
+
+    def test_compact_cli_accepts_spec_without_a_board(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "spec.json"
+            path.write_text(json.dumps({"slides": [{}] * 4, "ext": {"teamLog": [
+                {"k": "director", "t": "الفكرة واضحة."}, {"k": "editor", "t": "PASS"},
+                {"k": "design", "t": "QA: ok؛ المدير الإبداعي: SHIP"}]}}), encoding="utf-8", newline="\n")
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                self.assertEqual(BC.main(["--stage", "fast", "--spec", str(path), "--format", "json"]), 0)
+            self.assertTrue(json.loads(out.getvalue())["ok"])
+
+
+class TestFreeBlockMerge(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.post = Path(self.tmp.name)
+        self.script = REPO / "plugins/carousel-studio/skills/carousel-design/scripts/merge-free.mjs"
+        self.spec = self.post / "spec.json"
+        self.free = self.post / "free"
+        self.free.mkdir()
+        self.doc = {"rev": 8, "cover": {"motion": {"recipe": "stamp"}}, "captionPack": {"body": "آخر تعديل"},
+                    "slides": [{"id": "s01", "type": "cover", "headline": "غلاف اختاره المبدع"},
+                               {"id": "s02", "type": "item", "body": "نص حديث"},
+                               {"id": "s03", "type": "item", "free": {"html": "kept", "css": ""}}]}
+        self.spec.write_text(json.dumps(self.doc, ensure_ascii=False), encoding="utf-8", newline="\n")
+        for sid in ("s01", "s02", "s03", "s99"):
+            (self.free / (sid + ".html")).write_text('<div class="f-root"><p data-field="body"></p></div>', encoding="utf-8", newline="\n")
+            (self.free / (sid + ".css")).write_text(".f-root{gap:40px}\n", encoding="utf-8", newline="\n")
+
+    def call(self, *ids):
+        return subprocess.run([shutil.which("node") or "node", str(self.script), "--spec", str(self.spec),
+                               "--free-dir", str(self.free), "--slides", *ids], capture_output=True, text=True, encoding="utf-8")
+
+    def test_merges_only_named_free_blocks_into_latest_spec(self):
+        # Files can outlive the snapshot used to design them; current copy and cover win.
+        result = self.call("s02")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        merged = json.loads(self.spec.read_text(encoding="utf-8"))
+        free = merged["slides"][1].pop("free")
+        self.assertIn(".f-title", free["css"])
+        self.assertTrue(free["css"].endswith(".f-root{gap:40px}"))
+        self.assertEqual(merged, self.doc)
+        self.assertNotIn(b"\r", self.spec.read_bytes())
+        self.assertFalse(self.spec.read_bytes().startswith(b"\xef\xbb\xbf"))
+        self.assertEqual(sorted(p.name for p in self.post.iterdir()), ["free", "spec.json"])
+
+    def test_bad_or_missing_inputs_leave_spec_untouched(self):
+        original = self.spec.read_bytes()
+        for ids, code in ((["s01"], 2), (["s99"], 2), (["s02", "s02"], 64), (["../s02"], 64), ([], 64)):
+            self.assertEqual(self.call(*ids).returncode, code, ids)
+            self.assertEqual(self.spec.read_bytes(), original)
+        (self.free / "s03.css").unlink()
+        self.assertEqual(self.call("s02", "s03").returncode, 66)
+        self.assertEqual(self.spec.read_bytes(), original)
+
+    def test_respects_the_shared_pen_lock_and_cleans_up_after_errors(self):
+        lock = self.post / "spec.json.lock"
+        lock.write_text("another writer", encoding="utf-8", newline="\n")
+        self.assertEqual(self.call("s02").returncode, 75)
+        self.assertEqual(lock.read_text(encoding="utf-8"), "another writer")
+        lock.unlink()
+        self.spec.write_text("{", encoding="utf-8", newline="\n")
+        self.assertEqual(self.call("s02").returncode, 65)
+        self.assertFalse(lock.exists())
+
+    def test_rejects_oversize_blocks_before_any_write(self):
+        original = self.spec.read_bytes()
+        (self.free / "s02.html").write_text("ن" * 6100, encoding="utf-8", newline="\n")
+        self.assertEqual(self.call("s02").returncode, 2)
+        self.assertEqual(self.spec.read_bytes(), original)
+
+    def test_multiple_named_blocks_merge_without_touching_other_fields(self):
+        self.assertEqual(self.call("s02", "s03").returncode, 0)
+        merged = json.loads(self.spec.read_text(encoding="utf-8"))
+        for i in (1, 2):
+            self.assertIn("data-field", merged["slides"][i]["free"]["html"])
+        self.assertEqual(merged["slides"][0], self.doc["slides"][0])
+        self.assertEqual(merged["cover"], self.doc["cover"])
+        self.assertEqual(merged["captionPack"], self.doc["captionPack"])
+
+    def test_css_limit_includes_the_shared_base(self):
+        (self.free / "s02.css").write_text("x" * 5900, encoding="utf-8", newline="\n")
+        original = self.spec.read_bytes()
+        self.assertEqual(self.call("s02").returncode, 2)
+        self.assertEqual(self.spec.read_bytes(), original)
 
 
 class TestCli(unittest.TestCase):
@@ -494,6 +669,28 @@ class TestSourcesAgree(unittest.TestCase):
         self.assertIn("الحكم: SHIP | REVISE | KILL", cd)
         for token in ("المرحلة: script | final", "ملاحظة لـ<agent slug>:", "غلاف 130px: <n> من 3 وقفوا", "QA: ok | FIX | BLOCK", "المدير الفني: PASS | FIX | BLOCK"):
             self.assertIn(token, cd, token)
+
+    def test_the_command_and_skill_have_the_same_ordered_router(self):
+        skill = (REPO / "plugins/carousel-studio/skills/carousel-create/SKILL.md").read_text(encoding="utf-8")
+        command = (REPO / "plugins/carousel-studio/commands/carousel.md").read_text(encoding="utf-8")
+        rows = lambda text: [line for line in text.splitlines() if line.startswith("| ")][:5]
+        self.assertEqual(rows(skill), rows(command))
+        self.assertIn("finished script", rows(skill)[1])
+        self.assertIn("own Reel", rows(skill)[2])
+        self.assertIn("Source material", rows(skill)[3])
+        self.assertIn("bare topic", rows(skill)[4])
+
+    def test_the_reviewer_inherits_and_the_artist_can_record_checks(self):
+        self.assertIn("\nmodel: inherit\n", self.roles["cs-creative-director"])
+        artist = self.roles["cs-visual-artist"]
+        tools = re.search(r"(?m)^tools: (.+)$", artist).group(1).split(", ")
+        self.assertTrue({"Read", "Write", "Bash"} <= set(tools))
+        self.assertIn("لا تُقيَّم: كلمات المبدع", self.roles["cs-creative-director"])
+        self.assertIn("اللجنة: لم تُشغَّل", self.roles["cs-creative-director"])
+
+    def test_the_editors_rule_paths_are_real(self):
+        for rel in ("scripts/ortho_lint.py", "scripts/bidi_lint.py", "data/rules/ortho.json", "data/rules/copy.json"):
+            self.assertTrue((REPO / "plugins/carousel-studio/skills/arabic-proofread" / rel).is_file())
 
     def test_the_hook_family_codes_the_checker_accepts_are_the_hook_library_s(self):
         families = json.loads((REPO / "plugins/carousel-studio/skills/carousel-create/data/hooks/families.json").read_text(encoding="utf-8"))["families"]

@@ -14,6 +14,8 @@ stage you name, the things that can be checked without judgement:
     huddle   + the design huddle: both roles name the same focal element, a shipped recipe, six storyboard lines
     final    + the final review (130 px, QA, art director) and all six team-log lines (the log grows with the stages, one line
              per key, at most six)
+    fast     spec-only: director, editor and design log; QA and director verdict named, no invented panel stages
+    ready    spec-only: director and design log, plus editor when one ran; the same QA and review requirement
 
 What the first independent review found missing is checked here too: the brief names the platform facts it rests on (an open fact, one that
 is not verified or has outlived its window in data/platform-instagram.json, caps the Proof lens at 3); at least two of three personas are
@@ -26,7 +28,7 @@ Western or Arabic-Indic. With --spec the spec's ext.teamLog (what the Studio sho
 one per key, at most 160 characters each, and at stage final all six present.
 
 Usage
-    board_check.py BOARD.md [--stage brief|pitch|room|huddle|final] [--spec SPEC.json] [--today YYYY-MM-DD] [--format text|json]
+    board_check.py [BOARD.md] [--stage brief|pitch|room|huddle|final|fast|ready] [--spec SPEC.json] [--today YYYY-MM-DD] [--format text|json]
 
 JSON: {"ok", "stage", "counts": {"error", "fix"}, "findings": [{"code", "severity", "where", "message"}]}
 Exit codes: 0 clear, 1 FIX findings only, 2 at least one error, 64 usage, 65 unreadable file or JSON, 66 file missing,
@@ -49,7 +51,8 @@ except ImportError as exc:      # the shared package is synced next to the scrip
 
 paths.ensure_utf8_stdio()
 
-STAGES = ("brief", "pitch", "room", "huddle", "final")
+GUIDED_STAGES = ("brief", "pitch", "room", "huddle", "final")
+STAGES = GUIDED_STAGES + ("fast", "ready")
 MARKER = "<!-- cs-board v1 -->"
 SECTIONS = ("brief", "pitch", "personas", "duel", "editor", "swipe", "review", "huddle", "decisions", "cards", "open", "log")
 REQUIRED = {
@@ -62,6 +65,7 @@ REQUIRED = {
 LOOP_LIMITS = {"pitch": 1, "duel": 1, "editor": 2, "swipe": 1, "script": 2, "huddle": 1, "review": 2}
 LOG_KEYS = ("director", "pitch", "duel", "swipe", "editor", "design")
 LOG_KEYS_AT = {"pitch": ("director", "pitch"), "room": ("director", "pitch", "duel", "swipe", "editor"), "huddle": ("director", "pitch", "duel", "swipe", "editor"), "final": LOG_KEYS}
+LOG_KEYS_AT.update(fast=("director", "editor", "design"), ready=("director", "design"))
 LOG_MAX_CHARS = 160
 MOVES = ("big-number", "enemy", "reveal", "mirror", "before-after", "cheat-sheet", "insider-leak", "confession", "free-vs-paid", "countdown")
 FAMILIES = {"P%d" % i for i in range(1, 17)} | {"F%d" % i for i in range(17, 24)} | {"S1", "S2", "S3"}
@@ -192,8 +196,8 @@ def check_meta(header, bodies, stage, rep):
         rep.error("T02", "board", "digits must be western or arabic-indic (found %r)" % pairs.get("digits"))
     slides = pairs.get("slides")
     if STAGES.index(stage) >= STAGES.index("room"):
-        if not slides or not slides.isdigit() or not 1 <= int(slides) <= 20:
-            rep.error("T03", "board", "`slides: N` (1 to 20) is required from the writers' room on")
+        if not slides or not slides.isdigit() or not 4 <= int(slides) <= 10:
+            rep.error("T03", "board", "`slides: N` (4 to 10, cover included) is required from the writers' room on; 4 to 6 is fine")
     loops = re.search(r"^loops\s*:\s*(.+)$", header, re.M)
     if not loops:
         rep.error("T04", "board", "the `loops:` line is missing")
@@ -475,7 +479,7 @@ def check_duel(body, rep):
 
 def check_editor(body, rep):
     fields = labelled(body)
-    verdict = fields.get("الحكم", "")
+    verdict = verdict_word(fields.get("الحكم", ""))
     if verdict not in ("PASS", "VETO"):
         rep.error("T50", "editor", "«الحكم:» must be PASS or VETO")
     elif verdict == "VETO":
@@ -579,6 +583,36 @@ def check_swipe(body, personas, slides_meta, rep):
     return out
 
 
+def verdict_word(text):
+    """Read the verdict token, leaving a following explanation to the human reviewer."""
+    match = re.match(r"^([A-Za-z]+)\b", text.strip())
+    return match.group(1) if match else ""
+
+
+def select_review(body, stage, rep):
+    """Keep script and final reviews on one board, uniquely keyed by their phase line."""
+    lines = body.splitlines(keepends=True)
+    starts = [i for i, line in enumerate(lines) if "المرحلة" in labelled(line)]
+    blocks = ["".join(lines[start:starts[i + 1] if i + 1 < len(starts) else len(lines)])
+              for i, start in enumerate(starts)]
+    reviews = {}
+    for block in blocks:
+        phase = labelled(block).get("المرحلة")
+        if phase is None:
+            continue
+        if phase not in ("script", "final"):
+            rep.error("T70", "review", "«المرحلة:» must be script or final")
+        elif phase in reviews:
+            rep.error("T06", "review", "review phase %s appears twice" % phase)
+        else:
+            reviews[phase] = block
+    needed = "final" if stage == "final" else "script"
+    if needed not in reviews:
+        rep.error("T70", "review", "stage %s needs «المرحلة: %s»" % (stage, needed))
+        return None
+    return reviews[needed]
+
+
 def check_review(body, swipe, stage, rep, open_ids=(), promises=0):
     fields = labelled(body)
     phase = fields.get("المرحلة", "")
@@ -597,7 +631,7 @@ def check_review(body, swipe, stage, rep, open_ids=(), promises=0):
     if missing:
         rep.error("T71", "review", "lens lines missing or malformed (`الفكرة 4 — evidence`): %s" % "، ".join(missing))
         return
-    verdict = fields.get("الحكم", "")
+    verdict = verdict_word(fields.get("الحكم", ""))
     if verdict not in ("SHIP", "REVISE", "KILL"):
         rep.error("T72", "review", "«الحكم:» must be SHIP, REVISE or KILL")
         return
@@ -627,8 +661,8 @@ def check_review(body, swipe, stage, rep, open_ids=(), promises=0):
         m130 = re.search(r"غلاف 130px\s*:\s*(\d)\s*من\s*3", body)
         if not m130:
             rep.error("T75", "review", "the final review needs «غلاف 130px: n من 3 وقفوا»")
-        qa = fields.get("QA", "")
-        ad = fields.get("المدير الفني", "")
+        qa = verdict_word(fields.get("QA", ""))
+        ad = verdict_word(fields.get("المدير الفني", ""))
         if qa not in ("ok", "FIX", "BLOCK"):
             rep.error("T75", "review", "«QA:» must be ok, FIX or BLOCK")
         if ad not in ("PASS", "FIX", "BLOCK"):
@@ -695,7 +729,9 @@ def check_huddle(body, rep):
     elif recipe == "calm":
         rep.fix("T82", "huddle", "calm is only for creators who asked for no motion; motion is on by default")
     times = []
-    for line in body.split("\n"):
+    planned = re.split(r"^[ \t]*(?:#{1,6}[ \t]+)?(?:اللقطات المقاسة(?: من MP4)?|Measured frames(?: from MP4)?)[ \t]*:?[ \t]*$",
+                       body, maxsplit=1, flags=re.M | re.I)[0]
+    for line in planned.split("\n"):
         m = re.match(r"^\s*(\d+(?:\.\d+)?)\s*s\s*[—-]\s*(\S.*)$", line)
         if m:
             times.append(float(m.group(1)))
@@ -756,6 +792,19 @@ def check_log_entries(entries, stage, rep, where):
     for need in LOG_KEYS_AT.get(stage, ()):
         if need not in keys:
             rep.error("T97", where, "the %s line is missing (required from this stage)" % need)
+    if stage in ("fast", "ready"):
+        if set(keys) & {"pitch", "duel", "swipe"}:
+            rep.error("T99", where, "this lane ran no pitch, duel or swipe panel; do not invent their log lines")
+        for key, value in entries:
+            if key == "editor" and verdict_word(value) != "PASS":
+                rep.error("T51", where, "the editor must report PASS; an unresolved VETO stops the post")
+            if key == "design":
+                qa = re.search(r"(?:\bQA|الجودة)\s*[:：]\s*(ok|PASS|FIX|BLOCK|سليم|تعديل|موقوف)\b", value)
+                director = re.search(r"(?:المدير(?: الإبداعي)?|director)\s*[:：]\s*(SHIP|REVISE|KILL|جاهز|تعديل|مرفوض)\b", value)
+                if not qa or not director:
+                    rep.error("T99", where, "the design line names both QA/الجودة and the director's verdict, in English or Arabic")
+                elif qa.group(1) in ("BLOCK", "موقوف") or director.group(1) not in ("SHIP", "جاهز"):
+                    rep.error("T99", where, "delivery needs the QA veto cleared and the director's SHIP")
 
 
 def check_log(body, stage, rep):
@@ -778,7 +827,13 @@ def check_spec(path, stage, rep):
     except ValueError as exc:
         sys.stderr.write("cs-error: E_SCHEMA: %s is not JSON: %s\n" % (path, exc))
         sys.exit(65)
-    log = (spec.get("ext") or {}).get("teamLog") if isinstance(spec, dict) else None
+    ext = spec.get("ext") if isinstance(spec, dict) else None
+    log = ext.get("teamLog") if isinstance(ext, dict) else None
+    if stage in ("fast", "ready"):
+        slides = spec.get("slides") if isinstance(spec, dict) else None
+        single = isinstance(spec, dict) and spec.get("format") == "single"
+        if not isinstance(slides, list) or not (len(slides) == 1 if single else 4 <= len(slides) <= 10):
+            rep.error("T03", "spec", "a carousel has 4 to 10 slides, cover included (a single post has 1)")
     if log is None:
         if stage in LOG_KEYS_AT:
             rep.error("T98", "spec", "spec.ext.teamLog is missing: the Studio shows the team log from it")
@@ -792,6 +847,12 @@ def check_spec(path, stage, rep):
 # ----------------------------------------------------------------------------- driver
 def check_board(text, stage, spec_path=None, today=None):
     rep = Report()
+    if stage in ("fast", "ready"):
+        if spec_path:
+            check_spec(spec_path, stage, rep)
+        else:
+            rep.error("T98", "spec", "--spec is required for the fast and ready stages")
+        return rep
     text = norm(text)
     header, bodies, order = split_sections(text)
     meta = check_meta(header, bodies, stage, rep)
@@ -799,7 +860,7 @@ def check_board(text, stage, spec_path=None, today=None):
     for sid in order:
         if sid not in SECTIONS:
             rep.fix("T06", sid, "unknown section id {#%s}" % sid)
-        if sid in seen:
+        if sid in seen and sid != "review":
             rep.error("T06", sid, "section {#%s} appears twice" % sid)
         seen.add(sid)
     upto = STAGES.index(stage)
@@ -819,7 +880,9 @@ def check_board(text, stage, spec_path=None, today=None):
         check_editor(bodies["editor"], rep)
     swipe = check_swipe(bodies["swipe"], names, slides_meta, rep) if "swipe" in bodies else {}
     if "review" in bodies:
-        check_review(bodies["review"], swipe, stage, rep, open_ids, promises)
+        review = select_review(bodies["review"], stage, rep)
+        if review is not None:
+            check_review(review, swipe, stage, rep, open_ids, promises)
     if "huddle" in bodies:
         check_huddle(bodies["huddle"], rep)
     if "decisions" in bodies:
@@ -841,14 +904,18 @@ class _Parser(argparse.ArgumentParser):
 
 def main(argv=None):
     ap = _Parser(prog="board_check.py", description=__doc__.split("\n\n")[0])
-    ap.add_argument("board", help="the board.md of the post")
+    ap.add_argument("board", nargs="?", help="the board.md of the post (guided stages only)")
     ap.add_argument("--stage", choices=STAGES, default="final", help="the stage the board must have reached (default: final)")
     ap.add_argument("--spec", help="spec.json: also check spec.ext.teamLog (the Studio's team log)")
     ap.add_argument("--today", help="the day the platform facts are judged on, YYYY-MM-DD (default: today)")
     ap.add_argument("--format", choices=("text", "json"), default="text")
     args = ap.parse_args(argv)
+    if not args.board and args.stage in GUIDED_STAGES:
+        ap.error("BOARD.md is required for a guided stage")
+    if args.stage in ("fast", "ready") and not args.spec:
+        ap.error("--spec is required for the fast and ready stages")
     try:
-        raw = Path(args.board).read_text(encoding="utf-8")
+        raw = Path(args.board).read_text(encoding="utf-8") if args.board else ""
     except FileNotFoundError:
         sys.stderr.write("cs-error: E_NO_INPUT: %s does not exist\n" % args.board)
         return 66

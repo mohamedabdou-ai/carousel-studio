@@ -4,6 +4,14 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 
 ## [Unreleased]
 
+### Team handoffs and review
+
+- Source material now uses the team fast lane, with three fitted cover choices and a style sheet before design or pictures start. Short ideas stay within 4 to 10 slides, cover included.
+- Every lane gets the QA producer's full export and veto, then a fresh Creative Director review before design approval. Ready scripts keep their words and explicitly kept endings; absent audience panels are never invented.
+- Specialist handoffs name script paths, write permissions and one spec writer. Named free blocks merge atomically into the latest spec without replaying an old cover or overwriting newer copy.
+- Production boards retain separate script and final reviews, accept explained verdicts and measured video-frame times, and check compact fast/ready logs without demanding rounds that did not run.
+- Standing style and manual/tool publishing preferences can be remembered per brand. Publishing follows the creator's chosen tool's own instructions and permission each time; no platform or publishing tool is assumed.
+
 ### Publishing limits and checks
 
 - Carousels stop at 10 slides including the still or video cover. Short posts of 4 to 6 slides no longer receive a slide-count FIX, and the Studio explains why an eleventh slide cannot be added, duplicated or split.
@@ -31,7 +39,7 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 
 - The art director owns every slide, the cover included, fixes empty bands, weak hierarchy, text on media and crowding without being asked, and never leaves a giant word that says nothing.
 - «غيّر الستايل» with no name shows the other styles on your own cover and slide 2 to pick from.
-- «انشر» posts to Instagram only unless you name another platform, with the moving cover first.
+- After design approval, the plugin asks once where and how you want to post, and remembers manual files or your connected tool. It does not publish itself or bundle tool-specific recipes.
 
 ### Pictures on slides
 

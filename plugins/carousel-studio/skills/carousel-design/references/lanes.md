@@ -2,6 +2,8 @@
 
 One engine, three places to run it. Pick the lane from what the session can do, say which one you are using only when it changes what the user can get, and never assume a capability you have not seen.
 
+These are execution surfaces, not the content router's four lanes. In every content lane the Creative Director leads, hook/style lock precedes art/pictures, QA owns the final export and veto, and a fresh Creative Director reviews before Design handoff. Art runs only its design-review render. Use absolute dispatch paths and one spec pen (`carousel-create/references/rounds.md` section 1). Pull creator Studio edits before writes after checkpoints.
+
 | Lane | Where | Can do | Cannot do |
 |---|---|---|---|
 | `studio` | the user's browser, on any device | render, edit in place, restyle, QA, PNG / JPEG / PDF / ZIP, MP4 cover | run Python or Node |
@@ -46,6 +48,8 @@ The design huddle's **pre-flight** exports nothing: `node <skill>/scripts/render
 
 ### Pictures on slides
 Choose picture slides before free design. The local path is `plates.mjs slots --dir POST --format json`, prompts using the measured ratio, approved tool results saved under plates/, inspection and plates/plates.json, `plates.mjs apply`, `check`, then render. `restyle` remeasures after text/style changes; `apply` restores pictures after spec rebuilds. Still images are fitted and embedded by canvas, with no image packages or FFmpeg. Details and commands: `plates.md`. Without a local browser, use the hosted asset workflow when available or keep the preset design; do not claim a local frame measurement.
+
+Art chooses slide types after hook/style lock; visual artist runs slots, writes prompts/manifest and inspects every original. Director obtains creator approval and calls the connected tool, then runs apply. No ad-hoc picture fitting. Guided motion's encoded-frame inspection happens only in round 5 after QA's MP4 exists. Free design merges named blocks using `merge-free.mjs`, never a saved whole-spec rewrite.
 
 ### Exit codes (all scripts)
 | Code | Meaning |

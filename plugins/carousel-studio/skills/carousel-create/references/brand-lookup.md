@@ -1,6 +1,6 @@
 # Brand lookup
 
-Every post is written for a brand: a creator, a business or a client. Find it before you write, take only what you need, and never change it from here (brand-setup owns the profile).
+Every post is written for a brand: a creator, business or client. Find it before writing, take only what you need. Brand-setup owns profile changes, including standing style/publishing choices explicitly made by the creator.
 
 ## Where to look, in this order
 1. **An attachment** in this conversation: `brand.json`, a Brand Book PDF, or a pasted brand card.
@@ -34,7 +34,9 @@ With only the capsule you have the dialect, digits, swipe cue, voice summary and
 | `voice.tone`, `use`, `avoid`, `ctaStyle`, `samples` | how the copy sounds. Learn from the samples; never paste a line from them into a new post |
 | `voice.allow` | words the proofreader must not flag (dialect spellings the user confirmed) |
 | `voice.fingerprint` | `voice_check.py` |
-| `visual.presetId` | the starting `style.presetId` (`<id>@1.0`) |
+| `visual.presetId` | provisional `style.presetId` (`<id>@1.0`) and tie-breaker for the art shortlist, never a silent final choice |
+| `ext.styleChoice` | `ask` by default; a shipped preset id only after an explicit standing choice; skips only the style question at checkpoint A (guided checkpoint 2 / ready before art) |
+| `ext.publish` | remembered preference `manual` or `tool`; skips the preference question, never grants permission or selects accounts/platforms |
 | `strategy.pillars` | pillar fit when scoring angles |
 | `hooks.familyPriors`, `hooks.history` | angle and hook priors; no repeat of the last 2 CTAs or families; the 30 most recent hooks for similarity |
 | `creativeMemory` | the creative team's memory (the last 30 approved posts: idea, winning cover, hook family, move, which pitch won, preset, motion recipe, intent, CTA kind, the panel's result, series, what the creator loved or rejected); the director reads it at the brief so no family, move or recipe repeats three posts running, the CTA kind differs from the last two and no recent cover is echoed (`brand_io.py memory`) |
@@ -46,7 +48,19 @@ With only the capsule you have the dialect, digits, swipe cue, voice summary and
 - Everything else (palette, fonts, handle) belongs to the brand; a user who wants a one-off change makes it in the Studio as a post override.
 
 ## With no brand
-Ask one numbered question for the dialect («1 مصري  2 خليجي  3 شامي  4 فصحى مبسّطة  5 English») and, if the post will be published, the Instagram handle (it is printed in the slide header; brand-setup can create a minimal brand that holds it). Defaults: Western digits, `appLanguage: "mixed"` with the `neutral` swipe cue (the Studio explains it and lets the user change it), preset `swiss`, no fingerprint. Say once that a saved brand makes the next post faster and more consistent; do not repeat it.
+Ask one numbered question for dialect and, if a handle is wanted on slides, the real handle. Brand-setup can make a minimal profile. Defaults: Western digits, `appLanguage: mixed`, `neutral` swipe cue, provisional `creator@1.0`, no fingerprint. Only `creator`, `notebook`, `poster` ship. Rank by fit/pre-flight, default only breaks a tie; show the style sheet before design. Say once that a saved brand makes the next post faster.
+
+## Standing choices
+The art director's brief supplies a ranked recommendation for the three shipped styles; before the lock the director runs that as a read-only role pass, no art dispatch/design. The creator chooses on `render.mjs --style-sheet` with the fitted covers. A brief's `الاتجاه البصري` is a direction, not a preset. A brand default is never “always this style”. Only an explicit standing choice (“always this one”) stores `brand.ext.styleChoice` as `creator`, `notebook` or `poster`; missing means `ask`. Then checkpoint A skips only the style half. A one-post override does not change the standing choice; asking to choose each time stores `ask`.
+
+After approval, ask once in the creator's dialect whether they want manual files or their connected publishing tool. Save `brand.ext.publish` as `manual` or `tool`; missing means ask. A remembered `tool` preference still requires the creator's word each use, named accounts/platforms, and that tool's own instructions/limits. Never assume a platform or ship a tool-specific recipe.
+
+Use brand-setup, with the canonical workspace (`--dir ROOT` when needed):
+```text
+python <brand-setup>/scripts/brand_io.py set --slug S --path ext.styleChoice --value notebook
+python <brand-setup>/scripts/brand_io.py set --slug S --path ext.publish --value manual
+```
+Both fit the existing unrestricted `brand.ext` object; no schema change is needed. With only a capsule/no persistent profile, retain the answer for the session and do not claim durable memory.
 
 ## Privacy
 Use the profile, not people. Do not copy private details (client names, phone numbers, emails) into copy, specs or captions; use roles. Brand data stays in the user's own artifact or folder; do not send it anywhere, and do not echo secrets (a pasted key is never used or stored).

@@ -1,6 +1,6 @@
 # Posting guide: what to tell the user
 
-v1 prepares a **publishing kit** for manual posting. It does not post for the user. The kit contains `posting-guide.md`, built from `data/posting-guide.json` in the post's dialect, so you rarely need to repeat it: say the first step, flag anything special, and point to the file.
+The plugin prepares a **publishing kit**; it does not publish or ship anything specific to a publishing tool. After creator design approval, memory/history and the kit, ask once in their dialect: use a connected publishing tool, or files to post by hand? Read `brand.ext.publish` first: `manual`/`tool` skips this preference question. Store the answer through brand-setup. Never assume a platform. The kit's guide comes from `data/posting-guide.json` in the post's dialect.
 
 ## 1. The four steps (the guide's cards)
 1. **Pick the files in order.** New post → select multiple → tap the files in order: `3x4/01-cover.mp4` first (or `01-cover.png` for a still cover; never both), then `02.png`, `03.png` … to the end. A carousel video has no cover picker, which is why frame 0 of the video is the finished cover.
@@ -22,8 +22,10 @@ At most 10 slides, including the still or video cover: Instagram’s publishing 
 ## 3. Timing
 Use the plan's slot time. With no plan: evening 20:00–23:00 local, then the user's own best hours once they have them. In Ramadan engagement moves to after iftar and late night. Do not promise reach from a time.
 
-## 4. Schedulers and APIs
-Instagram's own Publishing API takes JPEG only, crops every carousel item to the first one, and allows photos and videos mixed (at most 10 items, cover included). Schedulers differ, so read the connected tool's photo requirements once instead of assuming: some accept PNG and publish 3:4 (1080×1440) at its own ratio (send the `3x4/` files), others take only 4:5 to 1.91:1 (send the `4x5/` folder). Some take a mixed carousel (the cover MP4 first, then the slides, 10 items at most); others publish photo carousels only, and then the carousel goes with the still cover (`01-cover.png`) while the moving cover needs the app (step 1). Check the tool's documentation, say the result in one line, and never call the whole post manual when it can go through the tool (checked 24 Oct 2026). Upload-Post takes the mixed carousel: upload the MP4 with `create_media_upload` (media type video), then pass it first in `upload_photos` → `photosPathsOrUrls`, before the slide JPEGs; it posts as one carousel with the moving cover (tested on a real account, 25 Oct 2026). It takes one alt text for the whole post, so tell the user to add each slide's alt text from `alt-text.txt` in the app after posting. The API has an `is_ai_generated` flag; set it whenever any asset has `aiGenerated: true`. Direct publishing through a connected scheduler, with the user's explicit approval each time, is planned for a later update; never send a post anywhere on your own.
+## 4. A connected publishing tool
+Read the creator's tool's own instructions and current limits from that tool, then follow them on the creator's word **each time**, only for the accounts and platforms they name. A saved `tool` preference is not permission to send. Never choose a service, account or platform for them, and never invent a tool call or reuse a bundled recipe.
+
+Check supported media, ratio, mixed photo/video, alt text and AI labelling against the actual tool. The kit offers 3:4 PNG (1080×1440) and 4:5 JPEG (1080×1350), plus the motion cover. Keep one ratio, at most 10 items including cover; put MP4 first when mixed media is supported, otherwise use the still cover with the creator's agreement. Preserve caption/alt text and AI-label reminder within the tool's limits; say plainly when a manual step remains. If no named tool is available, give the four manual steps instead of claiming publication.
 
 ## 5. Things to repeat when relevant
 - **Original content**: a repurposed post must be transformed, not reposted; attribute quoted material in the caption (the originality gate C10 compares the post with the user's sources).

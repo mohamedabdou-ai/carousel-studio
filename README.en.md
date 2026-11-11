@@ -193,7 +193,7 @@ Never. Every Arabic letter is set in real fonts by the engine. Image tools, if y
 
 <details><summary><b>Does it post to Instagram for me?</b></summary>
 
-Not yet. You post the kit yourself, by hand or with a scheduler that accepts 3:4 slides and an MP4 first item. Direct publishing is coming soon.
+The plugin prepares files and does not publish itself. After approval it asks once where and how you want to post: manually or with your connected tool. It remembers the preference, follows that tool's own instructions and limits, and requires your word each use for the accounts and platforms you name.
 
 </details>
 
@@ -210,7 +210,7 @@ You do. You own everything you create with Carousel Studio, and nothing you expo
 ## Coming soon
 
 - **Next version:** three more styles, more cover stories, and occasion packs starting with Ramadan.
-- **After that:** direct publishing through a scheduler with your approval, handoff to Canva, account analytics, Maghrebi Darija, and Stories and LinkedIn sizes.
+- **After that:** handoff to Canva, account analytics, Maghrebi Darija, and Stories and LinkedIn sizes. Publishing with your connected tool follows its own instructions and your choices; no tool-specific recipe is bundled.
 
 Install it now and every new feature reaches you with one update. What changed in each version is in the [changelog](CHANGELOG.md).
 

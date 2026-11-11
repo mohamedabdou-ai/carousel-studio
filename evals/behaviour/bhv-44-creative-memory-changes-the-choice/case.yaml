@@ -55,7 +55,7 @@ execution:
        "family": "P4",
        "move": "enemy",
        "pitch": "bold",
-       "preset": "swiss",
+       "preset": "creator",
        "motion": "stamp",
        "intent": "reach",
        "cta": "save",
@@ -70,7 +70,7 @@ execution:
        "family": "P4",
        "move": "enemy",
        "pitch": "bold",
-       "preset": "swiss",
+       "preset": "creator",
        "motion": "stamp",
        "intent": "reach",
        "cta": "question",
@@ -81,7 +81,7 @@ execution:
     }
     ```
 
-    بسرعة: اعملي كاروسيل أبعته لصاحبي اللي بيرُدّ على كل تعليق بنفسه وبيضيّع ساعتين في اليوم. وبعد ما التصميم يخلص اعتبرني وافقت عليه وسجّل البوست في ذاكرة البراند.
+    بسرعة: اعملي كاروسيل أبعته لصاحبي اللي بيرُدّ على كل تعليق بنفسه وبيضيّع ساعتين في اليوم. الهوك والستايل اختارهما زي ما تشوف وقل لي اختيارك قبل التصميم. وبعد ما التصميم يخلص اعتبرني وافقت عليه وسجّل البوست في ذاكرة البراند.
   append_system_prompt: |
     This is an automated evaluation of the Carousel Studio plugin, not a live session. There is no Artifact tool, no network access and no connected image, video or design tool. Save every file you create in the current working directory and never in a home folder: name the post spec spec.json, the production board board.md, a brand profile brand.json and a plan plan-YYYY-MM.json, and when a script offers a workspace or root option (for example brand_io.py --dir) point it at the current directory. Subagents may be unavailable: when they are, run each team role as an explicit role pass, as the skill says. Otherwise answer the user exactly as you normally would.
   max_turns: 80
@@ -101,16 +101,10 @@ graders:
     min: 1
     weight: 2
   - type: regex
-    name: no-flip-family-in-the-pitch
-    pattern: '\|\s*(آمن|جريء)\s*\|[^\n]*\|\s*P4\s*\|'
+    name: no-repeated-family-on-the-cover
+    pattern: '"family"\s*:\s*"P4"'
     match: not_contains
-    target: {source: file, path: board.md}
-    weight: 2
-  - type: regex
-    name: no-enemy-move-in-the-pitch
-    pattern: '\|\s*(آمن|جريء)\s*\|[^\n]*\|\s*enemy\s*\|'
-    match: not_contains
-    target: {source: file, path: board.md}
+    target: {source: file, path: spec.json}
     weight: 2
   - type: regex
     name: no-stamp-recipe
@@ -127,13 +121,13 @@ graders:
   - type: llm
     name: rests-what-the-last-two-posts-used
     criteria: |
-      The creative brief and the pitch avoid the hook family (P4), the creative move (enemy) and the motion recipe (stamp) that both of the last two posts used, and the reply or board says why (the memory). The call to action is not of the kinds the last two posts used (save, question), and no cover echoes «بطّل تكتب برومبتات» or «مش أداة جديدة… ده نظام».
+      The fast brief and chosen cover avoid the hook family (P4), the creative move (enemy) and the motion recipe (stamp) that both of the last two posts used, and the reply or board says why (the memory). The call to action is not of the kinds the last two posts used (save, question), and no cover echoes «بطّل تكتب برومبتات» or «مش أداة جديدة… ده نظام».
     focus: trace
     weight: 2
   - type: llm
     name: the-new-entry-is-complete
     criteria: |
-      brands/content-workshop/brand.json now holds a third creativeMemory entry for this post with the idea, the winning cover text, the hook family (not P4), the move (not enemy), which pitch won, the preset, the motion recipe (not stamp), the intent, a CTA kind that is neither save nor question, the panel's result and the verdict.
+      brands/content-workshop/brand.json now holds a third creativeMemory entry for this post with the idea, the winning cover text, the hook family (not P4), the move (not enemy), the preset, the motion recipe (not stamp), the intent, a CTA kind that is neither save nor question, the verdict, with pitch/panel fields absent because team fast did not run them.
     focus: {source: file, path: brands/content-workshop/brand.json}
     weight: 2
   - type: regex
@@ -141,4 +135,4 @@ graders:
     pattern: 'محمد عبده|Mohamed Abdou'
     match: not_contains
     weight: 2
-expected_outcome: "The pitch avoids what the last two posts used and the finished post is written back to creativeMemory."
+expected_outcome: "Team fast rests repeated choices and records approved memory with pitch/panel fields absent."
