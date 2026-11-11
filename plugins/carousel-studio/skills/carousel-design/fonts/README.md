@@ -23,7 +23,6 @@ The open-source typefaces Carousel Studio draws with. Every font file here is an
 | El Messiri | `el-messiri` | arabic+latin | 400-700 | variable, 135 KB | heritage |
 | Noto Sans Arabic | `noto-sans-arabic` | arabic | 100-900 | variable, 825 KB | brand choice |
 | Cairo | `cairo` | arabic+latin | 200-900 | variable, 585 KB | brand choice |
-| Rubik | `rubik` | arabic+latin | 300-900 | variable, 351 KB | brand choice |
 | IBM Plex Sans | `ibm-plex-sans` | latin | 100-700 | variable, 525 KB | swiss |
 | Inter | `inter` | latin | 100-900 | variable, 856 KB | interface |
 

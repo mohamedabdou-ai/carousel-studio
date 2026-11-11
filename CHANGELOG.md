@@ -24,6 +24,16 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 - The counter shows the rest of the title before the number counts, and large numbers count up from about a third instead of zero.
 - The centered story shows its title within about a second and a half, instead of holding a nearly empty card.
 
+## [1.1.1] - 2026-11-05
+
+### Fonts
+
+- Rubik is no longer included. Every style keeps its own fonts, and Cairo stays available for a brand that wants a common look.
+
+### بالعربي
+
+لم يعد خط Rubik ضمن الإضافة. كل ستايل يحتفظ بخطوطه، وخط Cairo متاح للبراند الذي يريد شكلًا مألوفًا.
+
 ## [1.1.0] - 2026-10-26
 
 First public release.

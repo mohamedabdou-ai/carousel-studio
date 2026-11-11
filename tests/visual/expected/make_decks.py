@@ -34,7 +34,7 @@ def deck(id_, dialect, preset, topic, slides, sources=None, digits="western", re
     d["sources"] = sources or []
     d["captionPack"]["perSlide"] = [("line %d" % i) for i, _ in enumerate(slides, 1)]
     d["captionPack"]["alt"] = [("alt %d" % i) for i, _ in enumerate(slides, 1)]
-    d["qa"] = {"status": "pass", "runAt": "2026-10-22T09:20:00Z", "engine": "cs-1.1.0", "results": []}
+    d["qa"] = {"status": "pass", "runAt": "2026-10-22T09:20:00Z", "engine": "cs-1.1.1", "results": []}
     return d
 
 

@@ -7,14 +7,14 @@
   },
   "metadata": {
     "description": "إضافات Claude مجانية ومفتوحة المصدر من محمد عبده. كاروسيل ستوديو: فريق من وكلاء الذكاء الاصطناعي يصنع لك الكاروسيل العربي، لإثراء المحتوى العربي.",
-    "version": "1.1.0"
+    "version": "1.1.1"
   },
   "plugins": [
     {
       "name": "carousel-studio",
       "source": "./plugins/carousel-studio",
       "description": "فريق من وكلاء الذكاء الاصطناعي يصنع لك الكاروسيل العربي داخل Claude، من الفكرة حتى النشر، بلهجتك وبعربي سليم حرفًا حرفًا، لإثراء المحتوى العربي.",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "author": {
         "name": "Mohamed Abdou",
         "url": "https://store.pyraai.cloud"

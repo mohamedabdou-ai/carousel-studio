@@ -30,12 +30,13 @@ Carousel Studio is a full writing and design team inside Claude, built for Arabi
 
 ## Install
 
-In the Claude app (desktop or web), open **Customize**, then **Plugins**, find **Carousel Studio** in **Discover** and click **Add**. It is saved to your account, so it follows you to the desktop app, the browser, your phone, Cowork and Claude Code.
+In the Claude app (desktop or web), open **Customize**, then **Plugins**. Click **Add**, then **Add marketplace**, then **Add from a repository**, and paste `mohamedabdou-ai/carousel-studio`. **Carousel Studio** then shows up in **Discover**: open it and click **Add**. It is saved to your account, so it follows you to the desktop app, the browser, your phone, Cowork and Claude Code. Turn on **Sync automatically** for the repository to get new versions on their own.
 
 From a terminal in Claude Code:
 
 ```text
-/plugin install carousel-studio --marketplace mohamedabdou-ai/carousel-studio
+/plugin marketplace add mohamedabdou-ai/carousel-studio
+/plugin install carousel-studio@mohamed-abdou
 ```
 
 ## How to use it

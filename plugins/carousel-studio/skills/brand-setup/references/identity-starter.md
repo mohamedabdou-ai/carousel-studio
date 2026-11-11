@@ -52,7 +52,7 @@ A reference-based pick (`reference-analysis.md`) overrides this table: put the n
 | interface | `readex-pro` | `readex-pro` | `inter` |
 | heritage | `reem-kufi` | `el-messiri` | `el-messiri` |
 
-Three neutral pairings the user can switch to on any tile: **Plex** (`ibm-plex-sans-arabic` with `ibm-plex-sans`), **Kufi** (`noto-kufi-arabic` with `noto-sans-arabic` and `inter`), **Alexandria** (`alexandria` with `readex-pro` and `inter`). `cairo` and `rubik` are valid choices when the user insists, but they are the most used fonts on Arabic Instagram: say once that they look "default". A font that is not in the registry is never suggested.
+Three neutral pairings the user can switch to on any tile: **Plex** (`ibm-plex-sans-arabic` with `ibm-plex-sans`), **Kufi** (`noto-kufi-arabic` with `noto-sans-arabic` and `inter`), **Alexandria** (`alexandria` with `readex-pro` and `inter`). `cairo` is a valid choice when the user insists, but it is one of the most used fonts on Arabic Instagram: say once that it looks "default". A font that is not in the registry is never suggested.
 
 ## 4b. The sample hook
 Use the user's own cover line if they have one. Otherwise write one short cover line from their niche

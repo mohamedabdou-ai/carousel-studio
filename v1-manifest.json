@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "What version 1.0 ships and what it leaves for later. tools/release.py compares the lists with the tree and refuses to release a tree that disagrees with them. An item that was not solid by the end of the build is listed under 'deferred' and is neither shipped nor half-shipped (decision Q36); README.md and CHANGELOG.md repeat the deferred list.",
   "skills": [
     "arabic-proofread",
