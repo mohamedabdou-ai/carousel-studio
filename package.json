@@ -35,6 +35,7 @@
     "test:visual": "node --test \"tests/unit/js/visual/*.test.mjs\"",
     "test:art": "node tests/unit/js/art/run.mjs",
     "test:icons": "node --test \"tests/unit/js/icons/*.test.mjs\"",
+    "test:rendered": "node --test \"tests/unit/js/qav/*.test.mjs\" \"tests/unit/js/vui/*.test.mjs\" tests/unit/js/core/fix-d.test.mjs",
     "build:icons": "node tools/build-icons.mjs --all",
     "build:icons:check": "node tools/build-icons.mjs --check"
   },
