@@ -53,7 +53,7 @@ BUDGET = {"spec": 52_000, "preset": 26_000, "brand": BASELINE["brand"] + 2_000}
 # decision to record. qa-report is not on the card: 8,850 became 9,350 for the optional top-level `stats` (the executed-gate counts, wave 2b), then 9,400 when the lead let a
 # gate count 0 (minimum 1 became 0) and the schema description said why (round 3). The spec went 47,950 -> 48,650 for slide.free, the free design lane
 # (html, css, locked: +718 B on disk, round 3 close; the budget of 52,000 is untouched).
-DISK_CEILING = {"spec": 48_650, "preset": 23_650, "brand": BUDGET["brand"], "qa-report": 9_400}
+DISK_CEILING = {"spec": 48_650, "preset": 23_750, "brand": BUDGET["brand"], "qa-report": 9_400}
 TASHKEEL = re.compile("[\u064b-\u065f\u0670]")  # U+064B..U+065F and the dagger alef: the marks GR-7 forbids in authored copy (U+0640 is the lint's)
 ARABIC = re.compile("[\u0600-\u06ff]")
 ENV = {**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}

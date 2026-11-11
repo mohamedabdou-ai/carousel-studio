@@ -314,6 +314,14 @@ SLIDE_LINE = re.compile(r'^(\s*)\{ "id": "s(\d+)", "n": (\d+), "type": "([a-z-]+
 
 
 def showcase_types(text: str) -> list[str]:
+    """The types the showcase file demonstrates. Since the 10-slide limit the publishable post (`slides`) is short and the full layout
+    catalogue lives in `ext.archetypeSamples`, one sample per type, in registry order: that catalogue is the deck the tests enumerate."""
+    try:
+        samples = (json.loads(text).get("ext") or {}).get("archetypeSamples")
+    except ValueError:
+        samples = None
+    if isinstance(samples, dict) and samples:
+        return [str(v.get("type") or k) if isinstance(v, dict) else str(k) for k, v in samples.items()]
     return [m.group(4) for m in (SLIDE_LINE.match(ln) for ln in text.split("\n")) if m]
 
 

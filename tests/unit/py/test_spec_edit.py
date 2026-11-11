@@ -184,18 +184,29 @@ class EditorTests(unittest.TestCase):
         self.assertEqual(self.read()["meta"]["studioUrl"], "saved-studio")
         self.assertTrue(self.read()["ext"]["reviewed"])
 
-    def test_missing_cta_kept_explicitly_without_hiding_the_gate(self):
+    def test_missing_cta_kept_explicitly_is_the_creators_override(self):
+        """«زي ما هو» on a script that ends without a call to action: the gate stays in the report, marked as the creator's
+        override, so the Studio and the export honour it. Nothing is invented and nothing is waived without the explicit command."""
         self.script.write_text(PASTE.replace("احفظ القائمة.", "هنا تنتهي النتيجة."), encoding="utf-8", newline="\n")
         # Start a fresh post; saved deliberate edits belong to their own structure.
         self.spec.unlink()
         self.record.unlink()
         self.parse()
-        res = self.edit("cta", "--keep", "--reason", "المنشئ اختار النص كما هو")
+        before = self.read()
+        self.assertTrue(any(r["rule"] == "C4.count" and not r.get("overridden") for r in before["qa"]["results"]))
+        self.edit("cta", "--keep", "--reason", "المنشئ اختار النص كما هو")
+        self.edit("cta", "--keep", "--reason", "المنشئ اختار النص كما هو")  # a repeat replaces the record, it does not stack
         s = self.read()
         self.assertFalse(any(sl.get("cta") for sl in s["slides"]))
         self.assertIn("keepWithoutCta", s["ext"]["readyScript"])
-        self.assertTrue(any(r["rule"] == "C4.count" and not r.get("overridden") for r in s["qa"]["results"]))
-        self.assertIn("BLOCK", res.stdout)
+        kept = {r["rule"]: r.get("overridden") for r in s["qa"]["results"] if r["rule"] in ("C4.count", "C5.skeleton")}
+        self.assertTrue(kept.get("C4.count"), kept)
+        self.assertTrue(all(kept.values()), kept)
+        record = json.loads(self.record.read_text(encoding="utf-8"))
+        self.assertEqual(sum(1 for e in record["edits"] if e.get("kind") == "keep-cta"), 1)
+        self.parse()  # the decision survives a rebuild
+        again = {r["rule"]: bool(r.get("overridden")) for r in self.read()["qa"]["results"] if r["rule"] == "C4.count"}
+        self.assertEqual(again, {"C4.count": True})
 
     def test_schema_usage_unknown_keys_and_stale_writers_are_refused_without_changes(self):
         commands = [
@@ -209,7 +220,7 @@ class EditorTests(unittest.TestCase):
             (("override", "post", "unknown.key=1"), 64),
             (("source", "add", "--url", "javascript:bad", "--slide", "s02"), 64),
             (("style", "not-a-preset"), 64),
-            (("keep", "C4.count"), 64),
+            (("keep", "C4.bait"), 64),  # a rule that stays non-overridable: bait is never the creator's call
             (("style", "poster", "--expect-rev", "1"), 75),
         ]
         for command, code in commands:

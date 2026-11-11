@@ -310,11 +310,13 @@ def main(argv=None):
                 if not lane.record_path(spec_path).exists():
                     lane.migrate_record(spec, record)
                 edit = edit_for(args, spec)
+                if edit.get("kind") == "keep-cta":  # one decision, recorded once: a repeat replaces the earlier record
+                    record["edits"] = [e for e in record["edits"] if e.get("kind") != "keep-cta"]
                 record["edits"].append(edit)
                 notes = lane.replay_edits(spec, record)
                 lane.bind_all(spec)
                 lane.bump(spec, previous)
-                keep = lane.keep_list(record["fill"]) + [(e["rule"], e.get("slide", "")) for e in record["edits"] if e.get("kind") == "keep"]
+                keep = lane.recorded_keeps(record)
                 rep = lane.check_spec(spec, brand, keep)
                 lane.saved_keep_marks(spec, rep, record)
                 lane.save_post(spec_path, spec, record, before)

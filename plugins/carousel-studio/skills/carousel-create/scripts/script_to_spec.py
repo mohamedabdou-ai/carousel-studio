@@ -893,7 +893,7 @@ def apply_edit(spec: dict, edit: dict) -> list[str]:
                     slide["sourceIds"].append(sid)
     elif kind == "keep-cta":
         spec.setdefault("ext", {}).setdefault("readyScript", {})["keepWithoutCta"] = {"reason": edit["reason"], "at": edit["at"]}
-        notes.append("the creator kept the ending; C4.count and C5.skeleton are still open when the shared rules do not allow an override")
+        notes.append("the creator kept the ending without a call to action: C4.count and C5.skeleton are recorded as their override («تجاوز»)")
     elif kind == "keep":
         pass  # applied to fresh QA findings after every content edit
     else:
@@ -1155,6 +1155,7 @@ def run_validate(spec_path: Path, brand: str | None) -> tuple[int, dict]:
 
 QA_RESULT_KEYS = ("gate", "rule", "sev", "slide", "el", "msg", "fix", "autofixed", "overridden", "prospect")
 KEEP_REASON = "the creator kept their own words"
+KEEP_CTA_RULES = ("C4.count", "C5.skeleton")  # what `spec_edit.py cta --keep` waives: the creator kept an ending with no call to action
 COVER_LENGTH = ("C1.hero-words", "C1.total-words", "C1.lines")  # one decision («keep my long hook»), as in _cs.qa
 
 
@@ -1168,6 +1169,15 @@ def store_qa(spec: dict, rep: dict) -> None:
                   else "pass", "runAt": now(), "results": results}
     if re.match(r"^cs-[0-9]+\.[0-9]+\.[0-9]+$", str(qa.get("engine") or "")):
         spec["qa"]["engine"] = qa["engine"]
+
+
+def recorded_keeps(record: dict) -> list[tuple[str, str]]:
+    """Every rule the creator chose to keep, from fill.json and from the recorded edits. «زي ما هو» on a script that ends without a
+    call to action (`spec_edit.py cta --keep`) is the creator's decision too: it keeps both rules that ask for one."""
+    keep = keep_list(record.get("fill") or {}) + [(e["rule"], e.get("slide", "")) for e in record.get("edits") or [] if e.get("kind") == "keep"]
+    if any(e.get("kind") == "keep-cta" for e in record.get("edits") or []):
+        keep += [(rule, "") for rule in KEEP_CTA_RULES if (rule, "") not in keep]
+    return keep
 
 
 def keep_list(fill: dict) -> list[tuple[str, str]]:
@@ -1318,7 +1328,7 @@ def main(argv=None) -> int:
             bind_all(spec)
             if previous:
                 bump(spec, previous)
-            keep = keep_list(record["fill"]) + [(e["rule"], e.get("slide", "")) for e in record["edits"] if e.get("kind") == "keep"]
+            keep = recorded_keeps(record)
             try:
                 rep = check_spec(spec, brand, keep)
             except CSError as exc:

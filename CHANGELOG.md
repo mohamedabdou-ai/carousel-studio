@@ -24,6 +24,7 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 - Scripts written the way creators write them in chat are read as meant: «١ — الكافر» and «سلايد ٨ — القفلة» name the slide, a line that starts with a number stays copy, the bold title under a bare «**سلايد ٣**» is kept, emoji lines become the list, and «*…*» emphasis no longer leaves asterisks.
 - A slide too long to hold runs on into the next slide at your own sentence end, every word kept. «زي ما هو» keeps every slide as written, and every length limit on your words now accepts «تجاوز».
 - The last slide keeps your question as its title and your options under it; three asks in one line are offered as a shorter choice, never cut for you.
+- A script that ends without a call to action is yours to keep: say «زي ما هو» and the post exports, with your choice recorded as «تجاوز». Nothing is added for you.
 - Your caption and the hashtags you name go in word for word, and can be kept for every post.
 
 ### Design

@@ -406,6 +406,7 @@
         {
           "id": "C4.count",
           "sev": "BLOCK",
+          "overridable": true,
           "appliesTo": {
             "formats": ["carousel"]
           },
@@ -541,6 +542,7 @@
         {
           "id": "C5.skeleton",
           "sev": "FIX",
+          "overridable": true,
           "params": {
             "first": ["cover"],
             "last": ["cta", "offer"]

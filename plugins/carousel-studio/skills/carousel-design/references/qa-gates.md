@@ -112,7 +112,7 @@ Scope `text`.
 
 | Rule | Sev | Ovr | Auto-fix | Engine | Condition |
 |---|---|---|---|---|---|
-| `C4.count` | BLOCK |  |  | py+js | Carousel with slides in which no slide carries a cta object. |
+| `C4.count` | BLOCK | yes |  | py+js | Carousel with slides in which no slide carries a cta object. |
 | `C4.multiple` | BLOCK |  |  | py+js | Carousel in which the cta objects use more than one distinct kind (the same kind repeated, for example on an offer slide and the closing slide, counts as one ask). |
 | `C4.position` | FIX |  |  | py+js | A cta slide is neither the last slide nor the one before it. |
 | `C4.intent` | FIX |  |  | py+js | spec.intent is set and a cta kind is not in params.allowedByIntent[intent]. Params: `allowedByIntent`: see rule file. |
@@ -130,7 +130,7 @@ Applies to formats [carousel].
 | `C5.slide-count` | BLOCK |  |  | py+js | The carousel has at least one slide and fewer than params.min or more than params.max slides. Params: `min` = 2; `max` = 10. |
 | `C5.slide-count-low` | FIX |  |  | py+js | The slide count is at least params.hardMin and below params.min. Params: `hardMin` = 2; `min` = 4; `recMin` = 6; `recMax` = 10. |
 | `C5.slide-count-range` | NOTE |  |  | py+js | The slide count is from params.warnBelow up to params.hardMax but outside params.min to params.max. Params: `warnBelow` = 4; `hardMax` = 10; `min` = 6; `max` = 10. |
-| `C5.skeleton` | FIX |  |  | py+js | The first slide is not of type cover, or the last slide is not of type cta or offer. Params: `first` = [cover]; `last` = [cta, offer]. |
+| `C5.skeleton` | FIX | yes |  | py+js | The first slide is not of type cover, or the last slide is not of type cta or offer. Params: `first` = [cover]; `last` = [cta, offer]. |
 | `C5.bridge` | FIX |  |  | py+js | A slide of one of params.types, that is not the last slide, has no bridge text. Params: `types` = [9 items]. |
 | `C5.voice-drift` | FIX |  |  | py | Python only (voice_check.py): a style metric of the copy lies more than params.iqr times the interquartile range outside the brand fingerprint. Params: `iqr` = 1.5. |
 
