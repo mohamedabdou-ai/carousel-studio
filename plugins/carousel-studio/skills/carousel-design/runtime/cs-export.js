@@ -352,6 +352,7 @@ function motionOf(spec) { return (spec.cover && spec.cover.motion) || null; }
 function kitDefaults(spec, opts) {
   opts = opts || {};
   var carousel = spec.format !== "single", motion = motionOf(spec);
+  if (!carousel && motion && motion.clip) throw exportError("E_SCHEMA", "A single post cannot carry a clip cover. Choose a carousel for a video cover.");
   var exportsList = spec.canvas && spec.canvas.exports;
   return {
     carousel: carousel,
@@ -725,6 +726,7 @@ async function renderClipCover(spec, ctx, o) {
     var bytes = await X.mp4.encodeMany({
       canvases: variants.map(function (v) { return v === "4x5" ? { canvas: prep.canvas, y: 45, height: 1350 } : prep.canvas; }),
       frames: prep.frames, fps: FPS_EXPORT, signal: signal,
+      loopHoldFrame: prep.finalHoldFrame,
       onProgress: function (p) { reportProgress(o, p); },
       drawFrame: async function (i) {
         await prep.drawFrame(i);

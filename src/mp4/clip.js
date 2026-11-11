@@ -7,9 +7,10 @@ function localClipPath(file) {
     !/^[\/]|[\\:%?#\x00-\x1f]/.test(file) && !file.split("/").some(function (s) { return !s || s.charAt(0) === "."; });
 }
 
-function validateClip(motion) {
+function validateClip(motion, spec) {
   var c = motion && motion.clip, seconds = motion && motion.seconds;
   var finite = function (n) { return typeof n === "number" && isFinite(n); };
+  if (spec && spec.format === "single") throw mp4Error("E_SCHEMA", "A single post cannot carry a clip cover. Choose a carousel for a video cover.");
   if (!c || !localClipPath(c.file)) throw mp4Error("E_SCHEMA", "cover.motion.clip.file must name a file inside the post folder.");
   if (!finite(seconds) || seconds < CLIP_MIN || seconds > CLIP_MAX) throw mp4Error("E_SCHEMA", "A clip cover must last 6 to 15 seconds.");
   if (!finite(c.in) || !finite(c.out) || c.in < 0 || c.out <= c.in) throw mp4Error("E_SCHEMA", "The clip out point must be after its non-negative in point.");
@@ -37,6 +38,7 @@ function clipEnding(request, similarity) { return request === "wipe" || similari
 /** Give the engine a media slot when the original cover had none. Typography and chrome remain engine-owned. */
 function clipLayoutSpec(spec) {
   if (!(spec.cover && spec.cover.motion && spec.cover.motion.clip)) return spec;
+  validateClip(spec.cover.motion, spec);
   var slides = spec.slides.slice(), s = slides[0];
   slides[0] = Object.assign({}, s, { media: Object.assign({}, s.media || {}, { slot: s.media && s.media.slot && s.media.slot !== "none" ? s.media.slot : "screenshot" }) });
   return Object.assign({}, spec, { slides: slides });
@@ -52,30 +54,37 @@ function attachClipFile(name, blob) {
 /** Native browser decoders via the same pinned MP4 library used by the encoder. */
 async function openClip(blob, signal) {
   var mb = await loadMediabunny(), input = new mb.Input({ source: new mb.BlobSource(blob), formats: mb.ALL_FORMATS }), codec = "unknown";
+  function decodeError(e) {
+    var cause = String(e && e.message || e);
+    return mp4Error("E_NO_CAPABILITY", "Cannot decode clip codec " + codec + ": " + cause + ". Save your clip as an H.264 MP4 (8-bit SDR), then attach it again.", { codec: codec, cause: cause });
+  }
   try {
     var track = await input.getPrimaryVideoTrack();
-    if (!track) throw new Error("no video track");
+    if (!track) throw mp4Error("E_SCHEMA", "The clip has no video track.");
     codec = await track.getCodecParameterString();
-    if (!await track.canDecode()) throw new Error("no browser decoder");
+    if (!await track.canDecode()) throw decodeError(new Error("no browser decoder"));
+    var first = await track.getFirstTimestamp();
     var sink = new mb.VideoSampleSink(track), duration = await (typeof track.computeDuration === "function" ? track.computeDuration() : input.computeDuration());
     return {
       codec: codec, duration: duration,
       sample: async function (time) {
         if (signal && signal.aborted) throw mp4Error("E_ABORTED", "The export was cancelled.");
+        var sample;
         try {
-          var sample = await sink.getSample(time);
-          if (!sample) throw new Error("no frame at " + time.toFixed(3) + " s");
-          return sample;
+          sample = await sink.getSample(Math.max(time, first));
         } catch (e) {
           if (e && e.code === "E_ABORTED") throw e;
-          throw mp4Error("E_NO_CAPABILITY", "Cannot decode clip codec " + codec + ". Save your clip as an H.264 MP4 (8-bit SDR), then attach it again.", { codec: codec, cause: String(e.message || e) });
+          throw decodeError(e);
         }
+        if (!sample) throw mp4Error("E_SCHEMA", "The clip has no frame at " + time.toFixed(3) + " s.");
+        return sample;
       },
       close: function () { input.dispose(); }
     };
   } catch (e) {
     input.dispose();
-    throw mp4Error("E_NO_CAPABILITY", "Cannot decode clip codec " + codec + ". Save your clip as an H.264 MP4 (8-bit SDR), then attach it again.", { codec: codec, cause: String(e.message || e) });
+    if (e && e.code) throw e;
+    throw mp4Error("E_SCHEMA", "Cannot read the clip: " + String(e && e.message || e));
   }
 }
 
@@ -131,8 +140,13 @@ function clipTextRegions(slide, rect) {
     var x = Math.max(rect.x, Math.floor((r.left - origin.left) / scale)), y = Math.max(rect.y, Math.floor((r.top - origin.top) / scale));
     var right = Math.min(rect.x + rect.w, Math.ceil((r.right - origin.left) / scale)), bottom = Math.min(rect.y + rect.h, Math.ceil((r.bottom - origin.top) / scale));
     if (!rgb || right <= x || bottom <= y || cs.visibility === "hidden") return;
+    var alpha = rgb[3] === undefined ? 1 : +rgb[3];
+    for (var parent = node; parent; parent = parent.parentElement) {
+      alpha *= parseFloat(getComputedStyle(parent).opacity);
+      if (parent === slide) break;
+    }
     var slot = node.closest("[data-slot]");
-    out.push({ x: x - rect.x, y: y - rect.y, w: right - x, h: bottom - y, lum: clipLuminance(+rgb[0], +rgb[1], +rgb[2]),
+    out.push({ x: x - rect.x, y: y - rect.y, w: right - x, h: bottom - y, lum: clipLuminance(+rgb[0], +rgb[1], +rgb[2]), rgb: rgb.slice(0, 3).map(Number), alpha: alpha,
       need: size >= rules.largeMinPx || (size >= rules.largeBoldMinPx && weight >= 700) ? rules.large : rules.body, decile: rules.decile, el: slot ? slot.getAttribute("data-slot") : node.className });
   });
   return out;
@@ -148,7 +162,7 @@ function clipInkRegions(regions, rect, painted, textless) {
     var x0 = r.x + r.w, y0 = r.y + r.h, x1 = -1, y1 = -1, x, y, k;
     for (y = r.y; y < r.y + r.h; y++) for (x = r.x; x < r.x + r.w; x++) {
       k = y * rect.w + x;
-      if (textless[k] - painted[k] > 0.2) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+      if (textless[k] - painted[k] > 0.2 * r.alpha) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
     }
     if (x1 < 0) return null;
     x0 = Math.max(r.x, x0 - pad); y0 = Math.max(r.y, y0 - pad); x1 = Math.min(r.x + r.w - 1, x1 + pad); y1 = Math.min(r.y + r.h - 1, y1 + pad);
@@ -162,7 +176,8 @@ function clipContrast(pixels, regions, frame, fps) {
     var ratios = [];
     for (var y = r.y; y < r.y + r.h; y += 3) for (var x = r.x; x < r.x + r.w; x += 3) {
       var j = (y * w + x) * 4, l = clipLuminance(data[j], data[j + 1], data[j + 2]);
-      ratios.push((Math.max(r.lum, l) + 0.05) / (Math.min(r.lum, l) + 0.05));
+      var ink = r.alpha < 1 ? clipLuminance(r.rgb[0] * r.alpha + data[j] * (1 - r.alpha), r.rgb[1] * r.alpha + data[j + 1] * (1 - r.alpha), r.rgb[2] * r.alpha + data[j + 2] * (1 - r.alpha)) : r.lum;
+      ratios.push((Math.max(ink, l) + 0.05) / (Math.min(ink, l) + 0.05));
     }
     ratios.sort(function (a, b) { return a - b; });
     var n = Math.max(1, Math.ceil(ratios.length * r.decile)), ratio = ratios.slice(0, n).reduce(function (a, b) { return a + b; }, 0) / n;
@@ -172,7 +187,7 @@ function clipContrast(pixels, regions, frame, fps) {
 
 /** Prepared poster and drawFrame share the engine's layout. Only pixels inside its measured media window change. */
 async function prepareClipCover(spec, slide, tokens, signal) {
-  var m = validateClip(spec.cover.motion), cfg = m.clip, blob = clipFiles.get(cfg.file);
+  var m = validateClip(spec.cover.motion, spec), cfg = m.clip, blob = clipFiles.get(cfg.file);
   if (!blob) throw mp4Error("E_NO_CAPABILITY", "Attach the local cover clip " + cfg.file + " from the post folder before exporting.", { reason: "clip-missing", file: cfg.file });
   var reader = await openClip(blob, signal), media = slide.querySelector('[data-slot="media"]');
   try {
@@ -232,7 +247,7 @@ async function prepareClipCover(spec, slide, tokens, signal) {
     }
     await drawFrame(0);
     var poster = clipCanvas(1080, 1440); poster.getContext("2d").drawImage(full, 0, 0);
-    return { canvas: full, poster: poster, frames: frames, duration: frames / 30, ending: ending, endpointSsim: similarity,
+    return { canvas: full, poster: poster, frames: frames, duration: frames / 30, finalHoldFrame: Math.ceil((m.seconds - CLIP_HOLD) * 30), ending: ending, endpointSsim: similarity,
       rect: rect, mediaPoster: ca, drawFrame: drawFrame, close: reader.close };
   } catch (e) { reader.close(); throw e; }
 }
@@ -287,6 +302,10 @@ X.mp4.clip.picker = function (ctx, lang) {
   var text = function (ar, en) { return lang === "en" ? en : ar; };
   host.update = function () {
     host.replaceChildren(); host.hidden = ctx.index() !== 0;
+    if (ctx.spec.format === "single") {
+      host.textContent = text("المنشور المفرد لا يدعم غلاف فيديو. اختر كاروسيل لغلاف الفيديو.", "A single post cannot carry a clip cover. Choose a carousel for a video cover.");
+      return;
+    }
     var c = ctx.spec.cover && ctx.spec.cover.motion && ctx.spec.cover.motion.clip;
     if (c) {
       var label = document.createElement("span"), name = document.createElement("bdi"); name.dir = "ltr"; name.textContent = c.file;
@@ -300,15 +319,14 @@ X.mp4.clip.picker = function (ctx, lang) {
     button.onclick = function () { input.click(); };
     input.onchange = async function () {
       var file = input.files[0]; if (!file) return;
-      var url = URL.createObjectURL(file), video = document.createElement("video");
-      video.preload = "metadata";
+      var reader;
       try {
-        await new Promise(function (ok, fail) { video.onloadedmetadata = ok; video.onerror = fail; video.src = url; });
+        reader = await openClip(file);
         var name = c ? c.file : file.name;
-        var m = { recipe: "calm", source: "internal", seconds: Math.max(6, Math.min(15, video.duration + 0.8)),
-          clip: { file: name, in: 0, out: video.duration, fit: "cover", focus: { x: 0.5, y: 0.5 }, ending: "auto" } };
+        var m = { recipe: "calm", source: "internal", seconds: Math.max(6, Math.min(15, reader.duration + 0.8)),
+          clip: { file: name, in: 0, out: reader.duration, fit: "cover", focus: { x: 0.5, y: 0.5 }, ending: "auto" } };
         if (c) m = Object.assign({}, ctx.spec.cover.motion, { clip: Object.assign({}, c) });
-        validateClip(m); attachClipFile(name, file); clipPosterCache.clear(); ctx.setMotion(m);
+        validateClip(m, ctx.spec); attachClipFile(name, file); clipPosterCache.clear(); ctx.setMotion(m);
       } catch (e) {
         var error = document.createElement("span"); error.setAttribute("role", "alert");
         if (lang === "en") error.textContent = "Cannot open video. Choose an H.264 MP4.";
@@ -319,7 +337,7 @@ X.mp4.clip.picker = function (ctx, lang) {
         }
         host.appendChild(error);
       }
-      finally { video.removeAttribute("src"); video.load(); URL.revokeObjectURL(url); }
+      finally { if (reader) reader.close(); }
     };
     host.appendChild(button); host.appendChild(input);
   };

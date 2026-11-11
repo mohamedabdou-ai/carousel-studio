@@ -76,6 +76,6 @@ node cover_video.mjs --spec POST/spec.json --out POST/cover.mp4 --variant 3x4
 node check_video.mjs POST/kit/3x4/01-cover.mp4 --poster POST/kit/3x4/01-cover.png --spec POST/spec.json
 ```
 
-`cover_video.mjs` uses the same browser compositor and writes a decoded poster beside the requested MP4 (PNG for 3:4, JPEG for 4:5). The standalone checker also accepts `--kind clip --seconds 12` when no spec is supplied. It still uses its existing ffprobe/ffmpeg inspection tools; composition and the kit's browser gates do not require them.
+`cover_video.mjs` uses the same browser compositor and writes a decoded poster beside the requested MP4 (PNG for 3:4, JPEG for 4:5). The standalone checker also accepts `--kind clip --seconds N --poster FILE`: the poster from the same kit is required; the spec is optional. PNG posters keep the SSIM 0.99 floor; JPEG posters use 0.98 after chroma reconstruction, both at PSNR 32 dB. The last-versus-first loop floor stays SSIM 0.995 / PSNR 45 dB. It still uses its existing ffprobe/ffmpeg inspection tools; composition and the kit's browser gates do not require them.
 
 The opt-in sources of a clip post are `spec.json` and `studio-source.html`. `cover.hf.html` belongs to engine loops; clip posts do not ship a misleading engine composition. The original clip stays in the post folder and must be reattached when reopening the Studio. Credit its source in the caption. Longer footage also makes a larger kit; the old small-loop kit size is not a clip-cover size promise.

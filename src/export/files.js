@@ -32,6 +32,7 @@ function motionOf(spec) { return (spec.cover && spec.cover.motion) || null; }
 function kitDefaults(spec, opts) {
   opts = opts || {};
   var carousel = spec.format !== "single", motion = motionOf(spec);
+  if (!carousel && motion && motion.clip) throw exportError("E_SCHEMA", "A single post cannot carry a clip cover. Choose a carousel for a video cover.");
   var exportsList = spec.canvas && spec.canvas.exports;
   return {
     carousel: carousel,

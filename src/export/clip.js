@@ -14,6 +14,7 @@ async function renderClipCover(spec, ctx, o) {
     var bytes = await X.mp4.encodeMany({
       canvases: variants.map(function (v) { return v === "4x5" ? { canvas: prep.canvas, y: 45, height: 1350 } : prep.canvas; }),
       frames: prep.frames, fps: FPS_EXPORT, signal: signal,
+      loopHoldFrame: prep.finalHoldFrame,
       onProgress: function (p) { reportProgress(o, p); },
       drawFrame: async function (i) {
         await prep.drawFrame(i);

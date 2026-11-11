@@ -105,7 +105,7 @@ The cover is generated as one HTML file in HyperFrames composition format (`cove
 | Request | Answer |
 |---|---|
 | «من غير حركة» | `recipe: "none"` or `calm`; a NOTE (V1 static) appears, not an error |
-| «أبطأ / أسرع» | seconds 5–6 only; stagger and easing belong to the recipe |
+| «أبطأ / أسرع» | engine loops 5–6 s (clip covers 6–15 s); stagger and easing belong to the recipe |
 | «حرّك كل كلمة حرف حرف» | no: letter animation breaks Arabic joins; offer word-by-word |
 | «حركة تانية للموضوع ده» | show the three nearest recipes by the order above and let the Motion tab preview them |
 | a longer cover with real footage | offer a local clip cover, 6–15 seconds, silent (section 5a) |

@@ -12,7 +12,7 @@
  * frame against frame 0 (SSIM 0.995 and 45 dB) and frame 0 against the poster (SSIM 0.99 and 32 dB, the lower floor a lossy
  * 4:2:0 encode can meet against a lossless PNG).
  * Without ffmpeg the pixel checks are skipped with a NOTE. Exit: 0 pass, 1 FIX findings, 2 BLOCK findings, 64 usage,
- * 66 file missing, 70 internal error (ffprobe missing). Errors go to stderr as `cs-error: <code>: <message>`.
+ * 65 bad data, 66 file missing, 70 internal error (ffprobe missing). Errors go to stderr as `cs-error: <code>: <message>`.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -26,7 +26,8 @@ const EXIT = { OK: 0, FIX: 1, BLOCK: 2, USAGE: 64, DATA: 65, NOINPUT: 66, INTERN
 
 const DEFAULTS = {
   fps: 30, defaultSeconds: 6, holdIn: 0.4, settleBy: 5.6, loopSsimMin: 0.995, loopPsnrMinDb: 45, maxFlashesPerSecond: 3,
-  width: 1080, height3x4: 1440, height4x5: 1350, audio: "none", blankDelta: 6, blankPixels: 3, flashDelta: 24, posterSsimMin: 0.99, posterPsnrMin: 32,
+  width: 1080, height3x4: 1440, height4x5: 1350, audio: "none", blankDelta: 6, blankPixels: 3, flashDelta: 24, posterSsimMin: 0.99, posterJpegSsimMin: 0.98, posterPsnrMin: 32,
+  clipMinSeconds: 6, clipMaxSeconds: 15,
   pixelFormat: "yuv420p", range: "tv", matrix: "bt709", maxLevel: 41,
   stillMaxShare: 0.6, stillDelta: 0.03, thinShare: 0.25, thinMaxSeconds: 0.6
 };
@@ -62,7 +63,8 @@ function loadRuleData() {
   try {
     const platform = JSON.parse(fs.readFileSync(path.join(HERE, "..", "data", "platform-instagram.json"), "utf8"));
     const m = platform.plugin && platform.plugin.motion, e = platform.plugin && platform.plugin.export;
-    if (m) Object.assign(out.limits, { fps: m.fps, defaultSeconds: m.defaultSeconds, holdIn: m.holdInSeconds, settleBy: m.settleBySeconds, loopSsimMin: m.loopSsimMin, loopPsnrMinDb: m.loopPsnrMinDb, maxFlashesPerSecond: m.maxFlashesPerSecond, posterSsimMin: m.posterSsimMin, posterPsnrMin: m.posterPsnrMinDb,
+    if (m) Object.assign(out.limits, { fps: m.fps, defaultSeconds: m.defaultSeconds, holdIn: m.holdInSeconds, settleBy: m.settleBySeconds, loopSsimMin: m.loopSsimMin, loopPsnrMinDb: m.loopPsnrMinDb, maxFlashesPerSecond: m.maxFlashesPerSecond, posterSsimMin: m.posterSsimMin, posterJpegSsimMin: m.posterJpegSsimMin ?? DEFAULTS.posterJpegSsimMin, posterPsnrMin: m.posterPsnrMinDb,
+      clipMinSeconds: m.clipMinSeconds ?? DEFAULTS.clipMinSeconds, clipMaxSeconds: m.clipMaxSeconds ?? DEFAULTS.clipMaxSeconds,
       stillMaxShare: m.stillMaxShare, stillDelta: m.stillDeltaLuma, thinShare: m.thinShare, thinMaxSeconds: m.thinMaxSeconds });
     if (e) Object.assign(out.limits, { width: e.png.w, height3x4: e.png.h, height4x5: e.jpeg4x5.h, audio: e.mp4.audio, pixelFormat: e.mp4.pixelFormat, range: e.mp4.range, matrix: e.mp4.matrix, maxLevel: levelNumber(e.mp4.maxLevel) });
   } catch { /* defaults stay */ }
@@ -183,8 +185,8 @@ function frameStats(file, blankDelta) {
   return frames;
 }
 
-/** SSIM and PSNR between two single frames, both decoded the same way (BT.709, RGB). Poster = a PNG of the same size. */
-function compareFrames(file, a, b, decodedPoster = false) {
+/** SSIM and PSNR between two single frames, both decoded the same way (BT.709, RGB). */
+function compareFrames(file, a, b, decodedPoster = false, jpegPoster = false) {
   // Native canvas posters interpolate 4:2:0 chroma. swscale's fast RGB path
   // repeats chroma samples instead, making coloured edges disagree with the
   // very frame the browser decoded. Reconstruct chroma for clip posters only;
@@ -193,7 +195,7 @@ function compareFrames(file, a, b, decodedPoster = false) {
   const rgb = `scale=in_range=tv:out_range=pc:in_color_matrix=bt709:out_color_matrix=bt709${chroma},format=rgb24`;
   const pick = (n) => `select='eq(n,${n})',setpts=PTS-STARTPTS,${rgb}`;
   // a poster goes through the same RGB -> YUV 4:2:0 -> RGB trip as the video, so only the codec's own loss is measured
-  const roundTrip = decodedPoster ? "format=rgb24" : "scale=in_range=pc:out_range=tv:out_color_matrix=bt709,format=yuv420p,scale=in_range=tv:out_range=pc:in_color_matrix=bt709:out_color_matrix=bt709,format=rgb24";
+  const roundTrip = jpegPoster ? "scale=flags=gauss+accurate_rnd+full_chroma_int,format=rgb24" : decodedPoster ? "format=rgb24" : "scale=in_range=pc:out_range=tv:out_color_matrix=bt709,format=yuv420p,scale=in_range=tv:out_range=pc:in_color_matrix=bt709:out_color_matrix=bt709,format=rgb24";
   const poster = a.kind === "poster" ? a : b.kind === "poster" ? b : null;
   let source;
   if (!poster) source = `[0:v]split[s0][s1];[s0]${pick(a.n)}[a];[s1]${pick(b.n)}[b]`;
@@ -224,12 +226,17 @@ export function checkVideo(file, options = {}) {
   const frames = parseInt(v.nb_frames, 10) || packets.length;
   const seconds = parseFloat(v.duration || (meta.format && meta.format.duration)) || (fps ? frames / fps : 0);
   const [ew, eh] = options.expect ? options.expect.split("x").map(Number) : [L.width, null];
-  const spec = options.spec ? JSON.parse(fs.readFileSync(options.spec, "utf8")) : null;
+  let spec = null;
+  if (options.spec) {
+    if (!fs.existsSync(options.spec)) throw Object.assign(new Error("Spec not found: " + options.spec), { code: "E_NOINPUT" });
+    try { spec = JSON.parse(fs.readFileSync(options.spec, "utf8").replace(/^\uFEFF/, "")); }
+    catch (e) { throw Object.assign(new Error("Spec is not valid JSON: " + e.message), { code: "E_SCHEMA" }); }
+  }
   const motion = spec?.cover?.motion;
   const kind = options.kind || (motion?.clip ? "clip" : "engine");
   const expectedFps = options.fps || L.fps, expectedSeconds = options.seconds ?? motion?.seconds ?? L.defaultSeconds;
   if (!["engine", "clip"].includes(kind) || !Number.isFinite(expectedSeconds) || expectedSeconds <= 0) throw Object.assign(new Error("Choose kind engine or clip and a positive duration."), { code: "E_USAGE" });
-  if (kind === "clip" && (expectedSeconds < 6 || expectedSeconds > 15)) throw Object.assign(new Error("Clip covers must last 6 to 15 seconds."), { code: "E_USAGE" });
+  if (kind === "clip" && (expectedSeconds < L.clipMinSeconds || expectedSeconds > L.clipMaxSeconds)) throw Object.assign(new Error(`Clip covers must last ${L.clipMinSeconds} to ${L.clipMaxSeconds} seconds.`), { code: "E_USAGE" });
   if (kind === "clip" && !options.poster) throw Object.assign(new Error("A clip cover check needs --poster from the same kit."), { code: "E_USAGE" });
   const codecString = boxes.avcC ? "avc1." + boxes.avcC.map((b) => b.toString(16).padStart(2, "0")).join("").toUpperCase() : (v.codec_tag_string === "avc1" ? "avc1" : String(v.codec_name || ""));
   const level = boxes.avcC ? boxes.avcC[2] : Number.isFinite(v.level) && v.level > 0 ? v.level : null;      // level_idc: 40 is level 4.0
@@ -294,13 +301,17 @@ export function checkVideo(file, options = {}) {
     }
     const last = Math.max(0, info.frames - 1);
     loop = { lastVsFrame0: compareFrames(file, { kind: "frame", n: last }, { kind: "frame", n: 0 }) };
-    if (options.poster) loop.frame0VsPoster = compareFrames(file, { kind: "frame", n: 0 }, { kind: "poster", path: options.poster }, kind === "clip");
+    const posterVideo = options.poster ? (probe(options.poster).streams || []).find(s => s.codec_type === "video") || {} : {};
+    // The decoded format wins over a misleading suffix; a renamed PNG must keep the PNG floor.
+    const jpegPoster = posterVideo.codec_name === "mjpeg" || posterVideo.pix_fmt === "yuvj420p" || (!posterVideo.codec_name && /\.jpe?g$/i.test(options.poster || ""));
+    if (options.poster) loop.frame0VsPoster = compareFrames(file, { kind: "frame", n: 0 }, { kind: "poster", path: options.poster }, kind === "clip", jpegPoster);
     // last vs first frame: both are decoded from the same encode, so the full contract thresholds apply.
     // first frame vs poster: a lossless PNG against a lossy 4:2:0 video, so the codec's own loss is allowed for. The lower floor (SSIM 0.99 / 32 dB) lives in
-    // platform-instagram.json -> plugin.motion.posterSsimMin / posterPsnrMinDb, with the reason; the binding bar is last frame vs frame 0.
+    // platform-instagram.json -> plugin.motion.posterSsimMin / posterPsnrMinDb, with the reason; JPEG has another lossy chroma pass
+    // and its own posterJpegSsimMin floor. The binding bar is still last frame vs frame 0.
     const bad = [];
     if (loop.lastVsFrame0 && (loop.lastVsFrame0.ssim < L.loopSsimMin || loop.lastVsFrame0.psnr < L.loopPsnrMinDb)) bad.push(loop.lastVsFrame0);
-    if (loop.frame0VsPoster && (loop.frame0VsPoster.ssim < L.posterSsimMin || loop.frame0VsPoster.psnr < L.posterPsnrMin)) bad.push(loop.frame0VsPoster);
+    if (loop.frame0VsPoster && (loop.frame0VsPoster.ssim < (jpegPoster ? L.posterJpegSsimMin : L.posterSsimMin) || loop.frame0VsPoster.psnr < L.posterPsnrMin)) bad.push(loop.frame0VsPoster);
     if (bad.length) emit("V1.loop", { ssim: Math.min(...bad.map((p) => p.ssim)), psnr: Math.min(...bad.map((p) => p.psnr)) });
   } else emit("V1.tools");
 
@@ -312,7 +323,7 @@ export function checkVideo(file, options = {}) {
 
 /* ------------------------------------------------------------------ CLI */
 
-const USAGE = "usage: node check_video.mjs FILE.mp4 [--poster PNG] [--expect 1080x1440] [--seconds 6] [--fps 30] [--audio none|silent-aac] [--kind engine|clip] [--spec FILE] [--format text|json]";
+const USAGE = "usage: node check_video.mjs FILE.mp4 [--poster FILE] [--expect 1080x1440] [--seconds 6] [--fps 30] [--audio none|silent-aac] [--kind engine|clip] [--spec FILE] [--format text|json]\n       clip without a spec: FILE.mp4 --kind clip --seconds N --poster FILE (poster required; spec optional)";
 
 function parseArgs(argv) {
   const opts = { format: "text" }, rest = [];
@@ -358,7 +369,7 @@ function main(argv) {
     return r.exitCode;
   } catch (e) {
     process.stderr.write(`cs-error: ${e.code || "E_INTERNAL"}: ${e.message}\n`);
-    return e.code === "E_USAGE" ? EXIT.DATA : EXIT.INTERNAL;
+    return e.code === "E_NOINPUT" ? EXIT.NOINPUT : ["E_USAGE", "E_SCHEMA"].includes(e.code) ? EXIT.DATA : EXIT.INTERNAL;
   }
 }
 
