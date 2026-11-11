@@ -528,12 +528,9 @@ def gate_c6(ctx: Ctx, out: list) -> None:
             nums = counted_numbers(text, p["min"], p["max"])
             numbered = {s["ord"] for s in ctx.slides if isinstance(s.get("ord"), (int, float))
                         and not isinstance(s.get("ord"), bool) and s["ord"] > 0 and s["ord"] % 1 == 0}
-            # Explicit membership wins over layout type. Legacy lists without ord use
-            # their architecture's list type, then the other list type if it is absent.
-            primary = "step" if ctx.spec.get("architecture") == "steps" else "item"
-            items = len(numbered) if numbered else sum(1 for s in ctx.slides if s.get("type") == primary)
-            if not items:
-                items = sum(1 for s in ctx.slides if s.get("type") in ("item", "step"))
+            # Explicit membership wins over layout type. Without ord, item and step
+            # share the same list count used by the planner and renderer.
+            items = len(numbered) if numbered else sum(1 for s in ctx.slides if s.get("type") in ("item", "step"))
             if nums and items > 0 and items not in nums:
                 emit(ctx, out, "C6.list-count", slide=cover.get("id"), el=f"{cover.get('id')}.headline", vars={"count": nums[0], "n": items})
 

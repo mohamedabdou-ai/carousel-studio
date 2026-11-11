@@ -2186,6 +2186,16 @@
       "engines": ["js", "model"],
       "checks": [
         {
+          "id": "A1.asset-missing",
+          "sev": "BLOCK",
+          "engines": ["js"],
+          "autofix": null,
+          "when": "A slide's media, cover logo or free picture refers to an asset id absent from spec.assets.",
+          "msg": {"ar": "الصورة المشار إليها غير موجودة في أصول البوست ({el}).", "en": "The referenced image is missing from the post assets ({el})."},
+          "fix": {"ar": "أضف الأصل المشار إليه أو اختر صورة موجودة أو احذف مرجعها.", "en": "Add the referenced asset, choose an existing image, or remove its reference."},
+          "vars": ["el", "asset"]
+        },
+        {
           "id": "A1.flag",
           "sev": "BLOCK",
           "engines": ["js"],

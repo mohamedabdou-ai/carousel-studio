@@ -2344,7 +2344,7 @@ CS.core.format = function format(template, params) {
   var CLITIC = new RegExp("^([" + AR_CH + "\\u200C\\u200D]+)(?=[\"'«“]*[A-Za-zÀ-ɏ0-9\\u0660-\\u0669@#%٪$€£])");
   var SENTENCE_END = /[.،؛؟:;!?—&]$/;
   var RUN_TAIL = /[.,،؛؟:;!?—&]+$/;
-  var VERSION = /^(?:[0-9]+(?:\.[0-9]+)+[a-z]?|[0-9]+x)$/i;
+  var VERSION = /^(?:[0-9]+(?:\.[0-9]+)+[a-z]?|[0-9]+x|[0-9]+)$/i;
 
   /* Build semantic runs before binding words. A word can contain Arabic AND a number;
    * a numeric token inside that word must never pull its clitic into an earlier LTR run. */
@@ -2364,19 +2364,24 @@ CS.core.format = function format(template, params) {
         return pieces;
       });
     });
-    tokens.forEach(function (token) {
+    tokens.forEach(function (token, at) {
       if (token.kind === "space") { separator += token.text; return; }
       var last = words[words.length - 1];
-      var boundary = last && /[.,،؛؟:;!?—&]$/.test(last.text) && (token.ltr || token.kind === "ar" || token.kind === "number");
+      // Times, ratios and names such as Q&A are one lexical unit. Percentages still
+      // start a separate run (API:50%), like other unrelated numeric quantities.
+      var tight = last && !separator && /[A-Za-z0-9][:;&]$/.test(last.text) &&
+        (token.kind === "latin" && token.ltr || token.kind === "number" && !/[%٪]$/.test(token.text) && !/^[%٪]$/.test(tokens[at + 1]?.text || ""));
+      var boundary = last && /[.,،؛؟:;!?—&]$/.test(last.text) && (token.ltr || token.kind === "ar" || token.kind === "number") && !tight;
       if (!last || separator || boundary) {
         last = { text: "", start: token.start, end: token.end, sep: separator };
         words.push(last); separator = "";
       }
       last.text += token.text; last.end = token.end;
+      if (tight) last.tight = true;
       if (token.ltr || token.kind === "number") last.kind = token.kind;
     });
     if (!words.some(function (w) {
-      return /[A-Za-zÀ-ɏ]/.test(w.text) || SHORT.test(w.text.replace(/[ً-ٰٟ]/g, "")) || CLITIC.test(w.text);
+      return w.tight || /[A-Za-zÀ-ɏ]/.test(w.text) || SHORT.test(w.text.replace(/[ً-ٰٟ]/g, "")) || CLITIC.test(w.text);
     })) return T().toHTML(text, o);
 
     var wordIndex = 0, groups = [], emphasis = pm.spans[0], kashidaDone = false;
@@ -2420,13 +2425,15 @@ CS.core.format = function format(template, params) {
       // percentages and unrelated numbers start another run in the paragraph direction.
       while (first.kind === "latin" && words[j + 1] && !/[\n\r]/.test(words[j + 1].sep)) {
         var end = run[run.length - 1], next = words[j + 1];
-        if (SENTENCE_END.test(end.text) || /["»”]$/.test(end.text)) break;
+        // A Latin semicolon-separated list (Google; Apple) keeps its reading order.
+        var latinSemi = /[A-Za-z0-9];$/.test(end.text) && ltr(next) && next.kind === "latin";
+        if (SENTENCE_END.test(end.text) && !latinSemi || /["»”]$/.test(end.text)) break;
         if (ltr(next) && next.kind === "latin") { run.push(next); j++; continue; }
         if (next.text === "&" && words[j + 2] && ltr(words[j + 2]) && words[j + 2].kind === "latin" && !/[\n\r]/.test(words[j + 2].sep)) {
           run.push(next, words[j + 2]); j += 2; continue;
         }
-        // Product versions keep their name/version order, but each has its own isolate.
-        if (ltr(next) && next.kind === "number" && VERSION.test(next.text.replace(RUN_TAIL, ""))) {
+        // Product versions and model integers keep their name/number order in one binding.
+        if (next.kind === "number" && VERSION.test(T().digits.convert(next.text, "western").replace(RUN_TAIL, ""))) {
           run.push(next); j++; version = true;
         }
         break;
@@ -2597,13 +2604,16 @@ CS.core.format = function format(template, params) {
 
     ord: function (node, _value, cx) {
       var s = cx.slide, slides = cx.spec.slides || [], n = 0;
+      var list = function (t) { return t === "item" || t === "step"; };
       if (typeof s.ord === "number") n = s.ord;
-      else if (cx.type !== "story-beat") { for (var i = 0; i <= cx.index; i++) { if (slides[i] && slides[i].type === s.type) n++; } }
+      else if (cx.type !== "story-beat") { for (var i = 0; i <= cx.index; i++) { if (slides[i] && (list(s.type) ? list(slides[i].type) : slides[i].type === s.type)) n++; } }
       if (!n) return false;
       markFit(node, cx, node.getAttribute("data-slot"), null, roleFor(node, cx.variant));
       var conv = function (x) { return T().digits.convert(String(x), cx.digits); };
       var asLabel = cx.type === "step" && cx.variant !== "ghost-number" && cx.steps > 0;
-      var label = asLabel ? fmt(cx.locale.slideStrings.stepLabel[cx.dialect], { i: conv(n), n: conv(cx.steps) }) : conv(n);
+      var si = 0;
+      if (asLabel) { for (var k = 0; k <= cx.index; k++) { if (slides[k] && slides[k].type === "step") si++; } }
+      var label = asLabel ? fmt(cx.locale.slideStrings.stepLabel[cx.dialect], { i: conv(si), n: conv(cx.steps) }) : conv(n);
       node.setAttribute("data-ord", n);
       node.innerHTML=T().toHTML(prep(label,cx),{digits: cx.digits,lang: cx.lang,markup: false,wordSpans: false});
       return true;
@@ -2630,7 +2640,7 @@ CS.core.format = function format(template, params) {
       var kind = media.slot, asset = findAsset(cx, media.assetId);
       if (media.imageOnly && asset && (asset.kind === "video" || !(asset.mime ? /^image\//.test(asset.mime) : /^(image|svg)$/.test(asset.kind)))) asset = null;
       set(node, { "data-media-kind": kind, "data-calm": media.calmZone, "data-ai": media.ai ? 1 : null, "data-asset": media.assetId });
-      if (!asset) { node.setAttribute("data-media-state", "missing"); return true; }
+      if (!asset) { node.setAttribute("data-media-state", "missing"); return !node.hasAttribute("data-optional"); }
       if (asset.mirror === "auto" && kind === "icon" && cx.dir === "rtl") node.setAttribute("data-mirror", "1");
       if (asset.aiGenerated) node.setAttribute("data-ai", "1");
       var isVideo = /^video\//.test(asset.mime || "") || asset.kind === "video";
@@ -2653,7 +2663,8 @@ CS.core.format = function format(template, params) {
     logo: function (node, _value, cx) {
       var logo = cx.type === "cover" && cx.spec.cover?.logo;
       if (!logo?.assetId) return false;
-      FILL.media(node, { slot: "photo", assetId: logo.assetId, imageOnly: true, calmZone: "bottom" }, cx);
+      var ok = FILL.media(node, { slot: "photo", assetId: logo.assetId, imageOnly: true, calmZone: "bottom" }, cx);
+      if (!ok || node.getAttribute("data-media-state") === "missing") return false;
       set(node, { "data-media-kind": "logo", "data-kind": "media", "data-ground": logo.ground || "light" });
       node.style.backgroundColor = logo.ground === "dark" ? "#151515" : "#ffffff";
       return true;

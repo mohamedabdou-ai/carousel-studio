@@ -7,20 +7,20 @@ Archetypes own layout; presets own look. A slide in `spec.json` is `{ id, n, typ
 |---|---|---|---|---|
 | 1 | `cover` | `headline` req, `kicker`, `sub`, `media` | `top center split photo number` | slide 1. Hero at most 6 words, whole cover at most 12, at most 3 lines |
 | 2 | `rehook` | `headline` req, `sub`, `media`, `bridge` | `base split big-number` | slide 2: a second cover that pays off first, at most 12 words |
-| 3 | `item` | `title` req, `body` req, `ord`, `media`, `bridge` | `base ghost-number side-number media` | one list item per slide |
+| 3 | `item` | `title` req, `body` req, `ord`, `media`, `bridge` | `base ghost-number side-number media numeral` | one list item per slide |
 | 4 | `step` | `title` req (verb first), `body`, `ord`, `media`, `bridge` | `base ghost-number pill track media` | one step; label «الخطوة {ord} من {n}» |
 | 5 | `stat` | `number` req, `title` req, `body`, `bridge`, `sourceIds` | `base bar` | one sourced number |
 | 6 | `compare` | `title`, `sides` req (2), `bridge` | `columns stacked versus` | A against B (side 0 = old/A) |
 | 7 | `myth-fact` | `title`, `sides` req (2), `bridge` | `stacked columns stamp` | myth first and small, fact last and bigger |
 | 8 | `quote` | `body` req, `attribution`, `media` | `base mark photo` | a quotation of at most 25 words (attribute it) |
 | 9 | `story-beat` | `body` req, `title`, `ord`, `media`, `bridge` | `base panel media` | one beat of a story; ends on a turn |
-| 10 | `checklist` | `title` req, `bullets` req (up to 8), `bridge` | `base boxes ruled` | printable list; dense type, at most 45 words |
-| 11 | `summary` | `title` req, `bullets` req (up to 8) | `list grid` | recap before the call to action |
+| 10 | `checklist` | `title` req, `bullets` req (up to 8), `media`, `bridge` | `base boxes ruled media` | printable list; dense type, at most 45 words |
+| 11 | `summary` | `title` req, `bullets` req (up to 8), `media`, `cta` opt | `list grid media` | recap with an optional call to action |
 | 12 | `setup` | `title` req, `bullets` req (up to 4), `bridge` | `base cards` | requirements: tool, plan, device, price |
 | 13 | `proof` | `media` req (screenshot), `title`, `body`, `number`, `bridge` | `screenshot base` | evidence; a number needs `sourceIds` |
 | 14 | `share` | `headline` req, `sub` | `base big-word` | "send this to someone" slide; carries no `cta` |
-| 15 | `cta` | `title` req, `cta` req, `body` | `base pill keyword` | the only slide with a `cta` in a carousel |
-| 16 | `offer` | `title` req, `cta` req, `bullets` (up to 4), `number` | `base card` | soft-sell offer or lead magnet |
+| 15 | `cta` | `title` req, `cta` req, `body`, `media` | `base pill keyword action media` | a dedicated call to action |
+| 16 | `offer` | `title` req, `cta` req, `bullets` (up to 4), `number`, `media` | `base card media` | soft-sell offer or lead magnet |
 | 17 | `testimonial` | `body` req, `attribution` req, `number`, `media` | `base photo card` | a real result, sourced |
 | 18 | `poster` | `headline` req, `kicker`, `sub`, `bullets` (up to 4), `media`, `cta` | `top center split photo` | the single post (`format: "single"`): no counter, no swipe cue |
 | 19 | `grid` | `title` req, `items` req (3 to 6), `bridge` opt | `bento` | 3 to 6 cards, each with a short title and text; a payoff slide like `stat` |
