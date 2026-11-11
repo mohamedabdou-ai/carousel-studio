@@ -1,6 +1,6 @@
 # Hook scoring: five gates, then 100 points
 
-Stage A decides who is allowed to compete; stage B ranks the ones that are. Code does what code can know; the model judges what only a reader can. The weights and thresholds live in `data/hooks/scoring.json`, and a unit test asserts that they add up. If this page and that file ever differ, the file wins.
+Stage A decides who is allowed to compete; stage B ranks the ones that are. Then `render.mjs --covers` checks the survivors on the post's real cover before the creator sees any choice. Code does what code can know; the model judges what only a reader can. The weights and thresholds live in `data/hooks/scoring.json`, and a unit test asserts that they add up. If this page and that file ever differ, the file wins.
 
 ## Stage A: hard gates (any failure discards the draft)
 | Gate | Rule | Checked by |
@@ -50,7 +50,9 @@ Score each surviving cover yourself, from its text and its family's `slide2` lin
 Do not give the top band to more than one cover in four. A judge who scores everything 35 or more has stopped judging.
 
 ## Selection
-Rank survivors by total (partial + J). Take the highest three with three different families. Ties: a family with the brand's own evidence first, then fewer words, then the id. Show each with its score, family, a one-line reason, the cover, the slide-2 line and the CTA kind.
+Rank survivors by total (partial + J), then pass their `headline`, optional `sub` and `kicker` to `render.mjs --covers covers.json --spec spec.json --brand brand.json --out cover-lab --presets all` from carousel-design. A text score or estimated line count cannot prove fit. Read the lab's actual hero size at 130 px, lines, width ratio, empty band and findings; resolve cover FIX/BLOCK before selection. The lab ranks physical fit separately from this score and writes only `covers.png`.
+
+Take the highest three fitting covers with three different families and different tension. Ties: the brand's own evidence first, then fewer words, then the id. Show each as a rendered image at feed size and 130 px, with its score, family, a short reason, slide-2 line and CTA kind. Never offer bare text in place of a rendered cover. On a stronger-hook request, one of the three is always a shock cover: a sourced loss, a contradiction or a hard number. It must pass the same gates. If fewer than three fit, write fresh hooks and repeat gates then lab.
 
 **Score against the panel.** The score carries the account's evidence (P, up to 20 points), so the duel does not re-count it as a vote: it uses the family's tier as its second criterion, after clarity and before the stop votes. When the champion with the highest total and the champion with the most stop votes differ, the cover is a hybrid (the favourite's tension, the leader's visible number), not a coin toss; in the first dogfood post the number-led list led both the heuristic (82) and the judge's order and lost on one persona's vote, and the final cover then hid the number in a sub-line that vanished at 130 px.
 

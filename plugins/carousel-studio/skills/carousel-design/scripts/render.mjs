@@ -6,6 +6,8 @@
  *                   [--video internal|hyperframes|none] [--studio FILE] [--lang ar|en] [--timeout MS]
  *                   [--chromium PATH] [--headed] [--save-plan] [--contact-sheet] [--format json|text]
  *   node render.mjs --preflight --spec FILE [--brand FILE] [--presets creator,poster,notebook] [--format json|text]
+ *   node render.mjs --covers FILE --spec FILE [--brand FILE] --out DIR [--presets all|creator,poster] [--format json|text]
+ *   node render.mjs --style-sheet --spec FILE [--brand FILE] --out DIR [--format json|text]
  *
  * --preflight is for the design huddle: nothing is exported and no video is made. The cover and slide 2 of the post are rendered in each
  * candidate preset (all three shipped presets by default) and put through the rendered gates, so a cover too small at 130 px, with a
@@ -36,22 +38,23 @@ import { drawContact } from "./render_contact.mjs";
 const CHUNK = 4 * 1024 * 1024;
 const ALL_FORMATS = ["png", "jpeg", "pdf", "zip", "source", "qa"];
 const DEFAULT_FORMATS = ALL_FORMATS.filter((f) => f !== "source");     // the source files are an opt-in, as in the Studio
-const USAGE = "usage: node render.mjs --spec FILE [--brand FILE] --out DIR [--save-plan] [--contact-sheet] [--strict] [--formats png,jpeg,pdf,zip,qa[,source]] [--variants 3x4,4x5] [--video hyperframes|internal|none] [--studio FILE] [--lang ar|en] [--timeout MS] [--chromium PATH] [--headed] [--format json|text]\n       node render.mjs --preflight --spec FILE [--brand FILE] [--presets creator,poster,notebook] [--studio FILE] [--timeout MS] [--chromium PATH] [--format json|text]";
+const USAGE = "usage: node render.mjs --spec FILE [--brand FILE] --out DIR [--save-plan] [--contact-sheet] [--strict] [--formats png,jpeg,pdf,zip,qa[,source]] [--variants 3x4,4x5] [--video hyperframes|internal|none] [--studio FILE] [--lang ar|en] [--timeout MS] [--chromium PATH] [--headed] [--format json|text]\n       node render.mjs --preflight --spec FILE [--brand FILE] [--presets creator,poster,notebook] [--format json|text]\n       node render.mjs --covers FILE --spec FILE [--brand FILE] --out DIR [--presets all|creator,poster] [--format json|text]\n       node render.mjs --style-sheet --spec FILE [--brand FILE] --out DIR [--format json|text]";
 
 function parseArgs(argv) {
-  const known = { spec: "specFile", brand: "brandFile", out: "outDir", formats: "formats", variants: "variants", video: "video", studio: "studioFile", lang: "lang", timeout: "timeout", chromium: "chromium", format: "format", presets: "presets" };
+  const known = { spec: "specFile", brand: "brandFile", out: "outDir", formats: "formats", variants: "variants", video: "video", studio: "studioFile", lang: "lang", timeout: "timeout", chromium: "chromium", format: "format", presets: "presets", covers: "coversFile" };
   const o = { formats: DEFAULT_FORMATS.join(","), variants: "3x4,4x5", video: "internal", lang: "ar", timeout: "300000", format: "json" };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--help" || a === "-h") { o.help = true; continue; }
     if (a === "--headed") { o.headed = true; continue; }
     if (a === "--preflight") { o.preflight = true; continue; }
+    if (a === "--style-sheet") { o.styleSheet = true; continue; }
     if (a === "--save-plan") { o.savePlan = true; continue; }
     if (a === "--contact-sheet") { o.contactSheet = true; continue; }
     if (a === "--strict") { o.strict = true; continue; }
     if (!a.startsWith("--") || !(a.slice(2) in known)) throw new LaneError("E_USAGE", `unknown argument ${a}`, EXIT.USAGE);
     const v = argv[++i];
-    if (v === undefined) throw new LaneError("E_USAGE", `missing value for ${a}`, EXIT.USAGE);
+    if (v === undefined || v.startsWith("--")) throw new LaneError("E_USAGE", `missing value for ${a}`, EXIT.USAGE);
     o[known[a.slice(2)]] = v;
   }
   o.formatList = o.formats.split(",").map((s) => s.trim()).filter(Boolean);
@@ -62,6 +65,9 @@ function parseArgs(argv) {
 }
 
 function validate(o) {
+  const modes = [o.preflight, o.coversFile, o.styleSheet].filter(Boolean).length;
+  if (modes > 1) throw new LaneError("E_USAGE", "Choose one of --preflight, --covers or --style-sheet.", EXIT.USAGE);
+  if (modes && (o.savePlan || o.contactSheet)) throw new LaneError("E_USAGE", "Cover previews cannot use --save-plan or --contact-sheet. The input spec is read only.", EXIT.USAGE);
   if (!o.specFile || (!o.outDir && !o.preflight)) throw new LaneError("E_USAGE", o.preflight ? "--spec is required" : "--spec and --out are required", EXIT.USAGE);
   if (o.preflight && o.contactSheet) throw new LaneError("E_USAGE", "--contact-sheet requires an export, not --preflight", EXIT.USAGE);
   const badFormat = o.formatList.find((f) => !ALL_FORMATS.includes(f));
@@ -72,6 +78,26 @@ function validate(o) {
   if (!["ar", "en"].includes(o.lang)) throw new LaneError("E_USAGE", "--lang is ar or en", EXIT.USAGE);
   if (!(o.timeoutMs > 0)) throw new LaneError("E_USAGE", "--timeout must be a positive number of milliseconds", EXIT.USAGE);
   if (!["json", "text"].includes(o.format)) throw new LaneError("E_USAGE", "--format is json or text", EXIT.USAGE);
+}
+
+/** Fresh candidate copy only; line breaks are literal JSON \n characters in headline/sub/kicker. */
+function coverCandidates(value) {
+  if (!Array.isArray(value) || !value.length || value.length > 100) throw new LaneError("E_SCHEMA", "Covers must be a JSON array of 1 to 100 candidates.", EXIT.BLOCK);
+  return value.map((c, i) => {
+    if (!c || Array.isArray(c) || typeof c !== "object" || typeof c.headline !== "string" || !c.headline.trim()) throw new LaneError("E_SCHEMA", `Cover ${i + 1} needs a nonempty headline.`, EXIT.BLOCK);
+    for (const k of Object.keys(c)) {
+      if (!["headline", "sub", "kicker"].includes(k) || typeof c[k] !== "string" || c[k].length > 600) throw new LaneError("E_SCHEMA", `Cover ${i + 1}: use headline and optional sub/kicker strings (at most 600 characters each). Forced breaks are \\n in the string.`, EXIT.BLOCK);
+    }
+    return { ...c };
+  });
+}
+
+/** The shared spec schema permits scalar overrides. Give the working range syntax before the builder's generic E_SCHEMA. */
+function checkCoverControls(spec) {
+  const maps = [["style.overrides", spec.style?.overrides], ...(spec.slides || []).filter(s => ["cover", "poster"].includes(s.type)).map(s => [`${s.id}.overrides`, s.overrides])];
+  for (const [where, map] of maps) for (const [key, v] of Object.entries(map || {})) {
+    if (Array.isArray(v)) throw new LaneError("E_SCHEMA", `${where}.${key} accepts a scalar, not an array. Use ${JSON.stringify(v.join(","))} for a range, or one number for a fixed maximum. The cover sub-line uses type.scale.body; h2 and small size other slots.`, EXIT.BLOCK);
+  }
 }
 
 function readJson(file, what) {
@@ -153,40 +179,121 @@ function videoInfoFrom(check) {
   return info;
 }
 
-/** The design huddle's pre-flight: the cover and slide 2 of the post in each candidate preset, through the rendered gates (runs in the page). */
-async function preflight(page, spec, brand, presets) {
-  return page.evaluate(async ({ spec, brand, presets }) => {
-    const reg = CS.core.registry, all = reg.listPresets(), ids = presets.length ? presets : all.map((p) => p.id), rec = CS.motion.recommend(spec), wanted = (spec.cover && spec.cover.motion && spec.cover.motion.recipe) || rec.recipe;
-    const d9 = CS.qa.rules().gates.find((g) => g.id === "D9").checks[0].params, keep = d9.maxShare;
-    const rows = [];
-    for (const id of ids) {
-      const meta = all.find((p) => p.id === id);
-      if (!meta) { rows.push({ preset: id, error: "unknown preset" }); continue; }
-      const s = JSON.parse(JSON.stringify(spec));
-      s.style = Object.assign({}, s.style, { presetId: id + "@" + meta.version });
-      d9.maxShare = 0;                                              // report the empty band of every cover, not only the ones over the limit
-      try {
-        const tokens = CS.core.resolve.post(s, brand);
-        const deck = await CS.core.render.deck(s, brand, { mode: "export", useFrozen: false, slideIds: s.slides.slice(0, 2).map((x) => x.id) });
-        const found = await CS.qa.runRendered({ spec: s, tokens, deck });
-        const tile = await CS.qa.thumbnail(deck.slides[0].el);
-        deck.dispose();
-        const band = found.find((r) => r.rule === "D9.dead-zone"), allowed = (reg.getPreset(id).motion || {}).allowed || [];
-        const real = found.filter((r) => !(r.rule === "D9.dead-zone" && Number((/(\d+)%/.exec(r.msg.en) || [])[1]) < Math.round(keep * 100)));
-        rows.push({
-          preset: id, hero130Px: Math.round(tile.heroPx * 10) / 10, deadZonePct: band ? Number((/(\d+)%/.exec(band.msg.en) || [])[1]) : 0,
-          recipe: wanted, recipeAllowed: allowed.indexOf(wanted) >= 0 || wanted === "none",
-          counts: { block: real.filter((r) => r.sev === "BLOCK").length, fix: real.filter((r) => r.sev === "FIX").length, note: real.filter((r) => r.sev === "NOTE").length },
-          findings: real.filter((r) => r.sev !== "NOTE").map((r) => ({ sev: r.sev, rule: r.rule, slide: r.slide || "", msg: r.msg.en }))
-        });
-      } catch (e) { rows.push({ preset: id, error: String((e && e.message) || e) }); }
-      finally { d9.maxShare = keep; }
+/** One page, one gate pass per preview. No QA thresholds or caller objects are changed. */
+async function coverLab(page, spec, brand, options = {}) {
+  return page.evaluate(async ({ spec, brand, options }) => {
+    const { mode = "covers", presets = [], candidates = [] } = options;
+    const reg = CS.core.registry, all = reg.listPresets(), shipped = all.filter(p => p.ships === "1.0");
+    const ids = !presets.length && mode === "covers" ? [spec.style.presetId.split("@")[0]] : !presets.length || presets.includes("all") ? shipped.map(p => p.id) : [...new Set(presets)];
+    const previews = mode === "covers" ? candidates : [null], rows = [], pictures = [];
+    const round = n => Math.round(n * 100) / 100;
+    const rec = CS.motion.recommend(spec), wanted = spec.cover?.motion?.recipe || rec.recipe;
+    function arrangedFields(slide, el, fit) {
+      const fields = Object.fromEntries(["headline", "sub", "kicker"].filter(k => slide[k] !== undefined).map(k => [k, slide[k]]));
+      if (!fit.cover?.movedSecondBeat) return fields;
+      const parsed = CS.core.text.parseMarkup(slide.headline), points = Array.from(parsed.plain);
+      const words = [...parsed.plain.matchAll(/[^ \t\n\r\f\v\u00a0\u202f]+/g)];
+      const cut = el.querySelectorAll('[data-slot="headline"] .w').length;
+      function part(start, end) {
+        const span = parsed.spans[0], a = span && Math.max(start, span.start), b = span && Math.min(end, span.end);
+        return span && b > a ? points.slice(start, a).join("") + "==" + points.slice(a, b).join("") + "==" + points.slice(b, end).join("") : points.slice(start, end).join("");
+      }
+      const end = Array.from(parsed.plain.slice(0, words[cut - 1].index + words[cut - 1][0].length)).length;
+      const start = Array.from(parsed.plain.slice(0, words[cut].index)).length;
+      fields.headline = part(0, end); fields.sub = part(start, points.length);
+      return fields;
     }
-    return rows;
-  }, { spec, brand, presets });
+    for (let ci = 0; ci < previews.length; ci++) for (const id of ids) {
+      const meta = all.find(p => p.id === id), row = { candidate: ci + 1, preset: id };
+      rows.push(row);
+      if (!meta || meta.ships !== "1.0") { row.error = "Unknown or unshipped preset: " + id; continue; }
+      const s = JSON.parse(JSON.stringify(spec));
+      s.style = { ...s.style, presetId: id + "@" + meta.version }; delete s.frozen;
+      if (previews[ci]) {
+        // An omitted secondary field is absent, never inherited from a different hook.
+        for (const field of ["headline", "sub", "kicker"]) delete s.slides[0][field];
+        Object.assign(s.slides[0], previews[ci]);
+      }
+      let deck;
+      try {
+        const tokens = CS.core.resolve.post(s, brand), slideIds = s.slides.slice(0, mode === "covers" ? 1 : 2).map(x => x.id);
+        deck = await CS.core.render.deck(s, brand, { mode: "export", useFrozen: false, slideIds });
+        const cover = deck.slides[0], el = cover.el;
+        if (mode === "covers") {
+          cover.fit = CS.core.fit.fitSlide(el, cover.tokens, { coverSecondBeat: true });
+          CS.core.compose.slots(el).forEach(slot => CS.core.fit.wrapLines(slot.el));
+          CS.core.fit.settleLines(el, cover.tokens, cover.fit);
+        }
+        const fields = arrangedFields(s.slides[0], el, cover.fit);
+        Object.assign(s.slides[0], fields);
+        const found = await CS.qa.runRendered({ spec: s, brand, tokens, deck });
+        const headline = el.querySelector('[data-slot="headline"]'), sub = el.querySelector('[data-slot="sub"]');
+        const measured = CS.core.fit.measureLines(headline), platform = reg.rules().platform, visual = platform.plugin.visual;
+        const zone = CS.qav._rendered.measure(el, { platform }), dead = CS.visual.deadSpace(zone.boxes, zone.zone, { grid: visual.grid, halo: visual.halo, owner: visual.owner, occ: visual.grid.occ, canvasH: s.canvas.h });
+        const findings = found.filter(f => mode !== "covers" || !f.slide || f.slide === cover.id);
+        Object.assign(row, {
+          heroWords: CS.core.text.wordCount(measured.text.join(" ")), totalWords: [s.slides[0].headline, s.slides[0].sub, s.slides[0].kicker].reduce((n, text) => n + CS.core.text.wordCount(text || ""), 0),
+          lines: measured.lines.length, hero130Px: round(parseFloat(getComputedStyle(headline).fontSize) * 130 / s.canvas.w),
+          headlineWidthRatio: round(Math.max(0, ...measured.rects.map(r => r.w)) / platform.geometry.contentBox.w),
+          deadZonePct: dead.band, arrangement: { headline: measured.text, sub: sub ? CS.core.fit.measureLines(sub).text : [], fields, ...(cover.fit.cover || {}) },
+          recipe: wanted, recipeAllowed: wanted === "none" || meta.motion.allowed.includes(wanted),
+          counts: { block: findings.filter(f => f.sev === "BLOCK").length, fix: findings.filter(f => f.sev === "FIX").length, note: findings.filter(f => f.sev === "NOTE").length },
+          findings: findings.map(f => ({ sev: f.sev, rule: f.rule, slide: f.slide || "", el: f.el || "", msg: f.msg.en,
+            fix: /^(T1.hero-small|D6.lines|D6.headline-width)$/.test(f.rule) && cover.fit.cover?.suggestion ? cover.fit.cover.suggestion.en : f.fix?.en || "", ...(f.prospect === undefined ? {} : { prospect: f.prospect }) })),
+          previewSlides: slideIds
+        });
+        if (mode !== "preflight") {
+          const images = [];
+          for (const slide of deck.slides) images.push(await CS.paint.toCanvas(slide.el, { scale: 0.3, painter: "svg" }));
+          pictures.push({ row, images });
+        }
+      } catch (e) { row.error = String(e?.message || e); }
+      finally { if (deck) deck.dispose(); }
+    }
+    const ranked = rows.slice().sort((a, b) => Number(!!a.error) - Number(!!b.error) || (a.counts?.block || 0) - (b.counts?.block || 0) || (a.counts?.fix || 0) - (b.counts?.fix || 0) || (b.hero130Px || 0) - (a.hero130Px || 0) || (a.deadZonePct || 0) - (b.deadZonePct || 0) || a.candidate - b.candidate || ids.indexOf(a.preset) - ids.indexOf(b.preset));
+    ranked.forEach((r, i) => r.rank = i + 1);
+    const result = { rows, ranking: ranked.map(r => ({ rank: r.rank, candidate: r.candidate, preset: r.preset })) };
+    if (mode === "preflight") return result;
+    const columns = Math.min(3, Math.max(1, ids.length)), cw = mode === "covers" ? 510 : 700, ch = 690, gap = 16;
+    const sheet = document.createElement("canvas"); sheet.width = columns * cw + gap; sheet.height = Math.ceil(rows.length / columns) * ch + gap;
+    const c = sheet.getContext("2d"); c.fillStyle = "#eeeae3"; c.fillRect(0, 0, sheet.width, sheet.height);
+    function text(value, x, y, width, maxLines) {
+      let line = "", lines = 0;
+      for (const word of String(value).split(" ")) {
+        if (c.measureText(line + word).width > width && line) { c.fillText(line, x, y); y += 19; line = ""; if (++lines >= maxLines) return; }
+        line += word + " ";
+      }
+      if (line) c.fillText(line, x, y);
+    }
+    rows.forEach((row, i) => {
+      const x = gap + i % columns * cw, y = gap + Math.floor(i / columns) * ch;
+      c.fillStyle = "#fff"; c.fillRect(x, y, cw - gap, ch - gap); c.fillStyle = "#171717"; c.font = "bold 20px sans-serif";
+      c.fillText((mode === "covers" ? "#" + row.candidate + " / " : "") + row.preset + " / rank " + row.rank, x + 12, y + 29);
+      const p = pictures.find(p => p.row === row);
+      if (p) {
+        c.drawImage(p.images[0], x + 12, y + 46, 324, 432);
+        if (mode === "covers") { c.drawImage(p.images[0], x + 350, y + 46, 130, 173); c.font = "14px sans-serif"; c.fillText("130 px", x + 350, y + 239); }
+        else if (p.images[1]) c.drawImage(p.images[1], x + 350, y + 46, 324, 432);
+      }
+      c.fillStyle = "#171717"; c.font = "15px sans-serif";
+      if (row.error) { text(row.error, x + 12, y + 505, cw - 40, 8); return; }
+      text(`hero ${row.hero130Px} px at 130 / ${row.heroWords} words / ${row.lines} lines / width ${Math.round(row.headlineWidthRatio * 100)}% / empty band ${row.deadZonePct}%`, x + 12, y + 505, cw - 40, 3);
+      text(`BLOCK ${row.counts.block} / FIX ${row.counts.fix} / NOTE ${row.counts.note}`, x + 12, y + 550, cw - 40, 1);
+      text(row.findings.map(f => `${f.sev} ${f.rule}: ${f.msg}`).join(" | ") || "Rendered gates pass", x + 12, y + 578, cw - 40, 5);
+    });
+    const bytes = await CS.paint.encode(sheet, "png"); let binary = "";
+    for (let i = 0; i < bytes.length; i += 0x8000) binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+    result.image = btoa(binary); result.imageSize = { width: sheet.width, height: sheet.height };
+    return result;
+  }, { spec, brand, options });
+}
+
+async function preflight(page, spec, brand, presets) {
+  return (await coverLab(page, spec, brand, { mode: "preflight", presets })).rows;
 }
 
 async function main(argv) {
+  const started = performance.now();
   const o = parseArgs(argv);
   if (o.help) { process.stdout.write(USAGE + "\n"); return EXIT.OK; }
   validate(o);
@@ -194,12 +301,14 @@ async function main(argv) {
   if (major < 22) throw new LaneError("E_NO_CAPABILITY", `Node.js 22 or newer is required (this is ${process.versions.node}).`, EXIT.INTERNAL);
   const input = readPlanSource(o.specFile, "spec");
   let spec = input.value;
+  checkCoverControls(spec);
+  const candidates = o.coversFile ? coverCandidates(readJson(o.coversFile, "covers")) : null;
   const brand = o.brandFile ? readJson(o.brandFile, "brand") : null;
   const log = (m) => process.stderr.write(m + "\n");
   const countReport = slideCountReport(spec, brand);
   if (countReport) {
     const files = [], out = o.outDir ? path.resolve(o.outDir) : null;
-    if (!o.preflight) {
+    if (!o.preflight && !o.coversFile && !o.styleSheet) {
       const { CS } = loadPlanner(), context = { CS, TextEncoder, TextDecoder, console }; context.window = context;
       vm.runInNewContext(fs.readFileSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../runtime/cs-qa.js"), "utf8"), context);
       try {
@@ -228,10 +337,26 @@ async function main(argv) {
     let studioFile = o.studioFile;
     if (!studioFile) { log("جاري بناء صفحة الأستوديو…"); studioFile = buildStudioPage({ specFile: path.resolve(o.specFile), brandFile: o.brandFile && path.resolve(o.brandFile), outFile: path.join(work, "studio.html") }); }
     studioFile = freeContractPage(studioFile, spec, work);
-    browser = await launchChromium({ chromium: o.chromium, headed: o.headed, channelFirst: o.video === "internal" });
+    browser = await launchChromium({ chromium: o.chromium || process.env.CS_CHROME, headed: o.headed, channelFirst: o.video === "internal" });
     studio = await openStudio({ browser, studioFile, timeout: o.timeoutMs });
     const { page } = studio;
     await page.evaluate(([s, b]) => window.CS.automation.setSpec(s, b), [spec, brand]);
+
+    if (o.coversFile || o.styleSheet) {
+      const mode = o.coversFile ? "covers" : "style-sheet";
+      if (!["cover", "poster"].includes(spec.slides?.[0]?.type)) throw new LaneError("E_SCHEMA", "The first slide must be a cover or poster.", EXIT.BLOCK);
+      const result = await coverLab(page, spec, brand, { mode, presets: o.presetList, candidates });
+      const file = mode + ".png", bytes = Buffer.from(result.image, "base64"); delete result.image;
+      try { fs.writeFileSync(path.join(outDir, file), bytes); }
+      catch (e) { throw new LaneError("E_USAGE", `Cannot write preview: ${e.message}`, EXIT.NOWRITE); }
+      const summary = { ok: !result.rows.some(r => r.error), mode, specId: spec.id, exported: false, out: outDir,
+        seconds: Math.round((performance.now() - started) / 10) / 100, files: [{ path: file, bytes: bytes.length }], ...result, pageErrors: studio.errors.slice(0, 5) };
+      if (o.format === "text") {
+        process.stdout.write(`${mode}: ${path.join(outDir, file)} (${summary.seconds} s)\n` + result.rows.slice().sort((a, b) => a.rank - b.rank).map(r => r.error ? `${r.rank}. ${r.candidate}/${r.preset}: ${r.error}` :
+          `${r.rank}. ${r.candidate}/${r.preset}: ${r.heroWords} hero words, ${r.lines} lines, ${r.hero130Px} px at 130, width ${Math.round(r.headlineWidthRatio * 100)}%, empty band ${r.deadZonePct}%\n` + r.findings.map(f => `   ${f.sev} ${f.rule} ${f.slide}: ${f.msg}${f.fix ? " / " + f.fix : ""}`).join("\n")).join("\n") + "\n");
+      } else process.stdout.write(JSON.stringify(summary) + "\n");
+      return summary.ok ? EXIT.OK : EXIT.INTERNAL;
+    }
 
     if (o.preflight) {
       const rows = await preflight(page, spec, brand, o.presetList);
@@ -298,7 +423,7 @@ async function main(argv) {
   }
 }
 
-export { parseArgs, wanted, exportExitCode, coverVideoOutcome, slideCountReport };
+export { parseArgs, validate, coverCandidates, checkCoverControls, coverLab, preflight, wanted, exportExitCode, coverVideoOutcome, slideCountReport };
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   main(process.argv.slice(2)).then((c) => { process.exitCode = c; }, (e) => {

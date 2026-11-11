@@ -105,6 +105,8 @@ function firstSlide(spec) {
 
 /** The topic -> motion decision (CS.motion.recommend). Order follows CONTRACT 5.7 and the "Motion default" decision. */
 function recommendMotion(spec) {
+  var symbol = spec && spec.ext && spec.ext.coverSymbol;
+  if (symbol && !CS.motion.metaphors[symbol]) throw motionError("E_USAGE", "ext.coverSymbol must be one of: " + Object.keys(CS.motion.metaphors).join(", "));
   var cover = firstSlide(spec) || {}, hook = (spec && spec.hook) || {}, parts = [hook.cover, hook.text, spec && spec.brief && spec.brief.topic,
     spec && spec.angle && spec.angle.title, cover.kicker, cover.headline, cover.sub, spec && spec.captionPack && spec.captionPack.firstLine];
   var text = parts.filter(Boolean).join(" ");
@@ -113,7 +115,7 @@ function recommendMotion(spec) {
   var western = coverText.replace(/[٠-٩]/g, function (c) { return "٠١٢٣٤٥٦٧٨٩".indexOf(c); });
   var numeral = /[0-9]/.test(western.replace(/\b(19|20)[0-9]{2}\b/g, "")) || (spec && spec.slides || []).some(function (s) { return s.type === "stat" || (s.number && s.number.value); });
   var has = function (t) { return tags.indexOf(t) >= 0; };
-  var pick = function (recipe, feel, why, metaphor) { return { recipe: recipe, feel: feel, why: why, metaphor: metaphor || null, tags: tags }; };
+  var pick = function (recipe, feel, why, metaphor) { return { recipe: recipe, feel: feel, why: why, metaphor: symbol || metaphor || null, tags: tags }; };
   if (has("urgency") && found.scores.urgency >= 2) return pick("drop-clock", "story", WHY.clock, "clock");
   if (has("spread") && found.scores.spread >= 2) return pick("map-dots", "story", WHY.dots, "dots");
   if (arch === "myth-fact" || family === "P4" || (has("decision") && found.scores.decision >= 2)) return pick("stamp", "story", WHY.stamp);

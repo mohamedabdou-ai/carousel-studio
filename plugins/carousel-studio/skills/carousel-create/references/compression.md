@@ -36,10 +36,12 @@ Read the three candidates against four questions:
 3. Does it still sound like the speaker? Put back a filler only if it is the voice, never to pad.
 4. Does the first beat start with the meaning word?
 
-Then run the winner through `hook_features.py --role cover` like any draft.
+Run the candidates through `hook_features.py --role cover` like any draft. Convert the survivors to the lab's array of `{headline, sub?, kicker?}`, then run `render.mjs --covers covers.json --spec spec.json --brand brand.json --out cover-lab --presets all` from carousel-design. Read the rendered lines, hero at 130 px, width and empty-band findings. Offer only covers that already fit, as rendered images at feed size and 130 px, never as bare text. Rewrite and repeat gates then lab when a survivor cannot fit; do not force smaller type or relax a gate.
+
+If the creator asks for a stronger hook, the three fitting images have different tension and always include a shock cover based on a sourced loss, a contradiction or a hard number. Compression keeps the speaker's meaning; a changed claim is a new hook that needs their approval.
 
 ## Placing it in the spec
-`hero` goes to the cover's `headline`. When the cover is two beats and the whole thing is at most 6 words, keep both in the headline with a forced line break at the «…». When the second beat pushes the headline past 6 words, it goes to `sub`. The full spoken line goes to `spec.hook.text`, the cover to `spec.hook.cover`.
+Start with `hero` in `headline` and a second beat in `sub` when the headline would exceed 6 words. The lab searches word-boundary breaks, keeps forced breaks and may try the creator's punctuated second beat in a sub-line. Apply the chosen `arrangement.fields` with `spec_edit.py cover` before approval or freezing; these values keep emphasis markup, and a preview never changes the spec. Keep the full spoken line in `spec.hook.text` and the approved cover in `spec.hook.cover`.
 
 ## Examples (synthetic)
 | Spoken | Cover |

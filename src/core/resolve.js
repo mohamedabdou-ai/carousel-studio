@@ -513,6 +513,9 @@
     var list = (tokens.variants && tokens.variants[slide.type]) || [];
     var def = list[0] || null;
     if (!def) { try { def = core.registry.getArchetype(slide.type).defaultVariant; } catch (e) { def = "base"; } }
+    // These two cover anchors are implemented by the shared cover partial in every style.
+    var anchor = slide.variant || tokens.layout.coverAnchor;
+    if (slide.type === "cover" && (anchor === "top" || anchor === "center")) return { variant: anchor, fellBack: false, requested: slide.variant || null };
     if (slide.variant && slide.variant !== def && list.indexOf(slide.variant) < 0) return { variant: def, fellBack: true, requested: slide.variant };
     return { variant: slide.variant || def, fellBack: false, requested: slide.variant || null };
   }

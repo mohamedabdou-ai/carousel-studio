@@ -56,7 +56,7 @@ async function paintPreset(page, spec0, presetId, want) {
     if (!preset) return { missing: true };
     const covers = ((reg.getPreset(presetId).variants || {}).cover || []);
     const make = () => { const s = JSON.parse(JSON.stringify(spec0)); s.style.presetId = presetId + "@" + preset.version; return s; };
-    const out = { version: CS.version, preset: preset.id + "@" + preset.version, variants: covers.slice(), entries: {}, h264: null };
+    const out = { version: CS.version, preset: preset.id + "@" + preset.version, variants: covers.slice(), entries: {}, motionParity: [], h264: null };
     try { const sup = await CS.export.mp4.support(1080, 1440, 30); out.h264 = !!sup.supported; } catch (e) { out.h264 = false; }
     const paint = async (spec) => {
       const deck = await CS.core.render.deck(spec, brand, { mode: "export", useFrozen: false, slideIds: [spec.slides[0].id] });
@@ -84,6 +84,23 @@ async function paintPreset(page, spec0, presetId, want) {
         const f0 = CS.paint.downscale(canvas, W, H), ps = CS.paint.downscale(poster, W, H);
         out.entries.frame0 = { png: b64(await CS.paint.encode(f0, "png")), vsPoster: CS.paint.metrics.ssim(f0, ps), recipe: timeline.recipe };
         ctrl.destroy();
+      } finally { deck.dispose(); }
+    }
+    // The number variant used to move when the motion driver promoted inline words.
+    // Check every shipped recipe against its own still, independently of the historical image baseline.
+    if (want.frame0 && covers.includes("number")) {
+      const s = make(); s.slides[0].variant = "number";
+      const deck = await CS.core.render.deck(s, brand, { mode: "export", useFrozen: false, slideIds: [s.slides[0].id] });
+      try {
+        const el = deck.slides[0].el, poster = await CS.paint.toCanvas(el, { scale: .5 });
+        for (const recipe of CS.motion.list({ shippedOnly: true }).map(r => r.id)) {
+          const tl = CS.motion.build(el, { recipe }), ctrl = CS.motion.hf.engine.attach(el, tl, { driver: "style" });
+          try {
+            ctrl.seek(0); const first = await CS.paint.toCanvas(el, { scale: .5 });
+            ctrl.seek(tl.duration); const last = await CS.paint.toCanvas(el, { scale: .5 });
+            out.motionParity.push({ variant: "number", recipe, first: CS.paint.metrics.ssim(poster, first), last: CS.paint.metrics.ssim(poster, last) });
+          } finally { ctrl.destroy(); }
+        }
       } finally { deck.dispose(); }
     }
     return out;
@@ -145,6 +162,11 @@ async function main() {
   const manifest = read(path.join(baselineDir, "manifest.json"));
   const outDir = flag("out") ? path.resolve(flag("out")) : null;
   let bad = 0, total = 0, worst = 1;
+  for (const [id, r] of Object.entries(results)) for (const m of r.motionParity) {
+    const score = Math.min(m.first, m.last), ok = score >= FRAME0_MIN; total++; worst = Math.min(worst, score);
+    console.log(`${ok ? "ok   " : "FAIL "}${id} number/${m.recipe} first/last vs poster ${m.first.toFixed(5)}/${m.last.toFixed(5)} (>= ${FRAME0_MIN})`);
+    if (!ok) bad++;
+  }
   for (const id of presets) {
     const base = manifest.presets[id], r = results[id];
     if (!base) { console.log(`FAIL ${id}: not in the baseline`); bad++; continue; }
@@ -163,7 +185,7 @@ async function main() {
       if (!ok) { bad++; const dir = outDir || tempDir("cs-cover-"); fs.mkdirSync(dir, { recursive: true }); fs.writeFileSync(path.join(dir, `${id}-${name.replace("@", "-")}.now.png`), bytes); console.log(`       saved ${path.join(dir, `${id}-${name.replace("@", "-")}.now.png`)}`); }
     }
   }
-  console.log(bad ? `\n${bad} of ${total} cover images moved.` : `\nall ${total} cover images within threshold (worst SSIM ${worst.toFixed(5)}).`);
+  console.log(bad ? `\n${bad} of ${total} cover checks failed.` : `\nall ${total} cover checks within threshold (worst SSIM ${worst.toFixed(5)}).`);
   return bad ? 1 : 0;
 }
 
