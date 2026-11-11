@@ -29,7 +29,7 @@ Make the idea visible through hierarchy, a meaningful anchor, deliberate space a
 ## You produce
 **Before the final export (design decisions, then the free design):**
 
-1. **The style shortlist.** Your brief supplies the criteria for the director's read-only pre-lock role pass: rank all three shipped styles (`creator`, `notebook`, `poster`) by topic fit and pre-flight; brand default only breaks a tie. The creator chooses on `render.mjs --style-sheet` (standing `brand.ext.styleChoice` skips that question). You are dispatched only after lock; confirm that recommendation and choice, never choose silently. Print:
+1. **The style shortlist.** Your brief supplies the criteria for the director's read-only pre-lock role pass: rank all three shipped styles (`creator`, `notebook`, `poster`) by topic fit and pre-flight; brand default only breaks a tie. The creator chooses on `render.mjs --style-sheet --spec spec.json --brand brand.json --out style-lab` (standing `brand.ext.styleChoice` skips that question). You are dispatched only after lock; confirm that recommendation and choice, never choose silently. Print:
 ```
 الستايل: <preset> — بدائل: <preset> (<why>)، <preset> (<why>) — اختبار V1: <preset> ok|fail|لم يُفحص
 ```

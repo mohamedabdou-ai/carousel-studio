@@ -59,6 +59,7 @@ def parser():
     def command(name, help_text):
         return commands.add_parser(name, help=help_text, parents=[shared(False)])
     command("show", "outline, word counts, style, sources and current QA")
+    command("reset-record", "back up the saved edits and start a new record without changing the spec")
     style = command("style", "change the preset")
     style.add_argument("preset")
     cover = command("cover", "change the hook and its quotes in captions and alt text")
@@ -298,30 +299,38 @@ def main(argv=None):
         with lane.post_lock(spec_path):
             spec = lane.read_json(spec_path)
             before = spec_path.read_bytes()
-            errors = schema.validate_named("spec", spec)
+            errors = lane.schema_errors(spec, legacy=True)
             if errors:
                 raise CSError("E_SCHEMA", "; ".join(e["path"] + " " + e["message"] for e in errors[:8]))
             if args.expect_rev is not None and spec.get("rev") != args.expect_rev:
                 raise CSError("E_CONFLICT", "expected rev %s, found %s" % (args.expect_rev, spec.get("rev")))
             notes = []
-            if args.command != "show":
+            if args.command == "reset-record":
+                lane.discard_record(spec_path)
+                paths.write_json(lane.record_path(spec_path), lane.new_record(spec))
+                notes.append("saved edits backed up as spec.edits.json.bak; the spec is unchanged")
+                rep = lane.check_spec(copy.deepcopy(spec), brand, legacy=True)
+            elif args.command != "show":
                 previous = copy.deepcopy(spec)
                 record = lane.read_record(spec_path, spec)
                 if not lane.record_path(spec_path).exists():
                     lane.migrate_record(spec, record)
+                else:
+                    lane.reconcile_fill(spec, record)
+                    lane.capture_design(spec, spec, record)
                 edit = edit_for(args, spec)
-                if edit.get("kind") == "keep-cta":  # one decision, recorded once: a repeat replaces the earlier record
+                if edit.get("kind") == "keep-cta" or (args.command == "cta" and args.kind):
                     record["edits"] = [e for e in record["edits"] if e.get("kind") != "keep-cta"]
                 record["edits"].append(edit)
                 notes = lane.replay_edits(spec, record)
                 lane.bind_all(spec)
                 lane.bump(spec, previous)
-                keep = lane.recorded_keeps(record)
-                rep = lane.check_spec(spec, brand, keep)
+                keep = lane.recorded_keeps(record, spec)
+                rep = lane.check_spec(spec, brand, keep, legacy=True)
                 lane.saved_keep_marks(spec, rep, record)
-                lane.save_post(spec_path, spec, record, before)
+                lane.save_post(spec_path, spec, record, before, legacy=True)
             else:
-                rep = lane.check_spec(spec, brand)
+                rep = lane.check_spec(spec, brand, legacy=True)
         result = outline(spec, rep)
         result["notes"] = notes
         status = 2 if rep["structure"] else rep["qa"]["exitCode"]

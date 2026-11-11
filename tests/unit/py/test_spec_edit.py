@@ -95,6 +95,19 @@ class EditorTests(unittest.TestCase):
         self.assertEqual(missing.returncode, 64, missing.stdout + missing.stderr)
         self.assertIn("--spec", missing.stderr)
 
+    def test_legacy_oversize_spec_can_be_shown_and_edited_with_c5_still_blocking(self):
+        spec = self.read()
+        spec.pop("captionPack", None)
+        while len(spec["slides"]) < 11:
+            n = len(spec["slides"]) + 1
+            spec["slides"].append({"id": "s%02d" % n, "n": n, "type": "story-beat", "body": "تفصيل إضافي"})
+        self.spec.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8", newline="\n")
+        shown = json.loads(self.edit("show", "--format", "json").stdout)
+        self.assertEqual(len(shown["slides"]), 11)
+        self.edit("text", "s02", "--field", "body", "تفصيل أقصر")
+        self.assertEqual(self.read()["slides"][1]["body"], "تفصيل أقصر")
+        self.assertTrue(any(r["rule"] == "C5.slide-count" and r["sev"] == "BLOCK" for r in self.read()["qa"]["results"]))
+
     def test_show_is_compact_read_only_and_json_has_fresh_counts(self):
         before = self.spec.read_bytes()
         shown = json.loads(self.edit("show", "--format", "json").stdout)
@@ -169,8 +182,8 @@ class EditorTests(unittest.TestCase):
     def test_legacy_sources_assets_and_media_survive_first_rebuild(self):
         self.record.unlink()
         spec = self.read()
-        spec["assets"] = [{"id": "plate-a", "kind": "image", "ref": "asset:plate-a", "aiGenerated": False}]
-        spec["slides"][1]["media"] = {"assetId": "plate-a", "slot": "photo"}
+        spec["assets"] = [{"id": "supplied-a", "kind": "image", "ref": "asset:supplied-a", "aiGenerated": False}]
+        spec["slides"][1]["media"] = {"assetId": "supplied-a", "slot": "photo"}
         spec["slides"][0]["headline"] = "جدول واضح"
         spec["hook"]["cover"] = "جدول واضح"
         spec["meta"]["studioUrl"] = "saved-studio"
@@ -255,6 +268,128 @@ class EditorTests(unittest.TestCase):
         self.edit("keep", "C1.hero-words", "--reason", "x" * 301, status=2)
         self.assertEqual(before, (self.spec.read_bytes(), self.record.read_bytes()))
 
+    def test_setting_a_cta_clears_the_kept_ending_and_its_waivers(self):
+        spec = self.read()
+        spec["slides"][-1] = {"id": "s04", "n": 4, "type": "story-beat", "body": "انتهى الشرح."}
+        self.spec.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8", newline="\n")
+        self.edit("cta", "--keep")
+        result = self.edit("cta", "--kind", "save", "--title", "الخلاصة", "--text", "احفظ المنشور")
+        self.assertNotIn("the creator kept the ending", result.stdout)
+        self.assertNotIn("keepWithoutCta", self.read().get("ext", {}).get("readyScript", {}))
+        record = json.loads(self.record.read_text(encoding="utf-8"))
+        self.assertFalse(any(e.get("kind") == "keep-cta" for e in record["edits"]))
+        self.assertNotIn(("C4.count", ""), lane.recorded_keeps(record, self.read()))
+        self.parse()
+        self.assertNotIn("keepWithoutCta", self.read().get("ext", {}).get("readyScript", {}))
+
+    def test_partial_fill_keeps_caption_and_bridge_changes_saved_by_studio(self):
+        spec = self.read()
+        spec["captionPack"]["firstLine"] = "عنوان جديد من الاستوديو"
+        spec["captionPack"]["alt"][0] = "وصف جديد للغلاف"
+        spec["slides"][1]["bridge"] = "جسر جديد من الاستوديو"
+        self.spec.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8", newline="\n")
+        self.fill.write_text(json.dumps({"bridges": {"s03": "جسر مقصود من الملف"}}), encoding="utf-8", newline="\n")
+        self.parse("--spec", str(self.spec), "--fill", str(self.fill))
+        for _ in range(2):
+            self.assertEqual(self.read()["captionPack"]["firstLine"], spec["captionPack"]["firstLine"])
+            self.assertEqual(self.read()["captionPack"]["alt"][0], spec["captionPack"]["alt"][0])
+            self.assertEqual(self.read()["slides"][1]["bridge"], spec["slides"][1]["bridge"])
+            self.assertEqual(self.read()["slides"][2]["bridge"], "جسر مقصود من الملف")
+            self.parse()
+
+    def test_rebuild_captures_unrecorded_design_with_an_existing_record(self):
+        spec = self.read()
+        spec["style"]["presetId"] = "notebook@1.0"
+        spec["cover"]["motion"]["recipe"] = "reorder"
+        spec["slides"][1]["overrides"] = {"roles.accent": "#2468AC"}
+        spec["assets"] = [{"id": "supplied-art", "kind": "image", "ref": "asset:supplied-art", "aiGenerated": False}]
+        spec["ext"]["assetChecks"] = {"supplied-art": {"textChecked": True, "at": "2026-11-11T08:00:00Z"}}
+        spec["slides"][1]["media"] = {"slot": "photo", "assetId": "supplied-art", "frame": "tape"}
+        self.spec.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8", newline="\n")
+        self.parse()
+        for field in ("style", "cover", "assets"):
+            self.assertEqual(self.read()[field], spec[field])
+        for field in ("overrides", "media"):
+            self.assertEqual(self.read()["slides"][1][field], spec["slides"][1][field])
+        self.assertEqual(self.read()["ext"]["assetChecks"], spec["ext"]["assetChecks"])
+
+    def test_studio_fill_changes_survive_a_later_editor_command_and_legacy_records(self):
+        record = json.loads(self.record.read_text(encoding="utf-8"))
+        record.pop("fillState", None)
+        self.record.write_text(json.dumps(record), encoding="utf-8", newline="\n")
+        spec = self.read()
+        spec["captionPack"]["firstLine"] = "عنوان من النسخة المحفوظة"
+        self.spec.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8", newline="\n")
+        self.edit("text", "s02", "--field", "title", "النتيجة")
+        self.fill.write_text("{}", encoding="utf-8", newline="\n")
+        self.parse("--spec", str(self.spec), "--fill", str(self.fill))
+        self.assertEqual(self.read()["captionPack"]["firstLine"], spec["captionPack"]["firstLine"])
+        self.parse()
+        self.assertEqual(self.read()["captionPack"]["firstLine"], spec["captionPack"]["firstLine"])
+
+    def test_an_explicit_new_fill_overrides_the_saved_studio_value(self):
+        spec = self.read()
+        spec["captionPack"]["firstLine"] = "عنوان من الاستوديو"
+        self.spec.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8", newline="\n")
+        self.fill.write_text(json.dumps({"caption": {"firstLine": "عنوان مقصود من الملف"}}, ensure_ascii=False), encoding="utf-8", newline="\n")
+        self.parse("--spec", str(self.spec), "--fill", str(self.fill))
+        self.assertEqual(self.read()["captionPack"]["firstLine"], "عنوان مقصود من الملف")
+
+    def test_reusing_an_unchanged_fill_does_not_revert_studio_changes(self):
+        spec = self.read()
+        spec["captionPack"]["firstLine"] = "عنوان أحدث من الاستوديو"
+        spec["slides"][1]["bridge"] = "جسر أحدث من الاستوديو"
+        self.spec.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8", newline="\n")
+        self.parse("--spec", str(self.spec), "--fill", str(self.fill))
+        self.assertEqual(self.read()["captionPack"]["firstLine"], spec["captionPack"]["firstLine"])
+        self.assertEqual(self.read()["slides"][1]["bridge"], spec["slides"][1]["bridge"])
+
+    def test_fill_only_records_follow_a_changed_slide_structure(self):
+        self.script.write_text(PASTE.replace("**سلايد ٤ — القفلة**", "**سلايد ٤ — مراجعة**\nراجع النتيجة.\n**سلايد ٥ — القفلة**"), encoding="utf-8", newline="\n")
+        self.parse()
+        self.assertEqual(len(self.read()["slides"]), 5)
+        self.edit("text", "s05", "--field", "title", "الخلاصة")
+
+    def test_conflicting_edits_have_explicit_backup_and_reset_commands(self):
+        self.edit("style", "notebook")
+        old_record = self.record.read_bytes()
+        self.script.write_text(PASTE.replace("**سلايد ٤ — القفلة**", "**سلايد ٤ — مراجعة**\nراجع النتيجة.\n**سلايد ٥ — القفلة**"), encoding="utf-8", newline="\n")
+        args = ["--script", str(self.script), "--out", str(self.post), "--no-split"]
+        blocked = subprocess.run([sys.executable, str(SCRIPT), *args], capture_output=True, text=True, encoding="utf-8", env=ENV)
+        self.assertEqual(blocked.returncode, 75)
+        self.assertIn("--discard-edits", blocked.stderr)
+        self.parse(*args, "--discard-edits")
+        self.assertEqual(self.record.with_name("spec.edits.json.bak").read_bytes(), old_record)
+        self.assertEqual(len(self.read()["slides"]), 5)
+        self.record.with_name("spec.edits.json.bak").unlink()
+        record = json.loads(self.record.read_text(encoding="utf-8"))
+        record["specId"] = "foreign-post"
+        self.record.write_text(json.dumps(record), encoding="utf-8", newline="\n")
+        before = self.spec.read_bytes()
+        self.edit("reset-record")
+        self.assertEqual(self.spec.read_bytes(), before)
+        self.edit("style", "poster")
+        saved = (self.spec.read_bytes(), self.record.read_bytes(), self.record.with_name("spec.edits.json.bak").read_bytes())
+        self.edit("reset-record", status=75)
+        self.assertEqual(saved, (self.spec.read_bytes(), self.record.read_bytes(), self.record.with_name("spec.edits.json.bak").read_bytes()))
+
+    def test_legacy_capture_does_not_freeze_manifest_managed_plate_bytes(self):
+        spec = self.read()
+        spec["assets"] = [{"id": "plate-s02", "kind": "image", "ref": "data:image/jpeg;base64,OLD", "aiGenerated": False},
+                          {"id": "supplied-art", "kind": "image", "ref": "asset:supplied", "aiGenerated": False}]
+        spec["ext"]["assetChecks"] = {"plate-s02": {"textChecked": True}, "supplied-art": {"textChecked": True}}
+        spec["slides"][1]["media"] = {"slot": "photo", "assetId": "plate-s02"}
+        edit = lane.legacy_edit(spec)
+        self.assertEqual([a["id"] for a in edit["post"]["assets"]], ["supplied-art"])
+        self.assertNotIn("plate-s02", edit["post"]["ext"]["assetChecks"])
+        self.assertNotIn("media", edit["slides"].get("s02", {}))
+        # Previously recorded migrations must not overwrite a newer manifest encoding either.
+        old = {"kind": "fields", "post": {"assets": spec["assets"], "ext": {"assetChecks": spec["ext"]["assetChecks"]}},
+               "slides": {"s02": {"media": spec["slides"][1]["media"]}}}
+        spec["assets"][0] = {**spec["assets"][0], "ref": "data:image/jpeg;base64,NEW"}
+        lane.replay_edits(spec, {"edits": [old]})
+        self.assertTrue(spec["assets"][0]["ref"].endswith("NEW"))
+
     def test_stdout_that_cannot_encode_arabic_does_not_crash(self):
         class LegacyStream:
             encoding = "cp1252"
@@ -298,8 +433,8 @@ class EditorTests(unittest.TestCase):
 
     def test_approved_design_import_and_refused_system_fields(self):
         patch = self.root / "approved-design.json"
-        data = {"post": {"assets": [{"id": "plate-one", "kind": "image", "ref": "asset:plate-one", "aiGenerated": False}]},
-                "slides": {"s02": {"media": {"slot": "plate", "assetId": "plate-one"}}}}
+        data = {"post": {"assets": [{"id": "supplied-one", "kind": "image", "ref": "asset:supplied-one", "aiGenerated": False}]},
+                "slides": {"s02": {"media": {"slot": "plate", "assetId": "supplied-one"}}}}
         patch.write_text(json.dumps(data), encoding="utf-8", newline="\n")
         self.edit("apply", "--file", str(patch))
         self.parse()

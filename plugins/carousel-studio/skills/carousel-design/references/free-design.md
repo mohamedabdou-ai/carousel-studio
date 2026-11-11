@@ -18,7 +18,7 @@ Plan the open-loop chain before drawing.
 | Middle (40-60%) | a pause or a turn: one giant word or a flip; one pause per 5 inner slides at most, never adjacent, never right before the ask |
 | Last two | the payoff closes every loop; then one ask: save (tied to a future moment) or send (to a named person), designed into the slide (on a free CTA the footer save pill steps aside so the counter keeps its place) |
 
-**Length follows the story:** 6-7 slides for a news item or one reveal, 8-10 for a list or how-to, 11-12 only if every slide pays (the gates note under 8 and fix under 6; a 2-slide reveal is exempt). A cover that promises N delivers N.
+**Length follows the story:** 6-7 slides for a news item, 8-10 for a list or how-to; never above 10 including the cover; no padding (the gates only NOTE below 6, FIX below 4). A short carousel of 4 to 6 is complete. A cover that promises N delivers N.
 
 **News drill** (a launch like «Claude Duet»; facts only from the source): what changed, shown in use (slide 2) → who it changes things for → the detail that matters → the turn («لكن…» the catch) → what to do Monday (a notes card) → the ask.
 

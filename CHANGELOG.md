@@ -4,6 +4,14 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 
 ## [Unreleased]
 
+### Script and picture repairs
+
+- Script links keep their visible words, and tool names inside sentences are no longer removed as source credits. Action-only endings keep their whole request.
+- Saved Studio captions, bridges and unrecorded design choices survive rebuilds. Edit conflicts have explicit backup/reset commands, and adding a CTA clears an earlier kept ending.
+- Older decks over 10 slides can reopen in the builder and spec editor for shortening; the slide-count export block remains. Boards, caption bounds, team guidance and evals use the current slide limits.
+- Picture checks respect video refs and creator framing. Applying pictures preserves frames and backdrops, refreshes design approval state and keeps transparent sources as PNG; recorded edits no longer restore old plate encodings.
+- Cover-lab commands, clip-cover handoffs and Egyptian dialect-strength briefs now match their supported workflows. The browser dependency allowlist permits only the pinned mediabunny loader.
+
 ### Team handoffs and review
 
 - Source material now uses the team fast lane, with three fitted cover choices and a style sheet before design or pictures start. Short ideas stay within 4 to 10 slides, cover included.

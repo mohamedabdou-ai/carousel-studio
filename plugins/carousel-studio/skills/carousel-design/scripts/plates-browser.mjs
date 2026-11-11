@@ -65,8 +65,13 @@ export async function fitImage(page, source, frame, record, { cap, png = false }
     let canvas = document.createElement("canvas"); canvas.width = w; canvas.height = h;
     const ctx = canvas.getContext("2d", { willReadFrequently: true }), sx = w / g.canvas.width, sy = h / g.canvas.height;
     const d = { x: g.draw.x * sx, y: g.draw.y * sy, w: g.draw.w * sx, h: g.draw.h * sy };
-    ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, w, h);
-    if (g.mode === "pad") {
+    // Inspect the source before adding an opaque ground or extending its edges.
+    ctx.drawImage(im, 0, 0, w, h);
+    const sourcePixels = ctx.getImageData(0, 0, w, h).data;
+    const alpha = sourcePixels.some((value, i) => i % 4 === 3 && value < 255);
+    ctx.clearRect(0, 0, w, h);
+    if (!alpha) { ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, w, h); }
+    if (g.mode === "pad" && !alpha) {
       // Average a narrow edge strip to a single column/row, then extend its
       // colours. Only the new canvas gets seeded grain; the subject is intact.
       const edge = document.createElement("canvas");
@@ -100,8 +105,8 @@ export async function fitImage(page, source, frame, record, { cap, png = false }
     for (let width = w; ; width = Math.max(1, Math.floor(width * .8))) {
       const height = Math.max(1, Math.round(width / ratio)), c = document.createElement("canvas"); c.width = width; c.height = height;
       c.getContext("2d").drawImage(canvas, 0, 0, width, height);
-      for (const quality of [.86, .78, .7, .62, .54, .46]) {
-        const ref = c.toDataURL("image/jpeg", quality);
+      for (const quality of alpha ? [1] : [.86, .78, .7, .62, .54, .46]) {
+        const ref = c.toDataURL(alpha ? "image/png" : "image/jpeg", quality);
         if (ref.length <= cap) {
           const body = ref.slice(ref.indexOf(",") + 1), padding = (body.match(/=+$/) || [""])[0].length;
           return { ref, width, height, quality, bytes: body.length * 3 / 4 - padding };
@@ -109,7 +114,7 @@ export async function fitImage(page, source, frame, record, { cap, png = false }
       }
       if (width === 1) break;
     }
-    throw new Error("cannot encode a JPEG within the schema asset cap");
+    throw new Error("cannot encode an image within the schema asset cap");
   }, { source, geometry, cap, png });
   return { ...encoded, geometry, original: size };
 }

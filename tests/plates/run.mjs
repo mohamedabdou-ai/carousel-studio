@@ -7,6 +7,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import { deflateSync } from "node:zlib";
+import { chromium } from "playwright-core";
+import { fitImage } from "../../plugins/carousel-studio/skills/carousel-design/scripts/plates-browser.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const script = path.join(root, "plugins/carousel-studio/skills/carousel-design/scripts/plates.mjs");
@@ -39,6 +41,8 @@ test("slots and apply use real text, preserve originals, replay after rebuild an
   }
   try {
     const originalSpec = read(path.join(root, "tests/plates/post.spec.json"));
+    originalSpec.approvals = { script: { at: "2026-11-11T08:00:00Z", rev: 1 }, design: { at: "2026-11-11T08:00:00Z", rev: 1 } };
+    originalSpec.style.resolvedHash = "0123456789abcdef";
     write(specFile, originalSpec); fs.mkdirSync(path.join(dir, "plates"));
     const image = png(), source = path.join(dir, "plates", "original.png"); fs.writeFileSync(source, image);
     const slots = cli("slots");
@@ -81,6 +85,9 @@ test("slots and apply use real text, preserve originals, replay after rebuild an
     assert.equal(firstApply.pictures[0].requestedVariant, "split");
     const applied = read(specFile), bytes = fs.readFileSync(specFile);
     assert.equal(applied.rev, 2); assert.deepEqual(fs.readFileSync(source), image);
+    assert.equal(applied.approvals.design, undefined);
+    assert.equal(applied.approvals.script.rev, applied.rev);
+    assert.equal(applied.style.resolvedHash, undefined);
     assert.equal(applied.ext.fixtureNote, originalSpec.ext.fixtureNote);
     for (const a of applied.assets) { assert.ok(a.ref.length <= read(path.join(root, "plugins/carousel-studio/skills/carousel-design/schemas/spec.schema.json")).$defs.asset.properties.ref.maxLength); assert.ok(a.width > 0 && a.height > 0); assert.equal(applied.ext.assetChecks[a.id].textChecked, true); }
     cli("apply"); assert.deepEqual(fs.readFileSync(specFile), bytes, "replay is byte-idempotent");
@@ -100,4 +107,29 @@ test("slots and apply use real text, preserve originals, replay after rebuild an
     write(path.join(dir, "plates/plates.json"), { version: 1, plates: records });
     cli("apply", [], 65); assert.deepEqual(fs.readFileSync(specFile), before, "a late decoding failure leaves the entire spec intact");
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test("transparent cutouts keep alpha through preview, padding, flipping and capped embedding", { timeout: 30000 }, async () => {
+  const browser = await chromium.launch({ executablePath: process.env.CS_CHROMIUM || process.env.CS_CHROME, headless: true });
+  try {
+    const page = await browser.newPage();
+    await page.route("**/*", route => route.abort());
+    const source = await page.evaluate(() => {
+      const c = document.createElement("canvas"); c.width = c.height = 40;
+      const ctx = c.getContext("2d"); ctx.fillStyle = "#2468ac"; ctx.fillRect(10, 10, 20, 20);
+      return c.toDataURL("image/png");
+    });
+    for (const png of [false, true]) {
+      const out = await fitImage(page, source, { ratio: 2 }, { layout: { slot: "cutout" }, mode: "pad", flip: true }, { cap: 10000, png });
+      assert.match(out.ref, /^data:image\/png;base64,/);
+      assert.ok(out.ref.length <= 10000);
+      const alpha = await page.evaluate(async ref => {
+        const im = new Image(); im.src = ref; await im.decode();
+        const c = document.createElement("canvas"); c.width = im.width; c.height = im.height;
+        const ctx = c.getContext("2d"); ctx.drawImage(im, 0, 0);
+        return [ctx.getImageData(0, 0, 1, 1).data[3], ctx.getImageData(c.width / 2, c.height / 2, 1, 1).data[3]];
+      }, out.ref);
+      assert.deepEqual(alpha, [0, 255]);
+    }
+  } finally { await browser.close(); }
 });

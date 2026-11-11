@@ -237,7 +237,7 @@ def normalize_url(ref: str) -> str:
 def extract_sources(line: str, refs: list, mentions: list) -> str:
     def link(m):
         refs.append({"ref": normalize_url(m.group(2)), "label": m.group(1)})
-        return ""
+        return m.group(1)
     line = MARKDOWN_LINK.sub(link, line)
     def bare(m):
         raw = m.group(0)
@@ -249,11 +249,16 @@ def extract_sources(line: str, refs: list, mentions: list) -> str:
             ref = ref[:-1]
         refs.append({"ref": normalize_url(ref), "label": urlsplit(ref).hostname})
         return raw[len(ref):]
-    line = URL.sub(bare, line)
+    line, bare_count = URL.subn(bare, line)
+    if bare_count:
+        line = re.sub(r"\(\s*\)", "", line)
+    line = re.sub(r"[ \t]{2,}", " ", line).strip()
     m = SOURCE_TAIL.search(line) if not HEADER.match(line) else None
     if m:
         mentions.append(m.group("source"))
-        line = line[:m.start()].rstrip()
+        prefix = line[:m.start()].strip()
+        if not prefix or re.fullmatch(r"(?:المصدر|مصدر|source|via|عن)\s*:", prefix, re.IGNORECASE):
+            line = ""
     return line
 
 
@@ -429,13 +434,8 @@ def closing_slides(section: dict, available: int, may_split: bool, notes: list) 
     if before:
         title, body = before[0], " ".join(one_line(l) for l in before[1:])
     else:
-        # An action-only ending still needs two slots. Divide its own words, without repeating or inventing a title.
-        first, space, rest = after[0].partition(" ")
-        if not space and len(after) == 1:
-            notes.append(missing)
-            return [content_slide(section)]
-        title, body = first, ""
-        after = ([rest] if rest else []) + after[1:]
+        # Keep the action intact in its CTA slot; the title is a neutral label.
+        title, body = ("الخلاصة" if re.search(r"[ء-ي]", after[0]) else "Next step"), ""
     text = " ".join(one_line(l) for l in after)
     if len(text) > 160:
         notes.append("last slide: the action is longer than the CTA field; offer one shorter closing line, never truncate it")
@@ -676,8 +676,9 @@ def make_spec(args, raw: str, brand: dict) -> tuple[dict, list]:
     slides = build_slides(sections, not (args.no_split2 or args.no_split), notes, not args.no_split)
     if removed:
         notes.append("emoji removed from the slides (no emoji on slides; keep them for the caption)")
-    if len(slides) < 6:
-        notes.append("%d slides: under 6 reads thin on Instagram; it still works" % len(slides))
+    warn_below = int(cs_rules.platform("plugin.slides.warnBelow", 4))
+    if len(slides) < warn_below:
+        notes.append("%d slides: fewer than %d slides can read thin; consider another useful slide, without padding" % (len(slides), warn_below))
     style = args.style or ((brand.get("visual") or {}).get("presetId")) or "creator"
     preset_id = style if "@" in style else style + "@1.0"
     arch = args.architecture or guess_architecture(slides)
@@ -804,11 +805,36 @@ def read_record(spec_path: Path, spec: dict) -> dict:
         raise CSError("E_INPUT", "invalid edit record: %s" % p)
     if any(not isinstance(e, dict) or e.get("kind") not in ("fields", "cover", "caption", "source", "attest", "keep-cta", "keep") for e in record["edits"]):
         raise CSError("E_INPUT", "invalid saved edit in %s" % p)
-    if record.get("specId") == spec["id"] and not record["edits"] and not record["fill"]:
-        record["slideIds"] = [s["id"] for s in spec["slides"]]
+    if record.get("specId") == spec["id"] and not record["edits"]:
+        ids = [s["id"] for s in spec["slides"]]
+        old_ids = record.get("slideIds") or []
+        if old_ids != ids:
+            fill = record["fill"]
+            if isinstance(fill.get("bridges"), list):
+                fill["bridges"] = dict(zip(old_ids[1:-1], fill["bridges"]))
+            for field in ("bridges", "edits", "emphasis"):
+                if isinstance(fill.get(field), dict):
+                    fill[field] = {sid: value for sid, value in fill[field].items() if sid in ids}
+            for field in ("perSlide", "alt"):
+                if isinstance(fill.get(field), list):
+                    by_id = dict(zip(old_ids, fill[field]))
+                    fill[field] = [by_id.get(sid, "") for sid in ids]
+            fill["keep"] = [k for k in fill.get("keep", []) if not isinstance(k, str) or "@" not in k or k.partition("@")[2] in ids]
+            record.pop("fillState", None)
+        record["slideIds"] = ids
     if record.get("specId") != spec["id"] or record.get("slideIds") != [s["id"] for s in spec["slides"]]:
-        raise CSError("E_CONFLICT", "the saved edits belong to a different post or slide structure; review them before rebuilding")
+        raise CSError("E_CONFLICT", "the saved edits belong to a different post or slide structure; use script_to_spec.py --discard-edits or spec_edit.py reset-record to back them up and start a new record")
     return record
+
+
+def discard_record(spec_path: Path) -> None:
+    """Keep the exact old intent for review; never replace an earlier backup."""
+    path = record_path(spec_path)
+    if path.exists():
+        backup = path.with_name(path.name + ".bak")
+        if backup.exists():
+            raise CSError("E_CONFLICT", "edit backup already exists: %s; move it aside before discarding another record" % backup)
+        path.rename(backup)
 
 
 def merge_fields(target: dict, fields: dict) -> None:
@@ -900,9 +926,14 @@ def attestation_edit(spec: dict) -> dict:
 def apply_edit(spec: dict, edit: dict) -> list[str]:
     kind, notes = edit.get("kind"), []
     if kind == "fields":
-        merge_fields(spec, edit.get("post", {}))
-        for sid, fields in edit.get("slides", {}).items():
+        # Manifest-managed pictures are recreated by plates apply/restyle, never
+        # restored from an old JPEG captured by the legacy migration.
+        fields_edit = without_plates(edit)
+        merge_fields(spec, fields_edit.get("post", {}))
+        for sid, fields in fields_edit.get("slides", {}).items():
             merge_fields(find_slide(spec, sid), fields)
+        if any(s.get("cta") for s in spec["slides"]):
+            (spec.get("ext", {}).get("readyScript") or {}).pop("keepWithoutCta", None)
     elif kind == "cover":
         cover_edit(spec, edit["fields"], edit.get("original"))
     elif kind == "caption":
@@ -935,8 +966,9 @@ def apply_edit(spec: dict, edit: dict) -> list[str]:
                 if sid not in slide.setdefault("sourceIds", []):
                     slide["sourceIds"].append(sid)
     elif kind == "keep-cta":
-        spec.setdefault("ext", {}).setdefault("readyScript", {})["keepWithoutCta"] = {"reason": edit["reason"], "at": edit["at"]}
-        notes.append("the creator kept the ending without a call to action: C4.count and C5.skeleton are recorded as their override («تجاوز»)")
+        if not any(s.get("cta") for s in spec["slides"]):
+            spec.setdefault("ext", {}).setdefault("readyScript", {})["keepWithoutCta"] = {"reason": edit["reason"], "at": edit["at"]}
+            notes.append("the creator kept the ending without a call to action: C4.count and C5.skeleton are recorded as their override («تجاوز»)")
     elif kind == "keep":
         pass  # applied to fresh QA findings after every content edit
     else:
@@ -962,7 +994,24 @@ def replay_edits(spec: dict, record: dict) -> list[str]:
                 notes.extend(apply_edit(spec, edit))
     except (KeyError, TypeError, AttributeError, ValueError) as exc:
         raise CSError("E_INPUT", "invalid saved edit: %s" % exc) from exc
+    if any(s.get("cta") for s in spec["slides"]):
+        (spec.get("ext", {}).get("readyScript") or {}).pop("keepWithoutCta", None)
+        notes = [n for n in notes if not n.startswith("the creator kept the ending")]
     return notes
+
+
+def without_plates(edit: dict) -> dict:
+    out = copy.deepcopy(edit)
+    post = out.get("post", {})
+    if isinstance(post.get("assets"), list):
+        post["assets"] = [a for a in post["assets"] if not a.get("id", "").startswith("plate-")]
+    checks = (post.get("ext") or {}).get("assetChecks")
+    if isinstance(checks, dict):
+        post["ext"]["assetChecks"] = {key: value for key, value in checks.items() if not key.startswith("plate-")}
+    for fields in out.get("slides", {}).values():
+        if (fields.get("media") or {}).get("assetId", "").startswith("plate-"):
+            fields.pop("media")
+    return out
 
 
 def legacy_edit(spec: dict) -> dict:
@@ -973,7 +1022,118 @@ def legacy_edit(spec: dict) -> dict:
         post["meta"] = urls
     slides = {s["id"]: {k: copy.deepcopy(v) for k, v in s.items() if k in ("media", "sourceIds", "overrides", "free", "visual") or
                        (s["type"] in ("cover", "poster") and k in ("headline", "sub", "kicker"))} for s in spec["slides"]}
-    return {"kind": "fields", "post": post, "slides": {sid: fields for sid, fields in slides.items() if fields}}
+    return without_plates({"kind": "fields", "post": post, "slides": {sid: fields for sid, fields in slides.items() if fields}})
+
+
+def design_state(spec: dict) -> dict:
+    """Only replayable design fields; no copy, approvals, hashes or managed plate bytes."""
+    fields = legacy_edit(spec)
+    checks = (fields["post"].get("ext") or {}).get("assetChecks")
+    fields["post"] = {k: v for k, v in fields["post"].items() if k in ("style", "cover", "assets", "compat")}
+    if checks:
+        fields["post"]["ext"] = {"assetChecks": checks}
+    fields["post"].get("style", {}).pop("resolvedHash", None)
+    fields["slides"] = {sid: {k: v for k, v in values.items() if k in ("overrides", "media", "free", "visual")}
+                        for sid, values in fields["slides"].items()}
+    return fields
+
+
+def capture_design(previous: dict, fresh: dict, record: dict, explicit_style: bool = False) -> None:
+    """Capture Studio choices that no recorded edit owns, even on posts born with a record."""
+    current = design_state(previous)
+    baseline = record.get("designState") or design_state(fresh)
+    covered = {"post": {}, "slides": {}}
+    for edit in record["edits"]:
+        if edit.get("kind") == "fields":
+            merge_fields(covered, {k: edit[k] for k in ("post", "slides") if k in edit})
+    fill = record["fill"]
+    if fill.get("motion"):
+        merge_fields(covered, {"post": {"cover": {"motion": fill["motion"]}}})
+    merge_fields(covered, {"slides": fill.get("edits") or {}})
+    if explicit_style:
+        covered["post"].setdefault("style", {})["presetId"] = True
+    def uncovered(now_fields, old_fields, owned):
+        out = {}
+        for key in sorted(now_fields.keys() | old_fields.keys()):
+            value, old = now_fields.get(key), old_fields.get(key)
+            if isinstance(value, dict) and isinstance(old, dict) and isinstance(owned.get(key, {}), dict):
+                nested = uncovered(value, old, owned.get(key, {}))
+                if nested:
+                    out[key] = nested
+            elif key not in owned and value != old:
+                out[key] = copy.deepcopy(value)
+        return out
+    change = uncovered(current, baseline, covered)
+    if change:
+        record["edits"].append({"kind": "fields", **change})
+
+
+def fill_state(spec: dict) -> dict:
+    return {"captionPack": copy.deepcopy(spec.get("captionPack") or {}),
+            "bridges": {s["id"]: s["bridge"] for s in spec["slides"] if "bridge" in s}}
+
+
+def reconcile_fill(spec: dict, record: dict) -> None:
+    """A saved Studio caption/bridge wins over the old fill; this run's incoming fill still wins after it."""
+    fill = record["fill"]
+    if not fill:
+        return
+    baseline = record.get("fillState")
+    if baseline is None:  # upgrade older records by reproducing their last fill result
+        predicted = copy.deepcopy(spec)
+        apply_fill(predicted, copy.deepcopy(fill))
+        replay_edits(predicted, record)
+        bind_all(predicted)
+        baseline = fill_state(predicted)
+    current = fill_state(spec)
+    cap = fill.get("caption") or {}
+    caption_fields = {"firstLine", "keywordLine", "body", "cta", "hashtags", "asset"}
+    for key in sorted((cap.keys() | current["captionPack"].keys() | baseline["captionPack"].keys()) & caption_fields):
+        if current["captionPack"].get(key) != baseline["captionPack"].get(key):
+            if key in current["captionPack"]:
+                cap[key] = copy.deepcopy(current["captionPack"][key])
+            else:
+                cap.pop(key, None)
+    if cap or "caption" in fill:
+        fill["caption"] = cap
+    for key in ("perSlide", "alt"):
+        if current["captionPack"].get(key) != baseline["captionPack"].get(key):
+            if key in current["captionPack"]:
+                fill[key] = copy.deepcopy(current["captionPack"][key])
+            else:
+                fill.pop(key, None)
+    bridges = fill.get("bridges") or {}
+    if isinstance(bridges, list):
+        bridges = dict(zip(record["slideIds"][1:-1], bridges))
+    for sid in sorted(bridges.keys() | current["bridges"].keys() | baseline["bridges"].keys()):
+        if current["bridges"].get(sid) != baseline["bridges"].get(sid):
+            if sid in current["bridges"]:
+                bridges[sid] = current["bridges"][sid]
+            else:
+                bridges.pop(sid, None)
+    if bridges or "bridges" in fill:
+        fill["bridges"] = bridges
+
+
+def merge_fill(record: dict, incoming: dict, stored: dict) -> None:
+    """Reusing an old fill is a replay, not an instruction to undo a Studio save."""
+    incoming, stored = copy.deepcopy(incoming), copy.deepcopy(stored)
+    for fill in (incoming, stored):
+        if isinstance(fill.get("bridges"), list):
+            fill["bridges"] = dict(zip(record["slideIds"][1:-1], fill["bridges"]))
+    def changed(values, old, current):
+        out = {}
+        for key, value in values.items():
+            if key in old and value == old[key] and current.get(key) != old[key]:
+                continue
+            if isinstance(value, dict) and isinstance(old.get(key), dict) and isinstance(current.get(key), dict):
+                out[key] = changed(value, old[key], current[key])
+            elif key in ("perSlide", "alt") and all(isinstance(v, list) for v in (value, old.get(key), current.get(key))) and len(value) == len(old[key]) == len(current[key]):
+                out[key] = [seen if new == was else new for new, was, seen in zip(value, old[key], current[key])]
+            else:
+                out[key] = value
+        return out
+    merge_fields(record["fill"], changed(incoming, stored, record["fill"]))
 
 
 def migrate_record(spec: dict, record: dict) -> None:
@@ -1035,8 +1195,13 @@ def saved_keep_marks(spec: dict, rep: dict, record: dict) -> None:
     store_qa(spec, rep)
 
 
-def check_spec(spec: dict, brand: dict | None = None, keep=()) -> dict:
-    errors = schema.validate_named("spec", spec)
+def schema_errors(spec: dict, legacy: bool = False) -> list:
+    return [e for e in schema.validate_named("spec", spec)
+            if not (legacy and e["path"] == "/slides" and e["keyword"] == "maxItems")]
+
+
+def check_spec(spec: dict, brand: dict | None = None, keep=(), legacy: bool = False) -> dict:
+    errors = schema_errors(spec, legacy)
     if errors:
         raise CSError("E_SCHEMA", "; ".join("%s %s" % (e["path"], e["message"]) for e in errors[:8]))
     reconcile_sources(spec)
@@ -1053,19 +1218,23 @@ def check_spec(spec: dict, brand: dict | None = None, keep=()) -> dict:
         results = csqa.run_text_gates(spec, brand)
         rep["qa"] = {**csreport.summarize(results), "engine": csreport.ENGINE, "results": results}
     store_qa(spec, rep)
-    errors = schema.validate_named("spec", spec)
+    errors = schema_errors(spec, legacy)
     if errors:
         raise CSError("E_SCHEMA", "; ".join("%s %s" % (e["path"], e["message"]) for e in errors[:8]))
     return rep
 
 
-def save_post(spec_path: Path, spec: dict, record: dict, before: bytes | None) -> None:
-    errors = schema.validate_named("spec", spec)
+def save_post(spec_path: Path, spec: dict, record: dict, before: bytes | None, discard: bool = False, legacy: bool = False) -> None:
+    errors = schema_errors(spec, legacy)
     if errors:
         raise CSError("E_SCHEMA", "; ".join("%s %s" % (e["path"], e["message"]) for e in errors[:8]))
     current = spec_path.read_bytes() if spec_path.exists() else None
     if current != before:
         raise CSError("E_CONFLICT", "spec changed during this command; re-read it before retrying")
+    record["fillState"] = fill_state(spec)
+    record["designState"] = design_state(spec)
+    if discard:
+        discard_record(spec_path)
     # The record is the write-ahead intent. If interrupted between atomic replacements, replay recovers the edit.
     paths.write_json(record_path(spec_path), record)
     paths.write_json(spec_path, spec)
@@ -1214,11 +1383,11 @@ def store_qa(spec: dict, rep: dict) -> None:
         spec["qa"]["engine"] = qa["engine"]
 
 
-def recorded_keeps(record: dict) -> list[tuple[str, str]]:
+def recorded_keeps(record: dict, spec: dict | None = None) -> list[tuple[str, str]]:
     """Every rule the creator chose to keep, from fill.json and from the recorded edits. «زي ما هو» on a script that ends without a
     call to action (`spec_edit.py cta --keep`) is the creator's decision too: it keeps both rules that ask for one."""
     keep = keep_list(record.get("fill") or {}) + [(e["rule"], e.get("slide", "")) for e in record.get("edits") or [] if e.get("kind") == "keep"]
-    if any(e.get("kind") == "keep-cta" for e in record.get("edits") or []):
+    if not any(s.get("cta") for s in (spec or {}).get("slides", [])) and any(e.get("kind") == "keep-cta" for e in record.get("edits") or []):
         keep += [(rule, "") for rule in KEEP_CTA_RULES if (rule, "") not in keep]
     return keep
 
@@ -1318,6 +1487,7 @@ def main(argv=None) -> int:
     p.add_argument("--no-split", action="store_true", help="keep every slide as written: no split of slide 2 or of a slide too long to hold")
     p.add_argument("--attest-numbers", action="store_true", help="only after the creator confirms: attest their currently unsourced figures")
     p.add_argument("--expect-rev", type=int, help="refuse a stale writer (exit 75)")
+    p.add_argument("--discard-edits", action="store_true", help="back up spec.edits.json as spec.edits.json.bak and start a new record")
     p.add_argument("--format", choices=("text", "json"), default="text")
     a = p.parse_args(argv)
     if not ((a.script and a.out and not a.spec) or (a.spec and a.fill and not a.script)):
@@ -1331,7 +1501,7 @@ def main(argv=None) -> int:
             before = spec_path.read_bytes() if spec_path.exists() else None
             previous = read_json(spec_path) if before is not None else None
             if previous is not None:
-                errors = schema.validate_named("spec", previous)
+                errors = schema_errors(previous, legacy=True)
                 if errors:
                     raise CSError("E_SCHEMA", "; ".join("%s %s" % (e["path"], e["message"]) for e in errors[:8]))
             if a.expect_rev is not None and (previous or {}).get("rev") != a.expect_rev:
@@ -1349,16 +1519,21 @@ def main(argv=None) -> int:
                 if previous is None:
                     raise CSError("E_MISSING", "input file missing: %s" % spec_path)
                 spec = copy.deepcopy(previous)
-            record = read_record(spec_path, spec)
-            if previous and not record_path(spec_path).exists():
+            record = new_record(spec) if a.discard_edits else read_record(spec_path, spec)
+            stored_fill = copy.deepcopy(record["fill"])
+            if previous and not a.discard_edits and not record_path(spec_path).exists():
                 migrate_record(previous, record)
                 notes.append("existing sources, caption pack, cover and picture assets saved in spec.edits.json")
+            elif previous and not a.discard_edits:
+                reconcile_fill(previous, record)
+                if a.script:
+                    capture_design(previous, spec, record, bool(a.style))
             if a.fill:
                 fill = read_json(Path(a.fill))
                 if not isinstance(fill, dict):
                     raise CSError("E_INPUT", "the fill file must be a JSON object: " + FILL_SHAPE)
-                merge_fields(record["fill"], fill)
-            elif previous and not record_path(spec_path).exists() and (spec_path.parent / "fill.json").exists():
+                merge_fill(record, fill, stored_fill)
+            elif previous and not a.discard_edits and not record_path(spec_path).exists() and (spec_path.parent / "fill.json").exists():
                 record["fill"] = read_json(spec_path.parent / "fill.json")
             if record["fill"]:
                 notes.extend(apply_fill(spec, record["fill"]))
@@ -1371,16 +1546,17 @@ def main(argv=None) -> int:
             bind_all(spec)
             if previous:
                 bump(spec, previous)
-            keep = recorded_keeps(record)
+            keep = recorded_keeps(record, spec)
             try:
-                rep = check_spec(spec, brand, keep)
+                rep = check_spec(spec, brand, keep, legacy=bool(previous and len(previous["slides"]) > max_slides()))
             except CSError as exc:
                 if exc.code == "E_SCHEMA" and len(spec["slides"]) > max_slides():
                     advice = [n for n in notes if n.startswith("merge candidate:")][:3]
                     raise CSError("E_SCHEMA", str(exc) + "; " + "; ".join(advice)) from exc
                 raise
             saved_keep_marks(spec, rep, record)
-            save_post(spec_path, spec, record, before)
+            save_post(spec_path, spec, record, before, discard=a.discard_edits,
+                      legacy=bool(previous and len(previous["slides"]) > max_slides()))
     except CSError as exc:
         return error_status(exc)
     except OSError as exc:

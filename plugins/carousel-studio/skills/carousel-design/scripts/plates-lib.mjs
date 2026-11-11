@@ -1,4 +1,4 @@
-// Pure picture geometry and records. The browser owns decoding and JPEG encoding.
+// Pure picture geometry and records. The browser owns decoding and image encoding.
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 const ID = /^[a-z0-9][a-z0-9_-]{0,31}$/;
@@ -48,7 +48,7 @@ function isoTime(s) {
 
 export function validateManifest(manifest, slideIds) {
   const errors = [];
-  if (!keysOnly(manifest, ["version", "plates"]) || manifest.version !== 1 || !Array.isArray(manifest.plates) || manifest.plates.length > 20) return ["manifest: expected {version: 1, plates: [...]} (at most 20)"];
+  if (!keysOnly(manifest, ["version", "plates"]) || manifest.version !== 1 || !Array.isArray(manifest.plates) || manifest.plates.length > 10) return ["manifest: expected {version: 1, plates: [...]} (at most 10)"];
   const seen = new Set();
   for (const [i, r] of manifest.plates.entries()) {
     const p = `plates[${i}]`, add = m => errors.push(`${p}: ${m}`);
@@ -89,9 +89,10 @@ export function jpegByteCap(cap) {
 }
 
 export function makeAsset(record, image, cap) {
-  if (typeof image.ref !== "string" || !/^data:image\/jpeg;base64,[A-Za-z0-9+/]+={0,2}$/.test(image.ref) || image.ref.length > cap) throw new Error("JPEG data URI exceeds the asset cap or is invalid");
+  const encoded = typeof image.ref === "string" && /^data:(image\/(?:jpeg|png|webp));base64,[A-Za-z0-9+/]+={0,2}$/.exec(image.ref);
+  if (!encoded || image.ref.length > cap) throw new Error("image data URI exceeds the asset cap or is invalid");
   if (![image.width, image.height].every(n => Number.isInteger(n) && n > 0 && n <= 16384) || !Number.isInteger(image.bytes) || image.bytes < 1) throw new Error("encoded image dimensions and bytes are required");
-  return { id: "plate-" + record.slideId, kind: "image", ref: image.ref, mime: "image/jpeg", width: image.width, height: image.height, bytes: image.bytes, aiGenerated: record.aiGenerated !== false, tool: record.tool, promptId: record.promptId };
+  return { id: "plate-" + record.slideId, kind: "image", ref: image.ref, mime: encoded[1], width: image.width, height: image.height, bytes: image.bytes, aiGenerated: record.aiGenerated !== false, tool: record.tool, promptId: record.promptId };
 }
 
 /** Explicit layout.type is the durable opt-in to leave a free layout. All copy
@@ -104,7 +105,9 @@ export function attachPlate(spec, record, asset) {
   if (record.layout?.variant) slide.variant = record.layout.variant;
   const slot = record.layout?.slot || (slide.type === "proof" ? "screenshot" : "photo");
   if (out.slides.some(s => s.id !== record.slideId && (s.media?.assetId === asset.id || s.media?.backdropAssetId === asset.id))) throw new Error("plate asset is used by another slide; give that picture its own asset first");
-  slide.media = { slot, assetId: asset.id, promptId: record.promptId, ai: asset.aiGenerated, calmZone: "bottom" };
+  const previousAsset = slide.media?.assetId;
+  slide.media = { ...slide.media, slot, assetId: asset.id, promptId: record.promptId, ai: asset.aiGenerated, calmZone: "bottom" };
+  if (previousAsset !== asset.id) delete slide.media.zoom;
   out.assets ||= [];
   const index = out.assets.findIndex(a => a.id === asset.id);
   if (index < 0) out.assets.push(asset); else out.assets[index] = asset;
@@ -122,10 +125,11 @@ export function plateFindings(spec, frames, cap) {
     const f = byId.get(slide.id), a = (Array.isArray(spec.assets) ? spec.assets : []).find(a => a?.id === m.assetId);
     if (frames && !f?.supported) add(slide.id, "ignored", f?.reason || "picture has no rendered frame");
     if (!a) { add(slide.id, "asset", "picture asset is missing"); continue; }
+    const managed = /^plate-s\d+$/.test(a.id), still = a.kind === "image";
     if (a.ref?.length > cap) add(slide.id, "cap", `asset ref exceeds ${cap} characters`);
-    if (!/^data:image\//.test(a.ref || "")) add(slide.id, "ref", "local rendering needs an embedded image data URI");
+    if (still && !/^data:image\//.test(a.ref || "")) add(slide.id, "ref", "local rendering needs an embedded image data URI");
     if (!positive(a.width) || !positive(a.height)) add(slide.id, "dimensions", "asset width and height are missing");
-    else if (f?.supported && Math.abs(a.width / a.height / f.ratio - 1) > Math.max(.005, 1 / a.height)) add(slide.id, "ratio", "picture ratio differs from the current frame; run restyle", "FIX");
+    else if (managed && still && f?.supported && Math.abs(a.width / a.height / f.ratio - 1) > Math.max(.005, 1 / a.height)) add(slide.id, "ratio", "picture ratio differs from the current frame; run restyle", "FIX");
     if (m.ai === true && a.aiGenerated !== true) add(slide.id, "flag", "AI picture lacks aiGenerated: true");
     if ((m.ai || a.aiGenerated) && (!a.tool || !a.promptId)) add(slide.id, "provenance", "AI picture needs tool and promptId");
     if ((m.ai || a.aiGenerated) && !(spec.ext?.assetChecks?.[a.id]?.textChecked === true && isoTime(spec.ext.assetChecks[a.id].at))) add(slide.id, "text-check", "dated no-text confirmation is missing");

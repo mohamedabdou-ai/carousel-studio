@@ -47,9 +47,9 @@ graders:
     pattern: '"digits"\s*:\s*"western"'
     target: {source: file, path: spec.json}
   - type: llm
-    name: eight-to-twelve-slides
+    name: four-to-ten-slides
     criteria: |
-      spec.json holds between 8 and 12 slides; the first has type cover and the last has type cta.
+      spec.json holds between 4 and 10 slides; the first has type cover and the last has type cta.
     focus: {source: file, path: spec.json}
     weight: 2
   - type: llm

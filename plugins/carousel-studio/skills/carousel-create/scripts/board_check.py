@@ -44,7 +44,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 try:
-    from _cs import paths
+    from _cs import paths, qa as cs_qa, text as cs_text
 except ImportError as exc:      # the shared package is synced next to the scripts; say so plainly
     sys.stderr.write("cs-error: E_DEP_LOAD: the shared _cs package is missing next to this script: %s\n" % exc)
     sys.exit(70)
@@ -171,9 +171,9 @@ def family_codes(text):
 
 
 def hero_of(cover):
-    """The first beat of a cover line: up to the first « … » break, colon or newline."""
-    first = re.split(r"…|\.\.\.|:|\n", cover)[0]
-    return words(first)
+    """Count the same first beat as C1 and the hook gates."""
+    hero, _ = cs_qa.split_cover(cover)
+    return cs_text.word_count(hero)
 
 
 # ----------------------------------------------------------------------------- checks
@@ -196,8 +196,8 @@ def check_meta(header, bodies, stage, rep):
         rep.error("T02", "board", "digits must be western or arabic-indic (found %r)" % pairs.get("digits"))
     slides = pairs.get("slides")
     if STAGES.index(stage) >= STAGES.index("room"):
-        if not slides or not slides.isdigit() or not 4 <= int(slides) <= 10:
-            rep.error("T03", "board", "`slides: N` (4 to 10, cover included) is required from the writers' room on; 4 to 6 is fine")
+        if not slides or not slides.isdigit() or not 2 <= int(slides) <= 10:
+            rep.error("T03", "board", "`slides: N` (2 to 10) is required from the writers' room on")
     loops = re.search(r"^loops\s*:\s*(.+)$", header, re.M)
     if not loops:
         rep.error("T04", "board", "the `loops:` line is missing")
@@ -318,7 +318,7 @@ def check_pitch(body, stage, rep):
             r = ratio(row[5])
             if not r or r[1] != 3 or r[0] > 3:
                 rep.error("T22", "pitch", "%s: the panel cell must read n/3 (found %r)" % (d, row[5]))
-            n = len(hero_of(row[1]))
+            n = hero_of(row[1])
             if n == 0 or n > HERO_MAX_WORDS:
                 rep.fix("T23", "pitch", "%s: the cover line's hero has %d words (1 to %d)" % (d, n, HERO_MAX_WORDS))
         if by["آمن"][3] == by["جريء"][3]:

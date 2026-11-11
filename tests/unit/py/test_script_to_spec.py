@@ -106,7 +106,8 @@ class PastedFormatsTests(unittest.TestCase):
         spec, notes = self.parse('''١ — الغلاف
 نتيجة واضحة
 ٢ — التفاصيل
-القيمة **27%**. Atlas by Workshop
+القيمة **27%**.
+المصدر: Atlas by Workshop
 ٣ — المرجع
 خطوة أخيرة.
 reports.example
@@ -121,6 +122,35 @@ reports.example
     def test_an_english_sentence_with_by_is_copy(self):
         spec, _ = self.parse("1. Cover\nA clear schedule\n2. The result\nThis was made by Workshop.\n3. Save the schedule.", no_split=True)
         self.assertEqual(spec["slides"][1]["body"], "This was made by Workshop.")
+
+    def test_source_shaped_names_inside_sentences_keep_their_words(self):
+        for line in ("أنا أكتب بـ Node.js", "أنشر على Vercel.com", "ادخل على claude.ai", "This was Designed by Apple"):
+            with self.subTest(line=line):
+                refs, mentions = [], []
+                self.assertEqual(_picker.extract_sources(line, refs, mentions), line)
+                self.assertTrue(mentions)
+        for line in ("reports.example", "المصدر: reports.example", "source: Designed by Apple", "via: reports.example", "عن: reports.example"):
+            self.assertEqual(_picker.extract_sources(line, [], []), "")
+
+    def test_inline_link_labels_and_bare_url_punctuation_are_preserved(self):
+        refs = []
+        line = "التفاصيل في [التقرير](https://study.example/result?utm_source=ig&x=1)."
+        self.assertEqual(_picker.extract_sources(line, refs, []), "التفاصيل في التقرير.")
+        self.assertEqual(refs[0]["ref"], "https://study.example/result?x=1")
+        self.assertEqual(_picker.extract_sources("راجع (https://study.example/result)  ثم جرّب.", [], []), "راجع ثم جرّب.")
+        self.assertEqual(_picker.extract_sources("استدع دالة() هنا.", [], []), "استدع دالة() هنا.")
+
+    def test_short_carousel_note_follows_the_platform_warning_threshold(self):
+        for count in (3, 4, 5, 6):
+            script = "\n---\n".join(["فكرة واضحة"] + ["تفصيل مفيد" for _ in range(count - 2)] + ["احفظ المنشور"])
+            _, notes = self.parse(script, no_split=True)
+            warnings = [n for n in notes if "slides:" in n]
+            self.assertEqual(bool(warnings), count < 4, notes)
+            self.assertFalse(any("under 6" in n for n in notes))
+
+    def test_action_only_ending_keeps_the_verb_in_the_cta(self):
+        spec, _ = self.parse("فكرة واضحة\n---\nتفصيل مفيد\n---\nاحفظ المنشور", no_split=True)
+        self.assertEqual(spec["slides"][-1]["cta"], {"kind": "save", "text": "احفظ المنشور"})
 
     def test_prose_does_not_invent_grid_cards_or_timeline_nodes(self):
         spec, _ = self.parse("1. Cover\nPlan the workshop\n2. The sequence\nRead the note, then choose a date.\n3. Save the plan.", no_split=True)

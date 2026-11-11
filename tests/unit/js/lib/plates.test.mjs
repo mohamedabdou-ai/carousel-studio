@@ -18,6 +18,47 @@ test("frame ratios reject empty or non-finite geometry", () => {
   for (const dims of [[0, 1], [1, 0], [-2, 3], [Infinity, 1], [1, NaN]]) assert.throws(() => frameRatio(...dims));
 });
 
+test("manifest cannot hold more than ten plates", () => {
+  const plates = Array.from({ length: 11 }, (_, i) => ({ ...record(), slideId: `s${String(i + 1).padStart(2, "0")}` }));
+  assert.deepEqual(validateManifest({ version: 1, plates: plates.slice(0, 10) }), []);
+  assert.match(validateManifest({ version: 1, plates })[0], /at most 10/);
+});
+
+test("PNG cutouts keep a matching asset MIME type within the schema cap", () => {
+  const image = { ref: "data:image/png;base64,iVBORw==", width: 2, height: 2, bytes: 4 };
+  const asset = makeAsset(record(), image, refCap(schema));
+  assert.equal(asset.mime, "image/png");
+  assert.equal(loadLib().core.schema.validateAgainst(schema.$defs.asset, asset, schema).ok, true);
+  assert.throws(() => makeAsset(record(), { ...image, ref: "data:image/svg+xml;base64,PHN2Zz4=" }, refCap(schema)));
+});
+
+test("video refs and creator pictures do not inherit managed still-plate restrictions", () => {
+  const frame = [{ slideId: "s02", supported: true, ratio: 3 }];
+  const make = asset => ({ slides: [{ id: "s02", media: { slot: "plate", assetId: asset.id, calmZone: "bottom" } }], assets: [asset] });
+  const video = make({ id: "clip", kind: "video", ref: "asset:clip-upload", width: 100, height: 100 });
+  assert.deepEqual(plateFindings(video, frame, 1000), []);
+  const managedVideo = make({ ...video.assets[0], id: "plate-s02" });
+  assert.deepEqual(plateFindings(managedVideo, frame, 1000), []);
+  const own = make({ id: "upload-picture", kind: "image", ref: "data:image/png;base64,AA==", width: 100, height: 100 });
+  assert.deepEqual(plateFindings(own, frame, 1000), []);
+  own.assets[0].ref = "https://pictures.example/photo.png";
+  assert.ok(plateFindings(own, frame, 1000).some(f => f.code === "ref"));
+  delete video.assets[0].width;
+  assert.ok(plateFindings(video, frame, 1000).some(f => f.code === "dimensions"));
+});
+
+test("reapplying pictures preserves frames and backdrops and only resets zoom on asset replacement", () => {
+  const r = record(), asset = makeAsset(r, { ref: "data:image/jpeg;base64,/9j/2Q==", width: 1000, height: 500, bytes: 4 }, 100);
+  const media = { slot: "photo", assetId: asset.id, frame: "plain", backdropAssetId: "background", calmZone: "top", zoom: { x: .1, y: .1, w: .8, h: .8 } };
+  const spec = { slides: [{ id: "s02", type: "proof", media }] };
+  const same = attachPlate(spec, r, asset).slides[0].media;
+  assert.equal(same.frame, "plain"); assert.equal(same.backdropAssetId, "background");
+  assert.deepEqual(same.zoom, media.zoom);
+  spec.slides[0].media.assetId = "old-picture";
+  const changed = attachPlate(spec, r, asset).slides[0].media;
+  assert.equal(changed.zoom, undefined); assert.equal(changed.frame, "plain");
+});
+
 test("crop uses gravity and a normalized subject box without stretching", () => {
   const top = planFit({ width: 1200, height: 800, ratio: 3, mode: "crop", gravity: "top" });
   assert.deepEqual(top.crop, { x: 0, y: 0, w: 1200, h: 400 });
