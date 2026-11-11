@@ -5,7 +5,7 @@ Based on research done on 22 October 2026 and not re-checked since. Model lines 
 ## 1. Picks by job
 | Job | Kind of model to ask for | Why |
 |---|---|---|
-| Photoreal background plate (interiors, light, landscapes) | a current top photoreal image model (the GPT Image 2.5 family, the Nano Banana 2.x family) | best light and material realism; both handle portrait 3:4 well |
+| Photoreal background plate (interiors, light, landscapes) | a current top photoreal image model (the GPT Image 2.5 family, the Nano Banana 2.x family) | light and material realism; request the measured frame ratio when supported |
 | Illustration or flat graphic scene | a design-oriented model (the Recraft family, Ideogram, Seedream, Flux.2) | cleaner shapes and palette control; Recraft can also output vector shapes |
 | Texture or pattern (paper, plaster, geometric lattice) | any of the above at the lowest "creativity" setting | repeatable, calm, easy to keep low-contrast |
 | Cutout of the user's own photo | the connected background-removal tool (`image.cutout`) | keeps the real person or product; never regenerate them |
@@ -15,7 +15,7 @@ Based on research done on 22 October 2026 and not re-checked since. Model lines 
 | Image to video loop (cover plate) | an image-to-video model that supports a loop flag or an end frame (MiniMax H3, Luma Ray 3.2 with its loop option, Kling 3.0 as the budget choice, Runway Gen-4.5, Higgsfield motion models) | first frame = last frame; the ratio follows the input image |
 
 ## 2. Behaviours worth remembering
-- GPT Image snaps a 4:5 request to 3:4, which is our native ratio. Nano Banana accepts native 3:4 and 4:5. Some models only take 1:1, 4:5 or 9:16: pick the nearest and keep the subject away from the sides.
+- Read the connected tool's current ratio options. Request the ratio from slots; if unavailable, pick the closest supported ratio and keep the subject within its safe band. The slide canvas ratio does not determine a picture strip's ratio.
 - Image tools hosted by one connector (for example a multi-model hub) let you choose a model per call; ask for one model, not "best of".
 - The result URL is temporary. Download it as soon as the tool returns it.
 - A model's claim to render Arabic well is no reason to let it write any: users still report broken joins and misspellings, and the product rule is absolute (no text in images).
@@ -38,5 +38,5 @@ Sora API (retired 24 September 2026) and the Gemini API preview of Veo 3.1 (ende
 | letters or pseudo-writing appear | regenerate with the no-text clause and an explicit object exclusion list (`plate-prompts.md` §6); another model if it repeats |
 | the calm zone is busy | restate the zone, add "empty", "minimal", lower creativity or stylise |
 | plastic skin, uncanny faces | change the subject: no faces on plates |
-| wrong ratio | use the nearest and crop; do not stretch |
+| wrong ratio | use the nearest measured frame ratio and preserve its subject band; fit or pad through carousel-design, never stretch |
 | video does not loop | regenerate with the loop option; otherwise ping-pong in Claude Code; otherwise use the still plate (`motion-plates.md`) |

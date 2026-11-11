@@ -2,6 +2,8 @@
 
 External motion is optional. With a video capability connected and the user's agreement, an AI model animates **only a text-free background plate**. The Studio's type layer builds on top of it with the `calm` recipe, and the loop rules still apply. Without a video tool the cover uses the engine's own motion; nothing is lost.
 
+This reference covers a full-canvas video background. Still illustrations in picture strips follow the measured slots -> prompts -> manifest -> apply workflow in `ingress.md`; the still-picture command does not encode video.
+
 ## 1. Requirements of a plate
 | Requirement | Why |
 |---|---|

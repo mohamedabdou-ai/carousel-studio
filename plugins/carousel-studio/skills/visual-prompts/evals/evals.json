@@ -250,6 +250,47 @@
         "The reply says the post is complete without a picture",
         "An optional text-free prompt card is offered for use later"
       ]
+    },
+    {
+      "id": 4,
+      "name": "measure-before-image-prompt",
+      "prompt": "Create illustrations for the cover and the three middle slides of this existing post. The style and text have just changed.",
+      "expected_output": "Measured frame ratios and safe subject bands drive the prompts; the connected image tool waits for consent.",
+      "files": [],
+      "expectations": [
+        "Requests carousel-design plates.mjs slots on the current spec before writing final prompts",
+        "Uses each resolved frame ratio and central 55% subject band with 8% side margins, rather than assuming 3:4",
+        "Keeps engine types where their frames work and resolves a free layout explicitly before generation",
+        "Calls no connected tool until this post is approved"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "inspect-manifest-apply-render",
+      "prompt": "The approved image tool returned clean illustration files for s03 and s04. Put them on the slides and keep them reusable.",
+      "expected_output": "Originals and a dated inspected manifest go to carousel-design for apply, check and render.",
+      "files": [],
+      "expectations": [
+        "Opens each actual original before recording textCheck with textChecked true and its actual UTC inspection time",
+        "Keeps originals under plates/ and creates plates/plates.json with source, slideId, promptId, tool and fit choices",
+        "Uses apply to write embedded asset dimensions, aiGenerated, provenance, legal calmZone and spec.ext.assetChecks",
+        "Does not use asset refs for local rendering or invent a passing check from the prompt alone",
+        "Runs the final render and ordinary gates before delivery"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "restyle-from-originals",
+      "prompt": "We rebuilt spec.json from the script and changed the style. Restore all pictures without running the image tool again.",
+      "expected_output": "Replays the durable manifest and recrops from originals against the new frames.",
+      "files": [],
+      "expectations": [
+        "Uses plates.mjs apply or restyle with kept originals and plates/plates.json",
+        "Measures the new text and style instead of reusing old numeric crops",
+        "Does not depend on a copy-edit ledger or reconstruct originals from embedded JPEGs",
+        "Calls no image-generation tool and preserves original files",
+        "A changed original needs a new inspection and confirmation rather than reusing a stale source hash"
+      ]
     }
   ]
 }

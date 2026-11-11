@@ -1,47 +1,49 @@
-# Ingress: getting generated pixels into the Studio, and checking them
+# Ingress: from generated original to picture on a slide
 
-Studio pages block external images, and the chat sandbox only reaches an allow-list of hosts, so a connector's result cannot be linked into a slide. The picture has to be brought in as a file. This page covers each lane, the no-text check (gate A1) and how the spec records the asset.
+Decide the picture slides, then request carousel-design's `plates.mjs slots` report before prompting. Generate through the creator's approved image tool, keep the originals, inspect them, write the manifest, apply and render. No ad-hoc image scripts or manual ratio measurements are needed.
 
-## 1. By lane
-| Lane | How the picture gets in |
-|---|---|
-| **Claude app** (web, desktop, phone) and **Cowork** | The tool returns the image into the conversation. You view it there and do the A1 check **before** telling the user anything. Then tell the user to save the image (long-press or the download button) and drop it into the Studio's picture slot on the Visual tab (the page's `assets` capability stores it). The Studio adds it to the spec as an AI asset. |
-| **Claude Code** | Download the result file the approved tool returned to a scratch folder. Look at it (Read opens images; video: extract frames with ffmpeg). Run the A1 check, or hand the file to the `cs-art-director` agent. Then upload it to the published Studio with the Artifact tool's asset mode (`asset: true` with the artifact `url` and the `file_path`; the page must declare the `assets` capability) and use the id the result gives. |
-| **No Artifact tool** | Keep the file next to `studio.html`; the user drops it into the page's picture slot. |
+## 1. Local lane: the durable manifest
 
-Only fetch the result URL the approved tool returned; it is temporary, so download it at once. Never store that URL in the spec or any file. A downloaded file belongs in the scratch folder, not in the plugin.
+Keep each result under the post folder's `plates/`, for example `plates/original-s03.png`. Download only the approved tool's returned result; never save its temporary URL. Originals stay untouched. PNG, JPEG and WebP are accepted. The script decodes, fits and encodes through the existing headless browser, with no imaging packages or FFmpeg.
 
-Size and format: photographic plates as JPEG (quality about 92) at most 3 MB is comfortable, hard limit 20 MiB per stored file; a cutout stays PNG or WebP to keep transparency. A video plate: H.264, no audio (`motion-plates.md`). In Claude Code `ffmpeg -i in.png -q:v 2 out.jpg` converts. A logo or small texture may be embedded in the spec as a data URI of at most about 60 KB; plates and videos never are.
+After viewing the original and passing the inspection below, write `plates/plates.json`:
 
-## 2. The no-text check (A1), by lane
-| Lane | Who checks | What is recorded |
-|---|---|---|
-| Claude app / Cowork | **You**, by viewing the returned image in the conversation, before the user drops it. Say plainly what you checked, in one line. | The user's own confirmation switch under the image on the Studio's Visual tab (a label in the user's dialect, «تأكدت: مفيش حروف ولا علامة مائية» in Egyptian) writes the record; until then the kit cannot export (gate A1.text-check). Never tell the user to skip it. |
-| Claude Code | the `cs-art-director` agent, or you if agents are unavailable | when the check passes, **you** write `spec.ext.assetChecks.<assetId> = { "textChecked": true, "at": "<ISO time>" }` |
-| Any | **Deterministic backstop**: a plate whose slide sits under a text box with no `calmZone` declared is rejected. Always set `media.calmZone` for a plate behind text. | `media.calmZone` in the spec |
-
-What you look for, in every frame for video: any letter of any script, digits, pseudo-writing or calligraphy-like marks, logos, a generator's corner mark or watermark, signage or screens with text, a face you did not ask for, an off-palette colour cast, and that the calm zone is calm. A failure means **regenerate**, never retouch, crop or cover it; after three failures offer the preset's own look.
-
-## 3. Recording the asset
 ```json
-"assets": [{ "id": "plate1", "kind": "image", "ref": "asset:plate1", "mime": "image/jpeg", "width": 2160, "height": 2880,
-             "aiGenerated": true, "tool": "<opaque tool ref>", "promptId": "p1" }]
-"slides": [{ "id": "s01", "type": "cover", "media": { "slot": "plate", "assetId": "plate1", "promptId": "p1", "ai": true, "calmZone": "top" } }]
+{
+  "version": 1,
+  "plates": [{
+    "slideId": "s03",
+    "source": "original-s03.png",
+    "mode": "auto",
+    "gravity": "center",
+    "flip": false,
+    "promptId": "p3",
+    "tool": "connected-image-tool",
+    "textCheck": { "textChecked": true, "at": "2026-11-11T08:00:00Z" }
+  }]
+}
 ```
-- `ref` is `asset:<id>` for stored files. Use the id the upload result gives; the Studio resolves it through the page's `assets` capability.
-- `aiGenerated: true` on every generated **or AI-edited** asset (a cutout or an upscale of the user's own photo counts as AI-edited). `media.ai` is `true` on the slide.
-- `calmZone` is one of `top bottom start end center none` (the `zone` from `data/zones.json`).
-- The no-text record (`spec.ext.assetChecks.<assetId>.textChecked`) is set by the Studio's tap, or by you in Claude Code after a clean check. Never set it for an image you have not opened, and clear it if you replace the file.
-- Keep the prompt card for regeneration in `spec.ext.visualPrompts` (the reserved private namespace the engines ignore), keyed by `promptId`: `{ "text": "…", "seed": 4821, "tool": "<opaque tool ref>" }`. It holds no keys, no personal data and no URLs.
-- `alt` on the asset is optional; slide alt text lives in the caption pack.
-- Replacing a plate: add the new asset, point the slide to it, then remove the old entry. Delete the old stored file only when nothing references it and the user asks.
-Validate (`validate.py spec spec.json --checkpoint design --lint`), then rebuild and republish the Studio through `carousel-design`.
 
-## 4. The AI label
-The posting guide (a fifth card, in the user's dialect) tells the user to switch on Instagram's AI label. Scheduler APIs have an `is_ai_generated` flag, set whenever any asset has `aiGenerated: true`. Say it once, in one line, when you hand the plate over: «الصورة دي مولّدة بالذكاء الاصطناعي، فعّل علامة الذكاء الاصطناعي وقت النشر».
+Use the actual inspection time, not the example timestamp. Sources are relative to `plates/`, never URLs, absolute paths or paths leaving that folder. Optional `focus: {"x": 0.1, "y": 0.15, "w": 0.8, "h": 0.7}` marks the subject in normalized coordinates of the unflipped original. Auto preserves that box; without focus it assumes the prompt's central 55% band and 8% side margins. Use `mode: "crop"` or `"pad"` to force the decision (`pad: true` is also accepted). Padding extends edge colours with subtle deterministic grain. Flip happens after fitting.
 
-## 5. Direct pull from a connector (later)
-A button inside the Studio that pulls the picture straight from a connector waits on a check of the page's connector access; until then the drop-in route above is the default. Do not promise it.
+Keep engine types such as step, checklist and CTA when their measured frame works. A whole illustration usually uses `proof`, variant `screenshot` or `base`, slot `screenshot`. To leave a free layout, first choose the engine layout and ensure its canonical text fields contain all intended copy; add `"layout": {"type": "proof", "variant": "screenshot", "slot": "screenshot"}` to the row. This explicitly removes `free`; the tool does not translate handwritten HTML into copy or rewrite text. A cover keeps its `cover` type, often `split` with `photo` when the preset supports it.
 
-## 6. Mistakes to avoid
-Telling the user to drop a file before you looked at it · retouching instead of regenerating · a plate behind text without `calmZone` · leaving `aiGenerated` off a cutout of the user's own photo · embedding a plate as a data URI · saving the connector's temporary link · sending the user's other files or brand data with a prompt.
+Hand the manifest to carousel-design to run `plates.mjs apply --dir POST`, then `check` and render. It embeds JPEG data URIs below the schema's `ref.maxLength`, including header and base64 overhead, and writes width, height, bytes, aiGenerated, tool, promptId, media and `calmZone: "bottom"`. Local rendering cannot resolve `asset:<id>` without the hosted page's asset resolver, so local still pictures are embedded. Apply binds the confirmation to its original with `textCheck.sha256`; keep that field on replay.
+
+After a spec rebuild run `apply` again. After text or style changes run `restyle` from the same originals. The manifest is the durable picture record and does not depend on a copy-edit ledger. Replacing an original requires another inspection and a new `textCheck` object; apply refuses a mismatching saved hash. Do not obtain a new confirmation merely by reusing an old timestamp.
+
+## 2. One no-text confirmation (A1)
+
+Open every original before recording its check. Look for letters in any script, digits, pseudo-writing, logos, signage, text on screens or packaging, a generator's corner mark or watermark. Check the subject band, palette and composition. A failure means regenerate, never crop, cover or retouch the mark. After three failures offer the preset's own look.
+
+The manifest's `textCheck` is the local confirmation step. Apply writes it to `spec.ext.assetChecks[assetId]`, satisfying A1.text-check. It also sets `aiGenerated: true` and `media.ai: true` by default. A creator-owned image untouched by AI may explicitly use `aiGenerated: false`. No-text prompts alone are never evidence that a returned image is clean. This confirmation does not claim creative acceptance or that every gate passes.
+
+## 3. Claude app, Cowork and hosted assets
+
+Without Node and a browser, hand measurement and embedding to carousel-design's local lane or continue without pictures. Do not claim a local measurement or completed embed from chat. For a hosted Studio with asset upload support, view the returned image first, then have the creator drop it into the Visual tab or upload through the available asset capability. Stored hosted files can use `asset:<id>`; do not use those refs for local rendering.
+
+The Studio's no-text confirmation switch writes `spec.ext.assetChecks`. Never tell the creator to skip it. A hosted file may be larger than an embedded JPEG; AI assets still carry dimensions, aiGenerated, tool and prompt id. Full-canvas video plates follow `motion-plates.md` and are outside the still-picture command.
+
+## 4. Prompt and AI label handoff
+
+Keep prompt cards in `spec.ext.visualPrompts`, keyed by prompt id: `{ "text": "...", "seed": 4821, "tool": "connected-image-tool" }`. No keys, personal data or temporary URLs. Tell the creator once: «الصورة مولّدة بالذكاء الاصطناعي؛ فعّل علامة الذكاء الاصطناعي عند النشر.» The final render and all ordinary gates still run before delivery.

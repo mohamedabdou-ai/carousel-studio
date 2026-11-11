@@ -1,0 +1,24 @@
+{
+  "specVersion": 1,
+  "id": "plate-workshop",
+  "rev": 1,
+  "brand": { "slug": "plate-workshop" },
+  "format": "carousel",
+  "mode": "fast",
+  "checkpoint": "design",
+  "canvas": { "preset": "ig-3x4", "w": 1080, "h": 1440, "safe": [34, 45, 1012, 1350], "exports": ["3x4", "4x5"] },
+  "locale": { "dialect": "msa-white", "register": "white", "digits": "western", "appLanguage": "ar", "swipeCue": "arrow-rtl" },
+  "style": { "presetId": "poster@1.0" },
+  "slides": [
+    { "id": "s01", "n": 1, "type": "cover", "variant": "split", "headline": "فكرة واحدة\nتكفي للبداية" },
+    { "id": "s02", "n": 2, "type": "proof", "variant": "screenshot", "body": "ابدأ بتجربة بسيطة\nراقب النتيجة بهدوء\nثم اختر خطوتك" },
+    { "id": "s03", "n": 3, "type": "proof", "variant": "base", "title": "غيّر زاوية النظر", "body": "فكرة واضحة\nوتجربة صغيرة\nتجعلان القرار أسهل\nفي كل مرة" },
+    { "id": "s04", "n": 4, "type": "step", "title": "جرّب مرة", "body": "ابدأ بفكرة قابلة للتنفيذ" },
+    { "id": "s05", "n": 5, "type": "checklist", "title": "قبل التجربة", "bullets": ["اختر هدفا واضحا", "حدد وقتا قصيرا"] },
+    { "id": "s06", "n": 6, "type": "cta", "title": "خطوتك التالية", "cta": { "kind": "save", "text": "احفظ الفكرة لتجربتها" } },
+    { "id": "s07", "n": 7, "type": "story-beat", "body": "ابدأ بخطوة صغيرة", "free": { "html": "<p data-field=\"body\"></p>", "css": "" } }
+  ],
+  "assets": [],
+  "cover": { "motion": { "recipe": "none" } },
+  "ext": { "fixtureNote": "Synthetic plate geometry workshop" }
+}
