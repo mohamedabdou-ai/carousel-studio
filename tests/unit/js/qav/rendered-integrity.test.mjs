@@ -24,7 +24,9 @@ test('rendered copy, art floors, contrast and native anchors are deterministic',
     await t.test('an optional anchor that cannot fit at its floor falls back to the complete native text', async () => {
       const spec = JSON.parse(fs.readFileSync(new URL('../../../../tools/examples/showcase.spec.json', import.meta.url), 'utf8'));
       spec.style = { presetId: 'creator@1.0' };
-      spec.slides = [spec.slides.find(s => s.id === 's19')];
+      // The showcase deck ends at 10 slides now, so the poster this case was written for lives here.
+      spec.slides = [{ id: 's19', n: 1, type: 'poster', kicker: 'قاعدة الأسبوع', headline: 'اكتب ==الفايدة==\nفي أول سطر', sub: 'عشان القارئ بيحكم في ثانية.',
+        bullets: ['جملة واحدة في الغلاف', 'رقم يثبّت الكلام', 'دعوة واحدة في الآخر'], cta: { kind: 'save', text: 'احفظه لحد ما تحتاجه' } }];
       spec.slides[0].visual = { anchor: { kind: 'field', word: 'القارئ' }, recipe: 'center', tone: 'base' };
       const r = await h.runGates(spec, ids.concat(['D2']));
       assert.deepEqual(Array.from(r), []);

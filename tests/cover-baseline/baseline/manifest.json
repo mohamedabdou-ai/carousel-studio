@@ -107,29 +107,29 @@
    "entries": {
     "cover": {
      "file": "notebook/cover.png",
-     "bytes": 88220,
-     "sha256": "27e62ec6e73c99a3"
+     "bytes": 88189,
+     "sha256": "1c80c14142c47f4a"
     },
     "cover@top": {
      "sameAs": "cover",
      "variant": "top",
-     "sha256": "27e62ec6e73c99a3"
+     "sha256": "1c80c14142c47f4a"
     },
     "cover@center": {
      "file": "notebook/cover-center.png",
-     "bytes": 87984,
-     "sha256": "89b8227462a662b3",
+     "bytes": 87814,
+     "sha256": "b7c05b32fbf1eeb0",
      "variant": "center"
     },
     "cover@split": {
      "sameAs": "cover",
      "variant": "split",
-     "sha256": "27e62ec6e73c99a3"
+     "sha256": "1c80c14142c47f4a"
     },
     "frame0": {
      "file": "notebook/frame0.png",
-     "bytes": 75860,
-     "sha256": "094d7ef73a478da7",
+     "bytes": 75867,
+     "sha256": "000980a36333b25c",
      "frame0VsPoster": 1,
      "recipe": "calm"
     }

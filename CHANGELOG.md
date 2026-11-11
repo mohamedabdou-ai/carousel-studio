@@ -34,7 +34,7 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 - Legitimate connectors such as «الـAPI،», «بـ@الاسم» and «بـ50%» keep their wording, and «تجرّبه» no longer receives a false spelling suggestion.
 - Underlines stay continuous below Arabic dots in every preset, including the notebook's double underline.
 - Rendered checks flag tight text padding, cramped sibling panels, clipped artwork and stranded short words. Contrast follows the painted cover ground, and empty free panels count as empty containers.
-- Sparse populated panels receive layout advice rather than a required container-fill fix; genuinely empty panels still need fixing.
+- Panels with deliberate air receive layout advice rather than a required container-fill fix. An empty panel, or one small icon alone in a large frame, still needs fixing.
 - Free design errors name accepted logical CSS properties. A tone needs content or artwork; it cannot paint an empty decorative track.
 
 ### Publishing limits and checks

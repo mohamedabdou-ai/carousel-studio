@@ -10,7 +10,7 @@
 .cs-slide[data-preset="notebook"]:is([data-type="cover"],[data-type="poster"]) .cs-kicker{width: fit-content;padding-inline: 22px;background: var(--cs-surface);border: 3px solid var(--cs-ink);border-radius: 14px 22px 16px 20px;color: var(--cs-ink);font-weight: 700}
 .cs-slide[data-preset="notebook"]:is([data-type="cover"],[data-type="poster"])[data-align="center"] .cs-kicker{margin-inline: auto}
 .cs-slide[data-preset="notebook"]:is([data-type="cover"],[data-type="poster"]) .cs-em{background: none;color: inherit}
-.cs-slide[data-preset="notebook"]:is([data-type="cover"],[data-type="poster"])[data-hl="underline"] .cs-em{background:none;text-decoration:underline double var(--cs-accent);text-decoration-thickness:3px;text-decoration-skip-ink:none;text-underline-offset:.35em}
+.cs-slide[data-preset="notebook"]:is([data-type="cover"],[data-type="poster"])[data-hl="underline"] .cs-em{background: linear-gradient(to bottom, var(--cs-scrim-to) 0%, var(--cs-scrim-to) 85%, var(--cs-accent) 85%, var(--cs-accent) 88.5%, var(--cs-scrim-to) 88.5%, var(--cs-scrim-to) 92.5%, var(--cs-accent) 92.5%, var(--cs-accent) 96%, var(--cs-scrim-to) 96%)}
 .cs-slide[data-preset="notebook"]:is([data-type="cover"],[data-type="poster"])[data-hl="bar"] .cs-em{background: var(--cs-accent);color: var(--cs-on-accent);padding-inline: 0.14em}
 .cs-slide[data-preset="notebook"]:is([data-type="cover"],[data-type="poster"])[data-hl="marker"] .cs-em{background: var(--cs-accent);color: var(--cs-on-accent);padding-inline: 0.18em;border-radius: 0.22em 0.34em 0.24em 0.3em}
 .cs-slide[data-preset="notebook"]:is([data-type="cover"],[data-type="poster"])[data-hl="color"] .cs-em{color: var(--cs-accent)}

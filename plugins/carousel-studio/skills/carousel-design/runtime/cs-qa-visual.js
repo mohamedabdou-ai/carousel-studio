@@ -159,11 +159,12 @@
         if (!d) return;
         if (id === 'D9.container-fill') {
           d.owners.forEach(function (o) { if (!o.ok) {
-            // Occupied rows/columns are not a design-quality score: score bars and icon
-            // cells deliberately leave air. Only a genuinely empty panel warrants FIX.
-            var pct = Math.min(o.rows, o.cols), sev = o.rows === 0 && o.cols === 0 ? 'FIX' : 'NOTE', f = finding(ctx, id, S, sev, { el: o.id, pct: pct, min: o.need }, o.id);
+            // Score bars and icon cells leave air on purpose (36 to 52 percent on real posts), so under the minimum is advice.
+            // Below owner.fixBelow the panel is empty or holds one small thing in a large frame: that needs fixing.
+            var pct = Math.min(o.rows, o.cols), empty = o.rows === 0 && o.cols === 0, sev = empty || pct < c.owner.fixBelow ? 'FIX' : 'NOTE',
+                f = finding(ctx, id, S, sev, { el: o.id, pct: pct, min: o.need }, o.id);
             // An empty painted free panel is visible evidence, independent of the visual rollout.
-            if (CS.visual?.free?.active(s) && sev === 'FIX') { f.sev = sev; f.prospect = false; }
+            if (CS.visual?.free?.active(s) && empty) { f.sev = sev; f.prospect = false; }
             out.push(f);
           } });
           return;
@@ -376,7 +377,7 @@
 /* Q4 spec gates. */
 (function (){
 const V=()=>CS.visual||{},T=()=>CS.core.text;const arr=v=>Array.isArray(v)?v:[],vis=s=>V().free?.active(s)?{}:s.visual||{},anc=s=>vis(s).anchor||{};
-const old={cover:"top center split photo number",rehook:"base split big-number",item:"base ghost-number side-number media",step:"base ghost-number pill",stat:"base bar",compare:"columns stacked versus","myth-fact":"stacked columns stamp",quote:"base mark photo","story-beat":"base panel media",checklist:"base boxes ruled",summary:"list grid",setup:"base cards",proof:"screenshot base",share:"base big-word",cta:"base pill keyword",offer:"base card",testimonial:"base photo card",poster:"top center split photo"};const free=s=>!!V().free?.active(s);const inner=s=>s.type!=="cover"&&s.type!=="poster"&&!free(s),pause=s=>!!vis(s).pause;const words=t=>T().wordCount(t||""),plain=t=>T().stripMarkup(String(t||""));const block=id=>V()._?.block?.(id),fields=s=>CS.qa._.slideFields(s);const west=t=>String(t).replace(/[٠-٩۰-۹]/g,d=>d.charCodeAt(0)-(d>="۰"?1776:1632)).replace(/٫/g,".").replace(/٬/g,",");function emit(c,out,id,s,vars,sev,el){
+const old={cover:"top center split photo number",rehook:"base split big-number",item:"base ghost-number side-number media",step:"base ghost-number pill media",stat:"base bar",compare:"columns stacked versus","myth-fact":"stacked columns stamp",quote:"base mark photo","story-beat":"base panel media",checklist:"base boxes ruled media",summary:"list grid media",setup:"base cards",proof:"screenshot base",share:"base big-word",cta:"base pill keyword media",offer:"base card media",testimonial:"base photo card",poster:"top center split photo"};const free=s=>!!V().free?.active(s);const inner=s=>s.type!=="cover"&&s.type!=="poster"&&!free(s),pause=s=>!!vis(s).pause;const words=t=>T().wordCount(t||""),plain=t=>T().stripMarkup(String(t||""));const block=id=>V()._?.block?.(id),fields=s=>CS.qa._.slideFields(s);const west=t=>String(t).replace(/[٠-٩۰-۹]/g,d=>d.charCodeAt(0)-(d>="۰"?1776:1632)).replace(/٫/g,".").replace(/٬/g,",");function emit(c,out,id,s,vars,sev,el){
 const e=c.R.checks[id];if(!e||c.gates&&!c.gates.has(id)&&!c.gates.has(e.gate.id)) return;const a=e.def.appliesTo||e.gate.appliesTo||{};if(a.formats&&!a.formats.includes(c.format)||s&&a.slideTypes&&!a.slideTypes.includes(s.type)) return;const format=t=>String(t).replace(/\{([a-zA-Z0-9_]+)\}/g,(m,k)=>vars[k] ?? m);const p=e.def.params||{},next=sev||e.def.sev,r=p.rollout;const f={gate:e.gate.id,rule:id,sev:r?.stage===0?r.stage0Sev:next};if(r?.stage===0) f.prospect=next!==f.sev;if(s) f.slide=s.id;if(el) f.el=el;f.msg={ar:format(e.def.msg.ar),en:format(e.def.msg.en)};if(e.def.fix) f.fix={ar:format(e.def.fix.ar),en:format(e.def.fix.en)};f.autofixed=false;out.push(f);}
 function add(id,run){
 CS.qav.add("text",{id,ids:[id],run(c){

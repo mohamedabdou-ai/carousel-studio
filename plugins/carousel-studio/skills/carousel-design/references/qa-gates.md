@@ -387,7 +387,7 @@ Stage 0 caps D9.*, VA1/VA2/VA9 and visual rhythm findings at **NOTE**; `prospect
 | `D9.band` | cover NOTE ≥10%, FIX ≥15%; working NOTE ≥8%, FIX ≥12%; pause 18/24%; BLOCK switches off |
 | `D9.rect` | cover NOTE ≥20%, FIX ≥24%; working 15/20%; pause 30/40%; BLOCK switches off |
 | `D9.fill` | working empty cells NOTE ≥40%, FIX ≥50%; pause 60/70% |
-| `D9.container-fill` | occupied rows/columns ≥65%; large container ≥80%; populated panels below these thresholds receive NOTE; genuinely empty panels warrant FIX |
+| `D9.container-fill` | occupied rows/columns ≥65%; large container ≥80%; panels below these thresholds receive NOTE; an empty panel, or one under 30% (one small thing in a large frame), warrants FIX |
 | `VA1.anchor-present` | spec-scope missing anchors; stage-0 NOTE, not permission to omit one |
 | `D10.nesting` | >2 nested owners: FIX |
 | `D10.icon-tile-stack` | ≥3 sibling icon-over-heading tiles: FIX |
@@ -551,7 +551,7 @@ The schema rejects new specs over 10 slides. The Studio, `build_studio.py` and `
 - `D2.text-padding` (FIX) measures painted glyph ink against the nearest body-panel edge. `D2.block-gap` (FIX) measures edge gaps between painted sibling containers with text. Both use 2 units of the rendered `--cs-unit`, falling back to `geometry.grid.baselinePx`, with a quarter-unit tolerance for rounding and small transforms. Compact text badges (`small`, `micro`, `chip`, `tool`) paint emphasis rather than body panels. Marks and slide backgrounds are excluded. Adjoining cells in one enclosing painted border share that frame; their internal text padding still counts.
 - `D2.clipped-paint` (BLOCK) checks painted content, including SVG strokes, against each ancestor's overflow clip. Tolerance is one eighth of a baseline-grid unit. Intentionally hidden slide decoration is excluded; an icon's decorative accessibility label does not exempt its visible stroke.
 - `D6.orphan-connector` (FIX) reports a one- or two-letter Arabic word, or «ولا», stranded at a non-final line end or alone on the last line. The engine binds ordinary copy; explicit author line breaks remain reviewable.
-- `D9.container-fill` includes free-lane painted panels even without `data-owner`. Empty free panels produce a real FIX independently of the visual rollout. Low row/column coverage in a populated panel is only a NOTE: centred icon cells and score bars deliberately leave air, so coverage alone cannot justify a required redesign. The occupancy thresholds still inform the dead-space measure.
+- `D9.container-fill` includes free-lane painted panels even without `data-owner`. Empty free panels produce a real FIX independently of the visual rollout. Row/column coverage between `owner.fixBelow` (30%) and the minimum is only a NOTE: icon cells and score bars deliberately leave air (36 to 52% on real posts). Under 30%, one small icon or number sits alone in a large frame, and that is a FIX at the rollout stage that enforces dead space. The occupancy thresholds still inform the dead-space measure.
 - `D4` measures a cover sub-line too. The painted `.cs-bg` layer takes precedence over the root's fallback colour; a coloured ground cannot inherit a false contrast pass from the paper behind it.
 
 The new D2 and D6 checks are DOM measurements (JS only, like their existing gate families). Python keeps the text-gate and free-validator twins; it does not claim to measure an unrendered slide.

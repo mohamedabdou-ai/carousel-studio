@@ -129,11 +129,12 @@
         if (!d) return;
         if (id === 'D9.container-fill') {
           d.owners.forEach(function (o) { if (!o.ok) {
-            // Occupied rows/columns are not a design-quality score: score bars and icon
-            // cells deliberately leave air. Only a genuinely empty panel warrants FIX.
-            var pct = Math.min(o.rows, o.cols), sev = o.rows === 0 && o.cols === 0 ? 'FIX' : 'NOTE', f = finding(ctx, id, S, sev, { el: o.id, pct: pct, min: o.need }, o.id);
+            // Score bars and icon cells leave air on purpose (36 to 52 percent on real posts), so under the minimum is advice.
+            // Below owner.fixBelow the panel is empty or holds one small thing in a large frame: that needs fixing.
+            var pct = Math.min(o.rows, o.cols), empty = o.rows === 0 && o.cols === 0, sev = empty || pct < c.owner.fixBelow ? 'FIX' : 'NOTE',
+                f = finding(ctx, id, S, sev, { el: o.id, pct: pct, min: o.need }, o.id);
             // An empty painted free panel is visible evidence, independent of the visual rollout.
-            if (CS.visual?.free?.active(s) && sev === 'FIX') { f.sev = sev; f.prospect = false; }
+            if (CS.visual?.free?.active(s) && empty) { f.sev = sev; f.prospect = false; }
             out.push(f);
           } });
           return;
