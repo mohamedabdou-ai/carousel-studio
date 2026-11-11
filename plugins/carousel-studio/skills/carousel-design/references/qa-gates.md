@@ -414,6 +414,7 @@ Scope `after-generation`.
 
 | Rule | Sev | Ovr | Auto-fix | Engine | Condition |
 |---|---|---|---|---|---|
+| `A1.asset-missing` | BLOCK |  |  | js | A slide's media, cover logo or free picture refers to an asset id absent from spec.assets. |
 | `A1.flag` | BLOCK |  |  | js | A slide's media has ai true and its asset is missing or lacks aiGenerated true. |
 | `A1.calm-zone` | BLOCK |  |  | js | A slide with a plate (or any AI image) behind text declares no calm zone (calmZone absent or none). |
 | `A1.text-check` | BLOCK |  |  | js | An AI asset used by a slide has no recorded check in spec.ext.assetChecks[assetId].textChecked. Params: `recordPath` = ext.assetChecks. |

@@ -263,7 +263,7 @@
     var svg = q(item, ".cs-media-slot svg");
     assert(svg && !svg.querySelector("script") && !svg.hasAttribute("onload") && !svg.querySelector("[onclick]"), "inline SVG without script or handlers");
     eq(q(item, ".cs-media-slot").getAttribute("data-mirror"), "1", "mirror:auto on an icon in an RTL slide");
-    eq(q(miss, ".cs-media-slot").getAttribute("data-media-state"), "missing"); eq(q(miss, ".cs-media-slot").getAttribute("data-media-kind"), "photo");
+    eq(q(miss, ".cs-media-slot"), null, "an unresolved optional asset leaves the text layout without an empty frame");
     var viaResolver = FX.build(ex(function (s) { s.slides[3].media = { slot: "photo", assetId: "p1", calmZone: "top" }; }), 3, { assets: function (id) { return id === "p1" ? { url: png, mime: "image/png" } : null; } });
     var im = q(viaResolver, ".cs-media-slot > img"); assert(im && im.getAttribute("src") === png && im.getAttribute("alt") === "", "AssetResolver");
     eq(q(viaResolver, ".cs-media-slot").getAttribute("data-calm"), "top");

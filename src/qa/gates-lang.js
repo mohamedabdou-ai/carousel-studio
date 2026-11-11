@@ -386,6 +386,7 @@ function gateA1(ctx,out) {
   ctx.slides.forEach(s=>a1Media(s,ctx.spec).forEach(([m,el])=>{
     const a=assets.get(m.assetId),flagged=a?.aiGenerated===true,ai=m.ai===true||flagged;
     const put=r=>active(ctx,"A1."+r,s)&&emit(ctx,out,"A1."+r,{slide:s.id,el,vars:{el,asset:m.assetId}});
+    if (m.assetId&&!assets.has(m.assetId)) put("asset-missing");
     if (m.ai===true&&!flagged) put("flag");
     if (ai&&m.assetId&&!(isObj(checks[m.assetId])&&checks[m.assetId].textChecked===true)) put("text-check");
     if ((m.slot==="plate"||ai)&&slideHasText(s)&&(!m.calmZone||m.calmZone==="none")) put("calm-zone");

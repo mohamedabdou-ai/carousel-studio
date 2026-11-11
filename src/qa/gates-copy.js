@@ -266,9 +266,7 @@ function gateC6(ctx, out) {
     if (p.architectures.indexOf(ctx.spec.architecture) >= 0) {
       const nums = countedNumbers(text, p.min, p.max);
       const numbered = new Set(ctx.slides.filter((s) => Number.isInteger(s.ord) && s.ord > 0).map((s) => s.ord));
-      const primary = ctx.spec.architecture === "steps" ? "step" : "item";
-      let items = numbered.size || ctx.slides.filter((s) => s.type === primary).length;
-      if (!items) items = ctx.slides.filter((s) => s.type === "item" || s.type === "step").length;
+      const items = numbered.size || ctx.slides.filter((s) => s.type === "item" || s.type === "step").length;
       if (nums.length && items > 0 && nums.indexOf(items) < 0) {
         emit(ctx, out, "C6.list-count", { slide: cover.id, el: cover.id + ".headline", vars: { count: nums[0], n: items } });
       }
@@ -353,7 +351,8 @@ function gateC7(ctx, out) {
   }
   if (family && ctx.familyLimits && isObj(ctx.familyLimits[family]) && active(ctx, "C7.max-use")) {
     const lim = ctx.familyLimits[family];
-    const recent = hist.slice(-Math.max(0, lim.posts - 1)).filter((e) => e.family === family).length;
+    const take = Math.max(0, lim.posts - 1);
+    const recent = (take ? hist.slice(-take) : []).filter((e) => e.family === family).length;
     if (recent + 1 > lim.count) emit(ctx, out, "C7.max-use", { vars: { family } });
   }
 }

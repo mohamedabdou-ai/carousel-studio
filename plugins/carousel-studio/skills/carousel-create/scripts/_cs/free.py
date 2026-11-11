@@ -21,7 +21,6 @@ from __future__ import annotations
 import re
 from html import unescape
 from html.parser import HTMLParser
-from html import unescape
 
 from . import CSError, paths
 from .text import portable_regex
@@ -200,14 +199,6 @@ class _Html(HTMLParser):
         self.mark_readable(data)
         if "<" in data:
             self.add("a '<' in the text must be written &lt; (%s); an unfinished tag looks like this" % self.where())
-
-    def handle_entityref(self, name) -> None:
-        if self.pictures:
-            self.handle_data(unescape("&" + name + ";"))
-
-    def handle_charref(self, name) -> None:
-        if self.pictures:
-            self.handle_data(unescape("&#" + name + ";"))
 
     def handle_comment(self, data) -> None:
         self.add("comments are not allowed (%s)" % self.where())

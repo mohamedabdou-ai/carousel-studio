@@ -1343,7 +1343,8 @@ CS.visual._.register("settle",settle)})();
       if (!close && stack.some(function (p) { return p.node?.attrs?.["data-picture"]; })) fail("A picture placeholder must be empty");
       if (!close && Object.hasOwn(rawAttrs, "data-picture")) {
         if (tag !== "div" || !attrs["data-picture"] || names.some(function (k, at) { return !/^(class|data-picture|data-fit)$/.test(k) || names.indexOf(k) !== at; }) ||
-            Object.hasOwn(rawAttrs, "data-fit") && !attrs["data-fit"]) fail("Use an empty div with data-picture and optional data-fit=cover|contain");
+            Object.hasOwn(rawAttrs, "data-fit") && !attrs["data-fit"] ||
+            Object.hasOwn(rawAttrs, "class") && attrs.class !== rawAttrs.class.trim().split(/\s+/).join(" ")) fail("Use an empty div with data-picture and optional data-fit=cover|contain");
       } else if (!close && Object.hasOwn(rawAttrs, "data-fit")) fail("data-fit belongs to a picture placeholder");
       if (attrs["data-object"] && attrs["data-size"] && !d.art.object.sizes.includes(attrs["data-size"])) delete attrs["data-size"];
       if (close) { for (var j = stack.length - 1; j > 0; j--) if (stack[j].tag === tag) { stack.length = j; break; } continue; }
