@@ -1065,8 +1065,8 @@ function gateB1Rendered(rc) {
           const pair = number.test(x) && /^[\u0621-\u064A]/.test(y) || labels.has(x) && number.test(y) || /^[A-Za-z][A-Za-z0-9._-]*$/.test(x) && number.test(y);
           if (!pair) return;
           // The big numeral of a number cover is a line of its own by design.
-          const run = a.closest('[data-run="number"]');
-          if (run && getComputedStyle(run).display === "block") return;
+          const run = a.closest('[data-run="number"]') || a.querySelector('[data-run="number"]');
+          if (i === 0 && (run && getComputedStyle(run).display === "block" || S.el.getAttribute("data-type") === "cover" && S.el.getAttribute("data-variant") === "number")) return;
           const ra = S.rel(a.getBoundingClientRect()), rb = S.rel(b.getBoundingClientRect()), key = domKey(S, slot);
           if (Math.abs(ra.y + ra.h / 2 - rb.y - rb.h / 2) > Math.min(ra.h, rb.h) / 2 && !reported.has(key)) {
             reported.add(key); emit(rc, out, "B1.unbound-pair", { slide: S.id, el: key });
