@@ -116,9 +116,9 @@
       var kashida = !kashidaDone && o.allowKashida && o.kashidaWord === value;
       if (kashida) kashidaDone = true;
       var body = T().toHTML(value, { ...o, lang: lang, markup: false, wordSpans: false, allowKashida: kashida });
-      var style = prefix ? "font-family:var(--cs-font-body)" : "";
+      var style = ""; // a prefix keeps the font of its slot, as published covers show («بـ4», «الـ5»)
       // The gap is layout only: no space, joining control or pseudo-element enters the copy.
-      if (gap) style += ";margin-inline-end:0.14em";
+      if (gap) style = "margin-inline-end:0.16em";
       var attrs = (gap ? ' data-cs-clitic-gap="1"' : "") + (style ? ' style="' + style + '"' : "");
       var out = o.wordSpans ? '<span class="w' + (kashida ? " cs-kashida" : "") + '" data-w="' + wordIndex++ + '"' + attrs + '>' + body + '</span>' :
         prefix ? '<span' + attrs + '>' + body + '</span>' : body;
@@ -191,9 +191,11 @@
         groups.splice(i + 1, 1);
       }
     }
-    return groups.map(function (g) {
+    return (groups.map(function (g) {
       return (/[\n\r]/.test(g.sep) ? g.sep.replace(/\r\n|\r|\n/g, "<br>") : g.sep) + g.html;
-    }).join("") + separator;
+    }).join("") + separator)
+      // One mark for an emphasised phrase, as in 1.1: a marker highlight must not break into one chip per word.
+      .replace(/<\/mark>([ \u00a0])<mark class="cs-em" data-m="em">/g, "$1");
   }
   function tagWords(root, slotName) {
     var ws = root.querySelectorAll(".w");
@@ -364,7 +366,8 @@
       var kind = media.slot, asset = findAsset(cx, media.assetId);
       if (media.imageOnly && asset && (asset.kind === "video" || !(asset.mime ? /^image\//.test(asset.mime) : /^(image|svg)$/.test(asset.kind)))) asset = null;
       set(node, { "data-media-kind": kind, "data-calm": media.calmZone, "data-ai": media.ai ? 1 : null, "data-asset": media.assetId });
-      if (!asset) { node.setAttribute("data-media-state", "missing"); return !node.hasAttribute("data-optional"); }
+      // An optional slot whose asset id does not resolve leaves no empty frame. A slot with no asset yet stays, as the Studio's placeholder.
+      if (!asset) { node.setAttribute("data-media-state", "missing"); return !node.hasAttribute("data-optional") || !media.assetId; }
       if (asset.mirror === "auto" && kind === "icon" && cx.dir === "rtl") node.setAttribute("data-mirror", "1");
       if (asset.aiGenerated) node.setAttribute("data-ai", "1");
       var isVideo = /^video\//.test(asset.mime || "") || asset.kind === "video";

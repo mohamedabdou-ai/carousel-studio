@@ -36,6 +36,8 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 - Rendered checks flag tight text padding, cramped sibling panels, clipped artwork and stranded short words. Cut text, icons and pictures stop the export; a drawn shape cut by its frame and a short word at a line end are reported for review. Contrast follows the painted cover ground.
 - In a free design, a painted element is judged as a panel only when it holds content or is an empty card-sized frame. Drawn scenes, chart bars and symbols keep their tones and raise no finding.
 - Existing posts keep their layout: short words are not glued to their neighbours, a Latin word does not raise a title's line height, and an ellipsis after a Latin word stays at the end of the Arabic sentence.
+- Times, ratios and joined Latin pairs keep their reading order inside Arabic text: «10:30», «3:1», «9:00-10:30», «Q&A», «AT&T». A product name stays on one line with the number after it («iPhone 15», «GPT 5»).
+- A highlighted phrase is one highlight again, not one chip per word, and a prefix such as «بـ» or «الـ» keeps the font of its headline.
 - Panels with deliberate air receive layout advice rather than a required container-fill fix. An empty panel, or one small icon alone in a large frame, still needs fixing.
 - Free design errors name accepted logical CSS properties.
 
@@ -60,6 +62,8 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 - A slide too long to hold runs on into the next slide at your own sentence end, every word kept. «زي ما هو» keeps every slide as written, and every length limit on your words now accepts «تجاوز».
 - The last slide keeps your question as its title and your options under it; three asks in one line are offered as a shorter choice, never cut for you.
 - A script that ends without a call to action is yours to keep: say «زي ما هو» and the post exports, with your choice recorded as «تجاوز». Nothing is added for you.
+- A numbered script keeps one slide per number when a rule separates the intro or the caption, and a title that starts with a digit is read as a title.
+- Tool names inside a sentence stay in your copy; only a whole-line or labelled credit becomes a source.
 - Your caption and the hashtags you name go in word for word, and can be kept for every post.
 
 ### Design
@@ -70,6 +74,8 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 
 - Try surviving hooks across styles in one cover-lab run, with measured fit, ranked findings and a sheet at feed size and 130 px. A style sheet shows your own cover and slide 2 in every shipped style before you choose.
 - Cover fitting searches line arrangements without changing your words, keeps forced breaks and offers a punctuated second beat in the sub-line. Creator's top and center anchors work, and cover controls explain which type setting sizes each line.
+- The cover line search avoids leaving a preposition at a line end, splitting a Latin name across lines or stranding one word on the last line, and it never separates «الـ» from its number. Number covers are searched too.
+- A picture or logo whose asset is missing leaves no empty frame, and the export names the missing asset.
 - Hook choices are rendered before they are offered; a stronger set includes a truthful shock cover with a different kind of tension.
 - The art director owns every slide, the cover included, fixes empty bands, weak hierarchy, text on media and crowding without being asked, and never leaves a giant word that says nothing.
 - «غيّر الستايل» with no name shows the other styles on your own cover and slide 2 to pick from.
@@ -85,6 +91,8 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 
 - Clip covers give the footage a full-width 16:9 window above the headline in every style. The local renderer reports frame progress while composing.
 - The clip contrast check follows the ink that covers the footage, so a headline placed just below the window no longer stops the export.
+- Clip covers accept footage whose video track starts late, close on a clean loop even with grainy footage, and report trim, codec and duration problems in plain words. A single post cannot carry a clip cover.
+- The cover lab and the style sheet run without the clip file.
 - Standalone clip checks match browser-decoded poster colours. Dark footage no longer receives still-loop advice from a whole-frame average.
 
 - Attach your own local clip inside the cover's media window for a silent 6 to 15 second video, with trim points, fit and focus. Both ratios are recomposed after a style change or export, with the original layout and readable text.

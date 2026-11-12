@@ -24,8 +24,10 @@
     var spec = ex(), brand = FX.brand();
     var ex1 = await CS.core.render.slide(spec, brand, 0, { mode: "export" }), th = await CS.core.render.slide(spec, brand, 0, { mode: "thumb" }), ed = await CS.core.render.slide(spec, brand, 0, { mode: "edit" });
     assert(qa(ex1.el, ".cs-headline .cs-ln").length >= 2 && !qa(ex1.el, "[contenteditable],[data-edit]").length, "export: lines, nothing editable");
-    assert(!qa(th.el, ".cs-ln").length && !qa(th.el, "[contenteditable],[data-edit]").length, "thumb: natural flow, nothing editable");
-    assert(!qa(ed.el, ".cs-ln").length && qa(ed.el, '[contenteditable="true"]').length >= 2, "edit: natural flow and editable");
+    // The cover keeps one line arrangement in every mode: a thumbnail must show the lines the export will have.
+    eq(qa(th.el, ".cs-headline .cs-ln").map(function (l) { return l.textContent; }).join("|") || "natural", qa(ex1.el, ".cs-headline .cs-ln").map(function (l) { return l.textContent; }).join("|"), "thumb: the same cover lines as the export");
+    assert(!qa(th.el, "[contenteditable],[data-edit]").length, "thumb: nothing editable");
+    assert(!qa(ed.el, ".cs-body .cs-ln, .cs-sub .cs-ln").length && qa(ed.el, '[contenteditable="true"]').length >= 2, "edit: editable, and only the cover headline carries its chosen lines");
     CST.deepEq(FX.sizes(ex1), FX.sizes(th), "all modes fit the same way"); [ex1, th, ed].forEach(drop);
   });
 

@@ -2389,9 +2389,9 @@ CS.core.format = function format(template, params) {
       var kashida = !kashidaDone && o.allowKashida && o.kashidaWord === value;
       if (kashida) kashidaDone = true;
       var body = T().toHTML(value, { ...o, lang: lang, markup: false, wordSpans: false, allowKashida: kashida });
-      var style = prefix ? "font-family:var(--cs-font-body)" : "";
+      var style = ""; // a prefix keeps the font of its slot, as published covers show («بـ4», «الـ5»)
       // The gap is layout only: no space, joining control or pseudo-element enters the copy.
-      if (gap) style += ";margin-inline-end:0.14em";
+      if (gap) style = "margin-inline-end:0.16em";
       var attrs = (gap ? ' data-cs-clitic-gap="1"' : "") + (style ? ' style="' + style + '"' : "");
       var out = o.wordSpans ? '<span class="w' + (kashida ? " cs-kashida" : "") + '" data-w="' + wordIndex++ + '"' + attrs + '>' + body + '</span>' :
         prefix ? '<span' + attrs + '>' + body + '</span>' : body;
@@ -2464,9 +2464,11 @@ CS.core.format = function format(template, params) {
         groups.splice(i + 1, 1);
       }
     }
-    return groups.map(function (g) {
+    return (groups.map(function (g) {
       return (/[\n\r]/.test(g.sep) ? g.sep.replace(/\r\n|\r|\n/g, "<br>") : g.sep) + g.html;
-    }).join("") + separator;
+    }).join("") + separator)
+      // One mark for an emphasised phrase, as in 1.1: a marker highlight must not break into one chip per word.
+      .replace(/<\/mark>([ \u00a0])<mark class="cs-em" data-m="em">/g, "$1");
   }
   function tagWords(root, slotName) {
     var ws = root.querySelectorAll(".w");
@@ -2637,7 +2639,8 @@ CS.core.format = function format(template, params) {
       var kind = media.slot, asset = findAsset(cx, media.assetId);
       if (media.imageOnly && asset && (asset.kind === "video" || !(asset.mime ? /^image\//.test(asset.mime) : /^(image|svg)$/.test(asset.kind)))) asset = null;
       set(node, { "data-media-kind": kind, "data-calm": media.calmZone, "data-ai": media.ai ? 1 : null, "data-asset": media.assetId });
-      if (!asset) { node.setAttribute("data-media-state", "missing"); return !node.hasAttribute("data-optional"); }
+      // An optional slot whose asset id does not resolve leaves no empty frame. A slot with no asset yet stays, as the Studio's placeholder.
+      if (!asset) { node.setAttribute("data-media-state", "missing"); return !node.hasAttribute("data-optional") || !media.assetId; }
       if (asset.mirror === "auto" && kind === "icon" && cx.dir === "rtl") node.setAttribute("data-mirror", "1");
       if (asset.aiGenerated) node.setAttribute("data-ai", "1");
       var isVideo = /^video\//.test(asset.mime || "") || asset.kind === "video";
@@ -3189,8 +3192,9 @@ CS.core.format = function format(template, params) {
       rg.setEndBefore(ws[i]);
       var forced = !!rg.cloneContents().querySelector("br"), sep = separator(ws[i - 1], ws[i]), clitic = ws[i - 1].closest('[data-cs-bind="clitic"]');
       if (forced) required.push(i);
-      // A clitic and its Latin or number run are one word («الـ5», «وGoogle»), and so are two units with nothing between them.
-      if (sep === "\u00a0" || !forced && (sep === "" || clitic && clitic === ws[i].closest('[data-cs-bind="clitic"]'))) forbidden.push(i);
+      // A clitic and its Latin or number run are one word («الـ5», «وGoogle»). An empty separator alone proves nothing: the big numeral
+      // of a number cover is a block with no space after it, and the line after it is the first place a break belongs.
+      if (sep === " " || !forced && clitic && clitic === ws[i].closest('[data-cs-bind="clitic"]')) forbidden.push(i);
     }
     if (subBeat && !sub && !required.length && n <= 16) ws.forEach(function (w, i) {
       if (i < n - 1 && /[…،؛؟!?:]$/.test(w.textContent)) cuts.push(i + 1);
@@ -3219,6 +3223,21 @@ CS.core.format = function format(template, params) {
       m.words = wordsOf(h);
     }
 
+    // Breaks a reader stumbles on: a one or two letter connector left at a line end («على» is three, «في» is two), and a Latin name
+    // split across lines («ChatGPT» / «Pro»). Each one costs a tenth of the size when candidates are compared.
+    function badBreaks(mm) {
+      var bad = 0, at = 0;
+      mm.lines.forEach(function (l, li) {
+        at += l.n;
+        var last = m.words[at - 1], next = m.words[at];
+        if (li === mm.lines.length - 1 || !last || !next) return;
+        if (/^[\u0621-\u064A]{1,3}$/.test(last.textContent.replace(/[\u064B-\u065F\u0670]/g, "")) && CONNECTOR.test(last.textContent.replace(/[\u064B-\u065F\u0670]/g, ""))) bad++;
+        // Two neighbouring Latin words are one name; a forced arrangement clones their wrapper per line, so test each word on its own.
+        if (last.closest('[data-run="latin"]') && next.closest('[data-run="latin"]')) bad++;
+      });
+      return bad;
+    }
+
     function consider(cut, counts) {
       install(cut, counts);
       attempts++;
@@ -3227,18 +3246,21 @@ CS.core.format = function format(template, params) {
       var px = r.size * p.thumbnail.widthPx / ctx.geo.canvas.w,
         legal = !r.overflow && !r.stackLimited && ownOK(m, mm, ctx) && stackOK(ctx);
       var pass = legal && px >= p.thumbnail.heroPassPx && width >= hw[0] - .05 && width <= hw[1] + .05 && !isLone(mm);
-      if (!best || +pass > +best.pass || pass === best.pass && (+legal > +best.legal || legal === best.legal && r.size > best.size)) {
-        best = { cut: cut, counts: counts, size: r.size, legal: legal, pass: pass, px: px, result: r, wide: h.hasAttribute("data-widened") };
+      // A single word alone on the last line costs as much as two bad breaks, so it loses even when no candidate passes.
+      var bad = badBreaks(mm) + (isLone(mm) ? 2 : 0), score = r.size * (1 - 0.1 * bad);
+      if (!best || +pass > +best.pass || pass === best.pass && (+legal > +best.legal || legal === best.legal && score > best.score)) {
+        best = { cut: cut, counts: counts, size: r.size, score: score, bad: bad, legal: legal, pass: pass, px: px, result: r, wide: h.hasAttribute("data-widened") };
       }
     }
 
     consider(n, null);
-    if (n > 1 && n <= 16 && !(best.pass && best.size === u.max)) cuts.forEach(function (cut) {
+    if (n > 1 && n <= 16 && !(best.pass && best.size === u.max && !best.bad)) cuts.forEach(function (cut) {
       function partition(at, counts) {
         if (at === cut) { consider(cut, counts); return; }
         if (counts.length >= m.maxLines) return;
         for (var end = at + 1; end <= cut; end++) {
-          if (forbidden.indexOf(end) >= 0 && end < cut) continue;
+          // The big numeral of a number cover is a line of its own, even though the copy binds it to its noun.
+          if (forbidden.indexOf(end) >= 0 && end < cut && !(num && at === 0 && end === 1)) continue;
           if (required.some(function (b) { return b > at && b < end; })) break;
           if (num && at === 0 && end !== 1) continue;
           partition(end, counts.concat(end - at));
@@ -3342,6 +3364,9 @@ CS.core.format = function format(template, params) {
   }
 
   /** "" | " " | U+00A0: what separates two word units in the DOM (a number is bound to its noun with U+00A0). */
+  /** Words that read badly as the last word of a line: prepositions, conjunctions and particles. */
+  var CONNECTOR = /^(?:و|ف|ب|ل|ك|في|من|عن|على|إلى|الى|مع|أو|او|ثم|بس|لو|ما|لا|إن|ان|أن|يا|ولا|حتى|قبل|بعد|عند|زي|غير|كل|هل)$/;
+
   function separator(a, b) {
     var rg = document.createRange();
     try { rg.setStartAfter(a); rg.setEndBefore(b); } catch (e) { return " "; }
