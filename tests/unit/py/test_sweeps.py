@@ -284,8 +284,8 @@ class VersionTests(unittest.TestCase):
         cls.version = json.loads(read(PLUGIN / ".claude-plugin" / "plugin.json"))["version"]
         cls.engine = "cs-" + cls.version
 
-    def test_the_plugin_is_1_1_x(self) -> None:
-        self.assertRegex(self.version, r"^1\.1\.[0-9]+$")
+    def test_the_plugin_is_1_2_x(self) -> None:
+        self.assertRegex(self.version, r"^1\.2\.[0-9]+$")
 
     def test_manifests_agree(self) -> None:
         market = json.loads(read(REPO / ".claude-plugin" / "marketplace.json"))
