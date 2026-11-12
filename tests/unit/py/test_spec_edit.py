@@ -550,7 +550,8 @@ class EditorTests(unittest.TestCase):
         before = self.spec.read_bytes()
         real_write = lane.paths.write_json
         def fail_spec(path, value, **kwargs):
-            if Path(path) == self.spec:
+            # Compare real paths: a Windows runner hands out the temp folder in its short 8.3 form (RUNNER~1), and the two spellings differ.
+            if os.path.normcase(os.path.realpath(path)) == os.path.normcase(os.path.realpath(self.spec)):
                 raise OSError("simulated interrupted spec replacement")
             return real_write(path, value, **kwargs)
         with mock.patch.object(lane.paths, "write_json", side_effect=fail_spec), contextlib.redirect_stderr(io.StringIO()):
