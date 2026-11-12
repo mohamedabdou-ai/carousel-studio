@@ -209,7 +209,7 @@ You do. You own everything you create with Carousel Studio, and nothing you expo
 
 ## Coming soon
 
-- **Next version:** three more styles, more cover stories, and occasion packs starting with Ramadan.
+- **Next version:** three more styles, and occasion packs starting with Ramadan.
 - **After that:** handoff to Canva, account analytics, Maghrebi Darija, and Stories and LinkedIn sizes. Publishing with your connected tool follows its own instructions and your choices; no tool-specific recipe is bundled.
 
 Install it now and every new feature reaches you with one update. What changed in each version is in the [changelog](CHANGELOG.md).

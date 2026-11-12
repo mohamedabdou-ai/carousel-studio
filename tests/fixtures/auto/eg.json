@@ -292,7 +292,7 @@
     "qa": {
       "status": "pass",
       "runAt": "2026-10-23T09:20:00Z",
-      "engine": "cs-1.1.1",
+      "engine": "cs-1.2.0",
       "results": []
     },
     "approvals": {
@@ -576,7 +576,7 @@
     "qa": {
       "status": "pass",
       "runAt": "2026-10-23T09:20:00Z",
-      "engine": "cs-1.1.1",
+      "engine": "cs-1.2.0",
       "results": []
     },
     "approvals": {
@@ -862,7 +862,7 @@
     "qa": {
       "status": "pass",
       "runAt": "2026-10-23T09:20:00Z",
-      "engine": "cs-1.1.1",
+      "engine": "cs-1.2.0",
       "results": []
     },
     "approvals": {
@@ -1169,7 +1169,7 @@
     "qa": {
       "status": "pass",
       "runAt": "2026-10-23T09:20:00Z",
-      "engine": "cs-1.1.1",
+      "engine": "cs-1.2.0",
       "results": []
     },
     "approvals": {
@@ -1437,7 +1437,7 @@
     "qa": {
       "status": "pass",
       "runAt": "2026-10-23T09:20:00Z",
-      "engine": "cs-1.1.1",
+      "engine": "cs-1.2.0",
       "results": []
     },
     "approvals": {
@@ -1752,7 +1752,7 @@
     "qa": {
       "status": "pass",
       "runAt": "2026-10-23T09:20:00Z",
-      "engine": "cs-1.1.1",
+      "engine": "cs-1.2.0",
       "results": []
     },
     "approvals": {

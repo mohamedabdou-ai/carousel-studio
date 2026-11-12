@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "description": "Index of the zero-override fixture decks of Carousel Studio 1.1 (round 3, packages X1 and X2). Each file of this folder is a JSON array of full specs at checkpoint design, engine cs-1.1.1, with no `visual`, no `style.world`, no overrides and no frozen layout: the input of the planner's floor (spec 5.9). `node tests/fixtures/auto/extract.mjs <file-stem> <index>` prints one deck; `--check` verifies this index against the files; `--write-manifest` refreshes the derived fields (specId, preset, topic, architecture, intent, slides, types, demoOn, itemsOn, pause, sources, coverage) and keeps the hand-written ones (category, brand, register, note). The decks are synthetic: no client text, no owner-pack phrase and no credit appear in any of them; every figure carries a source id in `spec.sources`, and the one stand-in screenshot is labelled in its asset alt and in the slide notes.",
-  "engine": "cs-1.1.1",
+  "description": "Index of the zero-override fixture decks of Carousel Studio 1.1 (round 3, packages X1 and X2). Each file of this folder is a JSON array of full specs at checkpoint design, engine cs-1.2.0, with no `visual`, no `style.world`, no overrides and no frozen layout: the input of the planner's floor (spec 5.9). `node tests/fixtures/auto/extract.mjs <file-stem> <index>` prints one deck; `--check` verifies this index against the files; `--write-manifest` refreshes the derived fields (specId, preset, topic, architecture, intent, slides, types, demoOn, itemsOn, pause, sources, coverage) and keeps the hand-written ones (category, brand, register, note). The decks are synthetic: no client text, no owner-pack phrase and no credit appear in any of them; every figure carries a source id in `spec.sources`, and the one stand-in screenshot is labelled in its asset alt and in the slide notes.",
+  "engine": "cs-1.2.0",
   "counts": {
     "decks": 12,
     "perDialect": {

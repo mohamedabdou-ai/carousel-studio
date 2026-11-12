@@ -1,4 +1,4 @@
-/*! Carousel Studio runtime chunk cs-qa.js · cs-1.1.1 · Apache-2.0 */
+/*! Carousel Studio runtime chunk cs-qa.js · cs-1.2.0 · Apache-2.0 */
 (function () {
   "use strict";
   var CS = (window.CS = window.CS || {});
@@ -13,7 +13,7 @@
  */
 
 const QA = {
-  ENGINE: "cs-1.1.1",
+  ENGINE: "cs-1.2.0",
   SEV_RANK: { BLOCK: 0, FIX: 1, NOTE: 2 },
   CHECKPOINTS: ["angle", "script", "design", "ready", "exported"],
   /* Where the Studio records the user's «تأكدت» tap for an AI asset (gate A1):

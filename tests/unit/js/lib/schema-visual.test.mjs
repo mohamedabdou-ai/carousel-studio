@@ -38,7 +38,7 @@ const slide = (doc, id) => doc.slides.find((s) => s.id === id);
 function withFrozen(spec) {
   const s = clone(spec);
   s.frozen = {
-    engine: "cs-1.1.1", tokensHash: "0123456789abcdef", approvedAt: "2026-10-23T11:00:00Z",
+    engine: "cs-1.2.0", tokensHash: "0123456789abcdef", approvedAt: "2026-10-23T11:00:00Z",
     lines: { "s03.title": ["نسبة الحفظ", "مع هوك واضح"] },
     sizes: { "s03.title": 68, "s03.number": 520, "s03.art.0": 640 },
     visual: {

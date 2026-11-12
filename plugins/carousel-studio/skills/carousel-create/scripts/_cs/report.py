@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 
 from . import rules
 
-ENGINE = "cs-1.1.1"
+ENGINE = "cs-1.2.0"
 SEV_RANK = {"BLOCK": 0, "FIX": 1, "NOTE": 2}
 CAP_RESULTS = 600
 _PLACEHOLDER = re.compile(r"\{([A-Za-z0-9_]+)\}")

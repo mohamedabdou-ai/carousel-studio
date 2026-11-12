@@ -16,7 +16,7 @@ function AboutScreen(ctx) {
     var cfg = ctx.config || {};
     el.appendChild(h("header", { class: "ui-screen-head" }, h("h1", { class: "ui-h1", id: "ui-h-about" }, t("legal.title")), h("p", { class: "ui-lede" }, t("legal.lede"))));
 
-    var info = h("dl", { class: "ui-facts" }, row(t("legal.version"), CS.version || "cs-1.1.1"));
+    var info = h("dl", { class: "ui-facts" }, row(t("legal.version"), CS.version || "cs-1.2.0"));
     if (cfg.buildId) info.appendChild(row(t("legal.build"), cfg.buildId));
     if (cfg.builtAt) info.appendChild(row(t("legal.built"), fmtDate(cfg.builtAt, uiLang())));
     var painter = window.__csPainter || null;

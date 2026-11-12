@@ -17,7 +17,7 @@ function load(bundleOverrides, extraGlobals) {
   const sandbox = Object.assign({ console, TextDecoder, TextEncoder, Uint8Array, DataView }, extraGlobals || {});
   sandbox.window = sandbox;
   sandbox.CS = {
-    version: "cs-1.1.1",
+    version: "cs-1.2.0",
     emit() {},
     core: { text, color, registry: { rules: () => bundle } }
   };

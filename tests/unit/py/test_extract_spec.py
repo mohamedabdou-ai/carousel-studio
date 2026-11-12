@@ -45,7 +45,7 @@ BRAND = {"schemaVersion": 1, "id": "brand-demo-0001", "slug": "demo-brand", "nam
 def make_page(spec=SPEC) -> str:
     """The skeleton the Artifact tool wraps around a page, with the blocks build_studio.py writes."""
     return ("<!doctype html><html><head><meta charset=utf8></head><body><title>x</title>\n"
-            + BUILD.json_block("cs-config", {"engine": "cs-1.1.1", "view": "design"}) + "\n"
+            + BUILD.json_block("cs-config", {"engine": "cs-1.2.0", "view": "design"}) + "\n"
             + BUILD.json_block("cs-spec", spec) + "\n" + BUILD.json_block("cs-brand", BRAND) + "\n"
             + '<script id="cs-chunk-ui">var s = \'<script type="application/json" id="cs-spec">\' + "{}";</script>\n</body></html>')
 
@@ -85,7 +85,7 @@ class TestExtract(Base):
 
     def test_other_kinds(self):
         self.assertEqual(json.loads(self.run_cli(self.page, "--kind", "brand")[1])["slug"], "demo-brand")
-        self.assertEqual(json.loads(self.run_cli(self.page, "--kind", "config")[1])["engine"], "cs-1.1.1")
+        self.assertEqual(json.loads(self.run_cli(self.page, "--kind", "config")[1])["engine"], "cs-1.2.0")
 
     def test_writes_a_file(self):
         out = self.tmp / "out" / "spec.json"

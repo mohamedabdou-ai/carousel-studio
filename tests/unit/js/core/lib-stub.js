@@ -11,7 +11,7 @@
   var core = (CS.core = CS.core || {});
 
   /* ---- root --------------------------------------------------------------------------------------------- */
-  CS.version = "cs-1.1.1";
+  CS.version = "cs-1.2.0";
   class CSError extends Error {
     constructor(code, message, detail) { super(message || code); this.name = "CSError"; this.code = code; if (detail !== undefined) this.detail = detail; }
   }

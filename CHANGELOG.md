@@ -2,7 +2,7 @@
 
 All notable changes to Carousel Studio (كاروسيل ستوديو) are recorded here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project follows [Semantic Versioning](https://semver.org/). The plugin version in `plugins/carousel-studio/.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` always matches the newest entry.
 
-## [Unreleased]
+## [1.2.0] - 2026-11-12
 
 ### Script and picture repairs
 
@@ -19,6 +19,7 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 - Specialist handoffs name script paths, write permissions and one spec writer. Named free blocks merge atomically into the latest spec without replaying an old cover or overwriting newer copy.
 - Production boards retain separate script and final reviews, accept explained verdicts and measured video-frame times, and check compact fast/ready logs without demanding rounds that did not run.
 - Standing style and manual/tool publishing preferences can be remembered per brand. Publishing follows the creator's chosen tool's own instructions and permission each time; no platform or publishing tool is assumed.
+
 ### Pictures and brand voice
 
 - Steps, checklists and closing slides gain a picture-led media variant in every style, keeping step labels, ordinals and calls to action.
@@ -26,6 +27,7 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 - Covers can show a separate creator-supplied product or partner logo on a clear ground, in stills and cover video.
 - The shared renderer resolves asset refs through the same blob route as the Studio. Picture refs can hold up to 2,000,000 characters, and the plates tools read that limit from the schema.
 - Egyptian brands can choose light or full dialect strength once during setup. The saved setting travels in the brand capsule; existing brands keep their voice until they choose a level.
+
 ### Arabic text and visible checks
 
 - Type Arabic prefixes, Latin phrases, punctuation and model versions as ordinary text. The engine isolates them, keeps names with their numbers and short connectors with a neighbour, and reserves more room for mixed display lines.
@@ -71,7 +73,6 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 - Splitting at the slide limit shows one clear message. Mixed item and step layouts keep one list count, and script lists without ordinals still check the cover's promise.
 - Studio hook placement and headline meters use the same first beat as the copy checks. Cover-lab sheets and rankings retain your hook IDs and labels.
 - Variety checks keep running when a post carries malformed extension data.
-
 - Try surviving hooks across styles in one cover-lab run, with measured fit, ranked findings and a sheet at feed size and 130 px. A style sheet shows your own cover and slide 2 in every shipped style before you choose.
 - Cover fitting searches line arrangements without changing your words, keeps forced breaks and offers a punctuated second beat in the sub-line. Creator's top and center anchors work, and cover controls explain which type setting sizes each line.
 - The cover line search avoids leaving a preposition at a line end, splitting a Latin name across lines or stranding one word on the last line, and it never separates «الـ» from its number. Number covers are searched too.
@@ -94,17 +95,60 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 - Clip covers accept footage whose video track starts late, close on a clean loop even with grainy footage, and report trim, codec and duration problems in plain words. A single post cannot carry a clip cover.
 - The cover lab and the style sheet run without the clip file.
 - Standalone clip checks match browser-decoded poster colours. Dark footage no longer receives still-loop advice from a whole-frame average.
-
 - Attach your own local clip inside the cover's media window for a silent 6 to 15 second video, with trim points, fit and focus. Both ratios are recomposed after a style change or export, with the original layout and readable text.
 - Clip covers hold the finished poster first and return with a dissolve for similar endpoints or a wipe for one-way footage. Their PNG, JPEG and PDF cover come from the MP4 first frame, avoiding a second colour round trip in the loop check.
 - The Studio marks the attached video and previews its decoded poster. Reattach the local file when reopening the Studio; clip bytes never enter the spec or saved page.
-
 - Number covers keep the same text boxes in the still and motion frames. Stamp rings and story symbols draw above the card, and a story symbol can be chosen explicitly.
 - Stamp, sweep, story and counter keep readable headline content throughout their reset and rebuild. Story symbols stay clear of the readable title and leave before later text enters their space.
 - Four new cover stories, each with its own movement: Curtain (accent bars pull away line by line), Word zoom (the cover opens on its key word, then the camera pulls back), Notification (the headline arrives as a message being typed) and Before/after (the two halves of the headline collide).
 - The cover story is chosen from the cover's own words, and two posts in a row never get the same one.
 - The counter shows the rest of the title before the number counts, and large numbers count up from about a third instead of zero.
 - The centered story shows its title within about a second and a half, instead of holding a nearly empty card.
+
+### بالعربي
+
+**حد الشرائح**
+
+- الكاروسيل لا يتجاوز 10 شرائح، والغلاف (صورة أو فيديو) محسوب منها. الكاروسيل القصير من 4 إلى 6 شرائح مقبول دون أي ملاحظة، والأستوديو يشرح سبب رفض الشريحة الحادية عشرة.
+
+**السكريبت الجاهز**
+
+- الصق السكريبت كما تكتبه في المحادثة: عناوين مثل «١ — الغلاف» و«سلايد ٨ — القفلة» تُقرأ كما قصدت، والسطر الذي يبدأ برقم يبقى نصًا.
+- كل كلمة تبقى كما كتبتها. قل «زي ما هو» فيخرج البوست بنصك دون إضافة، حتى لو انتهى بلا دعوة لإجراء.
+- محرر آمن يغيّر العنوان والنص والستايل والمصادر والكابشن، وتعديلاتك تبقى محفوظة بعد إعادة البناء.
+- روابط السكريبت تصير مصادر على شرائحها، وأرقامك تُعتمد بخطوة واحدة صريحة بعد تأكيدك.
+
+**التصميم والغلاف**
+
+- معمل الأغلفة يعرض أكثر من عنوان على أكثر من ستايل في مرة واحدة، مع قياس الملاءمة وترتيب النتائج. ولوحة الستايلات تعرض غلافك وشريحتك الثانية بكل الستايلات قبل أن تختار.
+- غلاف بفيديو من عندك: أرفق مقطعًا محليًا من 6 إلى 15 ثانية فيظهر في نافذة عريضة فوق العنوان، بلا صوت، وبالنسبتين.
+- أربع حركات جديدة للغلاف: الستارة، تقريب الكلمة، الإشعار، وقبل وبعد. ولا يتكرر النوع نفسه في بوستين متتاليين.
+- مدير الفن مسؤول عن كل شريحة، ومنها الغلاف: يعالج الفراغ وضعف التدرج والزحام دون أن يُطلب منه.
+
+**الصور داخل الشرائح**
+
+- أمر واحد يقيس إطار كل صورة على نص البوست الفعلي ثم يقصّها ويضعها. الصور الأصلية محفوظة، وتغيير الستايل يعيد قصّها بأمر واحد.
+- شرائح الخطوات والقوائم والدعوة لها شكل تقوده الصورة في كل الستايلات، والغلاف يقبل شعار منتج أو شريك.
+
+**العربية مع اللاتينية**
+
+- الكلمات اللاتينية والأرقام داخل الجملة العربية تظهر بترتيبها الصحيح دون علامات يدوية، وحرف العطف الملتصق بكلمة لاتينية يأخذ مسافة صغيرة حتى لا يُقرأ حرفًا منها.
+- خط التسطير يبقى متصلًا تحت النقاط في كل الستايلات.
+- فحوص جديدة على الشكل النهائي: نص ملتصق بحافة حاويته، رسم مقصوص، كلمة قصيرة معلّقة في آخر سطر.
+- اختيار درجة العامية المصرية مرة واحدة عند إعداد البراند: خفيفة أو كاملة.
+
+**الفريق والنشر**
+
+- أربعة مسارات واضحة للعمل، وفي كل مسار مراجعة من المدير الإبداعي قبل اعتماد التصميم، ومسؤول الجودة يوقف التصدير عند أي خطأ تقني.
+- بعد اعتماد التصميم تسألك الإضافة مرة واحدة: هل لديك أداة نشر متصلة، أم تريد الملفات لتنشرها بنفسك؟ الإضافة لا تنشر عنك ولا تفترض أداة بعينها.
+
+**التصدير**
+
+- التصدير المكتمل ينتهي بنجاح حتى مع ملاحظات غير مانعة، وتقرير الجودة يُكتب في كل مرة. إذا طُلب فيديو الغلاف ولم يخرج، يتوقف التصدير برسالة واضحة.
+
+**بوستاتك القديمة**
+
+- البوستات التي صمّمتها من قبل تُفتح وتُصدَّر بالشكل نفسه. بوست يزيد على 10 شرائح يُفتح لتقصيره، ولا يُصدَّر قبل ذلك.
 
 ## [1.1.1] - 2026-11-05
 

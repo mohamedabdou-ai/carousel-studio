@@ -8,7 +8,7 @@
  */
 
 const QA = {
-  ENGINE: "cs-1.1.1",
+  ENGINE: "cs-1.2.0",
   SEV_RANK: { BLOCK: 0, FIX: 1, NOTE: 2 },
   CHECKPOINTS: ["angle", "script", "design", "ready", "exported"],
   /* Where the Studio records the user's «تأكدت» tap for an AI asset (gate A1):

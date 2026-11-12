@@ -4,7 +4,7 @@
  * the version, CSError, the tiny event bus (CS.on / once / off / emit), CS.util and the empty CS.core object that
  * lib/*.js and core/*.js fill. Nothing in this file touches the DOM at load time.
  */
-CS.version = "cs-1.1.1";
+CS.version = "cs-1.2.0";
 
 /** Error with a machine-readable code (CONTRACT 0.4): E_SCHEMA, E_FONT_MISSING, E_FIT_OVERFLOW, E_PAINT_TAINTED, ... */
 class CSError extends Error {

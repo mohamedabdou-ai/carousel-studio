@@ -6,7 +6,7 @@
 (function () {
   "use strict";
   var CS = (window.CS = window.CS || {});
-  CS.version = "cs-1.1.1";             // the engine of tools/build.mjs ENGINE; test_build_studio holds the two together
+  CS.version = "cs-1.2.0";             // the engine of tools/build.mjs ENGINE; test_build_studio holds the two together
   var listeners = {};
 
   function CSError(code, message, detail) { var e = new Error(message || code); e.name = "CSError"; e.code = code; e.detail = detail; return e; }

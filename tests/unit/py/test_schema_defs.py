@@ -306,7 +306,7 @@ class SchemaDefsTests(unittest.TestCase):
         for j, sl in enumerate(v["slides"]):
             sl["n"] = j + 1
         i = lambda sid: ["slides", slide_index(v, sid)]  # noqa: E731
-        frozen = put(v, ["frozen"], {"engine": "cs-1.1.1", "tokensHash": "0123456789abcdef", "approvedAt": "2026-10-23T11:00:00Z",
+        frozen = put(v, ["frozen"], {"engine": "cs-1.2.0", "tokensHash": "0123456789abcdef", "approvedAt": "2026-10-23T11:00:00Z",
                                      "lines": {"s03.title": ["نسبة", "الحفظ"]}, "sizes": {"s03.number": 520},
                                      "visual": {"marks": {"s02": [{"id": "circle-1", "x": 1.5, "y": 2.5}]}, "anchors": {"s03": {"w": 852, "h": 560.5}}}})
         art = lambda pth, val: put(p, ["art"] + pth, val)  # noqa: E731
@@ -630,7 +630,7 @@ class SchemaDefsTests(unittest.TestCase):
         self.assertGreaterEqual(seen, 10, "the example preset alone defines two tones of five roles")
 
     def test_the_marks_a_frozen_deck_stores_are_never_empty(self) -> None:
-        frozen = put(self.visual, ["frozen"], {"engine": "cs-1.1.1", "tokensHash": "0123456789abcdef", "approvedAt": "2026-10-23T11:00:00Z",
+        frozen = put(self.visual, ["frozen"], {"engine": "cs-1.2.0", "tokensHash": "0123456789abcdef", "approvedAt": "2026-10-23T11:00:00Z",
                                                "lines": {"s03.title": ["نسبة", "الحفظ"]}, "sizes": {"s03.number": 520},
                                                "visual": {"marks": {"s02": [{"id": "circle-1", "x": 1.5, "y": 2.5}]}, "anchors": {}}})
         self.assertEqual(verdict("spec", frozen), [])

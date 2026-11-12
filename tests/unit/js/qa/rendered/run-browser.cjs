@@ -37,7 +37,7 @@ function buildPage() {
     '<div id="stage"></div><pre id="out"></pre>',
     "<script>window.__BUNDLE=" + bundle + ";</script>",
     "<script>" + inline(read(path.join(__dirname, "../support/stub-lib.js"))) + "</script>",
-    "<script>window.CS={version:'cs-1.1.1',emit:function(){},core:{text:StubLib.text,color:StubLib.color,registry:{rules:function(){return window.__BUNDLE},fontCss:function(){return '\"x\"'},missingGlyphs:function(){return []}}}};</script>",
+    "<script>window.CS={version:'cs-1.2.0',emit:function(){},core:{text:StubLib.text,color:StubLib.color,registry:{rules:function(){return window.__BUNDLE},fontCss:function(){return '\"x\"'},missingGlyphs:function(){return []}}}};</script>",
     "<script>" + inline(read(path.join(REPO, "src/lib/text.js"))) + "\nCS.core.text=Object.assign({},StubLib.text,{visualFields:CS.core.text.visualFields});</script>",
     "<script>" + inline(read(process.env.CS_QA_CHUNK || path.join(DESIGN, "runtime/cs-qa.js"))) + "</script>",
     "<script>window.__loadSpace=function(){" + inline(read(path.join(DESIGN, "runtime/cs-visual.js")) + read(path.join(REPO, "src/qa-visual/register.js")) + read(path.join(REPO, "src/qa-visual/deadspace-gates.js"))) + "};</script>",

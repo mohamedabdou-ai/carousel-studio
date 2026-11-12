@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "specId": "post-20261022-0001",
   "rev": 3,
-  "engine": "cs-1.1.1",
+  "engine": "cs-1.2.0",
   "createdAt": "2026-10-22T11:00:00Z",
   "checkpoint": "design",
   "lane": "studio",

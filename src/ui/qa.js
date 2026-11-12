@@ -109,7 +109,7 @@ function attachQa(ctx) {
         ctx.qa.at = Date.now();
         ctx.qa.stale = ctx.spec !== spec && !same(ctx.spec.slides, spec.slides);
         var sum = summarizeFindings(results);
-        var stored = { status: sum.status, runAt: report.createdAt || isoNow(), engine: report.engine || (CS.version || "cs-1.1.1"), results: results.slice(0, 400) };
+        var stored = { status: sum.status, runAt: report.createdAt || isoNow(), engine: report.engine || (CS.version || "cs-1.2.0"), results: results.slice(0, 400) };
         ctx.commit(function (sp) { return Object.assign({}, sp, { qa: stored }); }, { layout: false, quiet: true, history: false, slides: [], origin: "qa" });
         guard("emit cs:qa", function () { CS.emit("cs:qa", { report: ctx.qa.report }); });
       }

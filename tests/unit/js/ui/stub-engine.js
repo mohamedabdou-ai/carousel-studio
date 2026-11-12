@@ -5,7 +5,7 @@
 (function () {
   "use strict";
   var CS = (window.CS = window.CS || {});
-  CS.version = "cs-1.1.1";
+  CS.version = "cs-1.2.0";
 
   function CSError(code, message, detail) { var e = new Error(message || code); e.name = "CSError"; e.code = code; e.detail = detail; return e; }
   CSError.prototype = Object.create(Error.prototype);
@@ -297,7 +297,7 @@
 
   /* ---- freeze ------------------------------------------------------------------------------------------------------------ */
   var F = {
-    capture: function (slides, spec) { var lines = {}, sizes = {}; slides.forEach(function (r) { sizes[r.id + ".title"] = 64; lines[r.id + ".title"] = ["x"]; }); return { engine: "cs-1.1.1", tokensHash: "0123456789abcdef", lines: lines, sizes: sizes, approvedAt: new Date().toISOString().replace(/\.\d+Z/, "Z") }; },
+    capture: function (slides, spec) { var lines = {}, sizes = {}; slides.forEach(function (r) { sizes[r.id + ".title"] = 64; lines[r.id + ".title"] = ["x"]; }); return { engine: "cs-1.2.0", tokensHash: "0123456789abcdef", lines: lines, sizes: sizes, approvedAt: new Date().toISOString().replace(/\.\d+Z/, "Z") }; },
     verify: function (spec) { return { ok: !!spec.frozen, reasons: spec.frozen ? [] : ["tokens"] }; }
   };
 
@@ -351,7 +351,7 @@
       res.push(finding("T1", "T1.hero-px", "NOTE", input.spec.slides[0].id, null, msg("الغلاف يُقرأ على المصغّر.", "The cover reads at thumbnail size."), msg("لا شيء مطلوب.", "Nothing to do.")));
       return sleep(500).then(function () {
         var sum = CS.qa.summarize(res);
-        return { schemaVersion: 1, specId: input.spec.id, rev: input.spec.rev, engine: "cs-1.1.1", createdAt: new Date().toISOString().replace(/\.\d+Z/, "Z"), checkpoint: input.spec.checkpoint, lane: "studio", status: sum.status, exitCode: sum.exitCode, counts: sum.counts, results: res, environment: { painter: "svg" } };
+        return { schemaVersion: 1, specId: input.spec.id, rev: input.spec.rev, engine: "cs-1.2.0", createdAt: new Date().toISOString().replace(/\.\d+Z/, "Z"), checkpoint: input.spec.checkpoint, lane: "studio", status: sum.status, exitCode: sum.exitCode, counts: sum.counts, results: res, environment: { painter: "svg" } };
       });
     },
     summarize: function (results) { var c = { block: 0, fix: 0, note: 0 }; results.forEach(function (r) { if (r.overridden) return; c[r.sev.toLowerCase()]++; }); return { status: c.block ? "block" : c.fix ? "fix" : "pass", counts: c, exitCode: c.block ? 2 : c.fix ? 1 : 0 }; },

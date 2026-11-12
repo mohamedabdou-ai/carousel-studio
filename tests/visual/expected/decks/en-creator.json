@@ -188,7 +188,7 @@
   "qa": {
     "status": "pass",
     "runAt": "2026-10-22T09:20:00Z",
-    "engine": "cs-1.1.1",
+    "engine": "cs-1.2.0",
     "results": []
   },
   "approvals": {

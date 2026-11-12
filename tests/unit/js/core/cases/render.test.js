@@ -132,7 +132,7 @@
     var presets = [CS.core.registry.getPreset("swiss"), CS.core.registry.getPreset("heritage")];
     var esc = function (o) { return JSON.stringify(o).replace(/<\//g, "<\\/"); };
     var html = '<!doctype html><body>' +
-      '<script type="application/json" id="cs-config">' + esc({ engine: "cs-1.1.1", view: "design", mode: "full", lane: "studio", uiDialect: "eg", buildId: "t", builtAt: "2026-10-22T00:00:00Z", creditFree: true, fonts: ["alexandria", "readex-pro"], presets: ["swiss"], capabilities: [] }) + '<\/script>' +
+      '<script type="application/json" id="cs-config">' + esc({ engine: "cs-1.2.0", view: "design", mode: "full", lane: "studio", uiDialect: "eg", buildId: "t", builtAt: "2026-10-22T00:00:00Z", creditFree: true, fonts: ["alexandria", "readex-pro"], presets: ["swiss"], capabilities: [] }) + '<\/script>' +
       '<script type="application/json" id="cs-spec">' + esc(spec) + '<\/script><script type="application/json" id="cs-brand">' + esc(brand) + '<\/script>' +
       '<script type="application/json" id="cs-presets">' + esc(presets) + '<\/script>' +
       '<script type="application/json" id="cs-rules">' + esc({ qaRules: null, copy: null, ortho: null, dialects: {}, platform: FX.data.platform, locale: FX.data.locale }) + '<\/script>' +
