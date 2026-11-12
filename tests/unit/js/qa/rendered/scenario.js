@@ -69,7 +69,7 @@
       '<header class="cs-header" style="position:absolute;top:165px;left:114px;width:852px;height:80px;display:flex;justify-content:space-between;align-items:flex-start">' +
       '<span class="cs-handle" data-slot="handle" style="font-size:' + meta + "px;line-height:40px;" + (o.handleStyle || "") + '"><bdi dir="ltr" class="cs-ltr" data-run="handle">@brand</bdi></span>' +
       '<span class="cs-meta" data-slot="meta" style="font-size:' + meta + 'px;line-height:40px">سلسلة</span></header>' +
-      '<main class="cs-content" data-layer="content" style="position:absolute;top:261px;left:114px;width:852px;height:888px">' +
+      '<main class="cs-content' + (o.free ? " cs-free" : "") + '" data-layer="content" style="position:absolute;top:261px;left:114px;width:852px;height:888px">' +
       (type === "cover"
         ? '<h1 class="cs-slot cs-headline" data-slot="headline" data-kind="text" data-role="hero" style="margin:0;font-size:' + hero + "px;line-height:1.3;font-weight:700;" + (o.headStyle || "") + '">' + (o.headHtml || w(["أدوات", "ببلاش"])) + "</h1>"
         : "") +
@@ -353,20 +353,22 @@
   await runCase("rendered-hook-filtered", reportSlides, null, null, { gates: ["D3"] });
 
   var packed = '<div style="background:#eee;padding:2px;margin-bottom:2px">' + w(["عنوان", "واضح"]) + '</div>';
-  await runCase("packed-bars", [makeSlide("s01", "item", { bodyHtml: packed.repeat(4) })], null, null, { gates: ["D2"] });
+  await runCase("packed-bars", [makeSlide("s01", "item", { free: true, bodyHtml: packed.repeat(4) })], null, null, { gates: ["D2"] });
+  await runCase("packed-bars-engine", [makeSlide("s01", "item", { bodyHtml: packed.repeat(4) })], null, null, { gates: ["D2"] });
+  await runCase("clipped-shape-engine", [makeSlide("s01", "item", { extra: '<div style="overflow:hidden;width:80px;height:80px"><svg width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="#111" stroke-width="8"/></svg></div>' })], null, null, { gates: ["D2"] });
   var airy = '<div style="background:#eee;padding:24px;margin-bottom:24px">' + w(["عنوان", "واضح"]) + '</div>';
-  await runCase("airy-bars", [makeSlide("s01", "item", { bodyHtml: airy.repeat(4) })], null, null, { gates: ["D2"] });
+  await runCase("airy-bars", [makeSlide("s01", "item", { free: true, bodyHtml: airy.repeat(4) })], null, null, { gates: ["D2"] });
   var frame = '<div style="border:3px solid #111">' + '<div style="padding:24px;background:#eee">' + w(["عنوان", "واضح"]) + '</div><div style="padding:24px;background:#ddd">' + w(["عنوان", "واضح"]) + '</div></div>';
-  await runCase("framed-cells", [makeSlide("s01", "item", { bodyHtml: frame })], null, null, { gates: ["D2"] });
-  await runCase("compact-badge", [makeSlide("s01", "item", { extra: '<span data-slot="kicker" data-role="small" style="display:inline-block;background:#ddd;line-height:1.4;font-size:34px;padding:0 22px">عنوان</span>' })], null, null, { gates: ["D2"] });
-  await runCase("ink-padding", [makeSlide("s01", "item", { extra: '<div data-role="body" style="background:#ddd;line-height:80px;width:250px;text-align:center;font-size:48px">3</div>' })], null, null, { gates: ["D2"] });
+  await runCase("framed-cells", [makeSlide("s01", "item", { free: true, bodyHtml: frame })], null, null, { gates: ["D2"] });
+  await runCase("compact-badge", [makeSlide("s01", "item", { free: true, extra: '<span data-slot="kicker" data-role="small" style="display:inline-block;background:#ddd;line-height:1.4;font-size:34px;padding:0 22px">عنوان</span>' })], null, null, { gates: ["D2"] });
+  await runCase("ink-padding", [makeSlide("s01", "item", { free: true, extra: '<div data-role="body" style="background:#ddd;line-height:80px;width:250px;text-align:center;font-size:48px">3</div>' })], null, null, { gates: ["D2"] });
   var cutText='<div style="overflow:hidden;block-size:28px;line-height:28px;font-size:60px">نص واضح</div>';
   await runCase("clipped-text-ink",[makeSlide("s01","item",{extra:cutText})],null,null,{gates:["D2"]});
   await runCase("transparent-clip",[makeSlide("s01","item",{extra:cutText.replace('font-size:60px','font-size:60px;color:transparent')})],null,null,{gates:["D2"]});
   var shapeClip = '<div style="overflow:hidden;width:80px;height:80px"><svg width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="#111" stroke-width="8"/></svg></div>';
   var iconClip = shapeClip.replace('<svg ', '<svg class="cs-icon" ');
   await runCase("clipped-icon", [makeSlide("s01", "item", { extra: iconClip })], null, null, { gates: ["D2"] });
-  await runCase("clipped-shape", [makeSlide("s01", "item", { extra: shapeClip })], null, null, { gates: ["D2"] });
+  await runCase("clipped-shape", [makeSlide("s01", "item", { free: true, extra: shapeClip })], null, null, { gates: ["D2"] });
   await runCase("unclipped-icon", [makeSlide("s01", "item", { extra: iconClip.replace('width:80px;height:80px', 'width:110px;height:110px') })], null, null, { gates: ["D2"] });
   await runCase("orphan-connector", [makeSlide("s01", "cover", { headHtml: w(["عنوان", "واضح"]) + '<br>' + w(["في"]) })], null, null, { gates: ["D6"] });
   await runCase("joined-connector", [makeSlide("s01", "cover", { heroPx: 120, headHtml: w(["عنوان"]) + '<br>' + w(["في", "التصميم"]) })], null, null, { gates: ["D6"] });

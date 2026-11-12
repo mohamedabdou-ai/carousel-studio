@@ -408,8 +408,11 @@ function gatePaintedLayout(rc, S) {
   const padRule = param(rc, "D2.text-padding"), gapRule = param(rc, "D2.block-gap"), p = param(rc, "D2.clipped-paint");
   const unit = parseFloat(getComputedStyle(S.el).getPropertyValue("--cs-unit")) || padRule.unit || gapRule.unit || p.tolerancePx;
   const padding = (padRule.minUnits - padRule.toleranceUnits) * unit, gap = (gapRule.minUnits - gapRule.toleranceUnits) * unit;
-  const containers = new Set();
+  // Padding, sibling gaps and cut shapes are judged on free designs, which an author lays out by hand. The engine's own layouts come from
+  // tested templates: every shipped style would otherwise fail these checks on its own cards (the preset matrix found 278 such findings).
+  const free = !!S.el.querySelector(".cs-content.cs-free"), containers = new Set();
   texts.forEach(it => {
+    if (!free) return;
     // A compact text tag paints emphasis; it is not a body panel.
     if ((padRule.compactRoles || []).includes(it.role)) return;
     for (let e = it.el; e && e !== S.el; e = e.parentElement) {
@@ -449,7 +452,9 @@ function gatePaintedLayout(rc, S) {
         if (rs.some(r => r.w > 0 && r.h > 0 && (clipX && (r.x - sw < b.x - tol || r.x + r.w + sw > b.x + b.w + tol) || clipY && (r.y - sw < b.y - tol || r.y + r.h + sw > b.y + b.h + tol)))) {
           // Cut text, icons and pictures lose meaning. A drawn shape cut by its frame is often a deliberate bleed (rings running off a panel
           // on published posts), so it is reported for review instead of stopping the export.
-          emitOnce("D2.clipped-paint", e, glyph || e.closest('.cs-icon,[data-icon],[data-object],[data-picture],.cs-media-slot,img,video') ? "BLOCK" : "FIX"); break;
+          const content = glyph || e.closest('.cs-icon,[data-icon],[data-object],[data-picture],.cs-media-slot,img,video');
+          if (content || free) emitOnce("D2.clipped-paint", e, content ? "BLOCK" : "FIX");
+          break;
         }
       }
       if (a === S.el) break;
@@ -1059,6 +1064,9 @@ function gateB1Rendered(rc) {
           const x = a.textContent.trim(), y = b.textContent.trim();
           const pair = number.test(x) && /^[\u0621-\u064A]/.test(y) || labels.has(x) && number.test(y) || /^[A-Za-z][A-Za-z0-9._-]*$/.test(x) && number.test(y);
           if (!pair) return;
+          // The big numeral of a number cover is a line of its own by design.
+          const run = a.closest('[data-run="number"]');
+          if (run && getComputedStyle(run).display === "block") return;
           const ra = S.rel(a.getBoundingClientRect()), rb = S.rel(b.getBoundingClientRect()), key = domKey(S, slot);
           if (Math.abs(ra.y + ra.h / 2 - rb.y - rb.h / 2) > Math.min(ra.h, rb.h) / 2 && !reported.has(key)) {
             reported.add(key); emit(rc, out, "B1.unbound-pair", { slide: S.id, el: key });

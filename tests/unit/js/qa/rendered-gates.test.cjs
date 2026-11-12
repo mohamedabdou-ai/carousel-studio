@@ -27,6 +27,9 @@ test("painted padding, sibling gaps, clipping, orphans and cover sub-lines", opt
   if (!out) out = runScenario();
   assert.ok(has("packed-bars", "D2.text-padding"));
   assert.ok(has("packed-bars", "D2.block-gap"));
+  assert.equal(has("packed-bars-engine", "D2.text-padding"), false, "the engine's own layouts are not judged by the free-design padding check");
+  assert.equal(has("packed-bars-engine", "D2.block-gap"), false);
+  assert.equal(has("clipped-shape-engine", "D2.clipped-paint"), false, "a cut shape in an engine layout is the template's own crop");
   assert.equal(has("airy-bars", "D2.text-padding"), false);
   assert.equal(has("airy-bars", "D2.block-gap"), false);
   assert.equal(has("framed-cells", "D2.block-gap"), false, "cells in a shared frame need internal padding, not gaps");

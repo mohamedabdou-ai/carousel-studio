@@ -169,8 +169,8 @@
         if (!d) return;
         if (id === 'D9.container-fill') {
           d.owners.forEach(function (o) { if (!o.ok) {
-            // Score bars and icon cells leave air on purpose (36 to 52 percent on real posts), so under the minimum is advice.
-            // Below owner.fixBelow the panel is empty or holds one small thing in a large frame: that needs fixing.
+            // Under the minimum is advice; below owner.fixBelow it is a FIX once the rollout enforces dead space. At stage 0 every
+            // non-empty panel is reported as advice (real posts hold deliberate panels at 36 to 52 percent).
             var pct = Math.min(o.rows, o.cols), empty = o.rows === 0 && o.cols === 0, sev = empty || pct < c.owner.fixBelow ? 'FIX' : 'NOTE',
                 f = finding(ctx, id, S, sev, { el: o.id, pct: pct, min: o.need }, o.id);
             // An empty painted free panel is visible evidence, independent of the visual rollout.

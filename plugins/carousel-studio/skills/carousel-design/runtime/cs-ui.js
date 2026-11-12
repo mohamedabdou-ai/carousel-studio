@@ -2216,7 +2216,7 @@ function textEditor(ctx, o) {
   var meterHost = h("span", { class: "ui-meter-host" });
   function paintMeter() {
     clear(meterHost);
-    var plain = (o.coverHero ? CS.qa.splitCover(ta.value).hero : ta.value).replace(/==/g, "");
+    var plain = (o.coverHero && CS.qa && typeof CS.qa.splitCover === "function" ? CS.qa.splitCover(ta.value).hero : ta.value).replace(/==/g, "");
     var n = ctx.words(plain);
     if (o.limit || n) meterHost.appendChild(meter(n, o.limit && o.limit.soft, o.limit && o.limit.hard));
   }
@@ -2422,7 +2422,8 @@ function typeLabel(type) { return t("type." + type); }
 /** Place the same first beat that C1 and the hook engine measure in the headline, with the rest in the sub line. */
 function placeCover(cover, heroMax, wc) {
   var s = String(cover || "").trim();
-  var beats = CS.qa.splitCover(s);
+  // The quality chunk may not be loaded yet (a shell page, or a test double): the whole headline is then the first beat.
+  var beats = CS.qa && typeof CS.qa.splitCover === "function" ? CS.qa.splitCover(s) : { hero: s, sub: "" };
   if (!heroMax || !beats.sub || wc(beats.hero) > heroMax) return { headline: s };
   return { headline: beats.hero, sub: beats.sub };
 }

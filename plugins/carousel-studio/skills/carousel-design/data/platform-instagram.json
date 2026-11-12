@@ -267,7 +267,7 @@
       "zone": {"canvasH": 1440, "padEnd": {"poster": 48, "heritage": 44, "posterType": 24}, "_note": "The body zone is computed: geometry.bodyArea (geometry.inner.bodyArea on a slide that is not a cover or poster) minus the preset's own end padding; padEnd is that padding in px."},
       "grid": {"cols": 36, "rows": 37, "occ": 30},
       "halo": {"text": 16, "ink": 32, "owner": 0},
-      "owner": {"min": 65, "big": 80, "bigShare": 60, "fill": 35, "border": 3, "fixBelow": 30},
+      "owner": {"min": 65, "big": 80, "bigShare": 60, "fill": 35, "border": 3, "fixBelow": 50},
       "classes": {
         "cover": ["cover", "poster"],
         "peak": ["rehook", "stat", "share", "cta", "offer"],

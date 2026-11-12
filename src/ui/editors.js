@@ -76,7 +76,7 @@ function textEditor(ctx, o) {
   var meterHost = h("span", { class: "ui-meter-host" });
   function paintMeter() {
     clear(meterHost);
-    var plain = (o.coverHero ? CS.qa.splitCover(ta.value).hero : ta.value).replace(/==/g, "");
+    var plain = (o.coverHero && CS.qa && typeof CS.qa.splitCover === "function" ? CS.qa.splitCover(ta.value).hero : ta.value).replace(/==/g, "");
     var n = ctx.words(plain);
     if (o.limit || n) meterHost.appendChild(meter(n, o.limit && o.limit.soft, o.limit && o.limit.hard));
   }

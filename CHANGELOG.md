@@ -38,7 +38,7 @@ All notable changes to Carousel Studio (كاروسيل ستوديو) are recorde
 - Existing posts keep their layout: short words are not glued to their neighbours, a Latin word does not raise a title's line height, and an ellipsis after a Latin word stays at the end of the Arabic sentence.
 - Times, ratios and joined Latin pairs keep their reading order inside Arabic text: «10:30», «3:1», «9:00-10:30», «Q&A», «AT&T». A product name stays on one line with the number after it («iPhone 15», «GPT 5»).
 - A highlighted phrase is one highlight again, not one chip per word, and a prefix such as «بـ» or «الـ» keeps the font of its headline.
-- Panels with deliberate air receive layout advice rather than a required container-fill fix. An empty panel, or one small icon alone in a large frame, still needs fixing.
+- Panels with deliberate air receive layout advice rather than a required container-fill fix. An empty card still needs fixing.
 - Free design errors name accepted logical CSS properties.
 
 ### Publishing limits and checks
